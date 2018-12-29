@@ -6,6 +6,7 @@ It has already been used to create the game 'I Can Transform' available on Play 
 Download link: https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=en
 
 It is accompanied by an example to show you how to use it.
+Download the example apk here : https://play.google.com/store/apps/details?id=com.isdaouda.isenginedemo
 
 It is retro compatible with the PC platform and Android. (All you need to do is change IDE)
 
