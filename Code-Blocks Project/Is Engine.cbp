@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Is Engine" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Is Engine" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-Wundef" />
+					<Add option="-Wfloat-equal" />
+					<Add option="-Winline" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-std=c++11" />
+					<Add directory="C:/SFML_MinGW/include" />
+				</Compiler>
+				<Linker>
+					<Add library="sfml-audio-d" />
+					<Add library="sfml-graphics-d" />
+					<Add library="sfml-window-d" />
+					<Add library="sfml-main-d" />
+					<Add library="sfml-system-d" />
+					<Add library="opengl32" />
+					<Add library="gdi32" />
+					<Add library="jpeg" />
+					<Add library="freetype" />
+					<Add library="winmm" />
+					<Add directory="C:/SFML_MinGW/lib" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Is Engine" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-Wundef" />
+					<Add option="-Wfloat-equal" />
+					<Add option="-Wextra" />
+					<Add option="-std=c++11" />
+					<Add option="-Wold-style-cast" />
+					<Add directory="C:/SFML_MinGW/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="sfml-audio" />
+					<Add library="sfml-graphics" />
+					<Add library="sfml-window" />
+					<Add library="sfml-main" />
+					<Add library="sfml-system" />
+					<Add library="opengl32" />
+					<Add library="gdi32" />
+					<Add library="jpeg" />
+					<Add library="freetype" />
+					<Add library="winmm" />
+					<Add directory="C:/SFML_MinGW/lib" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="app_modules/config/GameFilesPath.h" />
+		<Unit filename="app_modules/config/GameVersion.h" />
+		<Unit filename="app_modules/core/GameEngine.cpp" />
+		<Unit filename="app_modules/core/GameEngine.h" />
+		<Unit filename="app_modules/core/GameSystemExtended.cpp" />
+		<Unit filename="app_modules/core/GameSystemExtended.h" />
+		<Unit filename="app_modules/gameobj/Bloc.cpp" />
+		<Unit filename="app_modules/gameobj/Bloc.h" />
+		<Unit filename="app_modules/gameobj/Bonus.cpp" />
+		<Unit filename="app_modules/gameobj/Bonus.h" />
+		<Unit filename="app_modules/gameobj/Goal.cpp" />
+		<Unit filename="app_modules/gameobj/Goal.h" />
+		<Unit filename="app_modules/gameobj/HUD.cpp" />
+		<Unit filename="app_modules/gameobj/HUD.h" />
+		<Unit filename="app_modules/gameobj/LevelTile.cpp" />
+		<Unit filename="app_modules/gameobj/LevelTile.h" />
+		<Unit filename="app_modules/gameobj/PauseButton.cpp" />
+		<Unit filename="app_modules/gameobj/PauseButton.h" />
+		<Unit filename="app_modules/gameobj/Player.cpp" />
+		<Unit filename="app_modules/gameobj/Player.h" />
+		<Unit filename="app_modules/level/Level.h" />
+		<Unit filename="app_modules/level/level_1.h" />
+		<Unit filename="app_modules/level/level_2.h" />
+		<Unit filename="app_modules/level/level_3.h" />
+		<Unit filename="app_modules/main.cpp" />
+		<Unit filename="app_modules/scene/GameEndScreen.cpp" />
+		<Unit filename="app_modules/scene/GameEndScreen.h" />
+		<Unit filename="app_modules/scene/GameIntro.cpp" />
+		<Unit filename="app_modules/scene/GameIntro.h" />
+		<Unit filename="app_modules/scene/GameLevel.h" />
+		<Unit filename="app_modules/scene/GameLevelConstructor.cpp" />
+		<Unit filename="app_modules/scene/GameLevelDraw.cpp" />
+		<Unit filename="app_modules/scene/GameLevelLoadResource.cpp" />
+		<Unit filename="app_modules/scene/GameLevelStep.cpp" />
+		<Unit filename="app_modules/scene/GameLevelStepSubFunction.cpp" />
+		<Unit filename="app_modules/scene/GameMenu.cpp" />
+		<Unit filename="app_modules/scene/GameMenu.h" />
+		<Unit filename="app_modules/scene/GameMenuDraw.cpp" />
+		<Unit filename="app_modules/scene/GameMenuLoadResource.cpp" />
+		<Unit filename="app_modules/scene/GameOver.cpp" />
+		<Unit filename="app_modules/scene/GameOver.h" />
+		<Unit filename="app_modules/system/android/AdmobManager.h" />
+		<Unit filename="app_modules/system/display/GameDisplay.cpp" />
+		<Unit filename="app_modules/system/display/GameDisplay.h" />
+		<Unit filename="app_modules/system/entity/DepthObject.h" />
+		<Unit filename="app_modules/system/entity/Destructible.h" />
+		<Unit filename="app_modules/system/entity/Forme.h" />
+		<Unit filename="app_modules/system/entity/MainObject.cpp" />
+		<Unit filename="app_modules/system/entity/MainObject.h" />
+		<Unit filename="app_modules/system/entity/ObjectActivity.h" />
+		<Unit filename="app_modules/system/entity/Visibilty.h" />
+		<Unit filename="app_modules/system/function/GameFunction.cpp" />
+		<Unit filename="app_modules/system/function/GameFunction.h" />
+		<Unit filename="app_modules/system/function/GameSystem.cpp" />
+		<Unit filename="app_modules/system/function/GameSystem.h" />
+		<Unit filename="app_modules/system/function/GameTime.cpp" />
+		<Unit filename="app_modules/system/function/GameTime.h" />
+		<Unit filename="resource.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+			<AutoVersioning>
+				<Scheme minor_max="9" build_max="9" rev_max="9" rev_rand_max="9" build_times_to_increment_minor="9" />
+				<Settings autoincrement="1" date_declarations="1" use_define="0" update_manifest="0" do_auto_increment="0" ask_to_increment="0" language="C++" svn="0" svn_directory="" header_path="version.h" />
+				<Changes_Log show_changes_editor="0" app_title="released version %M.%m.%b of %p" changeslog_path="ChangesLog.txt" />
+				<Code header_guard="VERSION_H" namespace="AutoVersion" prefix="" />
+			</AutoVersioning>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
