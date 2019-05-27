@@ -5,9 +5,6 @@ This Framework allows you to easily develop your games with SFML on Android or P
 It has already been used to create the game 'I Can Transform' available on Play Store.
 Download link: https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=en
 
-It is accompanied by an example to show you how to use it.
-Download the example apk here : https://play.google.com/store/apps/details?id=com.isdaouda.isenginedemo
-
 It is retro compatible with the PC platform and Android. (All you need to do is change IDE)
 
 ## In this directory you have two projects :
