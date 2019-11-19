@@ -33,7 +33,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion '27.0.3'
     defaultConfig {
-        applicationId "com.yourcompany.gamename"
+        applicationId "com.isdaouda.isenginedemo"
         //Replace this with your real package name (e.g. com.StudioName.GameName)
         minSdkVersion 14
         targetSdkVersion 26
@@ -47,10 +47,12 @@ android {
                         "-DANDROID_STL=c++_shared",
                         "-DSFML_INCLUDE_DIR=${ndkDir}/sources/sfml/include",
                         "-DSFML_LIBRARY_DIR=${ndkDir}/sources/sfml/lib/",
-                        "-DSFML_EXT_LIBRARY_DIR=${ndkDir}/sources/sfml/extlibs/lib/" //,
-                        // uncomment if you want to use Admob
-                        // "-DFIREBASE_INCLUDE_DIR=${ndkDir}/sources/firebase_cpp_sdk/include",
-                        // "-DFIREBASE_LIBRARY_DIR=${ndkDir}/sources/firebase_cpp_sdk/libs/android/"
+                        "-DSFML_EXT_LIBRARY_DIR=${ndkDir}/sources/sfml/extlibs/lib/",
+                // uncomment if you want to use Admob
+
+                        "-DFIREBASE_INCLUDE_DIR=${ndkDir}/sources/firebase_cpp_sdk/include",
+                        "-DFIREBASE_LIBRARY_DIR=${ndkDir}/sources/firebase_cpp_sdk/libs/android/"
+
                 abiFilters "${abiARM}", "${abiX86}"
                 // multiple ABIs are supported
                 // but you have to compile SFML for every ABI you want to support
@@ -88,7 +90,7 @@ android {
                                 "${ndkDir}/sources/sfml/lib",
                                 "${ndkDir}/sources/sfml/extlibs/lib/"
                                 // uncomment if you want to use Admob
-                                // ,"${ndkDir}/sources/firebase_cpp_sdk/libs/android/"
+                                 ,"${ndkDir}/sources/firebase_cpp_sdk/libs/android/"
                                ]
         }
     }
