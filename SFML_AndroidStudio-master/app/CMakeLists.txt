@@ -36,6 +36,58 @@ add_library(# Sets the name of the library.
             # Provides a relative path to your source file(s).
 			src/main/cpp/app_modules/main.cpp
 
+            #box 2d source
+			src/main/cpp/app_modules/ext_lib/Box2D/Collision/b2BroadPhase.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Collision/b2CollideCircle.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Collision/b2CollideEdge.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Collision/b2CollidePolygon.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Collision/b2Collision.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Collision/b2Distance.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Collision/b2DynamicTree.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Collision/b2TimeOfImpact.cpp
+
+			src/main/cpp/app_modules/ext_lib/Box2D/Collision/Shapes/b2CircleShape.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Collision/Shapes/b2EdgeShape.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Collision/Shapes/b2ChainShape.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Collision/Shapes/b2PolygonShape.cpp
+
+			src/main/cpp/app_modules/ext_lib/Box2D/Common/b2BlockAllocator.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Common/b2Draw.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Common/b2Math.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Common/b2Settings.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Common/b2StackAllocator.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Common/b2Timer.cpp
+
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/b2Body.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/b2ContactManager.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/b2Fixture.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/b2Island.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/b2World.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/b2WorldCallbacks.cpp
+
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Contacts/b2CircleContact.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Contacts/b2Contact.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Contacts/b2ContactSolver.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Contacts/b2ChainAndCircleContact.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Contacts/b2PolygonContact.cpp
+
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Joints/b2DistanceJoint.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Joints/b2FrictionJoint.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Joints/b2GearJoint.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Joints/b2Joint.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Joints/b2MotorJoint.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Joints/b2MouseJoint.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Joints/b2PrismaticJoint.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Joints/b2PulleyJoint.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Joints/b2RevoluteJoint.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Joints/b2RopeJoint.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Joints/b2WeldJoint.cpp
+			src/main/cpp/app_modules/ext_lib/Box2D/Dynamics/Joints/b2WheelJoint.cpp
+			
 			# system
 			src/main/cpp/app_modules/system/display/GameDisplay.cpp
 			src/main/cpp/app_modules/system/entity/MainObject.cpp
