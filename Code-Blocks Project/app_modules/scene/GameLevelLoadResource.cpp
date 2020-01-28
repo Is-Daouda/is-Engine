@@ -103,9 +103,9 @@ bool GameLevel::loadResources()
         {
             backTileNumber = 999; // empty tile
         }
-        else if (mapIndex[dataIndex] == 1) // bloc object + tile 1
+        else if (mapIndex[dataIndex] == 1) // block object + tile 1
         {
-            m_blocList.push_back(new Bloc(32.f * j, 32.f * i)); // create bloc
+            m_blockList.push_back(new Block(32.f * j, 32.f * i)); // create block
             backTileNumber = 0; // tile 1
         }
         else if (mapIndex[dataIndex] == 2) // bonus
@@ -165,7 +165,7 @@ bool GameLevel::loadResources()
 
     // sort object in relation to position
     std::sort(m_bonusList.begin(), m_bonusList.end(), is::CompareX());
-    std::sort(m_blocList.begin(), m_blocList.end(), is::CompareX());
+    std::sort(m_blockList.begin(), m_blockList.end(), is::CompareX());
 
     // create the backgrounds
     unsigned int valX(0), valY(0);

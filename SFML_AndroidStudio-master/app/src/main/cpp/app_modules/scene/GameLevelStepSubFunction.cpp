@@ -118,10 +118,10 @@ void GameLevel::updateObjPause(const float &DELTA_TIME)
     m_pauseBt.step(DELTA_TIME);
 }
 
-void GameLevel::updateObjBlocList()
+void GameLevel::updateObjBlockList()
 {
-    auto lowA = std::lower_bound(m_blocList.begin(), m_blocList.end(), m_player);
-    auto upA  = std::upper_bound(m_blocList.begin(), m_blocList.end(), m_player);
+    auto lowA = std::lower_bound(m_blockList.begin(), m_blockList.end(), m_player);
+    auto upA  = std::upper_bound(m_blockList.begin(), m_blockList.end(), m_player);
     for (auto it = lowA; it != upA; ++it)
     {
         if (is::instanceExist(*it))

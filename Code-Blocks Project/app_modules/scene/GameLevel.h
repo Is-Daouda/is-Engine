@@ -3,7 +3,7 @@
 
 #include "../system/display/GameDisplay.h"
 #include "../gameobj/Player.h"
-#include "../gameobj/Bloc.h"
+#include "../gameobj/Block.h"
 #include "../gameobj/HUD.h"
 #include "../gameobj/Bonus.h"
 #include "../gameobj/Goal.h"
@@ -26,17 +26,17 @@ private:
     void updateObjView();
     void joystickController();
     void updateObjPause(const float &DELTA_TIME);
-    void updateObjBlocList();
+    void updateObjBlockList();
     void updateObjBonusList(float const &DELTA_TIME);
     void updateObjPlayer(float const &DELTA_TIME);
     void updateObjGameplayController(float const &DELTA_TIME);
 
-    std::vector<Bloc*> m_blocList;
+    std::vector<Block*> m_blockList;
     std::vector<Bonus*> m_bonusList;
     std::vector<LevelTile*> m_levelTile;
 
     sf::Texture m_texButton, m_texPauseButton, m_texJoystick;
-    sf::Texture m_texPlayer, m_texBloc, m_texBonus, m_texGoal;
+    sf::Texture m_texPlayer, m_texBlock, m_texBonus, m_texGoal;
     sf::Texture m_texHUD;
     sf::Texture m_texTile;
     sf::Sprite m_sprButton[3], m_sprJoystick[2];

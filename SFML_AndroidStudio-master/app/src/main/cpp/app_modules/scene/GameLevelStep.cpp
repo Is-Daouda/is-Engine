@@ -129,7 +129,7 @@ void GameLevel::step()
             }
 
             updateObjView();
-            updateObjBlocList();
+            updateObjBlockList();
             updateObjPlayer(DELTA_TIME);
             updateObjGameplayController(DELTA_TIME);
             updateObjBonusList(DELTA_TIME);

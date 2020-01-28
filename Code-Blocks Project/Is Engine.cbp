@@ -73,8 +73,8 @@
 		<Unit filename="app_modules/core/GameEngine.h" />
 		<Unit filename="app_modules/core/GameSystemExtended.cpp" />
 		<Unit filename="app_modules/core/GameSystemExtended.h" />
-		<Unit filename="app_modules/gameobj/Bloc.cpp" />
-		<Unit filename="app_modules/gameobj/Bloc.h" />
+		<Unit filename="app_modules/gameobj/Block.cpp" />
+		<Unit filename="app_modules/gameobj/Block.h" />
 		<Unit filename="app_modules/gameobj/Bonus.cpp" />
 		<Unit filename="app_modules/gameobj/Bonus.h" />
 		<Unit filename="app_modules/gameobj/Goal.cpp" />

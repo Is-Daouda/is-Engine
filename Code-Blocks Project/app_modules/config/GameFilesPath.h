@@ -12,7 +12,7 @@ static std::string const MUSIC_DIR = "data/sound/music/";
 
 #if defined(__ANDROID__)
 // game package name
-static std::string const PACKAGE_NAME("com.yourcompany.gamename");
+static std::string const PACKAGE_NAME("com.isdaouda.isenginedemo");
 
 // files paths
 static std::string const DATA_FILE(   "/data/data/" + PACKAGE_NAME + "/game_data.bin");

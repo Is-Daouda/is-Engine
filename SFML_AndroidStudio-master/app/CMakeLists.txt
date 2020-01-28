@@ -114,7 +114,7 @@ add_library(# Sets the name of the library.
 			#src/main/cpp/app_modules/scene/...
 
 			# gameplay object
-			src/main/cpp/app_modules/gameobj/Bloc.cpp
+			src/main/cpp/app_modules/gameobj/Block.cpp
 			src/main/cpp/app_modules/gameobj/Bonus.cpp
 			src/main/cpp/app_modules/gameobj/Goal.cpp
 			src/main/cpp/app_modules/gameobj/HUD.cpp

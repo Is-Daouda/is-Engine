@@ -24,10 +24,10 @@ GameLevel::GameLevel(sf::RenderWindow &window, DisplayOption &m_launchOption, Ga
 
 GameLevel::~GameLevel()
 {
-    // destroy blocs
-    WITH(m_blocList.size())
+    // destroy blocks
+    WITH(m_blockList.size())
     {
-        is::instanceDestroy(m_blocList[_I]);
+        is::instanceDestroy(m_blockList[_I]);
     }
 
     // destroy bonus

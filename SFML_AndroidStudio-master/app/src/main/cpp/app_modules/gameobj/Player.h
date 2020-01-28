@@ -4,7 +4,7 @@
 #include "../core/GameSystemExtended.h"
 #include "../system/entity/MainObject.h"
 #include "../system/entity/ObjectActivity.h"
-#include "Bloc.h"
+#include "Block.h"
 
 class Player : public is::MainObject, public is::ObjectActivity
 {
