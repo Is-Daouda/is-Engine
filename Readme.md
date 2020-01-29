@@ -1,11 +1,21 @@
-# is::Engine
+# is::Engine v1.0
 
-This Framework allows you to easily develop your games with SFML on Android or PC.
+is::Engine is a 2D game engine based on SFML which allows you to easily develop video games on PC and Android. It integrates Box 2D, Admob and modules that allow you to manage these different parts of a game: introduction, main menu, level, game over and end screen (You no longer need to implement them!).
 
-It has already been used to create the game 'I Can Transform' available on Play Store.
-Download link: https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=en
+[![SFML logo](https://www.sfml-dev.org/images/logo.png)](https://www.sfml-dev.org) [![Box2D Logo](https://box2d.org/images/logo.svg)](https://github.com/erincatto/box2d)
 
-It is retro compatible with the PC platform and Android. (All you need to do is change IDE)
+It has already been used to create the game **I Can Transform** available on [Play Store](https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=en).
+
+The engine is retro compatible with the PC platform and Android. (All you need to do is change IDE)
+
+## Features
+- Scene System
+- 2D physic engine (Box 2D)
+- Message Box System
+- Game Configuration System (sound, music, ...)
+- Game Save System
+- [Android] Show Ad Banner
+- [Android] Show Reward Video
 
 ## In this directory you have two projects :
 - **SFML_AndroidStudio-master** : for Android development with Android Studio
@@ -24,3 +34,10 @@ It is retro compatible with the PC platform and Android. (All you need to do is 
 
 ## Todo
 Everything has already been configured all you need to do in relation to the two projects is to link the libraries
+
+## Contribute
+You have any ideas ? Well don’t hesitate to participate in the development of this engine. Because one of the objectives of this project is to form a community that will work on the engine to make it more efficient and easy to use for everyone.
+
+## Contacts
+  * For any help or other contribution please contact me on my [email address](mailto:isdaouda.n@gmail.com)
+  * You can follow me on Twitter for more informations on my activities [@Is Daouda Games](https://twitter.com/IsDaouda_Games)
