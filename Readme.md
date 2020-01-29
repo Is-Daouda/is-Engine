@@ -38,5 +38,5 @@ Everything has already been configured all you need to do in relation to the two
 You have any ideas ? Well don’t hesitate to participate in the development of this engine. Because one of the objectives of this project is to form a community that will work on the engine to make it more efficient and easy to use for everyone.
 
 ## Contacts
-  * For any help or other contribution please contact me on my [email address](mailto:isdaouda.n@gmail.com)
+  * For any help or other contribution please contact me on my [email adress](mailto:isdaouda.n@gmail.com)
   * You can follow me on Twitter for more informations on my activities [@Is Daouda Games](https://twitter.com/IsDaouda_Games)
