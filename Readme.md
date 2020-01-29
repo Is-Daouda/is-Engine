@@ -1,6 +1,6 @@
 # is::Engine v1.0
 
-is::Engine is a 2D game engine based on SFML which allows you to easily develop video games on PC and Android. It integrates Box 2D, Admob and modules that allow you to manage these different parts of a game: introduction, main menu, level, game over and end screen (You no longer need to implement them!).
+is::Engine is a 2D game engine based on SFML which allows you to easily develop video games on PC and Android. It integrates Box 2D, Admob and modules that allow you to manage the different parts of a game: introduction, main menu, levels, game over and end screen (You no longer need to implement them!).
 
 [![SFML logo](https://www.sfml-dev.org/images/logo.png)](https://www.sfml-dev.org) [![Box2D Logo](https://box2d.org/images/logo.svg)](https://github.com/erincatto/box2d)
 
@@ -15,7 +15,6 @@ The engine is retro compatible with the PC platform and Android. (All you need t
 - Game Configuration System (sound, music, ...)
 - Game Save System
 - [Android] Show Ad Banner
-- [Android] Show Reward Video
 
 ## In this directory you have two projects :
 - **SFML_AndroidStudio-master** : for Android development with Android Studio
@@ -25,7 +24,7 @@ The engine is retro compatible with the PC platform and Android. (All you need t
 - SFML Library (2.4 +)
 
 **SFML_AndroidStudio-master** :
-- Install Android Studio (2.3.3 +)
+- Install Android Studio (3.1.3 +)
 - Android SDK and NDK (r12b)
 - Firebase C++ SDK 4.5.0 (If you need it)
 
