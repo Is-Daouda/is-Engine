@@ -29,6 +29,7 @@ The engine is retro compatible with the PC platform and Android. (All you need t
 - Firebase C++ SDK 4.5.0 (If you need it)
 
 **Code-Blocks Project**
+- Install Code::Blocks (17.12)
 - GCC Compiler
 
 ## Todo
