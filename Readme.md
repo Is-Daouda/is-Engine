@@ -1,6 +1,6 @@
 # is::Engine v1.0
 
-is::Engine is a 2D game engine based on SFML which allows you to easily develop video games on PC and Android. It integrates Box 2D, Admob and modules that allow you to manage the different parts of a game: introduction, main menu, levels, game over and end screen (You no longer need to implement them!).
+is::Engine is a 2D game engine based on SFML which allows you to easily develop video games on PC (Windows, Linux) and Android. It integrates Box 2D, Admob and modules that allow you to manage the different parts of a game: introduction, main menu, levels, game over (You no longer need to implement them!).
 
 [![SFML logo](https://www.sfml-dev.org/images/logo.png)](https://www.sfml-dev.org) [![Box2D Logo](https://box2d.org/images/logo.svg)](https://github.com/erincatto/box2d)
 
@@ -9,6 +9,7 @@ It has already been used to create the game **I Can Transform** available on [Pl
 The engine is retro compatible with the PC platform and Android. (All you need to do is change IDE)
 
 ## Features
+- Entity system
 - Scene System
 - 2D physic engine (Box 2D)
 - Message Box System
@@ -29,6 +30,7 @@ The engine is retro compatible with the PC platform and Android. (All you need t
 - Firebase C++ SDK 4.5.0 (If you need it)
 
 **Code-Blocks Project**
+- Install Code::Blocks (17.12)
 - GCC Compiler
 
 ## Todo
