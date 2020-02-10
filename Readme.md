@@ -17,6 +17,8 @@ The engine is retro compatible with the PC platform and Android. (All you need t
 - Game Save System
 - [Android] Show Ad Banner
 
+---
+
 ## In this directory you have tree projects :
 - **SFML_AndroidStudio-master** : for Android development with Android Studio
 - **SFML_CodeBlocks**           : for PC development with Code::Blocks
@@ -41,6 +43,8 @@ The engine is retro compatible with the PC platform and Android. (All you need t
 
 ## Todo
 Everything has already been configured all you need to do in relation to the tree projects is to link the libraries
+
+---
 
 ## Contribute
 You have any ideas ? Well don’t hesitate to participate in the development of this engine. Because one of the objectives of this project is to form a community that will work on the engine to make it more efficient and easy to use for everyone.
