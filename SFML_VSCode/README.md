@@ -1,5 +1,5 @@
 # SFML-VSCode
-is::Engine for [Visual Studio Code](https://code.visualstudio.com/)
+**is::Engine** for [Visual Studio Code](https://code.visualstudio.com/)
 This project was created with the template of **andrew-r-king**. For more information on this template [click here](https://github.com/andrew-r-king/sfml-vscode-boilerplate)
 
 ---
