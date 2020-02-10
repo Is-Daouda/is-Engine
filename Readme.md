@@ -17,9 +17,10 @@ The engine is retro compatible with the PC platform and Android. (All you need t
 - Game Save System
 - [Android] Show Ad Banner
 
-## In this directory you have two projects :
+## In this directory you have tree projects :
 - **SFML_AndroidStudio-master** : for Android development with Android Studio
-- **Code-Blocks Project**       : for PC development with Code::Blocks
+- **SFML_CodeBlocks**           : for PC development with Code::Blocks
+- **SFML_VSCode**               : for PC development with Visual Studio Code
 
 ## Prerequisites
 - SFML Library (2.4 +)
@@ -29,12 +30,17 @@ The engine is retro compatible with the PC platform and Android. (All you need t
 - Android SDK and NDK (r12b)
 - Firebase C++ SDK 4.5.0 (If you need it)
 
-**Code-Blocks Project**
+**SFML_CodeBlocks**
 - Install Code::Blocks (17.12)
 - GCC Compiler
 
+**SFML_VSCode**
+- Visual Studio Code (1.42.0 +)
+- GCC Compiler
+- Git Bash (For Windows only)
+
 ## Todo
-Everything has already been configured all you need to do in relation to the two projects is to link the libraries
+Everything has already been configured all you need to do in relation to the tree projects is to link the libraries
 
 ## Contribute
 You have any ideas ? Well don’t hesitate to participate in the development of this engine. Because one of the objectives of this project is to form a community that will work on the engine to make it more efficient and easy to use for everyone.
