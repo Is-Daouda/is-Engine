@@ -8,6 +8,8 @@ It has already been used to create the game **I Can Transform** available on [Pl
 
 The engine is retro compatible with the PC platform and Android. (All you need to do is change IDE)
 
+---
+
 ## Features
 - Entity system
 - Scene System
