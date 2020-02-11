@@ -8,7 +8,7 @@
 #include <iostream>
 
 ////////////////////////////////////////////////////////////
-/// uncomment to enable Linux export
+/// Linux export
 #ifdef SFML_SYSTEM_LINUX
 #define LINUX_VERSION
 #endif // defined
