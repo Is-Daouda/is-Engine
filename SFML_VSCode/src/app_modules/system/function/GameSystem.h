@@ -9,7 +9,9 @@
 
 ////////////////////////////////////////////////////////////
 /// uncomment to enable Linux export
-// #define LINUX_VERSION
+#ifdef SFML_SYSTEM_LINUX
+#define LINUX_VERSION
+#endif // defined
 
 #if defined(__ANDROID__)
 /// uncomment to enable showLog function on Android Log cat
