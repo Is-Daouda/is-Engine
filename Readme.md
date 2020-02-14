@@ -13,6 +13,7 @@ The engine is retro compatible with the PC platform and Android. (All you need t
 ## Features
 - Entity system
 - Scene System
+- Sprite Animation
 - 2D physic engine (Box 2D)
 - Message Box System
 - Game Configuration System (sound, music, ...)
