@@ -2,7 +2,8 @@
 
 is::Engine is a 2D game engine based on SFML which allows you to easily develop video games on PC (Windows, Linux) and Android. It integrates Box 2D, Admob and modules that allow you to manage the different parts of a game: introduction, main menu, levels, game over (You no longer need to implement them!).
 
-[![SFML logo](https://www.sfml-dev.org/images/logo.png)](https://www.sfml-dev.org) [![Box2D Logo](https://box2d.org/images/logo.svg)](https://github.com/erincatto/box2d)
+[![SFML logo](https://www.sfml-dev.org/images/logo.png)](https://www.sfml-dev.org) [![Box2D Logo](https://box2d.org/images/logo.svg)](https://github.com/erincatto/box2d) 
+[![Admob Logo](http://gns.ma/wp-content/uploads/2015/12/AdMob-Logo.jpg)
 
 It has already been used to create the game **I Can Transform** available on [Play Store](https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=en).
 
