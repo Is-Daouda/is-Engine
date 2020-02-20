@@ -1,6 +1,6 @@
 # is::Engine v1.0
 
-is::Engine is a 2D game engine based on SFML which allows you to easily develop video games on PC (Windows, Linux) and Android. It integrates Box 2D, Admob and modules that allow you to manage the different parts of a game: introduction, main menu, levels, game over (You no longer need to implement them!).
+is::Engine is a 2D C++ game engine based on SFML which allows you to easily develop video games on PC (Windows, Linux) and Android. It integrates Box 2D, Admob and modules that allow you to manage the different parts of a game: introduction, main menu, levels, game over (You no longer need to implement them!).
 
 [![SFML logo](https://www.sfml-dev.org/images/logo.png)](https://www.sfml-dev.org) [![Box2D Logo](https://box2d.org/images/logo.svg)](https://github.com/erincatto/box2d) 
 [![Admob Logo](https://i48.servimg.com/u/f48/20/16/75/27/admob_10.png)](https://admob.google.com/)
