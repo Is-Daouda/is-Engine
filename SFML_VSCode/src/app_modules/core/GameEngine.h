@@ -30,6 +30,7 @@ public:
 
     bool initEngine();
     bool play();
+    bool basicSFMLMain();
     sf::RenderWindow& getRenderWindow() {return m_app;}
 
 private:

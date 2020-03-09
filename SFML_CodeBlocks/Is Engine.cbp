@@ -69,6 +69,7 @@
 		</Compiler>
 		<Unit filename="app_modules/config/GameFilesPath.h" />
 		<Unit filename="app_modules/config/GameVersion.h" />
+		<Unit filename="app_modules/core/BasicSFMLMain.cpp" />
 		<Unit filename="app_modules/core/GameEngine.cpp" />
 		<Unit filename="app_modules/core/GameEngine.h" />
 		<Unit filename="app_modules/core/GameSystemExtended.cpp" />
