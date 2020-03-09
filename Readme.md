@@ -31,7 +31,7 @@ The engine is retro compatible with the PC platform and Android. (All you need t
 ## Prerequisites
 - SFML Library (2.4 +)
 
-**SFML_AndroidStudio** :
+**SFML_AndroidStudio**
 - Install Android Studio (3.1.3 +)
 - Android SDK and NDK (r12b)
 - Firebase C++ SDK 4.5.0 (If you need it)
