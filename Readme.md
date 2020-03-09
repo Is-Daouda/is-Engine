@@ -24,14 +24,14 @@ The engine is retro compatible with the PC platform and Android. (All you need t
 ---
 
 ## In this directory you have tree projects :
-- **SFML_AndroidStudio-master** : for Android development with Android Studio
+- **SFML_AndroidStudio**        : for Android development with Android Studio
 - **SFML_CodeBlocks**           : for PC development with Code::Blocks
 - **SFML_VSCode**               : for PC development with Visual Studio Code
 
 ## Prerequisites
 - SFML Library (2.4 +)
 
-**SFML_AndroidStudio-master** :
+**SFML_AndroidStudio** :
 - Install Android Studio (3.1.3 +)
 - Android SDK and NDK (r12b)
 - Firebase C++ SDK 4.5.0 (If you need it)
