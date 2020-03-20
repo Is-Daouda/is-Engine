@@ -20,10 +20,10 @@ You can download the full project [here](https://drive.google.com/file/d/1Un2Eld
 - Download [Android Studio 3.x](https://developer.android.com/studio) (recommended version 3.1.3)
 - Download the [Android SDK](https://developer.android.com/studio) and install it in **C:/Android/SDK**
 - Download [Android NDK android-ndk-r12b-windows-x86_64](https://developer.android.com/ndk/downloads/older_releases.html)
-- Create a folder on your disk as follows **C:/Android/NDK** then extract the contents of the zip in this folder.
+And create a folder on your disk as follows **C:/Android/NDK** then extract the contents of the zip in this folder.
 - Set the environment variable **ANDROID_NDK** with the path **C:/Android/NDK**
 - Download this version of SFML already compiled for Android NDK [here](https://github.com/Is-Daouda/is-Engine/tree/master/SFML_2.4.0_Build_For_NDK_r12b)
-- Extract it in **C:/Android/NDK/sources/sfml**
+And extract it in **C:/Android/NDK/sources/sfml**
 - Download now the version of the engine which allows you to develop on Android :
 - Extract the content in **C:/SFML_AndroidStudio**, open the *SFML_AndroidStudio* folder with *Android Studio* and start the compilation.
 
