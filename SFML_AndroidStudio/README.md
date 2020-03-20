@@ -1,6 +1,5 @@
 # SFML-AndroidStudio
 **is::Engine** for [Android Studio](https://developer.android.com/studio).
-
 You can download the full project [here](https://drive.google.com/file/d/1Un2EldpcrBtLuogcyjqbkhKVq6kwIJ29/view).
 *Useful when you have compilation problems or if you no longer want to recompile the project.*
 
@@ -29,6 +28,6 @@ You can download the full project [here](https://drive.google.com/file/d/1Un2Eld
 - Extract the content in **C:/SFML_AndroidStudio**, open the *SFML_AndroidStudio* folder with *Android Studio* and start the compilation.
 
 If all goes well you will have a *Starship game* on your *Android emulator*
-(https://i48.servimg.com/u/f48/20/16/75/27/engine10.png)
+[](https://i48.servimg.com/u/f48/20/16/75/27/engine10.png)
 
 **Enjoy!**
