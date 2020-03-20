@@ -16,18 +16,17 @@ You can download the full project [here](https://drive.google.com/file/d/1Un2Eld
 ---
 
 ## Installation
+
 ### Windows
 - Download [Android Studio 3.x](https://developer.android.com/studio) (recommended version 3.1.3)
-- Download the Android SDK and install it in **C:/Android/SDK**
-- Download [Android NDK](https://developer.android.com/ndk/downloads/older_releases.html) **android-ndk-r12b-windows-x86_64 here:**
-[here]
+- Download the [Android SDK](https://developer.android.com/studio) and install it in **C:/Android/SDK**
+- Download [Android NDK android-ndk-r12b-windows-x86_64](https://developer.android.com/ndk/downloads/older_releases.html)
 - Create a folder on your disk as follows **C:/Android/NDK** then extract the contents of the zip in this folder.
-
 - Set the environment variable **ANDROID_NDK** with the path **C:/Android/NDK**
-- Download this version of SFML already compiled for Android NDK here:
-[here](https://github.com/Is-Daouda/is-Engine/tree/master/SFML_2.4.0_Build_For_NDK_r12b)
-And extract it in **C:/Android/NDK/sources/sfml**
-
+- Download this version of SFML already compiled for Android NDK [here](https://github.com/Is-Daouda/is-Engine/tree/master/SFML_2.4.0_Build_For_NDK_r12b)
+- Extract it in **C:/Android/NDK/sources/sfml**
 - Download now the version of the engine which allows you to develop on Android :
-[here](https://github.com/Is-Daouda/is-Engine/tree/master/SFML_AndroidStudio)
-Extract the content in **C:/SFML_AndroidStudio**, open the *SFML_AndroidStudio* folder with Android Studio and start the compilation.
+- Extract the content in **C:/SFML_AndroidStudio**, open the *SFML_AndroidStudio* folder with *Android Studio* and start the compilation.
+- If all goes well you will have a *Starship game* on your *Android emulator* [![SFML logo](https://image.noelshack.com/fichiers/2019/47/2/1574169566-main-menu.png)]
+
+**Enjoy!**
