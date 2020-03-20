@@ -47,11 +47,10 @@ android {
                         "-DANDROID_STL=c++_shared",
                         "-DSFML_INCLUDE_DIR=${ndkDir}/sources/sfml/include",
                         "-DSFML_LIBRARY_DIR=${ndkDir}/sources/sfml/lib/",
-                        "-DSFML_EXT_LIBRARY_DIR=${ndkDir}/sources/sfml/extlibs/lib/",
+                        "-DSFML_EXT_LIBRARY_DIR=${ndkDir}/sources/sfml/extlibs/lib/"
                 // uncomment if you want to use Admob
-
-                        "-DFIREBASE_INCLUDE_DIR=${ndkDir}/sources/firebase_cpp_sdk/include",
-                        "-DFIREBASE_LIBRARY_DIR=${ndkDir}/sources/firebase_cpp_sdk/libs/android/"
+                //        "-DFIREBASE_INCLUDE_DIR=${ndkDir}/sources/firebase_cpp_sdk/include",
+                //        "-DFIREBASE_LIBRARY_DIR=${ndkDir}/sources/firebase_cpp_sdk/libs/android/"
 
                 abiFilters "${abiARM}", "${abiX86}"
                 // multiple ABIs are supported
@@ -90,7 +89,7 @@ android {
                                 "${ndkDir}/sources/sfml/lib",
                                 "${ndkDir}/sources/sfml/extlibs/lib/"
                                 // uncomment if you want to use Admob
-                                 ,"${ndkDir}/sources/firebase_cpp_sdk/libs/android/"
+                                // ,"${ndkDir}/sources/firebase_cpp_sdk/libs/android/"
                                ]
         }
     }
