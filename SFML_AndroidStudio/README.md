@@ -27,6 +27,8 @@ You can download the full project [here](https://drive.google.com/file/d/1Un2Eld
 - Extract it in **C:/Android/NDK/sources/sfml**
 - Download now the version of the engine which allows you to develop on Android :
 - Extract the content in **C:/SFML_AndroidStudio**, open the *SFML_AndroidStudio* folder with *Android Studio* and start the compilation.
-- If all goes well you will have a *Starship game* on your *Android emulator* [![SFML logo](https://image.noelshack.com/fichiers/2019/47/2/1574169566-main-menu.png)]
+
+If all goes well you will have a *Starship game* on your *Android emulator*
+(https://i48.servimg.com/u/f48/20/16/75/27/engine10.png)
 
 **Enjoy!**
