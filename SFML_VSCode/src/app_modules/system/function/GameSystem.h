@@ -55,6 +55,7 @@ public:
 
     sf::Mouse::Button m_keyMouse;
     sf::Keyboard::Key m_keyboard;
+
 };
 }
 #endif // GAMESYSTEM_H_INCLUDED

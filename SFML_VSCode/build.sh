@@ -286,4 +286,8 @@ for target in $BUILD_TARGETS; do
 
 done
 
+rm -r ./bin
+
+
+
 exit 0
