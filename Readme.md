@@ -1,4 +1,4 @@
-![header](./doc/is_Engine_logo.png)
+![header](./logo/is_Engine_logo.png)
 ----------------------------
 
 # is::Engine (Infinty Solutions::Engine) v2.0
