@@ -1,6 +1,6 @@
 # AndroidStudio
 **is::Engine** for [Android Studio](https://developer.android.com/studio).
-You can download the full project [here](https://drive.google.com/file/d/1Un2EldpcrBtLuogcyjqbkhKVq6kwIJ29/view).
+You can download the full project [here](https://drive.google.com/open?id=1YoWzrhV-PbnQwzqinU32l0p78qyKzNkp).
 *Useful when you have compilation problems or if you no longer want to recompile the project.*
 
 ---
@@ -22,11 +22,11 @@ You can download the full project [here](https://drive.google.com/file/d/1Un2Eld
 - Download [Android NDK android-ndk-r12b-windows-x86_64](https://developer.android.com/ndk/downloads/older_releases.html) and create a folder on your disk as follows **C:/Android/NDK** then extract the contents of the zip in this folder.
 - Set the environment variable **ANDROID_NDK** with the path **C:/Android/NDK**
 - Download this [version of SFML](https://github.com/Is-Daouda/is-Engine/tree/master/SFML_2.4.0_Build_For_NDK_r12b) already compiled for Android NDK and extract it in **C:/Android/NDK/sources/sfml**
-- Download now the version of the engine which allows you to develop on Android [here](https://drive.google.com/file/d/1Un2EldpcrBtLuogcyjqbkhKVq6kwIJ29/view)
+- Download now the version of the engine which allows you to develop on Android [here](https://drive.google.com/open?id=1YoWzrhV-PbnQwzqinU32l0p78qyKzNkp)
 - Extract the content in **C:/AndroidStudio**, open the **AndroidStudio** folder with **Android Studio** and start the compilation.
 
 If all goes well you will have a *Platform game* on your *Android emulator*
 
-![Image](https://i48.servimg.com/u/f48/20/16/75/27/engine10.png)
+![Image](https://i48.servimg.com/u/f48/20/16/75/27/is_egi11.png)
 
 **Enjoy!**
