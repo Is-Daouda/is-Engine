@@ -23,6 +23,7 @@ is::Engine is a 2D game engine based on SFML which allows you to easily develop 
 - [Android] Virtual Game Pad Configuration (Adjust Position, transparency, ...)
 - [Android] Show Ad Banner
 - [Android] Show Reward Video
+- [Level Editor](https://github.com/Is-Daouda/is-Level-Editor)
 
 ## Extras
 The engine comes with an example (2D platform game) that uses only the functions of the engine, in order to show you its power and how to use it. Now imagine what you can do when you use Box 2D and the other tools!
