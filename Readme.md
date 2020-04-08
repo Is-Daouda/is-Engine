@@ -70,14 +70,12 @@ Project
     basicSFMLmain.cpp
     main.cpp
 ```
-#### `main.cpp` file
-----------------------------
+### `main.cpp` file
 Contains the entry point of the program, inside there are two instructions :
 - `game.play()`: Launches the engine rendering loop which allows to manage the introduction screen, main menu, level and game over.
 - `game.basicSFMLmain()` (disabled by default): Launches the display of a classic SFML window. The implementation is in the `basicSFMLmain.cpp` file. *Very useful if you already have a project under development and you want to associate it with the engine. You can also use it to implement your own components to the engine.*
 
-#### `app_src` folder
-----------------------------
+### `app_src` folder
 Contains the source code of the game.
 Description of these sub-directories:
 - `activity` : Contains the `Activity` class which allows the interaction of the different scenes of the game
@@ -88,12 +86,10 @@ Description of these sub-directories:
 - `objects`  : Contains the objects that will be used in the different scenes
 - `scenes`   : Allows to implement the different scenes of the game (Introduction, Main menu, ...)
 
-#### `data` folder
-----------------------------
+### `data` folder
 Contains game resource files (music, sound sfx, image, ...)
 
-#### `isEngine` folder
-----------------------------
+### `isEngine` folder
 Contains the source code of the game engine
 
 ## Contribute
