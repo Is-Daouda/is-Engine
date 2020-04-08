@@ -1,7 +1,7 @@
 ![header](./logo/is_Engine_logo.png)
 ----------------------------
 
-# is::Engine (Infinty Solutions::Engine) v2.0
+# is::Engine (Infinity Solutions::Engine) v2.0
 
 is::Engine is a 2D game engine based on SFML which allows you to easily develop video games on PC (Windows, Linux) and Android. It integrates SWOOSH, Box 2D, Admob, Tiny File Dialogs and components that allows you to manage the different parts of a game: introduction, main menu with options, levels, game over (You no longer need to implement them!).
 
