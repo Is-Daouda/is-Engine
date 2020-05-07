@@ -28,6 +28,9 @@ is::Engine is a 2D game engine based on SFML which allows you to easily develop 
 ## Extras
 The engine comes with an example (2D platform game) that uses only the functions of the engine, in order to show you its power and how to use it. Now imagine what you can do when you use Box 2D and the other tools!
 
+## Example of a project created with the engine
+- [I Can Transform](https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=En)
+
 ## In this directory you have tree (3) projects :
 - **AndroidStudio**        : for Android development with Android Studio ([Demo Project](https://drive.google.com/open?id=1YoWzrhV-PbnQwzqinU32l0p78qyKzNkp))
 - **CodeBlocks**           : for PC development with Code::Blocks
@@ -86,7 +89,7 @@ Description of these sub-directories:
 - `language` : Contains the `GameLanguage.cpp` file which allows to manage everything related to game languages
 - `levels`   : Contains game levels and the `Level.h` file which allows to integrate them into the game
 - `objects`  : Contains the objects that will be used in the different scenes
-- `scenes`   : Allows to implement the different scenes of the game (Introduction, Main menu, ...)
+- `scenes`   : Contains the different scenes of the game (Introduction, Main menu, ...)
 
 ----------------------------
 #### `data` folder
