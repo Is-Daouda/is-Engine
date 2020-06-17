@@ -12,6 +12,7 @@
 
 #include "../entity/Forme.h"
 #include "../function/GameSystem.h"
+#include "../../../app_src/config/GameConfig.h"
 
 #if defined(__ANDROID__)
 // These headers are only needed for direct NDK/JDK interaction
@@ -171,15 +172,6 @@ float lengthDirX(float dir, float angle);
 /// Return y component of the vector
 float lengthDirY(float dir, float angle);
 
-/// Allows to make scale animation
-template <class T>
-void scaleAnimation(float const &DELTA_TIME, float &var, T &obj, short varSign = 1, float scaleSize = 1.f)
-{
-    if (var > scaleSize) var -= ((0.05f * is::VALUE_CONVERSION) * DELTA_TIME);
-    else var = scaleSize;
-    obj.setScale(varSign * var, varSign * var);
-}
-
 /// Allows to increment a variable while controlling the upper limit
 /// \param increaseValue Will be multiplied later by @a is::VALUE_CONVERSION
 template <typename T>
@@ -198,65 +190,68 @@ void decreaseVar(const float &DELTA_TIME, T &var, T decreaseValue, T varFinal = 
     else var = varFinal;
 }
 
+/// Test collision between two rectangles
+bool collisionTest(Rectangle const &firstBox, Rectangle const &secondBox);
+
 /// Return the angle of SFML object
 template <class T>
-float getSFMLObjAngle(T obj)
+float getSFMLObjAngle(T &obj)
 {
     return obj.getRotation();
 }
 
 /// Return the x scale size of SFML object
 template <class T>
-float getSFMLObjXScale(T obj)
+float getSFMLObjXScale(T &obj)
 {
     return obj.getScale().x;
 }
 
 /// Return the y scale size of SFML object
 template <class T>
-float getSFMLObjYScale(T obj)
+float getSFMLObjYScale(T &obj)
 {
     return obj.getScale().y;
 }
 
 /// Return the x width of SFML object
 template <class T>
-float getSFMLObjWidth(T obj)
+float getSFMLObjWidth(T &obj)
 {
     return obj.getGlobalBounds().width;
 }
 
 /// Return the y height of SFML object
 template <class T>
-float getSFMLObjHeight(T obj)
+float getSFMLObjHeight(T &obj)
 {
     return obj.getGlobalBounds().height;
 }
 
 /// Return the x origin of SFML object
 template <class T>
-float getSFMLObjOriginX(T obj)
+float getSFMLObjOriginX(T &obj)
 {
     return obj.getOrigin().x;
 }
 
 /// Return the y origin of SFML object
 template <class T>
-float getSFMLObjOriginY(T obj)
+float getSFMLObjOriginY(T &obj)
 {
     return obj.getOrigin().y;
 }
 
 /// Return the x position of SFML object
 template <class T>
-float getSFMLObjX(T obj)
+float getSFMLObjX(T &obj)
 {
     return obj.getPosition().x;
 }
 
 /// Return the y position of SFML object
 template <class T>
-float getSFMLObjY(T obj)
+float getSFMLObjY(T &obj)
 {
     return obj.getPosition().y;
 }
@@ -338,6 +333,20 @@ void setSFMLObjX_Y(T &obj, float x, float y)
     obj.setPosition(x, y);
 }
 
+/// Move SFML object on x axis
+template <class T>
+void moveSFMLObjX(T &obj, float speed)
+{
+    obj.setPosition(obj.getPosition().x + speed, obj.getPosition().y);
+}
+
+/// Move SFML object on y axis
+template <class T>
+void moveSFMLObjY(T &obj, float speed)
+{
+    obj.setPosition(obj.getPosition().x, obj.getPosition().y + speed);
+}
+
 /// Set SFML object size
 template <class T>
 void setSFMLObjSize(T &obj, float x, float y)
@@ -392,6 +401,15 @@ template <class T>
 void setSFMLObjFillColor(T &obj, sf::Color color)
 {
     obj.setFillColor(color);
+}
+
+/// Allows to make scale animation
+template <class T>
+void scaleAnimation(float const &DELTA_TIME, float &var, T &obj, short varSign = 1, float scaleSize = 1.f)
+{
+    if (var > scaleSize) var -= ((0.05f * is::VALUE_CONVERSION) * DELTA_TIME);
+    else var = scaleSize;
+    obj.setScale(varSign * var, varSign * var);
 }
 
 /// Set the sprite frame (animation)
@@ -465,9 +483,6 @@ bool collisionTestSFML(A const &objA, B const &objB)
     return (objB.getGlobalBounds().intersects(objA.getGlobalBounds()));
 }
 
-/// Test collision between two rectangles
-bool collisionTest(Rectangle const &firstBox, Rectangle const &secondBox);
-
 /// Create SFML rectangle
 void createRectangle(sf::RectangleShape &rec, sf::Vector2f recSize, sf::Color color, float x = 0.f, float y = 0.f, bool center = true);
 
@@ -520,6 +535,99 @@ template <class T>
 void centerSFMLObjY(T &obj)
 {
     obj.setOrigin(obj.getOrigin().x, obj.getGlobalBounds().height / 2);
+}
+
+//////////////////////////////////////////////////////
+/// \brief Test the collision of the SFML objects
+/// with the mouse cursor on PC platform / touch on mobile
+///
+/// \param obj SFML object with which we want to test
+/// \param finger Finger index (on Android)
+//////////////////////////////////////////////////////
+template <class T>
+bool mouseCollision(sf::RenderWindow &window, T const &obj
+                    #if defined(__ANDROID__)
+                    , unsigned int finger = 0
+                    #endif // defined
+                    )
+{
+    // A rectangle that will allow to test with the SFML object
+    sf::RectangleShape cursor(sf::Vector2f(3.f, 3.f));
+    is::centerSFMLObj(cursor);
+
+    #if defined(__ANDROID__)
+    sf::Vector2i pixelPos = sf::Touch::getPosition(finger, window);
+    #else
+    sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+    #endif // defined
+
+    sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos, window.getView());
+    float dx = pointDistance(window.getView().getCenter().x, window.getView().getCenter().y,
+                             worldPos.x, window.getView().getCenter().y);
+    float dy = pointDistance(window.getView().getCenter().x, window.getView().getCenter().y,
+                             window.getView().getCenter().x, worldPos.y);
+
+    if (worldPos.x < window.getView().getCenter().x) dx *= -1;
+    if (worldPos.y < window.getView().getCenter().y) dy *= -1;
+
+    is::setSFMLObjX_Y(cursor, window.getView().getCenter().x + dx, window.getView().getCenter().y + dy);
+    if (obj.getGlobalBounds().intersects(cursor.getGlobalBounds())) return true;
+    else return false;
+}
+
+//////////////////////////////////////////////////////
+/// \brief Test the collision of the SFML objects
+/// with the mouse cursor on PC platform / touch on mobile
+///
+/// \param obj SFML object with which we want to test
+/// \param cursor Allows to get the position of the collision point
+/// \param finger Finger index (on Android)
+//////////////////////////////////////////////////////
+template <class T>
+bool mouseCollision(sf::RenderWindow &window, T const &obj, sf::RectangleShape &cursor
+                    #if defined(__ANDROID__)
+                    , unsigned int finger = 0
+                    #endif // defined
+                    )
+{
+    // A rectangle that will allow to test with the SFML object
+    // If size is empty set default value
+    if (static_cast<int>(is::getSFMLObjWidth(cursor)) == 0 && static_cast<int>(is::getSFMLObjHeight(cursor)) == 0)
+        is::setSFMLObjSize(cursor, sf::Vector2f(3.f, 3.f));
+    is::centerSFMLObj(cursor);
+
+    #if defined(__ANDROID__)
+    sf::Vector2i pixelPos = sf::Touch::getPosition(finger, window);
+    #else
+    sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+    #endif // defined
+
+    sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos, window.getView());
+    float dx = pointDistance(window.getView().getCenter().x, window.getView().getCenter().y,
+                             worldPos.x, window.getView().getCenter().y);
+    float dy = pointDistance(window.getView().getCenter().x, window.getView().getCenter().y,
+                             window.getView().getCenter().x, worldPos.y);
+
+    if (worldPos.x < window.getView().getCenter().x) dx *= -1;
+    if (worldPos.y < window.getView().getCenter().y) dy *= -1;
+
+    is::setSFMLObjX_Y(cursor, window.getView().getCenter().x + dx, window.getView().getCenter().y + dy);
+    if (obj.getGlobalBounds().intersects(cursor.getGlobalBounds())) return true;
+    else return false;
+}
+
+/// Do not touch this function it allows to manage the style of the window
+inline int getWindowStyle()
+{
+    switch (GameConfig::WINDOW_SETTINGS)
+    {
+        case WindowStyle::NONE : return sf::Style::None; break;
+        case WindowStyle::TITLEBAR : return sf::Style::Titlebar; break;
+        case WindowStyle::RESIZE : return sf::Style::Resize; break;
+        case WindowStyle::CLOSE : return sf::Style::Close; break;
+        case WindowStyle::FULLSCREEN : return sf::Style::Fullscreen; break;
+        default: return sf::Style::Default; break;
+    }
 }
 
 /// Allows to use Android vibrate

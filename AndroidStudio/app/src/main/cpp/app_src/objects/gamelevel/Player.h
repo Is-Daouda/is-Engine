@@ -2,14 +2,14 @@
 #define PLAYER_H_INCLUDED
 
 #include "../../../isEngine/system/entity/MainObject.h"
-#include "../../../isEngine/system/entity/Visibilty.h"
+#include "../../../isEngine/system/entity/parents/Visibilty.h"
+#include "../../../isEngine/system/entity/parents/Health.h"
 #include "../../../isEngine/system/function/GameKeyData.h"
 #include "../../gamesystem_ext/GameSystemExtended.h"
 #include "Block.h"
 #include "Enemy.h"
-#include "../parents/Health.h"
 
-class Player : public is::MainObject, public is::Visibility, public Health
+class Player : public is::MainObject, public is::Visibility, public is::Health
 {
 public:
     Player();

@@ -2,11 +2,11 @@
 #define ENEMY_H_INCLUDED
 
 #include "../../../isEngine/system/entity/MainObject.h"
-#include "../../../isEngine/system/entity/Destructible.h"
+#include "../../../isEngine/system/entity/parents/Destructible.h"
+#include "../../../isEngine/system/entity/parents/ScorePoint.h"
 #include "../../gamesystem_ext/GameSystemExtended.h"
-#include "../parents/ScorePoint.h"
 
-class Enemy : public is::MainObject, public is::Destructible, public ScorePoint
+class Enemy : public is::MainObject, public is::Destructible, public is::ScorePoint
 {
 public:
     enum EnemyType

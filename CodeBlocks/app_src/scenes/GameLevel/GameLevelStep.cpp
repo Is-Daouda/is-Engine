@@ -43,7 +43,7 @@ void GameLevel::step()
     // if the player is KO we stop the level
     if (m_player.getIsKO())
     {
-        m_gameSysExt.m_launchOption = GameSystemExtended::DisplayOption::RESTART_LEVEL; // restart level
+        m_gameSysExt.m_launchOption = is::DisplayOption::RESTART_LEVEL; // restart level
         m_levelEnd = true;
     }
 
@@ -64,7 +64,7 @@ void GameLevel::step()
             m_gameSysExt.saveData(is::GameConfig::GAME_DATA_FILE); // save data
             //////////////////////////////////////////////////////////////////////
 
-            m_gameSysExt.m_launchOption = GameSystemExtended::DisplayOption::NEXT_LEVEL; // go to the next level
+            m_gameSysExt.m_launchOption = is::DisplayOption::NEXT_LEVEL; // go to the next level
             m_levelEnd = true;
             m_finishObject.addStep();
         }
@@ -210,7 +210,7 @@ void GameLevel::step()
             case OP_RESTART:
                 if (m_msgAnswer == MsgAnswer::YES)
                 {
-                    m_gameSysExt.m_launchOption = GameSystemExtended::DisplayOption::GAME_OPTION_RESTART;
+                    m_gameSysExt.m_launchOption = is::DisplayOption::GAME_OPTION_RESTART;
                     m_waitTime = 10;
                     m_levelEnd = true;
                 }
@@ -221,7 +221,7 @@ void GameLevel::step()
             case OP_QUIT:
                 if (m_msgAnswer == MsgAnswer::YES)
                 {
-                    m_gameSysExt.m_launchOption = GameSystemExtended::DisplayOption::MAIN_MENU;
+                    m_gameSysExt.m_launchOption = is::DisplayOption::MAIN_MENU;
                     m_levelEnd = true;
                 }
                 else m_waitTime = 10;

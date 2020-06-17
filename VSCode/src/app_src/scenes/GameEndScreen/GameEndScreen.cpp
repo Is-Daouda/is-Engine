@@ -61,7 +61,7 @@ void GameEndScreen::step()
                     m_gameSysExt.playSound(m_sndSelectOption);
                     m_gameSysExt.useVibrate(m_vibrateTimeDuration);
                     m_sprButtonSelectScale = 1.6f;
-                    m_gameSysExt.m_launchOption = GameSystemExtended::DisplayOption::MAIN_MENU;
+                    m_gameSysExt.m_launchOption = is::DisplayOption::MAIN_MENU;
                     m_isClose = true;
                 }
             }

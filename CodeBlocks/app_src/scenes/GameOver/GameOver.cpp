@@ -75,13 +75,13 @@ void GameOver::step()
                     switch (m_optionIndex)
                     {
                     case OP_CONTINUE:
-                        m_gameSysExt.m_launchOption = GameSystemExtended::DisplayOption::GAME_LEVEL;
+                        m_gameSysExt.m_launchOption = is::DisplayOption::GAME_LEVEL;
                         m_gameSysExt.saveData(is::GameConfig::GAME_DATA_FILE); // save data
                         m_isClose = true;
                     break;
 
                     case OP_QUIT:
-                        m_gameSysExt.m_launchOption = GameSystemExtended::DisplayOption::MAIN_MENU;
+                        m_gameSysExt.m_launchOption = is::DisplayOption::MAIN_MENU;
                         m_isClose = true;
                     break;
                     }

@@ -30,31 +30,31 @@ public:
         m_gameScene = nullptr;
         switch (gameSysExt.m_launchOption)
         {
-        case GameSystemExtended::DisplayOption::INTRO:
+        case is::DisplayOption::INTRO:
             m_gameScene = std::shared_ptr<is::GameDisplay>(new GameIntro(controller.getWindow(),
                                                                          getView(),
                                                                          *(this->controller->getSurface()),
                                                                          gameSysExt));
         break;
-        case GameSystemExtended::DisplayOption::MAIN_MENU:
+        case is::DisplayOption::MAIN_MENU:
             m_gameScene = std::shared_ptr<is::GameDisplay>(new GameMenu(controller.getWindow(),
                                                                         getView(),
                                                                         *(this->controller->getSurface()),
                                                                         gameSysExt));
         break;
-        case GameSystemExtended::DisplayOption::GAME_LEVEL:
+        case is::DisplayOption::GAME_LEVEL:
 			m_gameScene = std::shared_ptr<is::GameDisplay>(new GameLevel(controller.getWindow(),
                                                                          getView(),
                                                                          *(this->controller->getSurface()),
                                                                          gameSysExt));
         break;
-        case GameSystemExtended::DisplayOption::GAME_OVER:
+        case is::DisplayOption::GAME_OVER:
             m_gameScene = std::shared_ptr<is::GameDisplay>(new GameOver(controller.getWindow(),
                                                                         getView(),
                                                                         *(this->controller->getSurface()),
                                                                         gameSysExt));
         break;
-        case GameSystemExtended::DisplayOption::GAME_END_SCREEN:
+        case is::DisplayOption::GAME_END_SCREEN:
             m_gameScene = std::shared_ptr<is::GameDisplay>(new GameEndScreen(controller.getWindow(),
                                                                              getView(),
                                                                              *(this->controller->getSurface()),
@@ -88,7 +88,7 @@ public:
             {
                 switch (m_gameScene->getGameSystem().m_launchOption)
                 {
-                    case GameSystemExtended::DisplayOption::MAIN_MENU:
+                    case is::DisplayOption::MAIN_MENU:
                         {
                             using transition = segue<VerticalSlice, sec<2>>;
                             using action = transition::to<GameActivity>;
@@ -96,7 +96,7 @@ public:
                         }
                     break;
 
-                    case GameSystemExtended::DisplayOption::GAME_LEVEL:
+                    case is::DisplayOption::GAME_LEVEL:
                         {
                             using transition = segue<VerticalSlice, sec<2>>;
                             using action = transition::to<GameActivity>;
@@ -104,13 +104,13 @@ public:
                         }
                     break;
 
-                    case GameSystemExtended::DisplayOption::RESTART_LEVEL : // restart level (when player loses)
+                    case is::DisplayOption::RESTART_LEVEL : // restart level (when player loses)
                         // restart level if life > 1
                         if (m_gameScene->getGameSystem().m_currentLives > 1)
                         {
                             m_gameScene->getGameSystem().m_currentLives--;
                             m_gameScene->getGameSystem().m_currentScore = 0;
-                            m_gameScene->getGameSystem().m_launchOption = GameSystemExtended::DisplayOption::GAME_LEVEL;
+                            m_gameScene->getGameSystem().m_launchOption = is::DisplayOption::GAME_LEVEL;
                             m_gameScene->getGameSystem().saveData(is::GameConfig::GAME_DATA_FILE);
 
                             using transition = segue<BlackWashFade>;
@@ -123,7 +123,7 @@ public:
                             m_gameScene->getGameSystem().initData(false);
                             m_gameScene->getGameSystem().m_currentBonus = 0;
                             m_gameScene->getGameSystem().m_currentLives = 3;
-                            m_gameScene->getGameSystem().m_launchOption = GameSystemExtended::DisplayOption::GAME_OVER;
+                            m_gameScene->getGameSystem().m_launchOption = is::DisplayOption::GAME_OVER;
 
                             using transition = segue<VerticalSlice, sec<2>>;
                             using action = transition::to<GameActivity>;
@@ -131,16 +131,16 @@ public:
                         }
                     break;
 
-                    case GameSystemExtended::DisplayOption::NEXT_LEVEL : // go to the next level
+                    case is::DisplayOption::NEXT_LEVEL : // go to the next level
                        // reinitialize level global variable
                         m_gameScene->getGameSystem().m_levelTime = 0;
                         m_gameScene->getGameSystem().m_currentScore = 0;
-                        m_gameScene->getGameSystem().m_launchOption = GameSystemExtended::DisplayOption::GAME_LEVEL;
+                        m_gameScene->getGameSystem().m_launchOption = is::DisplayOption::GAME_LEVEL;
 
                         // go to game end screen when player finish all levels
                         if (m_gameScene->getGameSystem().m_currentLevel > m_gameScene->getGameSystem().m_levelNumber)
                         {
-                            m_gameScene->getGameSystem().m_launchOption = GameSystemExtended::DisplayOption::GAME_END_SCREEN;
+                            m_gameScene->getGameSystem().m_launchOption = is::DisplayOption::GAME_END_SCREEN;
 
                             using transition = segue<VerticalSlice, sec<2>>;
                             using action = transition::to<GameActivity>;
@@ -153,8 +153,8 @@ public:
                         }
                     break;
 
-                    case GameSystemExtended::DisplayOption::GAME_OPTION_RESTART: // restart level (when player uses restart option)
-                        m_gameScene->getGameSystem().m_launchOption = GameSystemExtended::DisplayOption::GAME_LEVEL;
+                    case is::DisplayOption::GAME_OPTION_RESTART: // restart level (when player uses restart option)
+                        m_gameScene->getGameSystem().m_launchOption = is::DisplayOption::GAME_LEVEL;
 
                         // reinitialize all variables excepting the current level and the game progress
                         m_gameScene->getGameSystem().initData(false);

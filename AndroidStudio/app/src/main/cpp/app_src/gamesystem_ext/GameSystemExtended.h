@@ -18,22 +18,6 @@ class GameSystemExtended : public is::GameSystem
 public:
     GameSystemExtended();
 
-    ////////////////////////////////////////////////////////////
-    /// \brief Allows to manipulate the different scenes
-    ///
-    ////////////////////////////////////////////////////////////
-    enum DisplayOption
-    {
-        INTRO,               ///< Access the introduction scene
-        RESTART_LEVEL,       ///< When player loses a life
-        GAME_OPTION_RESTART, ///< When player restart the level with restart option
-        NEXT_LEVEL,          ///< Access the next level scene
-        MAIN_MENU,           ///< Access the main menu scene
-        GAME_LEVEL,          ///< Access the game level scene
-        GAME_OVER,           ///< Access the game over scene
-        GAME_END_SCREEN      ///< Access the game end scene
-    };
-
     /// Initialize the data link to the game engine
     void initSystemData();
 
@@ -50,7 +34,7 @@ public:
     void loadData(std::string const &fileName);
 
     /// Allows to choose the scene that will be launched
-    DisplayOption m_launchOption = DisplayOption::INTRO; // Represents the first scene to be launched
+    is::DisplayOption m_launchOption = is::GameConfig::LAUNCH_OPTION; // Represents the first scene to be launched
 
     int   m_gameProgression;
     int   m_levelNumber;

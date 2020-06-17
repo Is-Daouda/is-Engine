@@ -66,6 +66,42 @@ void GameKeyData::loadResources(sf::Texture &tex)
 
 void GameKeyData::step(float const &DELTA_TIME)
 {
+    if (!keyAPressed()) m_keyAUsed = false;
+    if (!keyBPressed()) m_keyBUsed = false;
+
+    m_keyLeftPressed = keyLeftPressed();
+    m_keyRightPressed = keyRightPressed();
+    m_keyUpPressed = keyUpPressed();
+    m_keyDownPressed = keyDownPressed();
+    m_keyAPressed = keyAPressed();
+    m_keyBPressed = keyBPressed();
+
+    if (m_keyLeftPressed)
+    {
+        m_keyRightPressed = false;
+        m_keyUpPressed = false;
+        m_keyDownPressed = false;
+    }
+    else if (m_keyRightPressed)
+    {
+        m_keyLeftPressed = false;
+        m_keyUpPressed = false;
+        m_keyDownPressed = false;
+    }
+    else if (m_keyUpPressed)
+    {
+        m_keyLeftPressed = false;
+        m_keyRightPressed = false;
+        m_keyDownPressed = false;
+    }
+    else if (m_keyDownPressed)
+    {
+        m_keyLeftPressed = false;
+        m_keyRightPressed = false;
+        m_keyUpPressed = false;
+    }
+
+#if defined(__ANDROID__)
     if (m_hideGamePad)
     {
         if (m_moveObj < 320.f) m_moveObj += (10.f * is::VALUE_CONVERSION) * DELTA_TIME;
@@ -105,10 +141,12 @@ void GameKeyData::step(float const &DELTA_TIME)
         is::setSFMLObjX_Y(m_recJoystickMask[i], is::getSFMLObjX(m_sprJoystick[i]) + ((i == 0) ? moveMaskOnX : 0.f), is::getSFMLObjY(m_sprJoystick[i]));
         is::setSFMLObjAlpha(m_sprJoystick[i], m_scene->getGameSystem().m_padAlpha);
     }
+#endif // defined
 }
 
 void GameKeyData::draw(sf::RenderTexture &surface)
 {
+    #if defined(__ANDROID__)
     if (m_moveObj < 320.f)
     {
         /**for (int i(0); i < 2; i++) surface.draw(m_recJoystickMask[i]);
@@ -122,6 +160,7 @@ void GameKeyData::draw(sf::RenderTexture &surface)
         */
         for (int i(0); i < 2; i++) surface.draw(m_sprJoystick[i]);
     }
+    #endif // defined
 }
 
 bool GameKeyData::keyLeftPressed()

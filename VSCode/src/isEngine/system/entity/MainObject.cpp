@@ -122,16 +122,16 @@ void MainObject::setY(float y)
     m_y = y;
 }
 
-void MainObject::moveX(float x, float const& DELTA_TIME)
+void MainObject::moveX(float x)
 {
     m_xPrevious = m_x;
-    m_x += x * DELTA_TIME;
+    m_x += x;
 }
 
-void MainObject::moveY(float y, float const& DELTA_TIME)
+void MainObject::moveY(float y)
 {
     m_yPrevious = m_y;
-    m_y += y * DELTA_TIME;
+    m_y += y;
 }
 
 void MainObject::setSpeed(float val)
@@ -257,15 +257,20 @@ void MainObject::updateSprite()
     is::setSFMLObjAlpha(m_sprParent, m_imageAlpha);
     is::setSFMLObjAngle(m_sprParent, m_imageAngle);
     is::setSFMLObjScaleX_Y(m_sprParent, m_imageXscale, m_imageYscale);
-    is::setSFMLObjX_Y(m_sprParent, m_x, m_y);
+    is::setSFMLObjX_Y(m_sprParent, m_x + m_xOffset, m_y + m_yOffset);
 }
 
-void MainObject::updateSprite(float x, float y, float angle, int alpha, float xScale, float yScale)
+void MainObject::updateSprite(float x, float y, float angle, int alpha, float xScale, float yScale, float xOffset, float yOffset)
 {
     is::setSFMLObjAlpha(m_sprParent, alpha);
     is::setSFMLObjAngle(m_sprParent, angle);
     is::setSFMLObjScaleX_Y(m_sprParent, xScale, yScale);
-    is::setSFMLObjX_Y(m_sprParent, x, y);
+    is::setSFMLObjX_Y(m_sprParent, x + xOffset, y + yOffset);
+}
+
+void MainObject::draw(sf::RenderTexture &surface)
+{
+    surface.draw(m_sprParent);
 }
 
 void MainObject::setFrame(float frameStart, float frameEnd)

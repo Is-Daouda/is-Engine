@@ -136,7 +136,7 @@ void GameIntro::step()
                 else
                 {
                     m_isRunning = false;  // quit the scene main loop
-                    m_gameSysExt.m_launchOption = GameSystemExtended::DisplayOption::MAIN_MENU;  // go to main menu scene
+                    m_gameSysExt.m_launchOption = is::DisplayOption::MAIN_MENU;  // go to main menu scene
                     m_introStep++;
                 }
             break;

@@ -132,7 +132,7 @@ void GameMenu::step()
                                 {
                                     playSelectSnd();
                                     m_gameSysExt.saveData(is::GameConfig::GAME_DATA_FILE);
-                                    m_gameSysExt.m_launchOption = GameSystemExtended::DisplayOption::GAME_LEVEL;
+                                    m_gameSysExt.m_launchOption = is::DisplayOption::GAME_LEVEL;
                                     m_isClose = true;
                                 }
                                 else
@@ -148,7 +148,7 @@ void GameMenu::step()
                                     m_gameSysExt.playSound(m_sndSelectOption);
                                     m_gameSysExt.useVibrate(m_vibrateTimeDuration);
                                     m_gameSysExt.m_currentLevel = m_gameSysExt.m_gameProgression;
-                                    m_gameSysExt.m_launchOption = GameSystemExtended::DisplayOption::GAME_LEVEL;
+                                    m_gameSysExt.m_launchOption = is::DisplayOption::GAME_LEVEL;
                                     m_isClose = true;
                                 }
                             break;
@@ -461,7 +461,7 @@ void GameMenu::step()
                             {
                                 m_gameSysExt.initProgress();
                                 m_gameSysExt.saveData(is::GameConfig::GAME_DATA_FILE);
-                                m_gameSysExt.m_launchOption = GameSystemExtended::DisplayOption::GAME_LEVEL;
+                                m_gameSysExt.m_launchOption = is::DisplayOption::GAME_LEVEL;
                                 m_isClose = true;
                             }
                             else m_waitTime = 20;

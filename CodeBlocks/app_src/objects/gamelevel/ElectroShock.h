@@ -2,7 +2,7 @@
 #define ELECTROSHOCK_H_INCLUDED
 
 #include "../../../isEngine/system/entity/MainObject.h"
-#include "../../../isEngine/system/entity/Destructible.h"
+#include "../../../isEngine/system/entity/parents/Destructible.h"
 
 class ElectroShock : public is::MainObject, public is::Destructible
 {

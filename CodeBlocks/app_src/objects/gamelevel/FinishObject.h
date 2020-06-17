@@ -2,14 +2,14 @@
 #define FINISHFLAG_H_INCLUDED
 
 #include "../../../isEngine/system/entity/MainObject.h"
+#include "../../../isEngine/system/entity/parents/Health.h"
+#include "../../../isEngine/system/entity/parents/Step.h"
 #include "../../../isEngine/system/function/GameTime.h"
 #include "../../gamesystem_ext/GameSystemExtended.h"
-#include "../parents/Health.h"
-#include "../parents/Step.h"
 #include "../../language/GameLanguage.h"
 #include "Player.h"
 
-class FinishObject : public is::MainObject, public Step
+class FinishObject : public is::MainObject, public is::Step
 {
 public:
     FinishObject(GameSystemExtended &gameSysExt);

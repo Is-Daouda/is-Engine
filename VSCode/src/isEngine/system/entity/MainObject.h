@@ -47,10 +47,10 @@ public:
     virtual void setY(float y);
 
     /// Move object on x axis
-    virtual void moveX(float x, float const& DELTA_TIME);
+    virtual void moveX(float x);
 
     /// Move object on y axis
-    virtual void moveY(float y, float const& DELTA_TIME);
+    virtual void moveY(float y);
 
     /// Set x, y position
     virtual void setPosition(float x, float y);
@@ -125,10 +125,10 @@ public:
     virtual void updateSprite();
 
     /// Update object main sprite with external parameter
-    virtual void updateSprite(float x, float y, float angle = 0.f, int alpha = 255, float xScale = 1.f, float yScale = 1.f);
+    virtual void updateSprite(float x, float y, float angle = 0.f, int alpha = 255, float xScale = 1.f, float yScale = 1.f, float xOffset = 0.f, float yOffset = 0.f);
 
     /// Draw the main sprite of object
-    virtual void draw(sf::RenderTexture &surface) = 0;
+    virtual void draw(sf::RenderTexture &surface);
 
     /// Return the rectangle mask
     virtual is::Rectangle getMask() const;

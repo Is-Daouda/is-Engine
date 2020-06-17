@@ -2,7 +2,7 @@
 #define LEVELTITLE_H_INCLUDED
 
 #include "../../../isEngine/system/entity/MainObject.h"
-#include "../../../isEngine/system/entity/Destructible.h"
+#include "../../../isEngine/system/entity/parents/Destructible.h"
 
 class LevelTitle : public is::MainObject, public is::Destructible
 {

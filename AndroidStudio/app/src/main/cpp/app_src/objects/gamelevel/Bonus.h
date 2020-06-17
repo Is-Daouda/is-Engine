@@ -1,13 +1,13 @@
 #ifndef BONUS_H_INCLUDED
 #define BONUS_H_INCLUDED
 
-#include "../../../isEngine/system/entity/Destructible.h"
+#include "../../../isEngine/system/entity/parents/Destructible.h"
+#include "../../../isEngine/system/entity/parents/ScorePoint.h"
+#include "../../../isEngine/system/entity/parents/Step.h"
 #include "../../../isEngine/system/entity/MainObject.h"
 #include "../../gamesystem_ext/GameSystemExtended.h"
-#include "../parents/ScorePoint.h"
-#include "../parents/Step.h"
 
-class Bonus : public is::MainObject, public is::Destructible, public ScorePoint, public Step
+class Bonus : public is::MainObject, public is::Destructible, public is::ScorePoint, public is::Step
 {
 public:
 

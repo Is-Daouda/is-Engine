@@ -13,13 +13,13 @@ bool GameEngine::initEngine()
     m_gameSysExt.initSystemData();
     m_window.create(sf::VideoMode(is::GameConfig::WINDOW_WIDTH, is::GameConfig::WINDOW_HEIGHT),
                     is::GameConfig::GAME_NAME,
-                    sf::Style::Close | sf::Style::Resize);
+                    is::getWindowStyle());
 
     #if !defined(__ANDROID__)
     // load application icon
     sf::Image iconTex;
     if (!iconTex.loadFromFile(is::GameConfig::GUI_DIR + "icon.png")) return false;
-    m_window.setIcon(32, 32, iconTex.getPixelsPtr());
+    m_window.setIcon(iconTex.getSize().x, iconTex.getSize().y, iconTex.getPixelsPtr());
 
     // create saving directory
     if (!m_gameSysExt.fileExist(is::GameConfig::CONFIG_FILE))
@@ -36,7 +36,7 @@ bool GameEngine::initEngine()
         // is::setScreenLock(true);
     #endif // defined
 
-    m_window.setFramerateLimit(60);
+    m_window.setFramerateLimit(is::GameConfig::FPS);
     return true;
 }
 
@@ -72,11 +72,9 @@ bool GameEngine::play()
 #endif
 
     // run the program as long as the window is open
-    float elapsed = 0.0f;
+    float elapsed(0.0f);
     sf::Clock clock;
-
     srand((unsigned int)time(0));
-
     while (m_window.isOpen())
     {
         clock.restart();
