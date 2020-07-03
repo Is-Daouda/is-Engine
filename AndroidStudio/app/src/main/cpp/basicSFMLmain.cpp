@@ -8,7 +8,7 @@ bool GameEngine::basicSFMLmain()
     m_window.create(sf::VideoMode(is::GameConfig::WINDOW_WIDTH,
                                   is::GameConfig::WINDOW_HEIGHT),
                                   is::GameConfig::GAME_NAME,
-                                  sf::Style::Close);
+                                  is::getWindowStyle());
 
     // load application icon
     sf::Image iconTex;
