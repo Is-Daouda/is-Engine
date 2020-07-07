@@ -67,7 +67,7 @@ The engine comes with an example (2D platform game) that uses only the functions
 Everything has already been configured all you need to do in relation to the tree (3) projects is to link the libraries
 
 ## Description of the project structure:
-![header](./images/is_Engine_structure.jpeg)
+![header](./images/is_Engine_structure.png)
 ----------------------------
 #### `main.cpp` file
 Contains the entry point of the program, inside there are two instructions :
