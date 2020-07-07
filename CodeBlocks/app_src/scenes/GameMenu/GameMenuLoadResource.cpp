@@ -1,17 +1,17 @@
 #include "GameMenu.h"
 
-bool GameMenu::loadResources()
+void GameMenu::loadResources()
 {
-    if (!GameDisplay::loadParentResources())   return false;
+    GameDisplay::loadParentResources();
 
     // load textures
-    if (!m_texPad.loadFromFile(is::GameConfig::GUI_DIR + "main_menu_pad.png"))           return false;
-    if (!m_texPad2.loadFromFile(is::GameConfig::GUI_DIR + "option_pad.png"))             return false;
-    if (!m_texScreenBG.loadFromFile(is::GameConfig::GUI_DIR + "screen_background.png"))  return false;
-    if (!m_texToolsPad.loadFromFile(is::GameConfig::GUI_DIR + "tools_pad.png"))          return false;
-    if (!m_texGamePad.loadFromFile(is::GameConfig::GUI_DIR + "game_pad.png"))            return false;
+    is::loadSFMLObjResource(m_texPad, is::GameConfig::GUI_DIR + "main_menu_pad.png");
+    is::loadSFMLObjResource(m_texPad2, is::GameConfig::GUI_DIR + "option_pad.png");
+    is::loadSFMLObjResource(m_texScreenBG, is::GameConfig::GUI_DIR + "screen_background.png");
+    is::loadSFMLObjResource(m_texToolsPad, is::GameConfig::GUI_DIR + "tools_pad.png");
+    is::loadSFMLObjResource(m_texGamePad, is::GameConfig::GUI_DIR + "game_pad.png");
 
-    if (!m_fontTitle.loadFromFile(is::GameConfig::FONT_DIR + "space_ranger_3d_mp_pv.otf"))  return false;
+    is::loadSFMLObjResource(m_fontTitle, is::GameConfig::FONT_DIR + "space_ranger_3d_mp_pv.otf");
     m_cancelBt.loadResources(m_texToolsPad);
 
     // load configuration file
@@ -93,6 +93,4 @@ bool GameMenu::loadResources()
     is::setSFMLObjOutlineColor(m_recSelectPad, 1.f, sf::Color::Red);
 
     is::createRectangle(m_recCfgBg, sf::Vector2f(m_viewW + 10.f, m_viewH + 10.f), sf::Color(0, 0, 0, 230), m_viewX, m_viewY, true);
-
-    return true;
 }

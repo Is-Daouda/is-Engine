@@ -2,7 +2,6 @@
 
 namespace is
 {
-
 sf::Vector2f getMapPixelToCoords(GameDisplay const *scene, sf::Vector2i pixelPos)
 {
     return scene->getRenderWindow().mapPixelToCoords(pixelPos, scene->getView());
@@ -18,6 +17,8 @@ GameDisplay::GameDisplay(sf::RenderWindow &window, sf::View &view, sf::RenderTex
     m_optionIndex(0),
     m_waitTime(0),
     m_msgWaitTime(0),
+    m_sceneWidth(0),
+    m_sceneHeight(0),
     DELTA_TIME(0.f),
     m_viewW(is::GameConfig::VIEW_WIDTH),
     m_viewH(is::GameConfig::VIEW_HEIGHT),
@@ -26,6 +27,9 @@ GameDisplay::GameDisplay(sf::RenderWindow &window, sf::View &view, sf::RenderTex
     m_sprButtonSelectScale(1.f),
     m_isRunning(true),
     m_windowIsActive(true),
+    m_isPlaying(true),
+    m_sceneStart(true),
+    m_sceneEnd(false),
     m_keyBackPressed(false),
     m_showMsg(false),
     m_mbYesNo(false),
@@ -49,7 +53,7 @@ void GameDisplay::setOptionIndex(int optionIndexValue, bool callWhenClick, float
         m_gameSysExt.useVibrate(m_vibrateTimeDuration);
         //////////////////////////////////////////////////////////
         #if !defined(__ANDROID__)
-        m_gameSysExt.playSound(m_sndSwitch);
+        GSMplaySound("change_option");
         #endif
         //////////////////////////////////////////////////////////
         m_sprButtonSelectScale = buttonScale;
@@ -62,7 +66,12 @@ void GameDisplay::setOptionIndex(int optionIndexValue, bool callWhenClick, float
     }
 }
 
-void is::GameDisplay::setTextAnimation(sf::Text &txt, sf::Sprite &spr, int val)
+void GameDisplay::setOptionIndex(int optionIndexValue)
+{
+    m_optionIndex = optionIndexValue;
+}
+
+void GameDisplay::setTextAnimation(sf::Text &txt, sf::Sprite &spr, int val)
 {
     if (m_optionIndex == val)
     {
@@ -72,19 +81,29 @@ void is::GameDisplay::setTextAnimation(sf::Text &txt, sf::Sprite &spr, int val)
     else is::setSFMLObjFillColor(txt, sf::Color(0, 0, 0));
 }
 
-void is::GameDisplay::setTextAnimation(sf::Text &txt, int &var, int val)
+void GameDisplay::setTextAnimation(sf::Text &txt, int &var, int val)
 {
     if (var == val) is::setSFMLObjFillColor(txt, sf::Color::Blue);
     else is::setSFMLObjFillColor(txt, sf::Color(0, 0, 0));
 }
 
-void is::GameDisplay::setView()
+void GameDisplay::setView()
 {
     m_view.setCenter(m_viewX, m_viewY);
     m_surface.setView(m_view);
 }
 
-void is::GameDisplay::controlEventFocusClosing()
+void GameDisplay::setViewX(float val)
+{
+    m_viewX = val;;
+}
+
+void GameDisplay::setViewY(float val)
+{
+    m_viewY = val;;
+}
+
+void GameDisplay::controlEventFocusClosing()
 {
     // Manage the state of window
     if (m_event.type == sf::Event::GainedFocus) m_windowIsActive = true;
@@ -98,7 +117,7 @@ void is::GameDisplay::controlEventFocusClosing()
     }
 }
 
-void is::GameDisplay::updateMsgBox(float const &DELTA_TIME, sf::Color textDefaultColor, sf::Color textSelectedColor)
+void GameDisplay::updateMsgBox(float const &DELTA_TIME, sf::Color textDefaultColor, sf::Color textSelectedColor)
 {
     if (m_msgWaitTime < 240) m_msgWaitTime += static_cast<int>((8.f * is::VALUE_CONVERSION) * DELTA_TIME);
     else m_msgWaitTime = 255;
@@ -129,7 +148,7 @@ void is::GameDisplay::updateMsgBox(float const &DELTA_TIME, sf::Color textDefaul
                   mouseCollision(m_sprMsgBoxButton1)) && m_msgAnswer == MsgAnswer::NO)
             {
                 m_gameSysExt.useVibrate(m_vibrateTimeDuration);
-                m_gameSysExt.playSound(m_sndSwitch);
+                GSMplaySound("change_option");
                 m_msgAnswer = MsgAnswer::YES; // answer = yes
             }
             else if (((sf::Keyboard::isKeyPressed(is::GameConfig::KEY_RIGHT) &&
@@ -137,7 +156,7 @@ void is::GameDisplay::updateMsgBox(float const &DELTA_TIME, sf::Color textDefaul
                       mouseCollision(m_sprMsgBoxButton2)) && m_msgAnswer == MsgAnswer::YES)
             {
                 m_gameSysExt.useVibrate(m_vibrateTimeDuration);
-                m_gameSysExt.playSound(m_sndSwitch);
+                GSMplaySound("change_option");
                 m_msgAnswer = MsgAnswer::NO;  // answer = no
             }
             else if (sf::Keyboard::isKeyPressed(is::GameConfig::KEY_VALIDATION_KEYBOARD) ||
@@ -172,7 +191,7 @@ void is::GameDisplay::updateMsgBox(float const &DELTA_TIME, sf::Color textDefaul
             if (mouseCollision(m_sprMsgBoxButton3) && m_msgAnswer == MsgAnswer::NO)
             {
                 m_gameSysExt.useVibrate(m_vibrateTimeDuration);
-                m_gameSysExt.playSound(m_sndSwitch);
+                GSMplaySound("change_option");
                 m_msgAnswer = MsgAnswer::YES; // answer = OK
                 is::setSFMLObjFillColor(m_txtMsgBoxOK, textSelectedColor);
             }
@@ -219,14 +238,14 @@ void is::GameDisplay::updateMsgBox(float const &DELTA_TIME, sf::Color textDefaul
             if (!m_mbYesNo)
             {
                 m_msgAnswer = MsgAnswer::YES;
-                m_gameSysExt.playSound(m_sndSelectOption);
+                GSMplaySound("select_option");
                 m_gameSysExt.useVibrate(m_vibrateTimeDuration);
             }
-            else m_gameSysExt.playSound(m_sndCancel);
+            else GSMplaySound("cancel");
         }
         else
         {
-            m_gameSysExt.playSound(m_sndSelectOption);
+            GSMplaySound("select_option");
             m_gameSysExt.useVibrate(m_vibrateTimeDuration);
         }
     }
@@ -242,7 +261,7 @@ void GameDisplay::updateTimeWait(float const &DELTA_TIME)
     else m_waitTime = 0;
 }
 
-void is::GameDisplay::drawMsgBox()
+void GameDisplay::drawMsgBox()
 {
     if (m_showMsg)
     {
@@ -266,13 +285,13 @@ void is::GameDisplay::drawMsgBox()
     }
 }
 
-void is::GameDisplay::drawScreen()
+void GameDisplay::drawScreen()
 {
     m_surface.clear(m_windowBgColor);
     draw();
 }
 
-void is::GameDisplay::showTempLoading(float time)
+void GameDisplay::showTempLoading(float time)
 {
     float timeToQuit(0.f);
     sf::Texture texTmploading, texTmploading2;
@@ -308,25 +327,21 @@ void is::GameDisplay::showTempLoading(float time)
     }
 }
 
-bool is::GameDisplay::loadParentResources()
+void GameDisplay::loadParentResources()
 {
     // Load sound
-    if (!m_sbSwitch.loadFromFile(is::GameConfig::SFX_DIR + "change_option.ogg"))             return false;
-    if (!m_sbCancel.loadFromFile(is::GameConfig::SFX_DIR + "cancel.ogg"))                   return false;
-    if (!m_sbSelectOption.loadFromFile(is::GameConfig::SFX_DIR + "select_option.ogg"))      return false;
-
-    m_sndSwitch.setBuffer(m_sbSwitch);
-    m_sndCancel.setBuffer(m_sbCancel);
-    m_sndSelectOption.setBuffer(m_sbSelectOption);
+    GSMaddSound("change_option", is::GameConfig::SFX_DIR + "change_option.ogg");
+    GSMaddSound("cancel", is::GameConfig::SFX_DIR + "cancel.ogg");
+    GSMaddSound("select_option", is::GameConfig::SFX_DIR + "select_option.ogg");
 
     // Load message box sprite
-    if (!m_texMsgBox.loadFromFile(is::GameConfig::GUI_DIR + "confirm_box.png"))           return false;
-    if (!m_sprMsgButton.loadFromFile(is::GameConfig::GUI_DIR + "confirm_box_button.png")) return false;
+    loadSFMLObjResource(m_texMsgBox, is::GameConfig::GUI_DIR + "confirm_box.png");
+    loadSFMLObjResource(m_texMsgButton, is::GameConfig::GUI_DIR + "confirm_box_button.png");
 
     is::createSprite(m_texMsgBox, m_sprMsgBox, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
-    is::createSprite(m_sprMsgButton, m_sprMsgBoxButton1, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
-    is::createSprite(m_sprMsgButton, m_sprMsgBoxButton2, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
-    is::createSprite(m_sprMsgButton, m_sprMsgBoxButton3, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
+    is::createSprite(m_texMsgButton, m_sprMsgBoxButton1, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
+    is::createSprite(m_texMsgButton, m_sprMsgBoxButton2, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
+    is::createSprite(m_texMsgButton, m_sprMsgBoxButton3, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
 
     is::createRectangle(m_recMsgBox, sf::Vector2f(m_viewW + 40.f, m_viewH + 40.f), sf::Color(0, 0, 0, 200), 0.f, 0.f);
 
@@ -336,8 +351,8 @@ bool is::GameDisplay::loadParentResources()
     is::centerSFMLObj(m_sprMsgBoxButton3);
 
     // Load font
-    if (!m_fontSystem.loadFromFile(GameConfig::FONT_DIR + "sansation.ttf")) return false;
-    if (!m_fontMsg.loadFromFile(GameConfig::FONT_DIR + "brush_script_std_medium.ttf")) return false;
+    loadSFMLObjResource(m_fontSystem, GameConfig::FONT_DIR + "sansation.ttf");
+    loadSFMLObjResource(m_fontMsg, GameConfig::FONT_DIR + "brush_script_std_medium.ttf");
 
     is::createText(m_fontSystem, m_txtMsgBox, "", 0.f, 0.f, 20);
     is::createText(m_fontSystem, m_txtMsgBoxYes, is::lang::pad_answer_yes[m_gameSysExt.m_gameLanguage],
@@ -346,17 +361,41 @@ bool is::GameDisplay::loadParentResources()
                    0.f, 0.f, true, 18);
     is::createText(m_fontSystem, m_txtMsgBoxOK, is::lang::pad_answer_ok[m_gameSysExt.m_gameLanguage],
                    0.f, 0.f, true, 18);
-    return true;
 }
 
-float is::GameDisplay::getDeltaTime()
+float GameDisplay::getDeltaTime()
 {
     float dt = m_clock.restart().asSeconds();
     if (dt > is::MAX_CLOCK_TIME) dt = is::MAX_CLOCK_TIME;
     return dt;
 }
 
-bool is::GameDisplay::isRunning() const
+bool GameDisplay::inViewRec(is::MainObject *obj, bool useTexRec)
+{
+    is::Rectangle testRec;
+    if (useTexRec)
+    {
+        testRec.m_left = obj->getX();
+        testRec.m_top = obj->getY();
+        testRec.m_right = obj->getX() + is::getSFMLObjWidth(obj->getSprite());
+        testRec.m_bottom = obj->getY() + is::getSFMLObjHeight(obj->getSprite());
+    }
+    else testRec = obj->getMask();
+
+    bool isCollision = false;
+    is::Rectangle viewRec;
+    viewRec.m_left   = getViewX() - (getViewW() / 2) - 16;
+    viewRec.m_right  = getViewX() + (getViewW() / 2) + 16;
+    viewRec.m_top    = getViewY() - (getViewH() / 2);
+    viewRec.m_bottom = getViewY() + (getViewH() / 2);
+    if (is::collisionTest(testRec, viewRec))
+    {
+        isCollision = true;
+    }
+    return isCollision;
+}
+
+bool GameDisplay::isRunning() const
 {
     return m_isRunning;
 }

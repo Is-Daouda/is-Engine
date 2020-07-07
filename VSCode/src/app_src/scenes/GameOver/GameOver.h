@@ -12,7 +12,7 @@ public:
     void step();
     void draw();
 
-    bool loadResources();
+    void loadResources();
 
 private:
     sf::Texture m_texPad, m_texScreenBG;
@@ -21,7 +21,6 @@ private:
     sf::Text m_txtRestartGame, m_txtResumeGame, m_txtQuitGame, m_txtGameOver;
 
     float m_oscillation, m_bgX, m_bgY, m_TitleX, m_TitleY;
-    bool m_isStart;
 };
 
 #endif // GAMEOVER_H_INCLUDED

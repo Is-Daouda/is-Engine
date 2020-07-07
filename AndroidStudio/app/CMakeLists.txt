@@ -48,13 +48,10 @@ add_library(# Sets the name of the library.
 			src/main/cpp/app_src/scenes/GameEndScreen/GameEndScreen.cpp
 			src/main/cpp/app_src/scenes/GameIntro/GameIntro.cpp
 			src/main/cpp/app_src/scenes/GameLevel/GameLevelConstructor.cpp
-			src/main/cpp/app_src/scenes/GameLevel/GameLevelDraw.cpp
 			src/main/cpp/app_src/scenes/GameLevel/GameLevelLoadResource.cpp
 			src/main/cpp/app_src/scenes/GameLevel/GameLevelStep.cpp
 			src/main/cpp/app_src/scenes/GameLevel/GameLevelStepGamePlay.cpp
-			src/main/cpp/app_src/scenes/GameLevel/GameLevelStepSpecialAction.cpp
 			src/main/cpp/app_src/scenes/GameLevel/GameLevelStepSubFunction.cpp
-			src/main/cpp/app_src/scenes/GameLevel/GameLevelStepUpdateObj.cpp
 			src/main/cpp/app_src/scenes/GameMenu/GameMenu.cpp
 			src/main/cpp/app_src/scenes/GameMenu/GameMenuDraw.cpp
 			src/main/cpp/app_src/scenes/GameMenu/GameMenuLoadResource.cpp
@@ -62,6 +59,7 @@ add_library(# Sets the name of the library.
 
 			# game level objects
 			src/main/cpp/app_src/objects/gamelevel/Block.cpp
+			src/main/cpp/app_src/objects/gamelevel/BlockPhysic.cpp
 			src/main/cpp/app_src/objects/gamelevel/Bonus.cpp
 			src/main/cpp/app_src/objects/gamelevel/ElectroShock.cpp
 			src/main/cpp/app_src/objects/gamelevel/Enemy.cpp
@@ -159,7 +157,7 @@ target_link_libraries( # Specifies the target library.
                         EGL
                         GLESv1_CM
 
-                        sfml-system
+                        sfml-system-d
 
                         openal
 
@@ -167,11 +165,11 @@ target_link_libraries( # Specifies the target library.
                         # admob
                         # app
 
-                        sfml-window
-                        sfml-audio
-                        sfml-graphics
-                        sfml-network
-                        sfml-activity
-                        -Wl,--whole-archive sfml-main -Wl,--no-whole-archive
+                        sfml-window-d
+                        sfml-audio-d
+                        sfml-graphics-d
+                        sfml-network-d
+                        sfml-activity-d
+                        -Wl,--whole-archive sfml-main-d -Wl,--no-whole-archive
                         )
 

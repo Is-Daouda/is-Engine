@@ -20,7 +20,7 @@ public:
     void step();
     void draw();
 
-    bool loadResources();
+    void loadResources();
 
 private:
     std::wstring getABPlace() const
@@ -49,7 +49,7 @@ private:
     float m_txtOptionScale[6];
 
     bool m_isClicked, m_padCfgClicked;
-    bool m_isStart, m_saveFileOpen;
+    bool m_saveFileOpen;
     bool m_closeApplication;
 
     GamePage m_pageName;

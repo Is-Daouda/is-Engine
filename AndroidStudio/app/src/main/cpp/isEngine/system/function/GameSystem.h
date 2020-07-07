@@ -15,7 +15,7 @@
 // is::Engine version
 //////////////////////////////////////////////////////
 #define IS_ENGINE_VERSION_MAJOR 2
-#define IS_ENGINE_VERSION_MINOR 0
+#define IS_ENGINE_VERSION_MINOR 1
 #define IS_ENGINE_VERSION_PATCH 0
 
 namespace is
@@ -78,11 +78,22 @@ public:
     //////////////////////////////////////////////////////
     bool fileExist(std::string const &fileName) const;
 
-    /// Allows to play a sound if the option is activated
-    void playSound(sf::Sound &snd);
+    /// Allows to play a sound / music if the option is activated
+    template <class T>
+    void playSound(T &obj)
+    {
+        if (m_enableSound) obj.play();
+    }
 
-    /// Allows to stop a sound
-    void stopSound(sf::Sound &snd);
+    /// Allows to stop a sound / music
+    template <class T>
+    void stopSound(T &obj)
+    {
+        if (m_enableSound)
+        {
+            if (obj.getStatus() == sf::Sound::Playing) obj.stop();
+        }
+    }
 
     /// Allows to use vibrate if the option is activated (only for Android)
     /// \param ms representing the duration of the vibrator in millisecond

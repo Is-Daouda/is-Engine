@@ -3,12 +3,14 @@
 
 #include "../../../isEngine/system/entity/MainObject.h"
 
+////////////////////////////////////////////////////////////
+/// Allows to control the movement of movable blocks.
+/// They change the direction of the blocks when they touch it
+////////////////////////////////////////////////////////////
 class Limiter : public is::MainObject
 {
 public:
-    Limiter(float x, float y, bool secondFunction = false);
-    bool m_secondFunction;
-    void draw(sf::RenderTexture &surface);
+    Limiter(float x, float y);
 };
 
 #endif // LIMITER_H_INCLUDED

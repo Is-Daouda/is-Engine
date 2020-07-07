@@ -65,12 +65,7 @@ public:
 			std::terminate();
 		break;
         }
-        if (!m_gameScene->loadResources())
-		{
-			is::showLog("Error in loadResources function !");
-			std::terminate();
-		}
-
+        m_gameScene->loadResources();
         this->setBGColor(m_gameScene->getBgColor());
     }
 

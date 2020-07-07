@@ -1,9 +1,17 @@
 #ifndef GAMEDISPLAY_H_INCLUDED
 #define GAMEDISPLAY_H_INCLUDED
 
+#include <memory>
 #include "../function/GameFunction.h"
 #include "../../../app_src/gamesystem_ext/GameSystemExtended.h"
 #include "../../../app_src/language/GameLanguage.h"
+
+#if defined(IS_ENGINE_USE_SDM)
+#include "SDM.h"
+#endif // defined
+#if defined(IS_ENGINE_USE_GSM)
+#include "../sound/GSM.h"
+#endif // defined
 
 #if defined(__ANDROID__)
 #if defined(IS_ENGINE_USE_ADMOB)
@@ -22,6 +30,17 @@ class GameDisplay;
 sf::Vector2f getMapPixelToCoords(GameDisplay const *scene, sf::Vector2i pixelPos);
 
 class GameDisplay
+#if defined(IS_ENGINE_USE_SDM) && defined(IS_ENGINE_USE_GSM)
+    : public SDM, public GSM
+#else
+    #if defined(IS_ENGINE_USE_SDM)
+    : public SDM
+    #endif // defined
+    #if defined(IS_ENGINE_USE_GSM)
+    : public GSM
+    #endif // defined
+#endif // defined
+
 {
 public:
     bool m_isClose;
@@ -79,11 +98,43 @@ public:
         else m_admobManager->loadRewardVideo();
         return result;
     }
-#endif // definded
+#endif // defined
 #endif // defined
 
-    /// Update scene behavior
-    virtual void step() = 0;
+    ////////////////////////////////////////////////////////////
+    /// \brief Update scene behavior
+    ///
+    /// When the SDM is activated and the user does not overload
+    /// this function the SDM takes care of calling this method to
+    /// automatically update the objects of the scene and the
+    /// events of the window.
+    ////////////////////////////////////////////////////////////
+    virtual void step()
+    #if !defined(IS_ENGINE_USE_SDM)
+     = 0;
+    #else
+    {
+        DELTA_TIME = getDeltaTime(); // delta time
+        while (m_window.pollEvent(m_event)) controlEventFocusClosing(); // even loop
+        SDMstep(); // Let SDM manage the update of objects
+    }
+    #endif // defined
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Method to implement drawing code
+    ///
+    /// When the SDM is activated and the user does not overload
+    /// this function the SDM takes care of calling this method to
+    /// automatically draw the objects of the scene.
+    ////////////////////////////////////////////////////////////
+    virtual void draw()
+    #if !defined(IS_ENGINE_USE_SDM)
+    = 0;
+    #else
+    {
+        SDMdraw(); // Let SDM manage the display of objects
+    }
+    #endif
 
     /// Draw scene
     virtual void drawScreen();
@@ -91,14 +142,44 @@ public:
     /// Draw temporal loading (simulation)
     virtual void showTempLoading(float time = 3.f * 59.f);
 
+    /// Allows to change an option by playing a sound and making an animation
+    void setOptionIndex(int optionIndexValue, bool callWhenClick, float buttonScale = 1.3f);
+
+    /// Set option index
+    void setOptionIndex(int optionIndexValue);
+
+    /// Allows to animate SFML text and sprite in relation to a option
+    void setTextAnimation(sf::Text &txt, sf::Sprite &spr, int val);
+
+    /// Allows to animate SFML text in relation to a option
+    void setTextAnimation(sf::Text &txt, int &var, int val);
+
+    /// Update view position
+    void setView();
+
+    /// Set view x position
+    void setViewX(float val);
+
+    /// Set view y position
+    void setViewY(float val);
+
     /// Load message box resource and fonts
-    virtual bool loadParentResources();
+    virtual void loadParentResources();
 
     /// Load scene resources
-    virtual bool loadResources() = 0;
+    virtual void loadResources() = 0;
 
     /// Check is scene is running
     virtual bool isRunning() const;
+
+    /// Return isPlaying
+    bool getIsPlaying() const {return m_isPlaying;}
+
+    /// Return scene start
+    bool getSceneStart() const {return m_sceneStart;}
+
+    /// Return scene end
+    bool getSceneEnd() const {return m_sceneEnd;}
 
     /// Return scene view
     virtual sf::View& getView() const {return m_view;}
@@ -112,17 +193,32 @@ public:
     /// Return game system controller
     virtual GameSystemExtended& getGameSystem() {return m_gameSysExt;}
 
-    /// Return Cancel sound
-    virtual sf::Sound& getSndCancel() {return m_sndCancel;}
+    /// Return font system
+    virtual sf::Font& getFontSystem() {return m_fontSystem;}
 
-    /// Return Switch sound
-    virtual sf::Sound& getSndSwitch() {return m_sndSwitch;}
+    /// Return font msg
+    virtual sf::Font& getFontMsg() {return m_fontMsg;}
 
-    /// Return SelectOption sound
-    virtual sf::Sound& getSndSelectOption() {return m_sndSelectOption;}
+    /// Return Button Select sprite
+    virtual sf::Sprite& getSprButtonSelect() {return m_sprButtonSelect;}
+
+    /// Return option index
+    virtual int getOptionIndex() const {return m_optionIndex;}
+
+    /// Return scene width
+    virtual unsigned int getSceneWidth() const {return m_sceneWidth;}
+
+    /// Return scene height
+    virtual unsigned int getSceneHeight() const {return m_sceneHeight;}
 
     /// Return the delta time elapsed independent of the main rendering loop
-    float getDeltaTime();
+    virtual float getDeltaTime();
+
+    /// Return DELTA_TIME variable
+    virtual float getDELTA_TIME() const {return DELTA_TIME;}
+
+    /// Return sprButtonSelectScale variable
+    virtual float& getSprButtonSelectScale() {return m_sprButtonSelectScale;}
 
     /// Return view X
     virtual float getViewX() const {return m_viewX;}
@@ -138,6 +234,9 @@ public:
 
     /// Return the scene background color
     virtual sf::Color& getBgColor() {return m_windowBgColor;}
+
+    /// Check if the scene object is in view surface
+    virtual bool inViewRec(is::MainObject *obj, bool useTexRec = true);
 
     //////////////////////////////////////////////////////
     /// \brief Test the collision of the SFML objects which are in the
@@ -213,6 +312,122 @@ public:
         if (obj.getGlobalBounds().intersects(cursor.getGlobalBounds())) return true;
         else return false;
     }
+
+    #if defined(IS_ENGINE_USE_SDM)
+    /// Method to update scene objects
+    virtual void SDMstep()
+    {
+        // update scene objects
+        WITH (m_SDMsceneObjects.size())
+        {
+            if (is::instanceExist(m_SDMsceneObjects[_I]))
+            {
+                if (m_SDMsceneObjects[_I]->m_SDMcallStep)
+                {
+                    m_SDMsceneObjects[_I]->step(DELTA_TIME);
+                }
+                if (m_SDMsceneObjects[_I]->isDestroyed())
+                {
+                    m_SDMsceneObjects[_I].reset();
+                }
+            }
+        }
+    }
+
+    /// Method to draw scene objects
+    virtual void SDMdraw()
+    {
+        // draw scene objects
+        WITH (m_SDMsceneObjects.size())
+        {
+            if (is::instanceExist(m_SDMsceneObjects[_I]))
+            {
+                if (m_SDMsceneObjects[_I]->m_SDMcallDraw)
+                {
+                    m_SDMsceneObjects[_I]->draw(m_surface);
+                }
+            }
+        }
+        drawMsgBox();
+    }
+    #endif // defined
+
+    #if defined(IS_ENGINE_USE_GSM)
+    /// Allow to play sound in container by his name
+    virtual void GSMplaySound(std::string name)
+    {
+        bool soundExist(false);
+        WITH (m_GSMsound.size())
+        {
+            if (m_GSMsound[_I]->getName() == name)
+            {
+                soundExist = true;
+                if (m_GSMsound[_I]->getFileIsLoaded()) m_gameSysExt.playSound(m_GSMsound[_I]->getSound());
+                else is::showLog("sound exists but can't play <" + name + "> sound!");
+                break;
+            }
+        }
+        if (!soundExist) is::showLog("can't play <" + name + "> sound because sound not exists!");
+    }
+
+    /// Allow to pause sound in container by his name
+    virtual void GSMpauseSound(std::string name)
+    {
+        bool soundExist(false);
+        WITH (m_GSMsound.size())
+        {
+            if (m_GSMsound[_I]->getName() == name)
+            {
+                soundExist = true;
+                if (m_GSMsound[_I]->getFileIsLoaded())
+                {
+                    if (m_GSMsound[_I]->getSound().getStatus() == sf::Sound::Playing) m_GSMsound[_I]->getSound().pause();
+                }
+                else is::showLog("sound exists but can't stop <" + name + "> sound!");
+                break;
+            }
+        }
+        if (!soundExist) is::showLog("can't pause <" + name + "> sound because sound not exists!");
+    }
+
+    /// Allow to play music in container by his name
+    virtual void GSMplayMusic(std::string name)
+    {
+        bool musicExist(false);
+        WITH (m_GSMmusic.size())
+        {
+            if (m_GSMmusic[_I]->getName() == name)
+            {
+                musicExist = true;
+                if (m_GSMmusic[_I]->getFileIsLoaded()) m_gameSysExt.playSound(m_GSMmusic[_I]->getMusic());
+                else is::showLog("music exists but can't play <" + name + "> music!");
+                break;
+            }
+        }
+        if (!musicExist) is::showLog("can't play <" + name + "> music because music not exists!");
+    }
+
+    /// Allow to pause music in container by his name
+    virtual void GSMpauseMusic(std::string name)
+    {
+        bool musicExist(false);
+        WITH (m_GSMmusic.size())
+        {
+            if (m_GSMmusic[_I]->getName() == name)
+            {
+                musicExist = true;
+                if (m_GSMmusic[_I]->getFileIsLoaded())
+                {
+                    if (m_GSMmusic[_I]->getMusic().getStatus() == sf::Sound::Playing) m_GSMmusic[_I]->getMusic().pause();
+                }
+                else is::showLog("music exists but can't stop <" + name + "> music!");
+                break;
+            }
+        }
+        if (!musicExist) is::showLog("can't pause <" + name + "> music because music not exists!");
+    }
+    #endif // defined
+
 protected:
     /// Represent the answers return by message box
     enum MsgAnswer
@@ -291,21 +506,6 @@ protected:
     /// Show message box
     void drawMsgBox();
 
-    /// Allows to change an option by playing a sound and making an animation
-    void setOptionIndex(int optionIndexValue, bool callWhenClick, float buttonScale = 1.3f);
-
-    /// Allows to animate SFML text and sprite in relation to a option
-    void setTextAnimation(sf::Text &txt, sf::Sprite &spr, int val);
-
-    /// Allows to animate SFML text in relation to a option
-    void setTextAnimation(sf::Text &txt, int &var, int val);
-
-    /// Update view position
-    void setView();
-
-    /// Abstract method to implement drawing code
-    virtual void draw() = 0;
-
     sf::RenderWindow &m_window;
     sf::View &m_view;
 
@@ -316,8 +516,6 @@ protected:
     sf::Sprite m_sprButtonSelect;
     sf::Clock m_clock;
     sf::Color m_windowBgColor;
-    sf::SoundBuffer m_sbSwitch, m_sbCancel, m_sbSelectOption;
-    sf::Sound m_sndSwitch, m_sndCancel, m_sndSelectOption;
 
     sf::Event m_event;
 
@@ -325,16 +523,18 @@ protected:
 
     int m_optionIndex;
     int m_waitTime, m_msgWaitTime;
+    unsigned int m_sceneWidth, m_sceneHeight;
     float DELTA_TIME;
     float m_viewW, m_viewH, m_viewX, m_viewY, m_sprButtonSelectScale;
     MsgAnswer m_msgAnswer;
 
     bool m_isRunning;
     bool m_windowIsActive;
+    bool m_isPlaying, m_sceneStart, m_sceneEnd;
     bool m_keyBackPressed;
     bool m_showMsg, m_mbYesNo, m_msgBoxMouseInCollison;
 
-    sf::Texture m_texMsgBox, m_sprMsgButton;
+    sf::Texture m_texMsgBox, m_texMsgButton;
     sf::Sprite m_sprMsgBox, m_sprMsgBoxButton1, m_sprMsgBoxButton2, m_sprMsgBoxButton3;
     sf::Text m_txtMsgBox, m_txtMsgBoxYes, m_txtMsgBoxNo, m_txtMsgBoxOK;
     sf::RectangleShape m_recMsgBox, m_recCursor;

@@ -70,19 +70,6 @@ bool GameSystem::fileExist(std::string const &fileName) const
     return !file.fail();
 }
 
-void GameSystem::playSound(sf::Sound &m_snd)
-{
-    if (m_enableSound) m_snd.play();
-}
-
-void GameSystem::stopSound(sf::Sound &m_snd)
-{
-    if (m_enableSound)
-    {
-        if (m_snd.getStatus() == sf::Sound::Playing) m_snd.stop();
-    }
-}
-
 void GameSystem::useVibrate(short ms)
 {
     if (m_enableVibrate) is::vibrate(sf::milliseconds(ms));

@@ -3,23 +3,26 @@
 
 #include "../../../isEngine/system/entity/MainObject.h"
 #include "../../../isEngine/system/function/GameTime.h"
-#include "../../gamesystem_ext/GameSystemExtended.h"
+#include "../../../isEngine/system/display/GameDisplay.h"
 #include "Player.h"
 
+////////////////////////////////////////////////////////////
+/// Displays game information (number of Bonuses, life, ...)
+////////////////////////////////////////////////////////////
 class HUD : public is::MainObject
 {
 public:
-    HUD(is::GameDisplay &scene);
+    HUD(is::GameDisplay *scene, is::GameTime &gameTime);
 
     void loadResources(sf::Font const &fnt);
-    void step(float const &DELTA_TIME, is::GameTime &gameTime, Player &player, bool &levelComplete);
+    void step(float const &DELTA_TIME);
     void draw(sf::RenderTexture &surface);
-    void setScore(int val);
 
 private:
-    float m_timeScoreCount;
+    is::GameDisplay *m_scene;
+    is::GameTime &m_gameTime;
     int m_score;
-    is::GameDisplay &m_scene;
+    float m_timeScoreCount;
 
     sf::Text m_txtHealth, m_txtBonus, m_txtLives, m_txtLevelTime, m_txtScore;
 };

@@ -6,8 +6,7 @@ GameOver::GameOver(sf::RenderWindow &window, sf::View &view, sf::RenderTexture &
     m_bgX(-64.f),
     m_bgY(-64.f),
     m_TitleX(320.f),
-    m_TitleY(110.f),
-    m_isStart(true)
+    m_TitleY(110.f)
 {
     srand(time(NULL));
 }
@@ -33,7 +32,7 @@ void GameOver::step()
     setView();
 
     // starting mechanism
-    if (m_isStart)
+    if (m_sceneStart)
     {
         // windows has focus
         if (m_windowIsActive)
@@ -69,7 +68,7 @@ void GameOver::step()
                      (m_gameSysExt.isPressed(is::GameSystem::ValidationButton::MOUSE) && mouseInCollison)) &&
                     (m_waitTime == 0 && !m_gameSysExt.m_keyIsPressed))
                 {
-                    m_gameSysExt.playSound(m_sndSelectOption);
+                    GSMplaySound("select_option"); // We play this sound
                     m_sprButtonSelectScale = 1.6f;
 
                     switch (m_optionIndex)
@@ -127,16 +126,16 @@ void GameOver::draw()
     ///////////////////////////////////////
 }
 
-bool GameOver::loadResources()
+void GameOver::loadResources()
 {
     m_gameSysExt.loadConfig(is::GameConfig::CONFIG_FILE);
 
-    if (!GameDisplay::loadParentResources())   return false;
+    GameDisplay::loadParentResources();
 
     // load resources
-    if (!m_texPad.loadFromFile(is::GameConfig::GUI_DIR + "option_pad.png"))                return false;
-    if (!m_texScreenBG.loadFromFile(is::GameConfig::GUI_DIR + "screen_background.png"))    return false;
-    if (!m_fontTitle.loadFromFile(is::GameConfig::FONT_DIR + "space_ranger_3d_mp_pv.otf")) return false;
+    is::loadSFMLObjResource(m_texPad, is::GameConfig::GUI_DIR + "option_pad.png");
+    is::loadSFMLObjResource(m_texScreenBG, is::GameConfig::GUI_DIR + "screen_background.png");
+    is::loadSFMLObjResource(m_fontTitle, is::GameConfig::FONT_DIR + "space_ranger_3d_mp_pv.otf");
 
     is::createWText(m_fontTitle, m_txtGameOver, is::lang::game_over[m_gameSysExt.m_gameLanguage], m_TitleX, m_TitleY, sf::Color(0, 0, 0), 56);
     is::centerSFMLObj(m_txtGameOver);
@@ -157,6 +156,4 @@ bool GameOver::loadResources()
     is::centerSFMLObj(m_txtQuitGame);
     is::setSFMLObjX_Y(m_txtRestartGame, is::getSFMLObjX(m_sprPad1), is::getSFMLObjY(m_sprPad1) - 6.f);
     is::setSFMLObjX_Y(m_txtQuitGame, is::getSFMLObjX(m_sprPad2), is::getSFMLObjY(m_sprPad2) - 6.f);
-
-    return true;
 }

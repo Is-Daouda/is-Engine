@@ -447,21 +447,63 @@ void setSFMLObjProperties(T &obj, float x, float y, float angle = 0.f, int alpha
     is::setSFMLObjX_Y(obj, x, y);
 }
 
-/// Get SFML Sound state ( @a 0 = @a Playing, @a 1 = @a Stopped, @a 2 = @a Pause)
+/// Set SFML Object Resource
 template <class T>
-bool getSFMLSndState(T &obj, int stateIndex)
+bool loadSFMLObjResource(T &obj, std::string filePath, bool stopExecution = false)
 {
-    switch (stateIndex)
+    if (obj.loadFromFile(filePath)) return true;
+    showLog("Can't load file : " + filePath);
+    if (stopExecution) std::terminate();
+    return false;
+}
+
+/// Set SFML Sound Buffer and Sound
+inline bool loadSFMLObjResource(sf::SoundBuffer &sb, sf::Sound &snd, std::string filePath, bool stopExecution = false)
+{
+    if (sb.loadFromFile(filePath))
     {
-        case 0:
+        snd.setBuffer(sb);
+        return true;
+    }
+    showLog("Can't load file : " + filePath);
+    if (stopExecution) std::terminate();
+    return false;
+}
+
+/// Get SFML Sound state
+template <class T>
+bool getSFMLSndState(T &obj, sf::Sound::Status state)
+{
+    switch (state)
+    {
+        case sf::Sound::Status::Playing:
             return (obj.getStatus() == sf::Sound::Status::Playing);
         break;
-        case 1:
+        case sf::Sound::Status::Stopped:
             return (obj.getStatus() == sf::Sound::Status::Stopped);
         break;
-        case 2:
+        case sf::Sound::Status::Paused:
             return (obj.getStatus() == sf::Sound::Status::Paused);
         break;
+    }
+    return false;
+}
+
+/// Get SFML Sound state
+template <class T>
+bool getSFMLSndState(T *obj, sf::Sound::Status state)
+{
+    switch (state)
+    {
+        case sf::Sound::Status::Playing:
+            return (obj->getStatus() == sf::Sound::Status::Playing);
+            break;
+        case sf::Sound::Status::Stopped:
+            return (obj->getStatus() == sf::Sound::Status::Stopped);
+            break;
+        case sf::Sound::Status::Paused:
+            return (obj->getStatus() == sf::Sound::Status::Paused);
+            break;
     }
     return false;
 }

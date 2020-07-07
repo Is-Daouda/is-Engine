@@ -4,26 +4,45 @@
 #include <memory>
 
 #include "../entity/Forme.h"
+#include "../entity/parents/Name.h"
 #include "../function/GameFunction.h"
+
+#if !defined(IS_ENGINE_USE_SDM)
 #include "../display/GameDisplay.h"
+#else
+#include "../entity/parents/Destructible.h"
+#include "../entity/parents/DepthObject.h"
+#endif // defined
 
 namespace is
 {
 ////////////////////////////////////////////////////////////
 /// \brief Main Class for all game play objects
 ////////////////////////////////////////////////////////////
-class MainObject
+class MainObject : public Name
+#if defined(IS_ENGINE_USE_SDM)
+                 , public Destructible, public DepthObject
+#endif // defined
 {
 public:
     MainObject();
     MainObject(float x, float y);
+    MainObject(sf::Sprite &spr, float x = 0.f, float y = 0.f);
     virtual ~MainObject();
 
     /// Return the instance number
     static int instanceNumber;
 
-    /// Check if the object is in view surface
-    virtual bool inViewRec(GameDisplay const &app, bool useTexRec = true);
+    #if defined(IS_ENGINE_USE_SDM)
+    /// lets SDM know if it can call its Step method (update function)
+    bool m_SDMcallStep = true;
+
+    /// lets SDM know if it can call its Draw method
+    bool m_SDMcallDraw = true;
+
+    /// Allow to update object
+    virtual void step(float const &DELTA_TIME) {}
+    #endif // defined
 
     /// Set x initial position
     virtual void setXStart(float x);
@@ -95,7 +114,7 @@ public:
     virtual void setImageScale(float x, float y);
 
     /// Set time
-    void setTime(float x);
+    virtual void setTime(float x);
 
     /// Set alpha
     virtual void setImageAlpha(int val);
@@ -155,6 +174,9 @@ public:
     virtual float distantToPoint(float x, float y) const;
 
     /// Return the distance between this object and another
+    virtual float distantToObject(MainObject const *other, bool useSpritePosition) const;
+
+    /// Return the distance between this object and another
     virtual float distantToObject(std::shared_ptr<MainObject> const &other, bool useSpritePosition) const;
 
     /// Return the angle between this object and point (x, y)
@@ -194,7 +216,7 @@ public:
     virtual float getImageYscale() const;
 
     /// Return the x scale
-    float getImageScale() const;
+    virtual float getImageScale() const;
 
     /// Return the angle
     virtual float getImageAngle() const;
@@ -208,6 +230,12 @@ public:
     /// Return object timing variable
     virtual float getTime() const;
 
+    /// Return x of main sprite
+    virtual float getSpriteX() const;
+
+    /// Return y of main sprite
+    virtual float getSpriteY() const;
+
     /// Return the ID of object (instance number)
     virtual int getInstanceId() const;
 
@@ -216,9 +244,6 @@ public:
 
     /// Return the height of collision mask
     virtual int getMaskHeight() const;
-
-    /// Return the active value
-    virtual bool getIsActive() const;
 
     /// Return image alpha
     virtual int getImageAlpha() const;
@@ -232,17 +257,14 @@ public:
     /// Return the height of main sprite
     virtual int getSpriteHeight() const;
 
-    /// Return x of main sprite
-    virtual float getSpriteX() const;
-
-    /// Return y of main sprite
-    virtual float getSpriteY() const;
-
     /// Return the x center of main sprite
     virtual int getSpriteCenterX() const;
 
     /// Return the y center of main sprite
     virtual int getSpriteCenterY() const;
+
+    /// Return the active value
+    virtual bool getIsActive() const;
 
     /// Test collision in comparison with another
     virtual bool placeMetting(int x, int y, MainObject const *other);
@@ -254,6 +276,7 @@ public:
     virtual sf::Sprite& getSprite();
 
 protected:
+
     /// Set frame limit
     virtual void setFrame(float frameStart, float frameEnd = -1.f);
 
@@ -293,12 +316,32 @@ public:
     }
 };
 
-/// Sort object array
+/// Sort object array by x position
 template<class T>
-void sortObjArray(std::vector<std::shared_ptr<T>> &v)
+void sortObjArrayByX(std::vector<std::shared_ptr<T>> &v)
 {
     std::sort(v.begin(), v.end(), is::CompareX());
 }
+
+#if defined(IS_ENGINE_USE_SDM)
+/// Functor for compare the depth of objects
+class CompareDepth
+{
+public:
+    bool operator()(std::shared_ptr<MainObject> const &a, std::shared_ptr<MainObject> const &b) const
+    {
+        if (is::instanceExist(a) && is::instanceExist(b)) return (a->getDepth() > b->getDepth());
+        return false;
+    }
+};
+
+/// Sort object array by x position
+template<class T>
+void sortObjArrayByDepth(std::vector<std::shared_ptr<T>> &v)
+{
+    std::sort(v.begin(), v.end(), is::CompareDepth());
+}
+#endif // defined
 
 bool operator<(std::shared_ptr<MainObject> const &a, const MainObject &b);
 bool operator<(const MainObject &b, std::shared_ptr<MainObject> const &a);

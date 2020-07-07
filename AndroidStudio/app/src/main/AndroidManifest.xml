@@ -24,7 +24,7 @@
 				  android:configChanges="keyboardHidden"
 				  android:screenOrientation="sensorLandscape">
 				  
-            <meta-data android:name="android.app.lib_name" android:value="sfml-activity" /><!-- Never change this! -->
+            <meta-data android:name="android.app.lib_name" android:value="sfml-activity-d" /><!-- Never change this! -->
             <meta-data android:name="sfml.app.lib_name" android:value="isenginedemo" /> <!-- This has to match the moduleName in build.gradle -->
 
             <intent-filter>

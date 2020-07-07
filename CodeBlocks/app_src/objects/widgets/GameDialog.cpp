@@ -62,7 +62,7 @@ void GameDialog::step(const float &DELTA_TIME)
                 std::wstring tempoStr = m_txtDialog.getString();
                 if (m_newLine)
                 {
-                    m_scene->getGameSystem().playSound(m_scene->getSndSwitch());
+                    m_scene->GSMplaySound("change_option"); // We play this sound
                     m_txtDialog.setString(getDialogChar(0));
                     m_newLine = false;
                 }
@@ -80,7 +80,7 @@ void GameDialog::step(const float &DELTA_TIME)
         if (m_scene->getGameSystem().isPressed(is::GameSystem::ValidationButton::MOUSE) && mouseInCollisonSkip &&
             !m_dialogEnd)
         {
-            m_scene->getGameSystem().playSound(m_scene->getSndCancel());
+            m_scene->GSMplaySound("cancel"); // We play this sound
             m_scene->getGameSystem().useVibrate(60);
             m_dialogEnd = true;
         }
@@ -103,7 +103,7 @@ void GameDialog::step(const float &DELTA_TIME)
                 m_msgIndex += 2;
                 if (m_msgIndex == m_msgIndexMax)
                 {
-                    m_scene->getGameSystem().playSound(m_scene->getSndCancel());
+                    m_scene->GSMplaySound("cancel"); // We play this sound
                     m_dialogEnd = true;
                 }
                 else

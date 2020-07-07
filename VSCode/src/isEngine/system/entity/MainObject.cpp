@@ -5,6 +5,11 @@ namespace is
 int MainObject::instanceNumber = 0;
 
 MainObject::MainObject():
+    Name(),
+    #if defined(IS_ENGINE_USE_SDM)
+    Destructible(),
+    DepthObject(DepthObject::NORMAL_DEPTH),
+    #endif // defined
     m_x(0.f),
     m_y(0.f),
     m_xStart(0.f),
@@ -36,6 +41,11 @@ MainObject::MainObject():
 }
 
 MainObject::MainObject(float x, float y):
+    Name(),
+    #if defined(IS_ENGINE_USE_SDM)
+    Destructible(),
+    DepthObject(DepthObject::NORMAL_DEPTH),
+    #endif // defined
     m_x(x),
     m_y(y),
     m_xStart(x),
@@ -60,6 +70,43 @@ MainObject::MainObject(float x, float y):
     m_imageAlpha(255),
     m_imageIndex(0),
     m_isActive(false)
+{
+    updateCollisionMask();
+    instanceNumber++;
+    m_instanceId = instanceNumber;
+}
+
+MainObject::MainObject(sf::Sprite &spr, float x, float y):
+    Name(),
+    #if defined(IS_ENGINE_USE_SDM)
+    Destructible(),
+    DepthObject(DepthObject::NORMAL_DEPTH),
+    #endif // defined
+    m_x((static_cast<int>(x) == 0) ? x : spr.getPosition().x),
+    m_y((static_cast<int>(y) == 0) ? y : spr.getPosition().y),
+    m_xStart(m_x),
+    m_yStart(m_y),
+    m_xPrevious(m_x),
+    m_yPrevious(m_y),
+    m_speed(0.f),
+    m_hsp(0.f),
+    m_vsp(0.f),
+    m_frameStart(0.f),
+    m_frameEnd(0.f),
+    m_frame(0.f),
+    m_imageXscale(1.f),
+    m_imageYscale(1.f),
+    m_imageScale(1.f),
+    m_imageAngle(0.f),
+    m_xOffset(0.f),
+    m_yOffset(0.f),
+    m_time(0.f),
+    m_w(32),
+    m_h(32),
+    m_imageAlpha(255),
+    m_imageIndex(0),
+    m_isActive(false),
+    m_sprParent(spr)
 {
     updateCollisionMask();
     instanceNumber++;
@@ -290,6 +337,13 @@ float MainObject::distantToPoint(float x, float y) const
    return sqrt(X * X + Y * Y);
 }
 
+float MainObject::distantToObject(MainObject const *other, bool useSpritePosition) const
+{
+   float X = ((useSpritePosition) ? getSpriteX() - other->getSpriteX() : (getX() + (getMaskWidth() / 2))  - (other->getX() + (other->getMaskWidth() / 2)));
+   float Y = ((useSpritePosition) ? getSpriteY() - other->getSpriteY() : (getY() + (getMaskHeight() / 2)) - (other->getY() + (other->getMaskHeight() / 2)));
+   return sqrt(X * X + Y * Y);
+}
+
 float MainObject::distantToObject(std::shared_ptr<MainObject> const &other, bool useSpritePosition) const
 {
    float X = ((useSpritePosition) ? getSpriteX() - other->getSpriteX() : (getX() + (getMaskWidth() / 2))  - (other->getX() + (other->getMaskWidth() / 2)));
@@ -506,35 +560,6 @@ bool MainObject::placeMetting(int x, int y, std::shared_ptr<MainObject> const &o
     is::Rectangle otherRectangle = other->getMask();
 
     if (is::collisionTest(testRec, otherRectangle))
-    {
-        isCollision = true;
-    }
-    return isCollision;
-}
-
-bool MainObject::inViewRec(GameDisplay const &app, bool useTexRec)
-{
-    is::Rectangle testRec;
-
-    if (useTexRec)
-    {
-        testRec.m_left = m_x;
-        testRec.m_top = m_y;
-        testRec.m_right = m_x + is::getSFMLObjWidth(m_sprParent);
-        testRec.m_bottom = m_y + is::getSFMLObjHeight(m_sprParent);
-    }
-    else testRec = this->getMask();
-
-
-    bool isCollision = false;
-
-    is::Rectangle viewRec;
-    viewRec.m_left   = app.getViewX() - (app.getViewW() / 2) - 16;
-    viewRec.m_right  = app.getViewX() + (app.getViewW() / 2) + 16;
-    viewRec.m_top    = app.getViewY() - (app.getViewH() / 2);
-    viewRec.m_bottom = app.getViewY() + (app.getViewH() / 2);
-
-    if (is::collisionTest(testRec, viewRec))
     {
         isCollision = true;
     }

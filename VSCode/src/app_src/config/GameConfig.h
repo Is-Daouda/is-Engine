@@ -4,7 +4,13 @@
 #include <string>
 
 // uncomment to enable showLog function
-#define IS_ENGINE_USE_SHOWLOG
+#define IS_ENGINE_USE_SHOWLOG ///< Allows to show text in console
+
+// uncomment to enable SDM function
+#define IS_ENGINE_USE_SDM ///< Allows to use Step and Draw Manager
+
+// uncomment to enable SGM function
+#define IS_ENGINE_USE_GSM ///< Allows to use Game Sound Manager
 
 #if defined(__ANDROID__)
 // uncomment this line to use Admob
@@ -18,19 +24,21 @@
 namespace is
 {
 ////////////////////////////////////////////////////////////
-/// \brief Allows to manipulate the different scenes
+/// \brief Allows to manipulate the different scenes and options
 ///
 ////////////////////////////////////////////////////////////
 enum DisplayOption
 {
-    INTRO,               ///< Access the introduction scene
-    RESTART_LEVEL,       ///< When player loses a life
-    GAME_OPTION_RESTART, ///< When player restart the level with restart option
-    NEXT_LEVEL,          ///< Access the next level scene
-    MAIN_MENU,           ///< Access the main menu scene
-    GAME_LEVEL,          ///< Access the game level scene
-    GAME_OVER,           ///< Access the game over scene
-    GAME_END_SCREEN      ///< Access the game end scene
+    RESUME_GAME = 0,         ///< When player close pause menu
+    GAME_OPTION_RESTART = 1, ///< When player restart the level with restart option
+    QUIT_GAME = 2,           ///< When player use quit option
+    INTRO,                   ///< Access the introduction scene
+    RESTART_LEVEL,           ///< When player loses a life
+    NEXT_LEVEL,              ///< Access the next level scene
+    MAIN_MENU,               ///< Access the main menu scene
+    GAME_LEVEL,              ///< Access the game level scene
+    GAME_OVER,               ///< Access the game over scene
+    GAME_END_SCREEN          ///< Access the game end scene
 };
 
 ////////////////////////////////////////////////////////////
@@ -74,7 +82,7 @@ namespace GameConfig
     static const sf::Keyboard::Key KEY_DOWN = sf::Keyboard::Down;   ///< Represents the Down directional key
 
     static const std::wstring MAJOR = L"2"; ///< Game major version
-    static const std::wstring MINOR = L"0"; ///< Game minor version
+    static const std::wstring MINOR = L"1"; ///< Game minor version
     inline std::wstring getGameVersion() {return MAJOR + L"." + MINOR;} ///< return version of the game
 
     static std::wstring const GAME_NAME     = L"is::Engine DEMO"; ///< Windows title name

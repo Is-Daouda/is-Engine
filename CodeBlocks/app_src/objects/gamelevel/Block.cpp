@@ -45,10 +45,11 @@ Block::~Block()
 {
 }
 
-void Block::step(float const& DELTA_TIME, bool isInView)
+void Block::step(float const& DELTA_TIME)
 {
     if (m_isActive)
     {
+        // Allows you to move these type of blocks from left to right
         if (m_type == Block::BlockType::BLOCK_MOVE_HORIZ)
         {
             if (m_x > m_xStart && m_changeDir)
@@ -59,6 +60,7 @@ void Block::step(float const& DELTA_TIME, bool isInView)
             m_x += ((m_speed * is::VALUE_CONVERSION) * DELTA_TIME);
         }
 
+        // Allows you to move these type of blocks from up to down
         if (m_type == Block::BlockType::BLOCK_MOVE_VERTI)
         {
             if (m_y > m_yStart && m_changeDir)
@@ -69,11 +71,13 @@ void Block::step(float const& DELTA_TIME, bool isInView)
             m_y += ((m_speed * is::VALUE_CONVERSION) * DELTA_TIME);
         }
 
+        // We update the position of the sprite only if we can move the object
         if (is::isIn(2, m_type, BLOCK_MOVE_VERTI, BLOCK_MOVE_HORIZ))
         {
             is::setSFMLObjX_Y(m_sprParent, m_x + m_sprOrigin, (m_y + m_sprOrigin));
         }
 
+        // update collision mask
         updateCollisionMask();
     }
 }
@@ -108,11 +112,6 @@ bool Block::getMoveVertical() const
     return m_moveVertical;
 }
 
-bool Block::hasTexture() const
-{
-    return m_textureExiste;
-}
-
 Block::BlockType Block::getType() const
 {
     return m_type;
@@ -120,5 +119,6 @@ Block::BlockType Block::getType() const
 
 void Block::draw(sf::RenderTexture &surface)
 {
-    surface.draw(m_sprParent);
+    // We draw the object only if it has a texture
+    if (m_textureExiste) surface.draw(m_sprParent);
 }

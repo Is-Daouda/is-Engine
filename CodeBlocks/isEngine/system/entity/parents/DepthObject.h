@@ -11,29 +11,29 @@ class DepthObject
 public:
     enum Depth
     {
-        VERY_BIG_DEPTH,
-        BIG_DEPTH,
-        NORMAL_DEPTH,
-        SMALL_DEPTH,
-        VERY_SMALL_DEPTH,
+        VERY_BIG_DEPTH = 99999,
+        BIG_DEPTH = 999,
+        NORMAL_DEPTH = 0,
+        SMALL_DEPTH = -999,
+        VERY_SMALL_DEPTH = -99999,
     };
 
-    DepthObject(Depth Depth) :
-        m_depth(Depth)
+    DepthObject(int depth) :
+        m_depth(depth)
     {}
 
-    virtual void setDepth(Depth val)
+    virtual void setDepth(int val)
     {
         m_depth = val;
     }
 
-    virtual Depth getDepth() const
+    virtual int getDepth() const
     {
         return m_depth;
     }
 
 protected:
-    Depth m_depth;
+    int m_depth;
 };
 }
 #endif // DepthOBJECT_H_INCLUDED

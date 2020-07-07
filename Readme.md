@@ -1,7 +1,7 @@
-![header](./logo/is_Engine_logo.png)
+![header](./images/is_Engine_logo.png)
 ----------------------------
 
-# is::Engine (Infinity Solutions::Engine) v2.0
+# is::Engine (Infinity Solutions::Engine) v2.1
 
 is::Engine is a 2D game engine based on SFML which allows you to easily develop video games on PC (Windows, Linux) and Android. It integrates SWOOSH, Box 2D, Admob, Tiny File Dialogs and components that allows you to manage the different parts of a game: introduction, main menu with options, levels, game over (You no longer need to implement them!).
 
@@ -10,6 +10,8 @@ is::Engine is a 2D game engine based on SFML which allows you to easily develop 
 ## Features
 - Language manager (English and French language support by default)
 - Scene System
+- SDM (Step and Draw Manager)
+- GSM (Game Sound Manager)
 - Entity system
 - Sprite Animation
 - 2D physic engine (Box 2D)
@@ -25,18 +27,22 @@ is::Engine is a 2D game engine based on SFML which allows you to easily develop 
 - [Android] Show Ad Banner
 - [Android] Show Reward Video
 
+## What's new in version 2.1 ?
+This version of the engine allows you to automatically update and display the objects of a game, and manage the display depth of each object (very useful for making 3D effects in a 2D game).
+You also have the possibility of playing sounds or music in games without using any object (`sf::Sound`, `sf:SoundBuffer` & `sf::Music`).
+
 ## Extras
 The engine comes with an example (2D platform game) that uses only the functions of the engine, in order to show you its power and how to use it. Now imagine what you can do when you use Box 2D and the other tools!
 
 ## Game Engine User Guide
-- [English version](https://github.com/Is-Daouda/is-Engine/tree/2.0.x/doc/isEngine_user_guide_eng.pdf)
-- [French version](https://github.com/Is-Daouda/is-Engine/tree/2.0.x/doc/isEngine_user_guide_fr.pdf)
+- [English version](https://github.com/Is-Daouda/is-Engine/tree/2.1.x/doc/isEngine_user_guide_eng.pdf)
+- [French version](https://github.com/Is-Daouda/is-Engine/tree/2.1.x/doc/isEngine_user_guide_fr.pdf)
 
 ## Example of a project created with the engine
 - [I Can Transform](https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=En)
 
 ## In this directory you have tree (3) projects :
-- **AndroidStudio**        : for Android development with Android Studio ([Demo Project](https://drive.google.com/open?id=1YoWzrhV-PbnQwzqinU32l0p78qyKzNkp))
+- **AndroidStudio**        : for Android development with Android Studio ([Demo Project](https://drive.google.com/file/d/1IAydVCWNUaMTM1cEMADwZC07xIXr99qo/view?usp=sharing))
 - **CodeBlocks**           : for PC development with Code::Blocks
 - **VSCode**               : for PC development with Visual Studio Code
 
@@ -45,11 +51,11 @@ The engine comes with an example (2D platform game) that uses only the functions
 
 **AndroidStudio**
 - Install Android Studio (3.1.3 +)
-- Android SDK and NDK (r12b)
+- Android SDK and NDK (r20b)
 - Firebase C++ SDK 4.5.0 (If you need it)
 
 **CodeBlocks**
-- Install Code::Blocks (17.12)
+- Install Code::Blocks (20.03)
 - GCC Compiler
 
 **VSCode**
@@ -61,22 +67,7 @@ The engine comes with an example (2D platform game) that uses only the functions
 Everything has already been configured all you need to do in relation to the tree (3) projects is to link the libraries
 
 ## Description of the project structure:
-
-```
-Project
-    |_ app_src
-    	|_ activity
-    	|_ config
-    	|_ gamesystem_ext
-    	|_ language
-    	|_ levels
-    	|_ objects
-    	|_ scenes
-    |_ data
-    |_ isEngine
-    basicSFMLmain.cpp
-    main.cpp
-```
+![header](./images/is_Engine_structure.jpg)
 ----------------------------
 #### `main.cpp` file
 Contains the entry point of the program, inside there are two instructions :

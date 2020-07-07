@@ -1,8 +1,7 @@
 #include "LevelTitle.h"
 
 LevelTitle::LevelTitle(sf::Font &fnt, float x, float y, std::string levelTitle):
-    MainObject(x, y),
-    Destructible()
+    MainObject(x, y)
 {
     is::createText(fnt, m_txtLevelTitle, levelTitle, x, y, sf::Color::Black, true, 32);
 }

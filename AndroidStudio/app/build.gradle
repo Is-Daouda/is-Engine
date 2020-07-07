@@ -42,7 +42,7 @@ android {
         multiDexEnabled true
         externalNativeBuild {
             cmake {
-                cppFlags "-std=c++14 -frtti -fexceptions"
+                cppFlags "-std=c++1z -std=c++14 -frtti -fexceptions"
                 arguments "-DANDROID_TOOLCHAIN=clang",
                         "-DANDROID_STL=c++_shared",
                         "-DSFML_INCLUDE_DIR=${ndkDir}/sources/sfml/include",

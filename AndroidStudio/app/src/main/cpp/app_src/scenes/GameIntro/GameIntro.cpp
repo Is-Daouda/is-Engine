@@ -65,7 +65,7 @@ void GameIntro::step()
                         (m_gameSysExt.isPressed() && mouseInCollison)) &&
                         (m_waitTime == 0 && !m_gameSysExt.m_keyIsPressed))
                     {
-                        m_gameSysExt.playSound(m_sndSelectOption);
+                        GSMplaySound("select_option"); // We play this sound
                         m_gameSysExt.useVibrate(m_vibrateTimeDuration);
                         m_gameSysExt.m_gameLanguage = m_optionIndex;
                         m_gameSysExt.m_firstLaunch = false;
@@ -169,19 +169,19 @@ void GameIntro::draw()
     }
 }
 
-bool GameIntro::loadResources()
+void GameIntro::loadResources()
 {
-    if (!GameDisplay::loadParentResources()) return false;
+    GameDisplay::loadParentResources();
 
     m_gameSysExt.loadConfig(is::GameConfig::CONFIG_FILE);
 
     // load textures
-    if (!m_texLogo.loadFromFile(is::GameConfig::GUI_DIR + "start_img.tex")) return false;
+    is::loadSFMLObjResource(m_texLogo, is::GameConfig::GUI_DIR + "start_img.tex");
 
     if (m_gameSysExt.m_firstLaunch)
     {
-        if (!m_texPad.loadFromFile(is::GameConfig::GUI_DIR + "main_menu_pad.png"))              return false;
-        if (!m_fontTitle.loadFromFile(is::GameConfig::FONT_DIR + "space_ranger_3d_mp_pv.otf"))  return false;
+        is::loadSFMLObjResource(m_texPad, is::GameConfig::GUI_DIR + "main_menu_pad.png");
+        is::loadSFMLObjResource(m_fontTitle, is::GameConfig::FONT_DIR + "space_ranger_3d_mp_pv.otf");
 
         is::createWText(m_fontTitle, m_txtChooseLanguage, L"Choose Language", 0.f, 0.f, sf::Color(255, 255, 255), 48);
         is::centerSFMLObj(m_txtChooseLanguage);
@@ -202,6 +202,4 @@ bool GameIntro::loadResources()
     is::createSprite(m_texLogo, m_sprLogo, sf::IntRect(0, 0, 256, 128), sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
     is::centerSFMLObj(m_sprLogo);
     is::setSFMLObjX_Y(m_sprLogo, m_viewX, m_viewY);
-
-    return true;
 }

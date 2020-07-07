@@ -10,9 +10,9 @@ namespace swoosh {
     friend class ActivityController;
 
   private:
+    sf::Time duration;
     Activity* last;
     Activity* next;
-    sf::Time duration;
     Timer timer;
 
     // Hack to make this lib header-only

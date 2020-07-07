@@ -1,8 +1,7 @@
 #include "ElectroShock.h"
 
 ElectroShock::ElectroShock(float x, float y):
-    MainObject(x, y),
-    Destructible()
+    MainObject(x, y)
 {
     m_imageScale = 0.f;
     m_circleElectro.setRadius(32.f);
@@ -18,7 +17,9 @@ void ElectroShock::step(float const &DELTA_TIME)
         m_imageAlpha -= static_cast<int>((10.f * is::VALUE_CONVERSION) * DELTA_TIME);
         if (m_imageScale < 1.f) m_imageScale += (0.08f * is::VALUE_CONVERSION) * DELTA_TIME;
     }
-    else m_destroy = true;
+    else m_destroy = true; // We destroy the object
+
+    // We move the object according to the horizontal and vertical speed
     m_x += (m_hsp * is::VALUE_CONVERSION) * DELTA_TIME;
     m_y += (m_vsp * is::VALUE_CONVERSION) * DELTA_TIME;
     is::setSFMLObjX_Y(m_circleElectro, m_x, m_y);

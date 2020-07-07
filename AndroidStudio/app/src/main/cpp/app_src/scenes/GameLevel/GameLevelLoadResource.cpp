@@ -1,71 +1,50 @@
 #include "GameLevel.h"
 
-bool GameLevel::loadResources()
+void GameLevel::loadResources()
 {
-    if (!GameDisplay::loadParentResources()) return false;
+    GameDisplay::loadParentResources();
 
-    ////////////////////////////////////////////////////
-    #if !defined(__ANDROID__)
-    is::createText(m_fontSystem, m_txtDebugInfo, "", 0.f, 0.f, 20);
-    #endif
-    ////////////////////////////////////////////////////
+    is::loadSFMLObjResource(m_fontLevel, is::GameConfig::FONT_DIR + "space_ranger_halftone_italic_qz_30.otf");
 
-    is::createText(m_fontSystem, m_txtContinue, is::lang::pad_continue_game[m_gameSysExt.m_gameLanguage], 0.f, 0.f, true);
-    is::createText(m_fontSystem, m_txtQuit, is::lang::pad_quit_game[m_gameSysExt.m_gameLanguage], 0.f, 0.f, true);
-    is::createText(m_fontSystem, m_txtRestart, is::lang::pad_restart_game[m_gameSysExt.m_gameLanguage], 0.f, 0.f, true);
+    is::loadSFMLObjResource(m_texToolsPad, is::GameConfig::GUI_DIR + "tools_pad.png");
+    is::loadSFMLObjResource(m_texJoystick, is::GameConfig::GUI_DIR + "game_pad.png");
+    is::loadSFMLObjResource(m_texIcoMenuBtn, is::GameConfig::GUI_DIR + "ico_button.png");
 
-    if (!m_fontLevel.loadFromFile(is::GameConfig::FONT_DIR + "space_ranger_halftone_italic_qz_30.otf")) return false;
+    auto gameKey = std::shared_ptr<is::GameKeyData>(new is::GameKeyData(this));
+    gameKey->loadResources(m_texJoystick);
+    gameKey->setDepth(-9);
 
-    if (!m_texToolsPad.loadFromFile(is::GameConfig::GUI_DIR + "tools_pad.png"))      return false;
-    if (!m_texJoystick.loadFromFile(is::GameConfig::GUI_DIR + "game_pad.png"))       return false;
-    if (!m_texIcoMenuBtn.loadFromFile(is::GameConfig::GUI_DIR + "ico_button.png"))   return false;
-    m_cancelBt.loadResources(m_texToolsPad);
-    m_gameKey.loadResources(m_texJoystick);
+    // We add the object to the SDM container but we order it to display it only
+    // We also give it a name that will allow us to identify it in the container
+    SDMaddSceneObject(gameKey, false, true, "GameKeyData");
 
-    setView();
-
-    // load buffers
-    if (!sdEnemyDestroy.loadFromFile(is::GameConfig::SFX_DIR + "enemy_destroy.wav")) return false;
-    if (!m_sbHaveHealth.loadFromFile(is::GameConfig::SFX_DIR + "have_health.ogg"))   return false;
-    if (!m_sbHurt.loadFromFile(is::GameConfig::SFX_DIR + "hurt.ogg"))                return false;
-    if (!m_sbAttack.loadFromFile(is::GameConfig::SFX_DIR + "attack.wav"))            return false;
-    if (!m_sbLose.loadFromFile(is::GameConfig::SFX_DIR + "lose.ogg"))                return false;
-    if (!m_sbHaveBonus.loadFromFile(is::GameConfig::SFX_DIR + "have_bonus.ogg"))     return false;
-    if (!m_sbHaveLife.loadFromFile(is::GameConfig::SFX_DIR + "have_life.wav"))       return false;
-    if (!m_sbJump.loadFromFile(is::GameConfig::SFX_DIR + "jump.wav"))                return false;
-    if (!m_sbPlayerWin.loadFromFile(is::GameConfig::SFX_DIR + "finish.ogg"))         return false;
-
-    // sound
-    m_sndEnemyDestroy.setBuffer(sdEnemyDestroy);
-    m_sndHaveHealth.setBuffer(m_sbHaveHealth);
-    m_sndAttack.setBuffer(m_sbAttack);
-    m_sndHurt.setBuffer(m_sbHurt);
-    m_sndLose.setBuffer(m_sbLose);
-    m_sndHaveBonus.setBuffer(m_sbHaveBonus);
-    m_sndHaveLife.setBuffer(m_sbHaveLife);
-    m_sndJump.setBuffer(m_sbJump);
-    m_sndPlayerWin.setBuffer(m_sbPlayerWin);
+    // load sounds with GSM
+    GSMaddSound("enemy_destroy", is::GameConfig::SFX_DIR + "enemy_destroy.wav");
+    GSMaddSound("have_health", is::GameConfig::SFX_DIR + "have_health.ogg");
+    GSMaddSound("hurt", is::GameConfig::SFX_DIR + "hurt.ogg");
+    GSMaddSound("attack", is::GameConfig::SFX_DIR + "attack.wav");
+    GSMaddSound("lose", is::GameConfig::SFX_DIR + "lose.ogg");
+    GSMaddSound("have_bonus", is::GameConfig::SFX_DIR + "have_bonus.ogg");
+    GSMaddSound("have_life", is::GameConfig::SFX_DIR + "have_life.wav");
+    GSMaddSound("jump", is::GameConfig::SFX_DIR + "jump.wav");
+    GSMaddSound("finish", is::GameConfig::SFX_DIR + "finish.ogg");
 
     // GUI resources
-    if (!m_texPad.loadFromFile(is::GameConfig::GUI_DIR + "option_pad.png"))    return false;
-    if (!m_texDialog.loadFromFile(is::GameConfig::GUI_DIR + "dialog_box.png")) return false;
-
-    is::createSprite(m_texPad, m_sprPad1, sf::IntRect(0, 0, 160, 32), sf::Vector2f(0.f, 0.f), sf::Vector2f(80.f, 16.f));
-    is::createSprite(m_texPad, m_sprPad2, sf::IntRect(0, 0, 160, 32), sf::Vector2f(0.f, 0.f), sf::Vector2f(80.f, 16.f));
-    is::createSprite(m_texPad, m_sprPad3, sf::IntRect(0, 0, 160, 32), sf::Vector2f(0.f, 0.f) , sf::Vector2f(80.f, 16.f));
+    is::loadSFMLObjResource(m_texPad, is::GameConfig::GUI_DIR + "option_pad.png");
+    is::loadSFMLObjResource(m_texDialog, is::GameConfig::GUI_DIR + "dialog_box.png");
     is::createSprite(m_texPad, m_sprButtonSelect, sf::IntRect(160, 0, 160, 32), sf::Vector2f(0.f, 0.f) , sf::Vector2f(80.f, 16.f));
 
     // tiles
-    if (!m_texTile.loadFromFile(is::GameConfig::TILES_DIR + "tileset.png")) return false;
+    is::loadSFMLObjResource(m_texTile, is::GameConfig::TILES_DIR + "tileset.png");
 
     // sprites
-    if (!m_texPlayer.loadFromFile(is::GameConfig::SPRITES_DIR + "player.png"))    return false;
-    if (!m_texBonus.loadFromFile(is::GameConfig::SPRITES_DIR + "bonus_icon.png")) return false;
-    if (!m_texEnemy.loadFromFile(is::GameConfig::SPRITES_DIR + "enemy.png"))      return false;
-    if (!m_texFinishObject.loadFromFile(is::GameConfig::SPRITES_DIR + "finish_flag.png")) return false;
+    is::loadSFMLObjResource(m_texPlayer, is::GameConfig::SPRITES_DIR + "player.png");
+    is::loadSFMLObjResource(m_texBonus, is::GameConfig::SPRITES_DIR + "bonus_icon.png");
+    is::loadSFMLObjResource(m_texEnemy, is::GameConfig::SPRITES_DIR + "enemy.png");
+    is::loadSFMLObjResource(m_texFinishObject, is::GameConfig::SPRITES_DIR + "finish_flag.png");
 
     // background
-    if (!m_texLevelBg.loadFromFile(is::GameConfig::TILES_DIR + "level_bg.png"))   return false;
+    is::loadSFMLObjResource(m_texBackground, is::GameConfig::TILES_DIR + "level_bg.png");
 
     // chose the corresponding level map array
     short const *mapIndex = is::level::getLevelMap(CURRENT_LEVEL);
@@ -87,6 +66,34 @@ bool GameLevel::loadResources()
     // this variables allow to store tile id
     // signification of 999 = empty tile
     short backTileNumber(999);
+
+    auto gameDialog = std::shared_ptr<GameDialog>(new GameDialog(this));
+    gameDialog->setName("GameDialog");
+    gameDialog->loadResources(m_texDialog, m_fontSystem);
+    gameDialog->setDepth(-8);
+    SDMaddSceneObject(gameDialog); // We add the object in the SDM container
+
+    auto player = std::shared_ptr<Player>(new Player(this, m_timeUp, m_restartTime));
+    player->setName("Player");
+    player->setDepth(-1);
+    SDMaddSceneObject(player); // We add the object in the SDM container
+
+    auto finishObject = std::shared_ptr<FinishObject>(new FinishObject(this));
+    finishObject->setName("FinishObject");
+    finishObject->setDepth(-1);
+    SDMaddSceneObject(finishObject); // We add the object in the SDM container
+
+    auto gameHud = std::shared_ptr<HUD>(new HUD(this, m_gameTime));
+    gameHud->setName("HUD");
+    gameHud->loadResources(m_fontSystem);
+    gameHud->setDepth(-7);
+    SDMaddSceneObject(gameHud); // We add the object in the SDM container
+
+    auto cancelBt = std::shared_ptr<CancelButton>(new CancelButton(this));
+    cancelBt->setName("CancelButton");
+    cancelBt->loadResources(m_texToolsPad);
+    cancelBt->setDepth(-9);
+    SDMaddSceneObject(cancelBt); // We add the object in the SDM container
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                      LEVEL INTERPRETER
@@ -115,37 +122,39 @@ bool GameLevel::loadResources()
 //                                      BLOCK
 //////////////////////////////////////////////////////////////////////////////////////////////////////
         if (mapIndex[dataIndex] == 0) // block mask
-            m_blockList.push_back(std::shared_ptr<Block>(new Block(Block::BlockType::BLOCK_NORMAL, 32.f * j, 32.f * i, 0)));
+            SDMaddSceneObject(std::shared_ptr<Block>(new Block(Block::BlockType::BLOCK_NORMAL, 32.f * j, 32.f * i, 0)), true, false, "Block");
         else if (mapIndex[dataIndex] == 1) // block transparent (crossing block)
-            m_blockList.push_back(std::shared_ptr<Block>(new Block(Block::BlockType::BLOCK_TRANSPARENT, 32.f * j, 32.f * i, 0)));
+            SDMaddSceneObject(std::shared_ptr<Block>(new Block(Block::BlockType::BLOCK_TRANSPARENT, 32.f * j, 32.f * i, 0)), true, false, "Block");
         else if (mapIndex[dataIndex] == 2) // block horizontal moving
         {
-            m_blockList.push_back(std::shared_ptr<Block>(new Block(Block::BlockType::BLOCK_MOVE_HORIZ, 32.f * j, 32.f * i, &m_texTile)));
-            m_blockList[m_blockList.size() - 1]->setMoveHorizontal(true);
+            auto block = std::shared_ptr<Block>(new Block(Block::BlockType::BLOCK_MOVE_HORIZ, 32.f * j, 32.f * i, &m_texTile));
+            block->setMoveHorizontal(true);
+            SDMaddSceneObject(block, true, true, "Block");
         }
         else if (mapIndex[dataIndex] == 3) // block vertical moving
         {
-            m_blockList.push_back(std::shared_ptr<Block>(new Block(Block::BlockType::BLOCK_MOVE_VERTI, 32.f * j, 32.f * i, &m_texTile)));
-            m_blockList[m_blockList.size() - 1]->setMoveVertical(true);
+            auto block = std::shared_ptr<Block>(new Block(Block::BlockType::BLOCK_MOVE_VERTI, 32.f * j, 32.f * i, &m_texTile));
+            block->setMoveVertical(true);
+            SDMaddSceneObject(block, true, true, "Block");
         }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                      BONUS
 //////////////////////////////////////////////////////////////////////////////////////////////////////
         else if (mapIndex[dataIndex] == 100) // Bonus
-            m_bonusList.push_back(std::shared_ptr<Bonus>(new Bonus(m_texBonus, Bonus::BonusType::BONUS_NORMAL, 32.f * j, 32.f * i)));
+            SDMaddSceneObject(std::shared_ptr<Bonus>(new Bonus(m_texBonus, Bonus::BonusType::BONUS_NORMAL, 32.f * j, 32.f * i, this)));
         else if (mapIndex[dataIndex] == 101) // Health
-            m_bonusList.push_back(std::shared_ptr<Bonus>(new Bonus(m_texBonus, Bonus::BonusType::BONUS_HEALTH, 32.f * j, 32.f * i)));
+            SDMaddSceneObject(std::shared_ptr<Bonus>(new Bonus(m_texBonus, Bonus::BonusType::BONUS_HEALTH, 32.f * j, 32.f * i, this)));
         else if (mapIndex[dataIndex] == 102) // Life
-            m_bonusList.push_back(std::shared_ptr<Bonus>(new Bonus(m_texBonus, Bonus::BonusType::BONUS_1_UP, 32.f * j, 32.f * i)));
+            SDMaddSceneObject(std::shared_ptr<Bonus>(new Bonus(m_texBonus, Bonus::BonusType::BONUS_1_UP, 32.f * j, 32.f * i, this)));
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                      ENEMY
 //////////////////////////////////////////////////////////////////////////////////////////////////////
         else if (mapIndex[dataIndex] == 200)
-            m_enemyList.push_back(std::shared_ptr<Enemy>(new Enemy(m_texEnemy, Enemy::EnemyType::ENEMY_SPIKE_BALL, 32.f * j, 32.f * i)));
+            SDMaddSceneObject(std::shared_ptr<Enemy>(new Enemy(m_texEnemy, Enemy::EnemyType::ENEMY_SPIKE_BALL, 32.f * j, 32.f * i, this)));
         else if (mapIndex[dataIndex] == 201)
-            m_enemyList.push_back(std::shared_ptr<Enemy>(new Enemy(m_texEnemy, Enemy::EnemyType::ENEMY_BALL, 32.f * j, 32.f * i, 50)));
+            SDMaddSceneObject(std::shared_ptr<Enemy>(new Enemy(m_texEnemy, Enemy::EnemyType::ENEMY_BALL, 32.f * j, 32.f * i, this, 50)));
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                      PLAYER
@@ -153,23 +162,21 @@ bool GameLevel::loadResources()
         else if (mapIndex[dataIndex] == 300) // player
         {
             // load player resources
-            m_player.loadResources(m_texPlayer, m_sbJump);
-            m_player.setX(32.f * j);
-            m_player.setY((32.f * i) - 16.f);
-            m_player.setStartPosition(m_player.getX(), m_player.getY());
+            player->loadResources(m_texPlayer);
+            player->setPosition(32.f * j, (32.f * i) - 16.f);
+            player->setStartPosition(player->getX(), player->getY());
         }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                      GAMEPLAY OBJECT
 //////////////////////////////////////////////////////////////////////////////////////////////////////
         else if (mapIndex[dataIndex] == 400) // limiter
-            m_limiterList.push_back(std::shared_ptr<Limiter>(new Limiter(32.f * j, 32.f * i)));
+            SDMaddSceneObject(std::shared_ptr<Limiter>(new Limiter(32.f * j, 32.f * i)), false, false, "Limiter");
         else if (mapIndex[dataIndex] == 401) // finish level
         {
-            m_finishObject.setX(32.f * j);
-            m_finishObject.setY(32.f * i);
-            m_finishObject.loadResources(m_texFinishObject);
-            m_finishObject.setStartPosition(m_finishObject.getX(), m_finishObject.getY());
+            finishObject->setPosition(32.f * j, 32.f * i);
+            finishObject->loadResources(m_texFinishObject);
+            finishObject->setStartPosition(finishObject->getX(), finishObject->getY());
         }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -179,7 +186,6 @@ bool GameLevel::loadResources()
         {
             backTileNumber = (mapIndex[dataIndex] - 500);
         }
-
         else if (mapIndex[dataIndex] == 1000) // empty tile (empty space)
         {
             // empty tile
@@ -198,20 +204,18 @@ bool GameLevel::loadResources()
             backTileNumber = 999;
             j++;
         }
-
         else if (mapIndex[dataIndex] == 1002) // back to the line of cursor
         {
-            if (m_levelWidth == 0) m_levelWidth = static_cast<unsigned int>(j); // define the level width
+            if (m_sceneWidth == 0) m_sceneWidth = static_cast<unsigned int>(j); // define the level width
             j = 0.f;
             i++;
             backTileNumber = 999; // empty tile
-            m_levelHeight = static_cast<unsigned int>(i); // define the level height
+            m_sceneHeight = static_cast<unsigned int>(i); // define the level height
         }
-
         else // error
         {
             is::showLog("\nUnknown value  : " + is::numToStr(mapIndex[dataIndex]) + "\n");
-            //std::terminate();
+            ///std::terminate();
         }
 
         // allow to now the line of cursor
@@ -224,25 +228,18 @@ bool GameLevel::loadResources()
 //////////////////////////////////////////////////////////////////////////////////////////////////////
     m_gameTime.setTimeValue(2, 59, 59);
 
-    // sort object array
-    is::sortObjArray(m_bonusList);
-    is::sortObjArray(m_enemyList);
-    is::sortObjArray(m_blockList);
-
     // level information
     is::showLog("\nLevel           : " + is::numToStr(CURRENT_LEVEL + 1) +
                 "\nInstance Number : " + is::numToStr(is::MainObject::instanceNumber) +
-                "\nLevel Width     : " + is::numToStr(m_levelWidth) +
-                "\nLevel Height    : " + is::numToStr(m_levelHeight) +
+                "\nLevel Width     : " + is::numToStr(m_sceneWidth) +
+                "\nLevel Height    : " + is::numToStr(m_sceneHeight) +
                 "\nLevel Time      : " + is::numToStr(m_gameTime.getMinute()) + "min : " + is::numToStr(m_gameTime.getSecond()) + "s" +
                 "\n");
 
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                      BUILD THE BACKGROUND OF LEVEL
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-    is::createSprite(m_texLevelBg, m_sprLevelBg, sf::IntRect(0, 0, (m_levelWidth * 32), 640), sf::Vector2f(m_viewX * 0.25f - 80.f, m_viewY - 240.f),
-                     sf::Vector2f(0.f, 0.f), true);
+    // create background
+    auto bg = std::shared_ptr<Background>(new Background(this, m_texBackground));
+    bg->setDepth(is::DepthObject::VERY_BIG_DEPTH);
+    SDMaddSceneObject(bg); // We add the object in the SDM container
 
     // create the tile map with vertex array
     unsigned int valX(0), valY(0);
@@ -251,14 +248,19 @@ bool GameLevel::loadResources()
 
     while (!stop)
     {
-        m_levelBackTile.push_back(std::shared_ptr<LevelTile>(new LevelTile(m_texTile)));
-        m_levelBackTile[m_levelBackTile.size() - 1]->load(sf::Vector2u(32, 32), backTileValue, m_levelWidth, m_levelHeight, valX, valY, bgSize, stop);
+        auto tile = std::shared_ptr<LevelTile>(new LevelTile(this, m_texTile));
+        tile->loadResources(sf::Vector2u(32, 32), backTileValue, m_sceneWidth, m_sceneHeight, valX, valY, bgSize, stop);
+        tile->setDepth(is::DepthObject::BIG_DEPTH);
+        SDMaddSceneObject(tile); // We add the object in the SDM container
     }
-    WITH (m_levelBackTile.size())
+    WITH (m_SDMsceneObjects.size())
     {
-        if (!m_levelBackTile[_I]->hasTile())
+        if (dynamic_cast<LevelTile*>(m_SDMsceneObjects[_I].get()) != nullptr)
         {
-            m_levelBackTile[_I].reset();
+            if (!static_cast<LevelTile*>(m_SDMsceneObjects[_I].get())->hasTile())
+            {
+                m_SDMsceneObjects[_I].reset();
+            }
         }
     }
 
@@ -267,53 +269,41 @@ bool GameLevel::loadResources()
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // set view position in relation to player
-    m_viewX = m_player.getX();
-    m_viewY = m_player.getY();
+    m_viewX = player->getX();
+    m_viewY = player->getY();
 
     if (m_viewX < m_viewW / 2) m_viewX = m_viewW / 2;
-    if (m_viewX > static_cast<float>(m_levelWidth) * 32.f - m_viewW / 2)
-        m_viewX = static_cast<float>(m_levelWidth) * 32.f - m_viewW / 2;
+    if (m_viewX > static_cast<float>(m_sceneWidth) * 32.f - m_viewW / 2)
+        m_viewX = static_cast<float>(m_sceneWidth) * 32.f - m_viewW / 2;
 
     if (m_viewY < m_viewH / 2) m_viewY = m_viewH / 2;
-    if (m_viewY > static_cast<float>(m_levelHeight) * 32.f - m_viewH / 2)
-        m_viewY = static_cast<float>(m_levelHeight) * 32.f - m_viewH / 2;
+    if (m_viewY > static_cast<float>(m_sceneHeight) * 32.f - m_viewH / 2)
+        m_viewY = static_cast<float>(m_sceneHeight) * 32.f - m_viewH / 2;
 
-    m_pauseOption = std::shared_ptr<PauseOption>(new PauseOption(this, m_texIcoMenuBtn));
+    // creation of the object which manages the physics of the level
+    // but avoid the SDM drawing it
+    SDMaddSceneObject(std::shared_ptr<BlockPhysic>(new BlockPhysic(this)), true, false);
 
-    // set pause screen object position
-    is::setSFMLObjX_Y(m_sprPad1, m_viewX, m_viewY - 32.f);
-    is::setSFMLObjX_Y(m_sprPad2, m_viewX, m_viewY + 32.f);
-    is::setSFMLObjX_Y(m_sprPad3, m_viewX - (70.f - m_pauseObjMove), m_viewY);
-    is::setSFMLObjX_Y(m_sprButtonSelect, is::getSFMLObjX(m_sprPad1), is::getSFMLObjY(m_sprPad1));
-    is::setSFMLObjX_Y(m_txtContinue, is::getSFMLObjX(m_sprPad1), is::getSFMLObjY(m_sprPad1));
-    is::setSFMLObjX_Y(m_txtQuit, is::getSFMLObjX(m_sprPad3), is::getSFMLObjY(m_sprPad3));
-    is::setSFMLObjX_Y(m_recPauseBG, m_viewX, m_viewY);
+    auto pauseOption = std::shared_ptr<PauseOption>(new PauseOption(this, m_texIcoMenuBtn, m_texPad));
+    pauseOption->setName("PauseOption");
+    pauseOption->setDepth(-10);
+    SDMaddSceneObject(pauseOption, false); // We add the object in the SDM container, but avoid SDM updating it
 
     // load HUD resources
-    m_gameHud.setPosition(m_viewX, m_viewY);
-    m_gameHud.loadResources(m_fontSystem);
-
-    // load Dialog Box resources
-    m_gameDialog.loadResources(m_texDialog, m_fontSystem);
-
-    // set view param
-    setView();
+    gameHud->setPosition(m_viewX, m_viewY);
 
     // create level title object
-    m_levelTitle = std::shared_ptr<LevelTitle>(new LevelTitle(m_fontLevel, m_viewX, m_viewY,
-                                                              is::lang::title_level_number[m_gameSysExt.m_gameLanguage] +
-                                                                is::numToStr(CURRENT_LEVEL + 1)));
+    auto lvlTitle = std::shared_ptr<LevelTitle>(new LevelTitle(m_fontLevel, m_viewX, m_viewY,
+                                                    is::lang::title_level_number[m_gameSysExt.m_gameLanguage] +
+                                                    is::numToStr(CURRENT_LEVEL + 1)));
+    lvlTitle->setDepth(-5);
+    SDMaddSceneObject(lvlTitle); // We add the object in the SDM container
 
     // load level music
-    m_mscLevel.openFromFile(is::GameConfig::MUSIC_DIR + "world_1_music.ogg");
-    m_mscLevel.setLoop(true);
-    m_mscLevel.play();
+    GSMaddMusic("level_music", is::GameConfig::MUSIC_DIR + "world_1_music.ogg");
+    GSMgetMusic("level_music")->setLoop(true);
+    GSMgetMusic("level_music")->play();
 
     // don't play music if this option is off
-    if (!m_gameSysExt.m_enableMusic) m_mscLevel.pause();
-
-    // initialize background
-    updateBackground();
-
-    return true;
+    if (!m_gameSysExt.m_enableMusic) GSMgetMusic("level_music")->pause();
 }

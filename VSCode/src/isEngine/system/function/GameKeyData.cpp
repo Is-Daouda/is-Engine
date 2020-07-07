@@ -1,5 +1,7 @@
 #include "GameKeyData.h"
 
+namespace is
+{
 GameKeyData::GameKeyData(is::GameDisplay *scene) :
     MainObject(),
     m_keyPausePressed(false),
@@ -37,7 +39,6 @@ void GameKeyData::loadResources(sf::Texture &tex)
     is::createSprite(tex, m_sprJoystick[0], sf::IntRect(0, 0, 134, 134), sf::Vector2f(0.f, 0.f), sf::Vector2f(67.f, 67.f));
     is::createSprite(tex, m_sprJoystick[1], sf::IntRect(134, ((!m_scene->getGameSystem().m_permutePadAB) ? 0 : 67), 144, 67),
                      sf::Vector2f(0.f, 0.f), sf::Vector2f(72.f, 37.f));
-
     is::setSFMLObjSize(m_recJoystickMask[0], 134.f, 134.f);
     is::setSFMLObjSize(m_recJoystickMask[1], 144.f, 74.f);
 
@@ -149,7 +150,10 @@ void GameKeyData::draw(sf::RenderTexture &surface)
     #if defined(__ANDROID__)
     if (m_moveObj < 320.f)
     {
-        /**for (int i(0); i < 2; i++) surface.draw(m_recJoystickMask[i]);
+        /*
+         * This displays the virtual key mask on the screen
+         *
+        for (int i(0); i < 2; i++) surface.draw(m_recJoystickMask[i]);
         surface.draw(m_recKeyLeftMask);
         surface.draw(m_recKeyRightMask);
         surface.draw(m_recKeyUpMask);
@@ -157,8 +161,11 @@ void GameKeyData::draw(sf::RenderTexture &surface)
         surface.draw(m_recKeyAMask);
         surface.draw(m_recKeyBMask);
         surface.draw(m_recRight);
-        */
-        for (int i(0); i < 2; i++) surface.draw(m_sprJoystick[i]);
+         */
+        for (int i(0); i < 2; i++)
+        {
+            if (m_scene->getIsPlaying()) surface.draw(m_sprJoystick[i]);
+        }
     }
     #endif // defined
 }
@@ -429,3 +436,4 @@ bool GameKeyData::virtualKeyPressed(VirtualKeyIndex virtualKeyIndex)
     }
     return false;
 }
+};

@@ -1,7 +1,8 @@
 #include "CancelButton.h"
 
-CancelButton::CancelButton() :
-    MainObject(-999, -999)
+CancelButton::CancelButton(is::GameDisplay *scene) :
+    MainObject(-999, -999),
+    m_scene(scene)
 {
     m_imageAlpha = 250;
 }
@@ -13,6 +14,7 @@ void CancelButton::loadResources(sf::Texture &tex)
 
 void CancelButton::step(float const &DELTA_TIME)
 {
+    setPosition(m_scene->getViewX() + 280.f, m_scene->getViewY() - 200.f);
     is::setSFMLObjX_Y(m_sprParent, m_x, m_y);
     if (m_imageAlpha > 80) m_imageAlpha -= static_cast<int>((4.f * is::VALUE_CONVERSION) * DELTA_TIME);
     else m_imageAlpha = 80;
@@ -31,5 +33,5 @@ bool CancelButton::isOn() const
 
 void CancelButton::draw(sf::RenderTexture &surface)
 {
-    surface.draw(m_sprParent);
+    if (m_scene->getIsPlaying() && m_scene->getSceneStart()) surface.draw(m_sprParent);
 }

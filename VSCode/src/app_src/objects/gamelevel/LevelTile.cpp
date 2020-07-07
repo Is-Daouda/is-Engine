@@ -1,8 +1,9 @@
 #include "LevelTile.h"
 
-LevelTile::LevelTile(sf::Texture &tex) :
+LevelTile::LevelTile(is::GameDisplay *scene, sf::Texture &tex) :
+    m_scene(scene),
     m_tileset(tex),
-    tileExist(false)
+    m_tileExist(false)
 {
 }
 
@@ -10,26 +11,15 @@ LevelTile::~LevelTile()
 {
 }
 
-void LevelTile::load(sf::Vector2u tileSize, std::vector<short> const &tiles, unsigned int width, unsigned int height,
+void LevelTile::loadResources(sf::Vector2u tileSize, std::vector<short> const &tiles, unsigned int width, unsigned int height,
                      unsigned int &valX, unsigned int &valY, int step, bool &stop)
 {
     unsigned int tempWidth(valX + step);
     unsigned int tempHeight(valY + step);
 
-    if ((valX + step) > width)
-    {
-        tempWidth = width;
-    }
-
-    if ((valY + step) > height)
-    {
-        tempHeight = height;
-    }
-
-    if (tempWidth == width && tempHeight == height)
-    {
-        stop = true;
-    }
+    if ((valX + step) > width) tempWidth = width;
+    if ((valY + step) > height) tempHeight = height;
+    if (tempWidth == width && tempHeight == height) stop = true;
 
     // we define the size of the background and its position
     m_x = valX * tileSize.x;
@@ -53,7 +43,7 @@ void LevelTile::load(sf::Vector2u tileSize, std::vector<short> const &tiles, uns
 
             if (tileNumber != 999) // is an empty space
             {
-                tileExist = true;
+                m_tileExist = true;
 
                 // we deduce its position in the tileset texture
                 int tu = tileNumber % (m_tileset.getSize().x / tileSize.x);
@@ -92,10 +82,7 @@ void LevelTile::load(sf::Vector2u tileSize, std::vector<short> const &tiles, uns
         valY = 0;
         valX = valX + step;
     }
-    else
-    {
-        valY = valY + step;
-    }
+    else valY = valY + step;
 }
 
 void LevelTile::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -110,7 +97,13 @@ void LevelTile::draw(sf::RenderTarget &target, sf::RenderStates states) const
     target.draw(m_vertices, states);
 }
 
+void LevelTile::draw(sf::RenderTexture &surface)
+{
+    // We draw the object only if it is in the field of vision of the scene view
+    if (m_scene->inViewRec(this, false)) surface.draw(*this);
+}
+
 bool LevelTile::hasTile() const
 {
-    return tileExist;
+    return m_tileExist;
 }

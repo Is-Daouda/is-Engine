@@ -1,14 +1,20 @@
 #ifndef GAMEKEYDATA_H_INCLUDED
 #define GAMEKEYDATA_H_INCLUDED
 
+#if defined(IS_ENGINE_USE_SDM)
 #include "../entity/MainObject.h"
+#else
+#include "../display/GameDisplay.h"
+#endif // defined
 
+namespace is
+{
 //////////////////////////////////////////////////////
 /// \brief Class for manage game command
 /// (Keyboard / Virtual Game Pad for Android)
 ///
 //////////////////////////////////////////////////////
-class GameKeyData : public is::MainObject
+class GameKeyData : public MainObject
 {
 public:
     //////////////////////////////////////////////////////
@@ -51,31 +57,31 @@ public:
     GameKeyData(is::GameDisplay *scene);
 
     /// Load the image that will serve as Virtual Game Pad (only for Android)
-    void loadResources(sf::Texture &tex);
+    virtual void loadResources(sf::Texture &tex);
 
     /// Manages the positioning of the Virtual Game Pad relative to the screen (only for Android)
-    void step(float const &DELTA_TIME);
+    virtual void step(float const &DELTA_TIME);
 
     /// Draw the Virtual Game Pad on the screen (only for Android)
-    void draw(sf::RenderTexture &surface);
+    virtual void draw(sf::RenderTexture &surface);
 
     /// Check if the Left directional button is pressed
-    bool keyLeftPressed();
+    virtual bool keyLeftPressed();
 
     /// Check if the Right directional button is pressed
-    bool keyRightPressed();
+    virtual bool keyRightPressed();
 
     /// Check if the Up directional button is pressed
-    bool keyUpPressed();
+    virtual bool keyUpPressed();
 
     /// Check if the Down directional button is pressed
-    bool keyDownPressed();
+    virtual bool keyDownPressed();
 
     /// Check if the A button is pressed
-    bool keyAPressed();
+    virtual bool keyAPressed();
 
     /// Check if the B button is pressed
-    bool keyBPressed();
+    virtual bool keyBPressed();
 
 private:
     bool virtualKeyPressed(VirtualKeyIndex virtualKeyIndex);
@@ -86,6 +92,7 @@ private:
     sf::RectangleShape m_recJoystickMask[2];
     sf::RectangleShape m_recKeyLeftMask, m_recKeyRightMask, m_recKeyUpMask, m_recKeyDownMask, m_recKeyAMask, m_recKeyBMask;
     sf::RectangleShape m_recLeft, m_recRight;
+};
 };
 
 #endif // GAMEKEYDATA_H_INCLUDED

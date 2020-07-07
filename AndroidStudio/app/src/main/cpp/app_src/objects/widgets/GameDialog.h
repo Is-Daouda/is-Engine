@@ -2,7 +2,11 @@
 #define GAMEHELP_H_INCLUDED
 
 #include <cstring>
+#if defined(IS_ENGINE_USE_SDM)
 #include "../../../isEngine/system/entity/MainObject.h"
+#else
+#include "../../../isEngine/system/display/GameDisplay.h"
+#endif // defined
 #include "../../language/GameLanguage.h"
 
 ////////////////////////////////////////////////////////////

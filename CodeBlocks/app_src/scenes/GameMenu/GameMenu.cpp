@@ -2,6 +2,7 @@
 
 GameMenu::GameMenu(sf::RenderWindow &window, sf::View &view, sf::RenderTexture &surface, GameSystemExtended &gameSysExt):
     GameDisplay(window, view, surface, gameSysExt, sf::Color::White),
+    m_cancelBt(this),
     m_gameOptionIndex(0),
     m_oscillation(0.f),
     m_xPos(38.f),
@@ -12,7 +13,6 @@ GameMenu::GameMenu(sf::RenderWindow &window, sf::View &view, sf::RenderTexture &
     m_timeClick(0.f),
     m_isClicked(false),
     m_padCfgClicked(false),
-    m_isStart(true),
     m_saveFileOpen(false),
     m_closeApplication(false),
     m_pageName(PAGE_MAIN_MENU)
@@ -62,7 +62,7 @@ void GameMenu::step()
     setView();
 
     // starting mechanism
-    if (m_isStart)
+    if (m_sceneStart)
     {
         // window has focus
         if (m_windowIsActive)
@@ -120,7 +120,7 @@ void GameMenu::step()
                         {
                             auto playSelectSnd = [this]()
                             {
-                                m_gameSysExt.playSound(m_sndSelectOption);
+                                GSMplaySound("select_option"); // We play this sound
                                 m_sprButtonSelectScale = 1.4f;
                                 m_gameSysExt.useVibrate(m_vibrateTimeDuration);
                             };
@@ -145,7 +145,7 @@ void GameMenu::step()
                             case OP_CONTINUE:
                                 if (m_gameSysExt.fileExist(is::GameConfig::GAME_DATA_FILE))
                                 {
-                                    m_gameSysExt.playSound(m_sndSelectOption);
+                                    GSMplaySound("select_option"); // We play this sound
                                     m_gameSysExt.useVibrate(m_vibrateTimeDuration);
                                     m_gameSysExt.m_currentLevel = m_gameSysExt.m_gameProgression;
                                     m_gameSysExt.m_launchOption = is::DisplayOption::GAME_LEVEL;
@@ -166,7 +166,6 @@ void GameMenu::step()
                             }
                             m_keyBackPressed = false;
                         }
-
                         if (m_pageName != PAGE_PAD_CONFIG)
                         {
                             // Quit game
@@ -187,7 +186,7 @@ void GameMenu::step()
                         {
                             //////////////////////////////////////////////////////////
                             #if !defined(__ANDROID__)
-                            m_gameSysExt.playSound(m_sndSwitch);
+                            GSMplaySound("change_option"); // We play this sound
                             #endif
                             //////////////////////////////////////////////////////////
                             m_txtOptionScale[m_txtOptionIndex] = 1.2f;
@@ -228,7 +227,7 @@ void GameMenu::step()
                                     if (!m_gameSysExt.m_enableSound)
                                     {
                                         m_gameSysExt.m_enableSound = true;
-                                        m_gameSysExt.playSound(m_sndSelectOption);
+                                        GSMplaySound("select_option"); // We play this sound
                                     }
                                     else m_gameSysExt.m_enableSound = false;
                                     setKeyToTrue(OP_MENU_SND);
@@ -239,7 +238,7 @@ void GameMenu::step()
                                     if (!m_gameSysExt.m_enableMusic)
                                     {
                                         m_gameSysExt.m_enableMusic = true;
-                                        m_gameSysExt.playSound(m_sndSelectOption);
+                                        GSMplaySound("select_option"); // We play this sound
                                     }
                                     else m_gameSysExt.m_enableMusic = false;
                                     setKeyToTrue(OP_MENU_MSC);
@@ -249,7 +248,7 @@ void GameMenu::step()
                                     if (!m_gameSysExt.m_enableVibrate)
                                     {
                                         m_gameSysExt.m_enableVibrate = true;
-                                        m_gameSysExt.playSound(m_sndSelectOption);
+                                        GSMplaySound("select_option"); // We play this sound
                                         m_gameSysExt.useVibrate(m_vibrateTimeDuration);
                                     }
                                     else m_gameSysExt.m_enableVibrate = false;
@@ -265,7 +264,7 @@ void GameMenu::step()
                                     // If the variable is greater than this value we return to the first language
                                     // because there are more languages
                                     if (m_gameSysExt.m_gameLanguage > is::lang::GameLanguage::FRANCAIS) m_gameSysExt.m_gameLanguage = is::lang::GameLanguage::ENGLISH;
-                                    m_gameSysExt.playSound(m_sndSelectOption);
+                                    GSMplaySound("select_option"); // We play this sound
 
                                     m_txtStartGame.setString(is::lang::pad_new_game[m_gameSysExt.m_gameLanguage]);
                                     m_txtContinue.setString(is::lang::pad_continue_game[m_gameSysExt.m_gameLanguage]);
@@ -375,7 +374,7 @@ void GameMenu::step()
 
                         if (mouseCollision(m_sprAddAlpha) && m_gameSysExt.isPressed())
                         {
-                            if (static_cast<int>(m_timeClick) == 0) m_gameSysExt.playSound(m_sndSelectOption);
+                            if (static_cast<int>(m_timeClick) == 0) GSMplaySound("select_option"); // We play this sound
                             m_timeClick = 15.f;
                             if (m_gameSysExt.m_padAlpha < 250) m_gameSysExt.m_padAlpha += ((is::VALUE_CONVERSION * 2.f) * DELTA_TIME);
                             is::setSFMLObjTexRec(m_sprAddAlpha, 64, 0);
@@ -384,7 +383,7 @@ void GameMenu::step()
 
                         if (mouseCollision(m_sprReduceAlpha) && m_gameSysExt.isPressed())
                         {
-                            if (static_cast<int>(m_timeClick) == 0) m_gameSysExt.playSound(m_sndSelectOption);
+                            if (static_cast<int>(m_timeClick) == 0) GSMplaySound("select_option"); // We play this sound
                             m_timeClick = 15.f;
                             if (m_gameSysExt.m_padAlpha > 20) m_gameSysExt.m_padAlpha -= ((is::VALUE_CONVERSION * 2.f) * DELTA_TIME);
                             is::setSFMLObjTexRec(m_sprReduceAlpha, 128, 0);
@@ -393,7 +392,7 @@ void GameMenu::step()
 
                         if (mouseCollision(m_sprPermuteAB) && m_gameSysExt.isPressed() && static_cast<int>(m_timeClick) == 0)
                         {
-                            m_gameSysExt.playSound(m_sndSelectOption);
+                            GSMplaySound("select_option"); // We play this sound
                             m_timeClick = 15.f;
                             m_gameSysExt.m_permutePadAB = !m_gameSysExt.m_permutePadAB;
                             m_sprButtonPemuteScale = 1.3f;
@@ -411,7 +410,7 @@ void GameMenu::step()
                             m_waitTime == 0)
                         {
                             m_gameSysExt.savePadConfig(is::GameConfig::GAME_PAD_FILE);
-                            m_gameSysExt.playSound(m_sndCancel);
+                            GSMplaySound("cancel"); // We play this sound
                             m_gameSysExt.useVibrate(m_vibrateTimeDuration);
                             m_pageName = PAGE_MAIN_MENU;
                             m_keyBackPressed = false;
@@ -424,7 +423,6 @@ void GameMenu::step()
                     setTextAnimation(m_txtPadConfig, m_sprPad3, OP_CONFIG_PAD);
 
                     // update cancel button
-                    m_cancelBt.setPosition(m_viewX + 280.f, m_viewY - 200.f);
                     m_cancelBt.step(DELTA_TIME);
                 }
             }
@@ -495,7 +493,7 @@ void GameMenu::step()
 
     if (m_isClose)
     {
-        m_isStart = false;
+        m_sceneStart = false;
         m_isRunning = false;
     }
 }

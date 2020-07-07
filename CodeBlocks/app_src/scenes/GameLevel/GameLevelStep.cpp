@@ -6,12 +6,12 @@ void GameLevel::step()
 
     updateTimeWait(DELTA_TIME);
 
-    int const OP_RESUME_GAME(0),
-              OP_RESTART(1),
-              OP_QUIT(2);
+    // Manage game controls (keyboard & Virtual Game Pad)
+    auto gameKey = static_cast<is::GameKeyData*>(SDMgetObject("GameKeyData"));
+    gameKey->step(DELTA_TIME);
 
     // allows activated use of buttons
-    if (!m_keyBackPressed) m_gameKey.m_keyPausePressed = false;
+    if (!m_keyBackPressed) gameKey->m_keyPausePressed = false;
 
     // allows activated use of buttons
     if (!m_gameSysExt.keyIsPressed(is::GameConfig::KEY_LEFT) &&
@@ -41,16 +41,16 @@ void GameLevel::step()
     }
 
     // if the player is KO we stop the level
-    if (m_player.getIsKO())
+    if (auto player = static_cast<Player*>(SDMgetObject("Player")); player->getIsKO())
     {
         m_gameSysExt.m_launchOption = is::DisplayOption::RESTART_LEVEL; // restart level
-        m_levelEnd = true;
+        m_sceneEnd = true;
     }
 
     // when player finish the level
-    if (!m_levelEnd)
+    if (!m_sceneEnd)
     {
-        if (m_finishObject.getStep() == 1)
+        if (auto finishObject = static_cast<FinishObject*>(SDMgetObject("FinishObject")); finishObject->getStep() == 1)
         {
             //////////////////////////////////////////////////////////////////////
             m_gameSysExt.m_currentLevel++; // allow to access the next level
@@ -60,17 +60,16 @@ void GameLevel::step()
             {
                 m_gameSysExt.m_gameProgression++;
             }
-
             m_gameSysExt.saveData(is::GameConfig::GAME_DATA_FILE); // save data
             //////////////////////////////////////////////////////////////////////
 
             m_gameSysExt.m_launchOption = is::DisplayOption::NEXT_LEVEL; // go to the next level
-            m_levelEnd = true;
-            m_finishObject.addStep();
+            m_sceneEnd = true;
+            finishObject->addStep();
         }
     }
 
-    if (m_levelEnd) m_isRunning = false;
+    if (m_sceneEnd) m_isRunning = false;
 
     if (!m_showMsg)
     {
@@ -80,116 +79,77 @@ void GameLevel::step()
         if (m_isPlaying)
         {
             // check if mouse is in collision with sprite
-            if (mouseCollision(m_cancelBt.getSprite()))
+            if (auto cancelBt = static_cast<CancelButton*>(SDMgetObject("CancelButton")); mouseCollision(cancelBt->getSprite()))
             {
-                m_cancelBt.setAlpha(255);
+                cancelBt->setAlpha(255);
                 m_gameSysExt.m_keyIsPressed = true;
             }
             pauseGame();
 
-            if (!m_gameDialog.showDialog())
+            auto gameDialog = static_cast<GameDialog*>(SDMgetObject("GameDialog"));
+            if (!gameDialog->showDialog())
             {
                 gamePlay();
             }
             else
             {
-                if (!mouseCollision(m_gameDialog.getSprite()) && m_gameSysExt.isPressed()) m_gameSysExt.m_keyIsPressed = true;
-                m_gameDialog.setPosition(m_viewX, m_viewY + 32.f);
+                if (!mouseCollision(gameDialog->getSprite()) && m_gameSysExt.isPressed()) m_gameSysExt.m_keyIsPressed = true;
+                gameDialog->setPosition(m_viewX, m_viewY + 32.f);
             }
-            m_gameDialog.step(DELTA_TIME);
+            gameDialog->step(DELTA_TIME);
         }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                      MENU PAUSE
 //////////////////////////////////////////////////////////////////////////////////////////////////////
         else
         {
-            if (m_levelStart && !m_levelEnd)
+            if (m_sceneStart && !m_sceneEnd)
             {
                 if (m_windowIsActive)
                 {
-                    // avoid looping click for mini options
-                    if (!m_gameSysExt.m_keyIsPressed) m_pauseOption->m_keyIsLocked = false;
-
-                    // allow to check collision
-                    bool mouseInCollison(false);
-
-                    // check collision with buttons
-                    if (mouseCollision(m_sprPad1) ||
-                        mouseCollision(m_sprPad2) ||
-                        mouseCollision(m_sprPad3))
-                        mouseInCollison = true;
-
-                    // change option when mouse (touch on Android) is in collision with sprite
-                    if (mouseCollision(m_sprPad1) && m_optionIndex != OP_RESUME_GAME) setOptionIndex(OP_RESUME_GAME, true);
-                    else if (mouseCollision(m_sprPad2) && m_optionIndex != OP_RESTART) setOptionIndex(OP_RESTART, true);
-                    else if (mouseCollision(m_sprPad3) && m_optionIndex != OP_QUIT) setOptionIndex(OP_QUIT, true);
-
-                    // change option with keyboard (only for PC)
-                    if (!m_gameSysExt.m_keyIsPressed && !mouseInCollison)
-                    {
-                        if (m_gameSysExt.keyIsPressed(is::GameConfig::KEY_LEFT)) setOptionIndex(-1, false);
-                        else if (m_gameSysExt.keyIsPressed(is::GameConfig::KEY_RIGHT)) setOptionIndex(1, false);
-                        if (m_optionIndex < 0) m_optionIndex = OP_QUIT;
-                        if (m_optionIndex > OP_QUIT) m_optionIndex = 0;
-                    }
-
-                    // avoid the long pressing button effect
-                    if (!mouseInCollison && m_gameSysExt.isPressed(is::GameSystem::ValidationButton::MOUSE)) m_gameSysExt.m_keyIsPressed = true;
+                    // mini option pause
+                    auto pauseOption = static_cast<PauseOption*>(SDMgetObject("PauseOption"));
+                    pauseOption->step(DELTA_TIME);
 
                     // function to resume play and replay paused sounds
-                    auto continueGame = [this]()
+                    auto continueGame = [this, gameKey]()
                     {
                         stopSounds(false);
-                        m_gameSysExt.playSound(m_sndCancel);
-                        m_cancelBt.setAlpha(0);
+                        GSMplaySound("cancel"); // We play this sound
+                        static_cast<CancelButton*>(SDMgetObject("CancelButton"))->setAlpha(0);
                         m_isPlaying = true;
                         m_gameSysExt.m_keyIsPressed = true;
-                        m_gameKey.m_keyPausePressed = true;
+                        gameKey->m_keyPausePressed = true;
                     };
 
                     // if back key is pressed continue the game
-                    if (m_keyBackPressed && !m_gameKey.m_keyPausePressed)
+                    if (m_keyBackPressed && !gameKey->m_keyPausePressed)
                     {
                         continueGame();
                         m_keyBackPressed = false;
                     }
 
                     // validate option
-                    if (((m_gameSysExt.isPressed(is::GameSystem::ValidationButton::KEYBOARD) && !m_gameKey.m_keyPausePressed) ||
-                        (m_gameSysExt.isPressed(is::GameSystem::ValidationButton::MOUSE) && mouseInCollison)) &&
-                        m_waitTime == 0 && !m_gameSysExt.m_keyIsPressed && !m_levelEnd)
+                    if (((m_gameSysExt.isPressed(is::GameSystem::ValidationButton::KEYBOARD) && !gameKey->m_keyPausePressed) ||
+                        (m_gameSysExt.isPressed(is::GameSystem::ValidationButton::MOUSE) && pauseOption->m_mouseInCollison)) &&
+                        m_waitTime == 0 && !m_gameSysExt.m_keyIsPressed && !m_sceneEnd)
                     {
                         switch (m_optionIndex)
                         {
-                            case OP_RESUME_GAME:
+                            case is::DisplayOption::RESUME_GAME:
                                 continueGame();
                             break;
 
-                            case OP_RESTART:
+                            case is::DisplayOption::GAME_OPTION_RESTART:
                                 showMessageBox(is::lang::msg_pause_restart[m_gameSysExt.m_gameLanguage], true);
                             break;
 
-                            case OP_QUIT:
+                            case is::DisplayOption::QUIT_GAME:
                                 showMessageBox(is::lang::msg_pause_quit[m_gameSysExt.m_gameLanguage], true);
                             break;
                         }
                     }
                 }
-                if (m_optionIndex < OP_RESUME_GAME) m_optionIndex = OP_QUIT;
-                if (m_optionIndex > OP_QUIT) m_optionIndex = OP_RESUME_GAME;
-
-                // sprites animation
-                setTextAnimation(m_txtContinue, m_sprPad1, OP_RESUME_GAME);
-                setTextAnimation(m_txtRestart, m_sprPad2, OP_RESTART);
-                setTextAnimation(m_txtQuit, m_sprPad3, OP_QUIT);
-
-                updatePauseObj(true);
-
-                // mini option pause
-                m_pauseOption->step(DELTA_TIME);
-
-                // PAD animation
-                is::scaleAnimation(DELTA_TIME, m_sprButtonSelectScale, m_sprButtonSelect);
             }
         }
     }
@@ -207,25 +167,25 @@ void GameLevel::step()
         {
             switch (m_optionIndex)
             {
-            case OP_RESTART:
+            case is::DisplayOption::GAME_OPTION_RESTART:
                 if (m_msgAnswer == MsgAnswer::YES)
                 {
                     m_gameSysExt.m_launchOption = is::DisplayOption::GAME_OPTION_RESTART;
                     m_waitTime = 10;
-                    m_levelEnd = true;
+                    m_sceneEnd = true;
                 }
                 else m_waitTime = 10;
-                m_gameKey.m_keyPausePressed = true;
+                gameKey->m_keyPausePressed = true;
             break;
 
-            case OP_QUIT:
+            case is::DisplayOption::QUIT_GAME:
                 if (m_msgAnswer == MsgAnswer::YES)
                 {
                     m_gameSysExt.m_launchOption = is::DisplayOption::MAIN_MENU;
-                    m_levelEnd = true;
+                    m_sceneEnd = true;
                 }
                 else m_waitTime = 10;
-                m_gameKey.m_keyPausePressed = true;
+                gameKey->m_keyPausePressed = true;
             break;
             }
         }

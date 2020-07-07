@@ -10,7 +10,7 @@ public:
     void step();
     void draw();
 
-    bool loadResources();
+    void loadResources();
 
 private:
     sf::Font m_fontTitle;

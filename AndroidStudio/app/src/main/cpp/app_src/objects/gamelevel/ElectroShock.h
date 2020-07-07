@@ -2,15 +2,16 @@
 #define ELECTROSHOCK_H_INCLUDED
 
 #include "../../../isEngine/system/entity/MainObject.h"
-#include "../../../isEngine/system/entity/parents/Destructible.h"
 
-class ElectroShock : public is::MainObject, public is::Destructible
+////////////////////////////////////////////////////////////
+/// Represents the player's weapon in the game
+////////////////////////////////////////////////////////////
+class ElectroShock : public is::MainObject
 {
 public:
     ElectroShock(float x, float y);
 
     void step(float const &DELTA_TIME);
-
     void draw(sf::RenderTexture &surface);
 
 private:

@@ -12,11 +12,11 @@ public:
     void step();
     void draw();
 
-    bool loadResources();
+    void loadResources();
 
 private:
     float m_oscillation, m_bgX, m_bgY;
-    bool m_isStart, m_isOnPad;
+    bool m_isOnPad;
     sf::Font m_fontTitle;
 
     sf::Texture m_texScreenBG, m_texPad;
