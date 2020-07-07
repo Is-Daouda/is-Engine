@@ -43,7 +43,7 @@ The engine comes with an example (2D platform game) that uses only the functions
 - [I Can Transform](https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=En)
 
 ## In this directory you have tree (3) projects :
-- **AndroidStudio**        : for Android development with Android Studio ([Demo Project](https://drive.google.com/file/d/1IAydVCWNUaMTM1cEMADwZC07xIXr99qo/view?usp=sharing))
+- **AndroidStudio**        : for Android development with Android Studio ([Demo Project](https://drive.google.com/file/d/1IAydVCWNUaMTM1cEMADwZC07xIXr99qo/view))
 - **CodeBlocks**           : for PC development with Code::Blocks
 - **VSCode**               : for PC development with Visual Studio Code
 
