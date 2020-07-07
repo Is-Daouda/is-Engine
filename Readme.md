@@ -28,8 +28,8 @@ is::Engine is a 2D game engine based on SFML which allows you to easily develop 
 - [Android] Show Reward Video
 
 ## What's new in version 2.1 ?
-This version of the engine allows you to automatically update and display the objects of a game, and manage the display depth of each object (very useful for making 3D effects in a 2D game).
-You can also play sounds or music in games without using an object (`sf::Sound`, `sf:SoundBuffer` & `sf::Music`).
+This version of the engine allows you to automatically update and display the objects of a game, manage the display depth of each object (very useful for making 3D effects in a 2D game).
+You can also play sounds or musics in games without using an object (`sf::Sound`, `sf:SoundBuffer` & `sf::Music`).
 
 ## Extras
 The engine comes with an example (2D platform game) that uses only the functions of the engine, in order to show you its power and how to use it. Now imagine what you can do when you use Box 2D and the other tools!
