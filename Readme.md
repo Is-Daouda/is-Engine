@@ -36,8 +36,8 @@ is::Engine is a 2D game engine based on SFML which allows you to easily develop 
 The engine comes with an example (2D platform game) that uses only the functions of the engine, in order to show you its power and how to use it. Now imagine what you can do when you use Box 2D and the other tools!
 
 ## Game Engine User Guide
-- [English version](https://github.com/Is-Daouda/is-Engine/tree/2.1.x/doc/isEngine_user_guide_eng.pdf)
-- [French version](https://github.com/Is-Daouda/is-Engine/tree/2.1.x/doc/isEngine_user_guide_fr.pdf)
+- [English version](https://github.com/Is-Daouda/is-Engine/blob/tree/2.1.x/doc/isEngine_api_doc_eng.pdf)
+- [French version](https://github.com/Is-Daouda/is-Engine/blob/tree/2.1.x/doc/isEngine_api_doc_fr.pdf)
 
 ## Example of a project created with the engine
 - [I Can Transform](https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=En)
