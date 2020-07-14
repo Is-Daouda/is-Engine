@@ -42,7 +42,7 @@ The engine comes with an example (2D platform game) that uses only the functions
 ## Example of a project created with the engine
 - [I Can Transform](https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=En)
 
-## In this directory you have tree (3) projects :
+## In this directory you have four (4) projects :
 - **AndroidStudio**        : for Android development with Android Studio
 - **CodeBlocks**           : for PC development with Code::Blocks
 - **CMake**           	   : for PC development with CMake
@@ -52,12 +52,12 @@ The engine comes with an example (2D platform game) that uses only the functions
 - SFML Library (2.4 +)
 
 **AndroidStudio**
-- Install Android Studio (3.1.3 +)
+- Android Studio (3.1.3 +)
 - Android SDK and NDK (r20b)
 - Firebase C++ SDK 4.5.0 (If you need it)
 
 **CodeBlocks**
-- Install Code::Blocks (20.03)
+- Code::Blocks (20.03)
 - GCC Compiler (7.3 +)
 
 **CMake**

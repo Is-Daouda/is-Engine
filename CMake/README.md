@@ -7,7 +7,7 @@ This project allows you to compile the is::Engine game engine with the CMake too
 ## Prerequisites
 
 - [SFML Library](https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip) (2.5 +)
-- Install CMake (3.1 +)
+- CMake (3.1 +)
 - GCC Compiler (7.3 +)
 
 ---
