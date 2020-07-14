@@ -133,6 +133,7 @@ void GameMenu::step()
                                     playSelectSnd();
                                     m_gameSysExt.saveData(is::GameConfig::GAME_DATA_FILE);
                                     m_gameSysExt.m_launchOption = is::DisplayOption::GAME_LEVEL;
+                                    GSMgetMusic("game_music")->stop();
                                     m_isClose = true;
                                 }
                                 else
@@ -149,6 +150,7 @@ void GameMenu::step()
                                     m_gameSysExt.useVibrate(m_vibrateTimeDuration);
                                     m_gameSysExt.m_currentLevel = m_gameSysExt.m_gameProgression;
                                     m_gameSysExt.m_launchOption = is::DisplayOption::GAME_LEVEL;
+                                    GSMgetMusic("game_music")->stop();
                                     m_isClose = true;
                                 }
                             break;
@@ -239,8 +241,13 @@ void GameMenu::step()
                                     {
                                         m_gameSysExt.m_enableMusic = true;
                                         GSMplaySound("select_option"); // We play this sound
+                                        GSMgetMusic("game_music")->play();
                                     }
-                                    else m_gameSysExt.m_enableMusic = false;
+                                    else
+                                    {
+                                        GSMgetMusic("game_music")->pause();
+                                        m_gameSysExt.m_enableMusic = false;
+                                    }
                                     setKeyToTrue(OP_MENU_MSC);
                                 break;
 
@@ -460,6 +467,7 @@ void GameMenu::step()
                                 m_gameSysExt.initProgress();
                                 m_gameSysExt.saveData(is::GameConfig::GAME_DATA_FILE);
                                 m_gameSysExt.m_launchOption = is::DisplayOption::GAME_LEVEL;
+                                GSMgetMusic("game_music")->stop();
                                 m_isClose = true;
                             }
                             else m_waitTime = 20;

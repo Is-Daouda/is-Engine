@@ -300,10 +300,10 @@ void GameLevel::loadResources()
     SDMaddSceneObject(lvlTitle); // We add the object in the SDM container
 
     // load level music
-    GSMaddMusic("level_music", is::GameConfig::MUSIC_DIR + "world_1_music.ogg");
-    GSMgetMusic("level_music")->setLoop(true);
-    GSMgetMusic("level_music")->play();
+    GSMaddMusic("game_music", is::GameConfig::MUSIC_DIR + "game_music.ogg");
+    GSMgetMusic("game_music")->setLoop(true);
+    GSMgetMusic("game_music")->play();
 
     // don't play music if this option is off
-    if (!m_gameSysExt.m_enableMusic) GSMgetMusic("level_music")->pause();
+    if (!m_gameSysExt.m_enableMusic) GSMgetMusic("game_music")->pause();
 }

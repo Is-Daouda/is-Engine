@@ -1,0 +1,20 @@
+-- android-14 is unsupported. Using minimum supported version 16.
+-- Check for working C compiler: C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/bin/clang.exe
+-- Check for working C compiler: C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/bin/clang.exe -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/bin/clang++.exe
+-- Check for working CXX compiler: C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/bin/clang++.exe -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- SFML include dir: C:\Android\NDK/sources/sfml/include
+-- SFML lib dir: C:\Android\NDK/sources/sfml/lib/x86/
+-- SFML extlib dir: C:\Android\NDK/sources/sfml/extlibs/lib/x86/
+-- ABI x86
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86

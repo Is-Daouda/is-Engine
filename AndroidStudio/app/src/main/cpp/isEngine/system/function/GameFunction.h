@@ -10,7 +10,7 @@
 /// Allows to browse object container (std::vector, ...)
 #define WITH(_SIZE) for(unsigned int _I = 0; _I < _SIZE; ++_I)
 
-#include "../entity/Forme.h"
+#include "../entity/Form.h"
 #include "../function/GameSystem.h"
 #include "../../../app_src/config/GameConfig.h"
 
@@ -36,7 +36,7 @@ static float const VALUE_TIME(1.538f);     ///< game execution timing variables
 
 static float const PI(3.14f);
 
-/// Convert w_chart_t to string
+/// Convert wchart_t to string
 std::string w_chart_tToStr(wchar_t const *str);
 
 /// Convert string to wstring

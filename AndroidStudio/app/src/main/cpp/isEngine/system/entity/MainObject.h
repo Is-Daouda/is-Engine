@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "../entity/Forme.h"
+#include "../entity/Form.h"
 #include "../entity/parents/Name.h"
 #include "../function/GameFunction.h"
 

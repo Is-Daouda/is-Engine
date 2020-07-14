@@ -81,9 +81,9 @@ namespace GameConfig
     static const sf::Keyboard::Key KEY_UP = sf::Keyboard::Up;       ///< Represents the Up directional key
     static const sf::Keyboard::Key KEY_DOWN = sf::Keyboard::Down;   ///< Represents the Down directional key
 
-    static const std::wstring MAJOR = L"2"; ///< Game major version
-    static const std::wstring MINOR = L"1"; ///< Game minor version
-    inline std::wstring getGameVersion() {return MAJOR + L"." + MINOR;} ///< return version of the game
+    static const std::string MAJOR = "2"; ///< Game major version
+    static const std::string MINOR = "1"; ///< Game minor version
+    inline std::string getGameVersion() {return MAJOR + "." + MINOR;} ///< return version of the game
 
     static std::wstring const GAME_NAME     = L"is::Engine DEMO"; ///< Windows title name
     static std::wstring const GAME_AUTHOR   = L"Is Daouda";

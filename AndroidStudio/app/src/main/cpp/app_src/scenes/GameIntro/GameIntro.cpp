@@ -76,7 +76,6 @@ void GameIntro::step()
                 else
                 {
                     is::decreaseVar(DELTA_TIME, m_recScale, 0.09f, 0.f, 0.f);
-
                     if (!m_blind)
                     {
                         if (m_imgAlpha < 250) m_imgAlpha += static_cast<int>((4.f * is::VALUE_CONVERSION) * DELTA_TIME);
@@ -141,7 +140,6 @@ void GameIntro::step()
                 }
             break;
         }
-
         is::setSFMLObjScale(m_recChooseLanguage, m_recScale);
         if (m_introStep < 3) is::setSFMLObjFillColor(m_recTransition, sf::Color(255, 255, 255, m_alphaRec));
         else is::setSFMLObjFillColor(m_recTransition, sf::Color(0, 0, 0, m_alphaRec));
@@ -172,7 +170,6 @@ void GameIntro::draw()
 void GameIntro::loadResources()
 {
     GameDisplay::loadParentResources();
-
     m_gameSysExt.loadConfig(is::GameConfig::CONFIG_FILE);
 
     // load textures
@@ -182,7 +179,6 @@ void GameIntro::loadResources()
     {
         is::loadSFMLObjResource(m_texPad, is::GameConfig::GUI_DIR + "main_menu_pad.png");
         is::loadSFMLObjResource(m_fontTitle, is::GameConfig::FONT_DIR + "space_ranger_3d_mp_pv.otf");
-
         is::createWText(m_fontTitle, m_txtChooseLanguage, L"Choose Language", 0.f, 0.f, sf::Color(255, 255, 255), 48);
         is::centerSFMLObj(m_txtChooseLanguage);
         is::setSFMLObjX_Y(m_txtChooseLanguage, m_viewX, m_viewY - 90.f);
@@ -195,11 +191,36 @@ void GameIntro::loadResources()
                        is::getSFMLObjX(m_sprButtonSelect), is::getSFMLObjY(m_sprButtonSelect) - 6.f, sf::Color(255, 255, 255), true, 25);
         is::createText(m_fontSystem, m_txtLangFr, is::lang::pad_game_language[is::lang::GameLanguage::FRANCAIS],
                        is::getSFMLObjX(m_sprPadFr), is::getSFMLObjY(m_sprPadFr) - 6.f, sf::Color(255, 255, 255), true, 25);
-
         m_openLanguageMenu = true;
     }
-
     is::createSprite(m_texLogo, m_sprLogo, sf::IntRect(0, 0, 256, 128), sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
     is::centerSFMLObj(m_sprLogo);
     is::setSFMLObjX_Y(m_sprLogo, m_viewX, m_viewY);
+
+    #if !defined(__ANDROID__)
+    is::TinyDialogBox::showDialogBox("Dialog Box",
+                                     "Hello,\n"
+                                     "Congratulations and Welcome to the Demo of is::Engine " + is::GameConfig::getGameVersion() + ".\n"
+                                     "This Dialog Box is displayed thanks to the TinyFileDialogs library.\n"
+                                     "Please go to the GameIntro.cpp file line: 200 to see how it works and discover other dialog boxes.\n"
+                                     "Enjoy !",
+                                     is::TinyDialogBox::DialogType::OK,
+                                     is::TinyDialogBox::IconType::INFO);
+
+    /* uncomment to use this code
+    // show folder dialog box
+    is::TinyDialogBox::showFolderDialogBox("Folder Dialog");
+ 
+    // show save file dialog box
+    // You need to define a file pater to save / load files.
+    // On windows we use the wchar_t strings and on Linux char
+    tinyString filterPatterns[] =
+                                #if !defined(SFML_SYSTEM_LINUX)
+                                {L"*.sav", L"*.save"};
+                                #else
+                                {"*.sav", "*.save"};
+                                #endif
+    is::TinyDialogBox::showFileDialogBox(is::TinyDialogBox::FileDialogType::SAVE_FILE, "File Dialog", filterPatterns);
+    */
+    #endif // defined
 }

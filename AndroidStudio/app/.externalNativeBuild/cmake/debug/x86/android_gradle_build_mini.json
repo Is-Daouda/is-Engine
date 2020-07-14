@@ -1,0 +1,16 @@
+{
+  "buildFiles": [
+    "C:\\AndroidStudio\\app\\CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "C:\\Android\\sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build C:\\AndroidStudio\\app\\.externalNativeBuild\\cmake\\debug\\x86 --target clean"
+  ],
+  "libraries": {
+    "isenginedemo-Debug-x86": {
+      "artifactName": "isenginedemo",
+      "buildCommand": "C:\\Android\\sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build C:\\AndroidStudio\\app\\.externalNativeBuild\\cmake\\debug\\x86 --target isenginedemo",
+      "abi": "x86",
+      "output": "C:\\AndroidStudio\\app\\build\\intermediates\\cmake\\debug\\obj\\x86\\libisenginedemo.so"
+    }
+  }
+}

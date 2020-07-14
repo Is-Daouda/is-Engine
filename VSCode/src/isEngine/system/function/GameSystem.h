@@ -78,18 +78,31 @@ public:
     //////////////////////////////////////////////////////
     bool fileExist(std::string const &fileName) const;
 
-    /// Allows to play a sound / music if the option is activated
-    template <class T>
-    void playSound(T &obj)
+    /// Allows to play a sound if the option is activated
+    void playSound(sf::Sound &obj)
     {
         if (m_enableSound) obj.play();
     }
 
-    /// Allows to stop a sound / music
-    template <class T>
-    void stopSound(T &obj)
+    /// Allows to play a music if the option is activated
+    void playMusic(sf::Music &obj)
+    {
+        if (m_enableMusic) obj.play();
+    }
+
+    /// Allows to stop a sound
+    void stopSound(sf::Sound &obj)
     {
         if (m_enableSound)
+        {
+            if (obj.getStatus() == sf::Sound::Playing) obj.stop();
+        }
+    }
+
+    /// Allows to stop a music
+    void stopMusic(sf::Music &obj)
+    {
+        if (m_enableMusic)
         {
             if (obj.getStatus() == sf::Sound::Playing) obj.stop();
         }

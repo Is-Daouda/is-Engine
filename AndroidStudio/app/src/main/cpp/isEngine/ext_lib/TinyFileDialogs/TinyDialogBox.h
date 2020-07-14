@@ -126,8 +126,8 @@ namespace is
         /// \return @a 1 when user click on @a OK button and @a 0 when @a CANCEL or @a NO button is clicked
         ///
         ////////////////////////////////////////////////////////////
-        static int showDialogBox(tinyString title,
-                                 tinyString msgError,
+        static int showDialogBox(std::string title,
+                                 std::string msg,
                                  DialogType dialogType,
                                  IconType iconType
                                  )
@@ -136,9 +136,9 @@ namespace is
             tinyString const _iconType = enumIconTypeToStr(iconType);
             return (
                     #if !defined(SFML_SYSTEM_LINUX)
-                    tinyfd_messageBoxW(title, msgError, _dialogType, _iconType, 1)
+                    tinyfd_messageBoxW(is::strToWStr(title).c_str(), is::strToWStr(msg).c_str(), _dialogType, _iconType, 1)
                     #else
-                    tinyfd_messageBox(title, msgError, _dialogType, _iconType, 1)
+                    tinyfd_messageBox(title.c_str(), msg.c_str(), _dialogType, _iconType, 1)
                     #endif
                     );
         }
@@ -152,35 +152,30 @@ namespace is
         ///
         ////////////////////////////////////////////////////////////
         static std::string showFileDialogBox(FileDialogType type,
-                                             tinyString title,
+                                             std::string title,
                                              tinyString filterPatterns[],
-                                             #if !defined(SFML_SYSTEM_LINUX)
-                                             tinyString fileName = L"file",
-                                             tinyString msgError = L"Unable to access file!",
-                                             tinyString errTitle = L"Error"
-                                             #else
-                                             tinyString fileName = "file",
-                                             tinyString msgError = "Unable to access file!",
-                                             tinyString errTitle = "Error"
-                                             #endif
+                                             std::string fileName = "file",
+                                             std::string msgError = "Unable to access file!",
+                                             std::string errTitle = "Error"
                                              )
         {
             if (type == FileDialogType::SAVE_FILE)
             {
                 TINY_FILE_DIALOGBOX_PATH =
                                             #if !defined(SFML_SYSTEM_LINUX)
-                                            tinyfd_saveFileDialogW(title, fileName, 2, filterPatterns, NULL);
+                                            tinyfd_saveFileDialogW(is::strToWStr(title).c_str(), is::strToWStr(fileName).c_str(), 2, filterPatterns, NULL);
                                             #else
-                                            tinyfd_saveFileDialog(title, fileName, 2, filterPatterns, NULL);
+                                            tinyfd_saveFileDialog(title.c_str(), fileName.c_str(), 2, filterPatterns, NULL);
                                             #endif
             }
             else
             {
                 TINY_FILE_DIALOGBOX_PATH =
                                             #if !defined(SFML_SYSTEM_LINUX)
-                                            tinyfd_openFileDialogW(title, L"", 2, filterPatterns, NULL, 0);
+                                            0;
+                                            //tinyfd_openFileDialogW(is::strToWStr(title).c_str(), L"", 2, filterPatterns, NULL, 0);
                                             #else
-                                            tinyfd_openFileDialog(title, "", 2, filterPatterns, NULL, 0);
+                                            tinyfd_openFileDialog(title.c_str(), "", 2, filterPatterns, NULL, 0);
                                             #endif
             }
             if (!TINY_FILE_DIALOGBOX_PATH)
@@ -206,23 +201,22 @@ namespace is
         /// \return directory path if the function succeeded and @a "" (empty string) is faliled
         ///
         ////////////////////////////////////////////////////////////
-        static std::string showFolderDialogBox(tinyString title,
+        static std::string showFolderDialogBox(std::string title,
+                                               std::string defaultPath
                                                #if !defined(SFML_SYSTEM_LINUX)
-                                               tinyString defaultPath = L"C:\\",
-                                               tinyString msgError = L"Unable to access folder!",
-                                               tinyString errTitle = L"Error"
+                                                = "C:\\",
                                                #else
-                                               tinyString defaultPath,
-                                               tinyString msgError = "Unable to access folder!",
-                                               tinyString errTitle = "Error"
+                                                = "/home/",
                                                #endif
+                                               std::string msgError = "Unable to access folder!",
+                                               std::string errTitle = "Error"
                                                )
         {
             TINY_FILE_DIALOGBOX_PATH =
                                         #if !defined(SFML_SYSTEM_LINUX)
-                                        tinyfd_selectFolderDialogW(title, defaultPath);
+                                        tinyfd_selectFolderDialogW(is::strToWStr(title).c_str(), is::strToWStr(defaultPath).c_str());
                                         #else
-                                        tinyfd_selectFolderDialog(title, defaultPath);
+                                        tinyfd_selectFolderDialog(title.c_str(), defaultPath.c_str());
                                         #endif
             if (!TINY_FILE_DIALOGBOX_PATH)
             {

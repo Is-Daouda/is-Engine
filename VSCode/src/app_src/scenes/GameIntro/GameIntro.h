@@ -2,6 +2,9 @@
 #define GAMEINTRO_H_INCLUDED
 
 #include "../../../isEngine/system/display/GameDisplay.h"
+#if !defined(__ANDROID__)
+#include "../../../isEngine/ext_lib/TinyFileDialogs/TinyDialogBox.h"
+#endif // defined
 
 class GameIntro : public is::GameDisplay
 {

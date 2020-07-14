@@ -8,7 +8,7 @@ GameEngine::~GameEngine()
     #endif // defined
 }
 
-bool GameEngine::initEngine()
+void GameEngine::initEngine()
 {
     m_gameSysExt.initSystemData();
     m_window.create(sf::VideoMode(is::GameConfig::WINDOW_WIDTH, is::GameConfig::WINDOW_HEIGHT),
@@ -18,8 +18,8 @@ bool GameEngine::initEngine()
     #if !defined(__ANDROID__)
     // load application icon
     sf::Image iconTex;
-    if (!iconTex.loadFromFile(is::GameConfig::GUI_DIR + "icon.png")) return false;
-    m_window.setIcon(iconTex.getSize().x, iconTex.getSize().y, iconTex.getPixelsPtr());
+    if (iconTex.loadFromFile(is::GameConfig::GUI_DIR + "icon.png"))
+    	m_window.setIcon(iconTex.getSize().x, iconTex.getSize().y, iconTex.getPixelsPtr());
 
     // create saving directory
     if (!m_gameSysExt.fileExist(is::GameConfig::CONFIG_FILE))
@@ -37,7 +37,6 @@ bool GameEngine::initEngine()
     #endif // defined
 
     m_window.setFramerateLimit(is::GameConfig::FPS);
-    return true;
 }
 
 bool GameEngine::play()
@@ -45,7 +44,7 @@ bool GameEngine::play()
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                      GAME INTILISATION
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-    if (!initEngine()) return false;
+    initEngine();
 
     #if defined(__ANDROID__)
     #if defined(IS_ENGINE_USE_ADMOB)

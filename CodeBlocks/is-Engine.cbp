@@ -17,7 +17,6 @@
 				<Linker>
 					<Add library="sfml-audio-d" />
 					<Add library="sfml-graphics-d" />
-					<Add library="sfml-network-d" />
 					<Add library="sfml-window-d" />
 					<Add library="sfml-system-d" />
 				</Linker>
@@ -34,7 +33,6 @@
 					<Add option="-s" />
 					<Add library="sfml-audio" />
 					<Add library="sfml-graphics" />
-					<Add library="sfml-network" />
 					<Add library="sfml-window" />
 					<Add library="sfml-system" />
 				</Linker>
@@ -255,7 +253,6 @@
 		<Unit filename="isEngine/system/display/GameDisplay.h" />
 		<Unit filename="isEngine/system/display/SDM.h" />
 		<Unit filename="isEngine/system/entity/Form.h" />
-		<Unit filename="isEngine/system/entity/Forme.h" />
 		<Unit filename="isEngine/system/entity/MainObject.cpp" />
 		<Unit filename="isEngine/system/entity/MainObject.h" />
 		<Unit filename="isEngine/system/entity/parents/DepthObject.h" />
@@ -280,9 +277,6 @@
 		<Unit filename="isEngine/system/sound/GameMusic.h" />
 		<Unit filename="isEngine/system/sound/GameSound.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="resource.rc">
-			<Option compilerVar="WINDRES" />
-		</Unit>
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

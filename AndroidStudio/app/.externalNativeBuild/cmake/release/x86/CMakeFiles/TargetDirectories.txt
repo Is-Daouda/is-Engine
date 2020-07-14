@@ -1,0 +1,3 @@
+C:/AndroidStudio/app/.externalNativeBuild/cmake/release/x86/CMakeFiles/edit_cache.dir
+C:/AndroidStudio/app/.externalNativeBuild/cmake/release/x86/CMakeFiles/isenginedemo.dir
+C:/AndroidStudio/app/.externalNativeBuild/cmake/release/x86/CMakeFiles/rebuild_cache.dir

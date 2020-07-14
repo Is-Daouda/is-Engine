@@ -31,7 +31,7 @@ public:
     ~GameEngine();
 
     /// Initialize game engine
-    bool initEngine();
+    void initEngine();
 
     /// Starts the engine rendering loop
     bool play();

@@ -18,7 +18,7 @@ void GameMenu::loadResources()
     if (m_gameSysExt.fileExist(is::GameConfig::CONFIG_FILE)) m_gameSysExt.loadConfig(is::GameConfig::CONFIG_FILE);
 
     // game title
-    is::createWText(m_fontTitle, m_txtGameTitle, L"is::Engine v" + is::GameConfig::getGameVersion() + L"\n\t  Demo",
+    is::createText(m_fontTitle, m_txtGameTitle, "is::Engine v" + is::GameConfig::getGameVersion() + "\n\t  Demo",
                     65.f, 32.f, sf::Color(0, 0, 0), 64);
 
     float distance(5.f), widgetSpace(65.f);
@@ -93,4 +93,12 @@ void GameMenu::loadResources()
     is::setSFMLObjOutlineColor(m_recSelectPad, 1.f, sf::Color::Red);
 
     is::createRectangle(m_recCfgBg, sf::Vector2f(m_viewW + 10.f, m_viewH + 10.f), sf::Color(0, 0, 0, 230), m_viewX, m_viewY, true);
+
+    // load music
+    GSMaddMusic("game_music", is::GameConfig::MUSIC_DIR + "game_music.ogg");
+    GSMgetMusic("game_music")->setLoop(true);
+    GSMgetMusic("game_music")->play();
+
+    // don't play music if this option is off
+    if (!m_gameSysExt.m_enableMusic) GSMgetMusic("game_music")->pause();
 }

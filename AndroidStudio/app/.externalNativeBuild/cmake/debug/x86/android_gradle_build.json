@@ -1,0 +1,512 @@
+
+{
+	"buildFiles" : [ "C:/AndroidStudio/app/CMakeLists.txt" ],
+	"cleanCommands" : 
+	[
+		"C:\\Android\\sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build C:\\AndroidStudio\\app\\.externalNativeBuild\\cmake\\debug\\x86 --target clean"
+	],
+	"cppFileExtensions" : [ "cpp" ],
+	"libraries" : 
+	{
+		"isenginedemo-Debug-x86" : 
+		{
+			"abi" : "x86",
+			"artifactName" : "isenginedemo",
+			"buildCommand" : "C:\\Android\\sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build C:\\AndroidStudio\\app\\.externalNativeBuild\\cmake\\debug\\x86 --target isenginedemo",
+			"buildType" : "debug",
+			"files" : 
+			[
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/main.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/basicSFMLmain.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/gamesystem_ext/GameSystemExtended.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/scenes/GameEndScreen/GameEndScreen.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/scenes/GameIntro/GameIntro.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/scenes/GameLevel/GameLevelConstructor.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/scenes/GameLevel/GameLevelLoadResource.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/scenes/GameLevel/GameLevelStep.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/scenes/GameLevel/GameLevelStepGamePlay.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/scenes/GameLevel/GameLevelStepSubFunction.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/scenes/GameMenu/GameMenu.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/scenes/GameMenu/GameMenuDraw.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/scenes/GameMenu/GameMenuLoadResource.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/scenes/GameOver/GameOver.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/objects/gamelevel/Block.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/objects/gamelevel/BlockPhysic.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/objects/gamelevel/Bonus.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/objects/gamelevel/ElectroShock.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/objects/gamelevel/Enemy.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/objects/gamelevel/FinishObject.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/objects/gamelevel/HUD.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/objects/gamelevel/LevelTile.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/objects/gamelevel/LevelTitle.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/objects/gamelevel/Limiter.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/objects/gamelevel/Player.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/objects/widgets/CancelButton.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/objects/widgets/GameDialog.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/app_src/objects/widgets/PauseOption.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/core/GameEngine.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/system/display/GameDisplay.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/system/entity/MainObject.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/system/function/GameKeyData.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/system/function/GameSystem.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/system/function/GameFunction.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/system/function/GameTime.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Collision/b2BroadPhase.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Collision/b2CollideCircle.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Collision/b2CollideEdge.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Collision/b2CollidePolygon.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Collision/b2Collision.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Collision/b2Distance.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Collision/b2DynamicTree.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Collision/b2TimeOfImpact.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Collision/Shapes/b2CircleShape.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Collision/Shapes/b2EdgeShape.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Collision/Shapes/b2ChainShape.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Collision/Shapes/b2PolygonShape.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Common/b2BlockAllocator.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Common/b2Draw.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Common/b2Math.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Common/b2Settings.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Common/b2StackAllocator.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Common/b2Timer.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/b2Body.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/b2ContactManager.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/b2Fixture.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/b2Island.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/b2World.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/b2WorldCallbacks.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2CircleContact.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2Contact.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2ContactSolver.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2ChainAndCircleContact.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2PolygonContact.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2DistanceJoint.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2FrictionJoint.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2GearJoint.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2Joint.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2MotorJoint.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2MouseJoint.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2PrismaticJoint.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2PulleyJoint.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2RevoluteJoint.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2RopeJoint.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2WeldJoint.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				},
+				
+				{
+					"flags" : "  --target=i686-none-linux-android16 --gcc-toolchain=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Disenginedemo_EXPORTS -IC:\\Android\\NDK\\sources\\sfml\\include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++1z -std=c++14 -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "C:/AndroidStudio/app/src/main/cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2WheelJoint.cpp",
+					"workingDirectory" : "C:/AndroidStudio/app/.externalNativeBuild/cmake/debug/x86"
+				}
+			],
+			"output" : "C:/AndroidStudio/app/build/intermediates/cmake/debug/obj/x86/libisenginedemo.so",
+			"toolchain" : "4226000169"
+		}
+	},
+	"toolchains" : 
+	{
+		"4226000169" : 
+		{
+			"cCompilerExecutable" : "C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/bin/clang.exe",
+			"cppCompilerExecutable" : "C:/Android/NDK/toolchains/llvm/prebuilt/windows-x86_64/bin/clang++.exe"
+		}
+	}
+}

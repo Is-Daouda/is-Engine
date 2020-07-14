@@ -68,11 +68,11 @@ void GameLevel::stopSounds(bool val)
     {
         if (val)
         {
-            if (is::getSFMLSndState(GSMgetMusic("level_music"), sf::Sound::Playing)) GSMgetMusic("level_music")->pause();
+            if (is::getSFMLSndState(GSMgetMusic("game_music"), sf::Sound::Playing)) GSMgetMusic("game_music")->pause();
         }
         else
         {
-            if (is::getSFMLSndState(GSMgetMusic("level_music"), sf::Sound::Paused)) GSMgetMusic("level_music")->play();
+            if (is::getSFMLSndState(GSMgetMusic("game_music"), sf::Sound::Paused)) GSMgetMusic("game_music")->play();
         }
     }
 }

@@ -399,7 +399,7 @@ public:
             if (m_GSMmusic[_I]->getName() == name)
             {
                 musicExist = true;
-                if (m_GSMmusic[_I]->getFileIsLoaded()) m_gameSysExt.playSound(m_GSMmusic[_I]->getMusic());
+                if (m_GSMmusic[_I]->getFileIsLoaded()) m_gameSysExt.playMusic(m_GSMmusic[_I]->getMusic());
                 else is::showLog("music exists but can't play <" + name + "> music!");
                 break;
             }
