@@ -50,6 +50,7 @@ The engine comes with an example (2D platform game) that uses only the functions
 
 ## Prerequisites
 - SFML Library (2.4 +)
+- GCC Compiler (7.3 +)
 
 **AndroidStudio**
 - Android Studio (3.1.3 +)
@@ -58,15 +59,12 @@ The engine comes with an example (2D platform game) that uses only the functions
 
 **CodeBlocks**
 - Code::Blocks (20.03)
-- GCC Compiler (7.3 +)
 
 **CMake**
 - CMake (3.1 +)
-- GCC Compiler (7.3 +)
 
 **VSCode**
 - Visual Studio Code (1.42.0 +)
-- GCC Compiler (7.3 +)
 - Git Bash (For Windows only)
 
 ## Todo
