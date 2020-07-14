@@ -15,9 +15,9 @@ This project allows you to compile the is::Engine game engine with the CMake too
 ## Installation
 
 ### Windows
-1. Compile SFML with CMake to have **static libraries** and put on **C:/** (C:/SFML)
-2. Move the *CMake project* of is::Engine to your **C:/** (C:/CMake)
-3. Execute this command :
+- Compile SFML with CMake to have **static libraries** and put on **C:/** (C:/SFML)
+- Move the *CMake project* of is::Engine to your **C:/** (C:/CMake)
+- Execute this command :
 ```bash
 cmake -S "C:/CMake" -B "C:/build"
 cd build
@@ -25,9 +25,9 @@ make
 ```
 
 ### Linux
-1. Install SFML 2.5.1 on your machine
-2. Move the CMake project of is::Engine to **/home/user/** (/home/user/CMake)
-3. Execute this command :
+- Install SFML 2.5.1 on your machine
+- Move the CMake project of is::Engine to **/home/user/** (/home/user/CMake)
+- Execute this command :
 ```bash
 sudo cmake -S "CMake" -B "build"
 cd build
