@@ -85,7 +85,7 @@ std::string writeZero(T val, int zeroNumber = 1)
 int getMSecond(float const &DELTA_TIME);
 
 /// Show log message
-void showLog(std::string str);
+void showLog(std::string str, bool stopApplication = false);
 
 /// Get array size
 template <size_t SIZE, class T>
@@ -133,10 +133,6 @@ bool isBetween(float a, float b, float c);
 
 /// Return if [l1,r1] intersect [l2,r2]
 bool isCrossing(float l1, float r1, float l2, float r2);
-
-/// Test if the point m is on the right side of the vector ab
-/// \return -1 on the left, 1 on the right, 0 if a b c are aligned
-int side(Point m, Point a,Point b);
 
 /// Return sign of x
 int sign(float x);
@@ -191,7 +187,16 @@ void decreaseVar(const float &DELTA_TIME, T &var, T decreaseValue, T varFinal = 
 }
 
 /// Test collision between two rectangles
-bool collisionTest(Rectangle const &firstBox, Rectangle const &secondBox);
+bool collisionTest(Rectangle const &a, Rectangle const &b);
+
+/// Test collision between two circles
+bool collisionTest(Circle const &a, Circle const &b);
+
+/// Test collision between rectangle and circle
+bool collisionTest(Circle const &circle, Rectangle const &rec);
+
+/// Test collision between rectangle and circle
+bool collisionTest(Rectangle const &rec, Circle const &circle);
 
 /// Return the angle of SFML object
 template <class T>
@@ -452,8 +457,7 @@ template <class T>
 bool loadSFMLObjResource(T &obj, std::string filePath, bool stopExecution = false)
 {
     if (obj.loadFromFile(filePath)) return true;
-    showLog("Can't load file : " + filePath);
-    if (stopExecution) std::terminate();
+    showLog("ERROR: Can't load file : " + filePath, stopExecution);
     return false;
 }
 
@@ -465,8 +469,7 @@ inline bool loadSFMLObjResource(sf::SoundBuffer &sb, sf::Sound &snd, std::string
         snd.setBuffer(sb);
         return true;
     }
-    showLog("Can't load file : " + filePath);
-    if (stopExecution) std::terminate();
+    showLog("ERROR: Can't load file : " + filePath, stopExecution);
     return false;
 }
 
@@ -507,16 +510,6 @@ bool getSFMLSndState(T *obj, sf::Sound::Status state)
     }
     return false;
 }
-
-/*
-// test whether there are a collision between the two rectangle r1 and r2
-bool isCollision(Rectangle r1, Rectangle r2);
-bool isCollision(Rectangle r, Point p);
-bool isCollision(Point p, Rectangle r);
-bool isCollision(Rectangle r, Line l);
-bool isCollision(Line l, Rectangle r);
-bool isCollision(Line l1,Line l2);
-*/
 
 /// Test collision between SFML object
 template <class A, class B>

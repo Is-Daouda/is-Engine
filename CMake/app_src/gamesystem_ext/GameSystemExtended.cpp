@@ -1,5 +1,7 @@
 #include "GameSystemExtended.h"
 
+namespace is
+{
 GameSystemExtended::GameSystemExtended() :
     GameSystem()
 {
@@ -73,4 +75,5 @@ void GameSystemExtended::loadData(std::string const &fileName)
         fread(&m_currentBonus, sizeof(int), 1, file);
         fclose(file);
     }
+}
 }

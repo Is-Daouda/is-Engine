@@ -13,6 +13,8 @@
 /// configuration data, manipulate the data of the virtual
 /// Game Pad and act on the different scenes of the game
 ////////////////////////////////////////////////////////////
+namespace is
+{
 class GameSystemExtended : public is::GameSystem
 {
 public:
@@ -44,5 +46,6 @@ public:
     int   m_currentScore;
     int   m_levelTime;
 };
+}
 
 #endif // GAMESYSTEMEXTENDED_H_INCLUDED

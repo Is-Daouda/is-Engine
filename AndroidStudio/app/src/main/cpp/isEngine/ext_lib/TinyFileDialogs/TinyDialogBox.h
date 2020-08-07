@@ -206,7 +206,7 @@ namespace is
                                                #if !defined(SFML_SYSTEM_LINUX)
                                                 = "C:\\",
                                                #else
-                                                = "/home/",
+                                                = "/usr/local",
                                                #endif
                                                std::string msgError = "Unable to access folder!",
                                                std::string errTitle = "Error"

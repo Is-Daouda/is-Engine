@@ -14,10 +14,10 @@
 
 #if defined(__ANDROID__)
 // uncomment this line to use Admob
-// #define IS_ENGINE_USE_ADMOB
+// #define IS_ENGINE_USE_ADMOB ///< Allows to use Admob Manager
 
 // if you enable Admob you need to uncomment line in
-// CMakeLists and Gradle files to link the Firebase library on project
+// CMakeLists and Gradle files to link the Firebase library on your project
 #endif // defined
 ////////////////////////////////////////////////////////////
 
@@ -29,16 +29,10 @@ namespace is
 ////////////////////////////////////////////////////////////
 enum DisplayOption
 {
-    RESUME_GAME = 0,         ///< When player close pause menu
-    GAME_OPTION_RESTART = 1, ///< When player restart the level with restart option
-    QUIT_GAME = 2,           ///< When player use quit option
-    INTRO,                   ///< Access the introduction scene
-    RESTART_LEVEL,           ///< When player loses a life
-    NEXT_LEVEL,              ///< Access the next level scene
-    MAIN_MENU,               ///< Access the main menu scene
-    GAME_LEVEL,              ///< Access the game level scene
-    GAME_OVER,               ///< Access the game over scene
-    GAME_END_SCREEN          ///< Access the game end scene
+    HELLO_SCENE,   ///< Access the hello scene
+
+    // example
+    // YOUR_SCENE ///< Access to your scene
 };
 
 ////////////////////////////////////////////////////////////
@@ -68,7 +62,7 @@ namespace GameConfig
     static const float        FPS            = 60.f; ///< Game FPS
     static const is::WindowStyle WINDOW_SETTINGS = WindowStyle::DEFAULT; ///< Window style
 
-	static const DisplayOption LAUNCH_OPTION = DisplayOption::INTRO; ///< Represents the first scene to be launched
+	static const DisplayOption LAUNCH_OPTION = DisplayOption::HELLO_SCENE; ///< Represents the first scene to be launched
 
     static const sf::Mouse::Button KEY_VALIDATION_MOUSE    = sf::Mouse::Left;      ///< Represent the key which validates the options with the Mouse
     static const sf::Keyboard::Key KEY_VALIDATION_KEYBOARD = sf::Keyboard::Return; ///< Represent the key which validates the options with the Keyboard
@@ -81,12 +75,12 @@ namespace GameConfig
     static const sf::Keyboard::Key KEY_UP = sf::Keyboard::Up;       ///< Represents the Up directional key
     static const sf::Keyboard::Key KEY_DOWN = sf::Keyboard::Down;   ///< Represents the Down directional key
 
-    static const std::string MAJOR = "2"; ///< Game major version
-    static const std::string MINOR = "1"; ///< Game minor version
+    static const std::string MAJOR = "1"; ///< Game major version
+    static const std::string MINOR = "0"; ///< Game minor version
     inline std::string getGameVersion() {return MAJOR + "." + MINOR;} ///< return version of the game
 
-    static std::wstring const GAME_NAME     = L"is::Engine DEMO"; ///< Windows title name
-    static std::wstring const GAME_AUTHOR   = L"Is Daouda";
+    static std::wstring const GAME_NAME     = L"Hello"; ///< Windows title name
+    static std::wstring const GAME_AUTHOR   = L"Author";
 
     #if defined(IS_ENGINE_USE_ADMOB)
     ////////////////////////////////////////////////////////////

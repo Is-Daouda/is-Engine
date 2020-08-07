@@ -1,6 +1,8 @@
 #include "GameDialog.h"
 
-GameDialog::GameDialog(is::GameDisplay *m_scene) :
+namespace is
+{
+GameDialog::GameDialog(sf::Texture &tex, sf::Font &fnt, GameDisplay *m_scene) :
     MainObject(),
     m_scene(m_scene),
     m_showDialog(false),
@@ -13,11 +15,9 @@ GameDialog::GameDialog(is::GameDisplay *m_scene) :
     m_blindTime(0.f),
     m_dialogIndex(DIALOG_NONE)
 {
-    m_imageScale = 0.f;
-}
+    m_strName = "GameDialog"; // object name
 
-void GameDialog::loadResources(sf::Texture &tex, sf::Font &fnt)
-{
+    m_imageScale = 0.f;
     is::createText(fnt, m_txtDialog, "", m_x, m_y, 16, false, false);
     is::createText(fnt, m_txtSkip, "", m_x, m_y, 13, false, true);
     is::setSFMLObjFillColor(m_txtSkip, sf::Color(0, 0, 255, 255));
@@ -37,6 +37,12 @@ void GameDialog::step(const float &DELTA_TIME)
 {
     if (m_showDialog)
     {
+        if (!m_scene->getGameSystem().keyIsPressed(is::GameConfig::KEY_A) && !m_scene->getGameSystem().isPressed())
+            m_scene->getGameSystem().m_keyIsPressed = false;
+        if (!m_scene->mouseCollision(m_sprParent) && m_scene->getGameSystem().isPressed())
+            m_scene->getGameSystem().m_keyIsPressed = true;
+        setPosition(m_scene->getViewX(), m_scene->getViewY() + 32.f);
+
         m_mouseInCollison = false;
         float const _VAL(is::getMSecond(DELTA_TIME));
         m_time += (0.8f * is::VALUE_CONVERSION) * DELTA_TIME;
@@ -169,4 +175,5 @@ void GameDialog::draw(sf::RenderTexture &surface)
         surface.draw(m_sprSkip);
         if (m_blindTime < 18.f && m_size == (static_cast<int>(m_strDialog.size()) - 1)) surface.draw(m_sprNext);
     }
+}
 }

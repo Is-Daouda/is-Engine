@@ -1,13 +1,12 @@
 #ifndef GAMEDISPLAY_H_INCLUDED
 #define GAMEDISPLAY_H_INCLUDED
 
-#include <memory>
-#include "../function/GameFunction.h"
 #include "../../../app_src/gamesystem_ext/GameSystemExtended.h"
 #include "../../../app_src/language/GameLanguage.h"
 
 #if defined(IS_ENGINE_USE_SDM)
 #include "SDM.h"
+
 #endif // defined
 #if defined(IS_ENGINE_USE_GSM)
 #include "../sound/GSM.h"
@@ -114,9 +113,7 @@ public:
      = 0;
     #else
     {
-        DELTA_TIME = getDeltaTime(); // delta time
-        while (m_window.pollEvent(m_event)) controlEventFocusClosing(); // even loop
-        SDMstep(); // Let SDM manage the update of objects
+        SDMmanageScene(); // Let SDM manage the scene
     }
     #endif // defined
 
@@ -169,17 +166,38 @@ public:
     /// Load scene resources
     virtual void loadResources() = 0;
 
+    /// Set is running
+    virtual void setIsRunning(bool val);
+
+    /// Set is playing
+    virtual void setIsPlaying(bool val);
+
+    /// Set scene start
+    virtual void setSceneStart(bool val);
+
+    /// Set scene end
+    virtual void setSceneEnd(bool val);
+
+    /// Set key back (CANCEL) state
+    virtual void setKeyBackPressed(bool val);
+
     /// Check is scene is running
     virtual bool isRunning() const;
 
     /// Return isPlaying
-    bool getIsPlaying() const {return m_isPlaying;}
+    virtual bool getIsPlaying() const {return m_isPlaying;}
 
     /// Return scene start
-    bool getSceneStart() const {return m_sceneStart;}
+    virtual bool getSceneStart() const {return m_sceneStart;}
 
     /// Return scene end
-    bool getSceneEnd() const {return m_sceneEnd;}
+    virtual bool getSceneEnd() const {return m_sceneEnd;}
+
+    /// Return window focus state
+    virtual bool getWindowIsActive() const {return m_windowIsActive;}
+
+    /// Return key back (CANCEL) state
+    virtual bool getKeyBackPressed() const {return m_keyBackPressed;}
 
     /// Return scene view
     virtual sf::View& getView() const {return m_view;}
@@ -204,6 +222,9 @@ public:
 
     /// Return option index
     virtual int getOptionIndex() const {return m_optionIndex;}
+
+    /// Return wait time
+    virtual int getWaitTime() const {return m_waitTime;}
 
     /// Return scene width
     virtual unsigned int getSceneWidth() const {return m_sceneWidth;}
@@ -314,131 +335,62 @@ public:
     }
 
     #if defined(IS_ENGINE_USE_SDM)
-    /// Method to update scene objects
-    virtual void SDMstep()
+    /// Allows to manage all the parts of the scene (event, update, display, dialog box)
+    virtual void SDMmanageScene();
+
+    /// Allows to define the way in which the SDM will manage the events
+    /// To change the mechanism override this method
+    virtual void SDMmanageSceneEvents()
     {
-        // update scene objects
-        WITH (m_SDMsceneObjects.size())
+        while (m_window.pollEvent(m_event)) // even loop
         {
-            if (is::instanceExist(m_SDMsceneObjects[_I]))
+            controlEventFocusClosing();
+            if (m_event.type == sf::Event::KeyReleased)
             {
-                if (m_SDMsceneObjects[_I]->m_SDMcallStep)
+                if (m_event.key.code == is::GameConfig::KEY_CANCEL)
                 {
-                    m_SDMsceneObjects[_I]->step(DELTA_TIME);
-                }
-                if (m_SDMsceneObjects[_I]->isDestroyed())
-                {
-                    m_SDMsceneObjects[_I].reset();
+                    if (!m_showMsg) showMessageBox(is::lang::msg_quit_game[m_gameSysExt.m_gameLanguage]);
+                    else m_keyBackPressed = true;
                 }
             }
         }
     }
 
-    /// Method to draw scene objects
-    virtual void SDMdraw()
+    /// Allows to define how the answers of the dialog box will be handled
+    /// To change the mechanism override this method
+    virtual void SDMmanageSceneMsgAnswers()
     {
-        // draw scene objects
-        WITH (m_SDMsceneObjects.size())
+        if (m_msgAnswer == MsgAnswer::YES) // if answers is YES close application
         {
-            if (is::instanceExist(m_SDMsceneObjects[_I]))
-            {
-                if (m_SDMsceneObjects[_I]->m_SDMcallDraw)
-                {
-                    m_SDMsceneObjects[_I]->draw(m_surface);
-                }
-            }
+            m_window.close();
+            m_isRunning = false;
         }
-        drawMsgBox();
+        else // if answers is NO continue execution
+        {
+            m_waitTime = 20;
+        }
     }
+
+    /// Method to update scene objects
+    virtual void SDMstep();
+
+    /// Method to draw scene objects
+    virtual void SDMdraw();
     #endif // defined
 
     #if defined(IS_ENGINE_USE_GSM)
     /// Allow to play sound in container by his name
-    virtual void GSMplaySound(std::string name)
-    {
-        bool soundExist(false);
-        WITH (m_GSMsound.size())
-        {
-            if (m_GSMsound[_I]->getName() == name)
-            {
-                soundExist = true;
-                if (m_GSMsound[_I]->getFileIsLoaded()) m_gameSysExt.playSound(m_GSMsound[_I]->getSound());
-                else is::showLog("sound exists but can't play <" + name + "> sound!");
-                break;
-            }
-        }
-        if (!soundExist) is::showLog("can't play <" + name + "> sound because sound not exists!");
-    }
+    virtual void GSMplaySound(std::string name);
 
     /// Allow to pause sound in container by his name
-    virtual void GSMpauseSound(std::string name)
-    {
-        bool soundExist(false);
-        WITH (m_GSMsound.size())
-        {
-            if (m_GSMsound[_I]->getName() == name)
-            {
-                soundExist = true;
-                if (m_GSMsound[_I]->getFileIsLoaded())
-                {
-                    if (m_GSMsound[_I]->getSound().getStatus() == sf::Sound::Playing) m_GSMsound[_I]->getSound().pause();
-                }
-                else is::showLog("sound exists but can't stop <" + name + "> sound!");
-                break;
-            }
-        }
-        if (!soundExist) is::showLog("can't pause <" + name + "> sound because sound not exists!");
-    }
+    virtual void GSMpauseSound(std::string name);
 
     /// Allow to play music in container by his name
-    virtual void GSMplayMusic(std::string name)
-    {
-        bool musicExist(false);
-        WITH (m_GSMmusic.size())
-        {
-            if (m_GSMmusic[_I]->getName() == name)
-            {
-                musicExist = true;
-                if (m_GSMmusic[_I]->getFileIsLoaded()) m_gameSysExt.playMusic(m_GSMmusic[_I]->getMusic());
-                else is::showLog("music exists but can't play <" + name + "> music!");
-                break;
-            }
-        }
-        if (!musicExist) is::showLog("can't play <" + name + "> music because music not exists!");
-    }
+    virtual void GSMplayMusic(std::string name);
 
     /// Allow to pause music in container by his name
-    virtual void GSMpauseMusic(std::string name)
-    {
-        bool musicExist(false);
-        WITH (m_GSMmusic.size())
-        {
-            if (m_GSMmusic[_I]->getName() == name)
-            {
-                musicExist = true;
-                if (m_GSMmusic[_I]->getFileIsLoaded())
-                {
-                    if (m_GSMmusic[_I]->getMusic().getStatus() == sf::Sound::Playing) m_GSMmusic[_I]->getMusic().pause();
-                }
-                else is::showLog("music exists but can't stop <" + name + "> music!");
-                break;
-            }
-        }
-        if (!musicExist) is::showLog("can't pause <" + name + "> music because music not exists!");
-    }
+    virtual void GSMpauseMusic(std::string name);
     #endif // defined
-
-protected:
-    /// Represent the answers return by message box
-    enum MsgAnswer
-    {
-        QUIT = -1,
-        YES = 1,
-        NO = 0
-    };
-
-    /// Allows to manage focus and closing events
-    void controlEventFocusClosing();
 
     /// Show message box according to type
     template<class T>
@@ -496,6 +448,18 @@ protected:
 
         setView();
     }
+
+protected:
+    /// Represent the answers return by message box
+    enum MsgAnswer
+    {
+        QUIT = -1,
+        YES = 1,
+        NO = 0
+    };
+
+    /// Allows to manage focus and closing events
+    void controlEventFocusClosing();
 
     /// Update message box components
     void updateMsgBox(float const &DELTA_TIME, sf::Color textDefaultColor = sf::Color::White, sf::Color textSelectedColor = sf::Color::Red);

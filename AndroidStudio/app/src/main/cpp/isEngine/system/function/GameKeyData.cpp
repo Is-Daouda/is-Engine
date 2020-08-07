@@ -13,6 +13,10 @@ GameKeyData::GameKeyData(is::GameDisplay *scene) :
     m_keyBPressed(false),
     m_keyAUsed(false),
     m_keyBUsed(false),
+    m_keyLeftUsed(false),
+    m_keyRightUsed(false),
+    m_keyUpUsed(false),
+    m_keyDownUsed(false),
     m_disableAllKey(false),
     m_hideGamePad(false),
     m_moveObj(0.f),
@@ -69,6 +73,10 @@ void GameKeyData::step(float const &DELTA_TIME)
 {
     if (!keyAPressed()) m_keyAUsed = false;
     if (!keyBPressed()) m_keyBUsed = false;
+    if (!keyLeftPressed()) m_keyLeftUsed = false;
+    if (!keyRightPressed()) m_keyRightUsed = false;
+    if (!keyUpPressed()) m_keyUpUsed = false;
+    if (!keyDownPressed()) m_keyDownUsed = false;
 
     m_keyLeftPressed = keyLeftPressed();
     m_keyRightPressed = keyRightPressed();

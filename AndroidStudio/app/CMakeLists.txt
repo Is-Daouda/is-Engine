@@ -29,7 +29,7 @@ message(STATUS "SFML extlib dir: ${SFML_EXT_LIBRARY_DIR}${ANDROID_ABI}/")
 message(STATUS "ABI ${ANDROID_ABI}")
 
 add_library(# Sets the name of the library.
-            isenginedemo # You can change this name
+            isengine # You can change this name
 
             # Sets the library as a shared library.
              SHARED
@@ -45,35 +45,13 @@ add_library(# Sets the name of the library.
             src/main/cpp/app_src/gamesystem_ext/GameSystemExtended.cpp
 
 			# game scene
-			src/main/cpp/app_src/scenes/GameEndScreen/GameEndScreen.cpp
-			src/main/cpp/app_src/scenes/GameIntro/GameIntro.cpp
-			src/main/cpp/app_src/scenes/GameLevel/GameLevelConstructor.cpp
-			src/main/cpp/app_src/scenes/GameLevel/GameLevelLoadResource.cpp
-			src/main/cpp/app_src/scenes/GameLevel/GameLevelStep.cpp
-			src/main/cpp/app_src/scenes/GameLevel/GameLevelStepGamePlay.cpp
-			src/main/cpp/app_src/scenes/GameLevel/GameLevelStepSubFunction.cpp
-			src/main/cpp/app_src/scenes/GameMenu/GameMenu.cpp
-			src/main/cpp/app_src/scenes/GameMenu/GameMenuDraw.cpp
-			src/main/cpp/app_src/scenes/GameMenu/GameMenuLoadResource.cpp
-			src/main/cpp/app_src/scenes/GameOver/GameOver.cpp
+			# src/main/cpp/app_src/scenes/GameEndScreen/GameEndScreen.cpp
 
-			# game level objects
-			src/main/cpp/app_src/objects/gamelevel/Block.cpp
-			src/main/cpp/app_src/objects/gamelevel/BlockPhysic.cpp
-			src/main/cpp/app_src/objects/gamelevel/Bonus.cpp
-			src/main/cpp/app_src/objects/gamelevel/ElectroShock.cpp
-			src/main/cpp/app_src/objects/gamelevel/Enemy.cpp
-			src/main/cpp/app_src/objects/gamelevel/FinishObject.cpp
-			src/main/cpp/app_src/objects/gamelevel/HUD.cpp
-			src/main/cpp/app_src/objects/gamelevel/LevelTile.cpp
-			src/main/cpp/app_src/objects/gamelevel/LevelTitle.cpp
-			src/main/cpp/app_src/objects/gamelevel/Limiter.cpp
-			src/main/cpp/app_src/objects/gamelevel/Player.cpp
+			# game objects
+			# src/main/cpp/app_src/objects/Block.cpp
 
 			# widgets
-			src/main/cpp/app_src/objects/widgets/CancelButton.cpp
 			src/main/cpp/app_src/objects/widgets/GameDialog.cpp
-			src/main/cpp/app_src/objects/widgets/PauseOption.cpp
 
 # --------------------------------- is::Engine source --------------------------------------
 			# core
@@ -147,7 +125,7 @@ add_library(# Sets the name of the library.
 # build script, prebuilt third-party libraries, or system libraries.
 
 target_link_libraries( # Specifies the target library.
-                        isenginedemo
+                        isengine
 
                         # Links the target library to the log library
                         # included in the NDK.

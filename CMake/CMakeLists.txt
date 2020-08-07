@@ -27,6 +27,7 @@ file(COPY data DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 add_executable(isengine
     ${isengine}
 	${app_src}
+	resource.rc # application icon
 )
 
 target_include_directories(isengine PRIVATE include)

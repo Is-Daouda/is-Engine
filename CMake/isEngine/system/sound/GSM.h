@@ -53,7 +53,7 @@ public:
                 return &m_GSMsound[_I]->getSound();
             }
         }
-        is::showLog("<" + name + "> sound does not exist!");
+        is::showLog("ERROR: <" + name + "> sound does not exist!");
         return nullptr;
     }
 
@@ -67,7 +67,7 @@ public:
                 return &m_GSMmusic[_I]->getMusic();
             }
         }
-        is::showLog("<" + name + "> music does not exist!");
+        is::showLog("ERROR: <" + name + "> music does not exist!");
         return nullptr;
     }
 };

@@ -1,7 +1,6 @@
 #ifndef GAMEENGINE_H_INCLUDED
 #define GAMEENGINE_H_INCLUDED
 
-#include "../ext_lib/Swoosh/Swoosh/ActivityController.h"
 #include "../../app_src/activity/GameActivity.h"
 
 ////////////////////////////////////////////////////////////
@@ -49,7 +48,7 @@ public:
 
 private:
     sf::RenderWindow m_window;
-    GameSystemExtended m_gameSysExt;
+    is::GameSystemExtended m_gameSysExt;
 };
 
 #endif // GAMEENGINE_H_INCLUDED

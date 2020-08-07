@@ -8,7 +8,7 @@ if [[ $OSTYPE == 'msys' || $OSTYPE == 'win32' ]]; then
 			icon_prefix='icon'
 		fi
 
-		output_file=app
+		output_file=icon
 		cmd="magick convert ${icon_prefix}_256.png ${icon_prefix}_48.png ${icon_prefix}_32.png ${icon_prefix}_16.png $output_file.ico"
 		echo "$cmd"
 		$cmd

@@ -9,7 +9,7 @@ if [[ $OSTYPE == 'msys' || $OSTYPE == 'win32' ]]; then
 		fi
 
 		output_file=app
-		cmd="magick convert ${icon_prefix}.png -define icon:auto-resize=256,96,64,48,32,24,20,16 app.ico"
+		cmd="magick convert ${icon_prefix}.png -define icon:auto-resize=256,96,64,48,32,24,20,16 icon.ico"
 		echo "$cmd"
 		$cmd
 

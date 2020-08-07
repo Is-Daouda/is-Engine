@@ -1,22 +1,19 @@
-#ifndef GAMEHELP_H_INCLUDED
-#define GAMEHELP_H_INCLUDED
+#ifndef GAMEDIALOG_H_INCLUDED
+#define GAMEDIALOG_H_INCLUDED
 
 #include <cstring>
-#if defined(IS_ENGINE_USE_SDM)
-#include "../../../isEngine/system/entity/MainObject.h"
-#else
 #include "../../../isEngine/system/display/GameDisplay.h"
-#endif // defined
-#include "../../language/GameLanguage.h"
 
 ////////////////////////////////////////////////////////////
 /// \brief Displays and manages game dialogs
 ///
 ////////////////////////////////////////////////////////////
+namespace is
+{
 class GameDialog : public is::MainObject
 {
 public:
-    GameDialog(is::GameDisplay *scene);
+    GameDialog(sf::Texture &tex, sf::Font &fnt, is::GameDisplay *scene);
 
     ////////////////////////////////////////////////////////////
     /// \brief Represents the different dialogs
@@ -27,8 +24,10 @@ public:
     enum DialogIndex
     {
         DIALOG_NONE = -1,
-        DIALOG_PLAYER_MOVE,
-        DIALOG_PLAYER_ATTACK,
+        DIALOG_HELLO,
+
+        // example
+        // DIALOG_YOUR_DIALOG
     };
 
     ////////////////////////////////////////////////////////////
@@ -53,22 +52,22 @@ public:
         // each enum with its array of string
         switch (m_dialogIndex)
         {
-            case DIALOG_PLAYER_MOVE:
-                m_msgIndexMax = is::arraySize(is::lang::dialog_player_move);
-                checkMsg(is::lang::dialog_player_move);
+            case DIALOG_HELLO:
+                m_msgIndexMax = is::arraySize(is::lang::dialog_hello);
+                checkMsg(is::lang::dialog_hello);
             break;
 
-            case DIALOG_PLAYER_ATTACK:
-                m_msgIndexMax = is::arraySize(is::lang::dialog_player_attack);
-                checkMsg(is::lang::dialog_player_attack);
-            break;
+            // example
+            // case DIALOG_YOUR_DIALOG:
+            //     m_msgIndexMax = is::arraySize(is::lang::dialog_your_dialog);
+            //     checkMsg(is::lang::dialog_your_dialog);
+            // break;
 
             default:
             break;
         }
     }
 
-    void loadResources(sf::Texture &tex, sf::Font &fnt);
     void step(const float &DELTA_TIME);
 
     /// launch a dialog based on the enumeration index
@@ -102,5 +101,6 @@ private:
     float m_blindTime;
     DialogIndex m_dialogIndex;
 };
+}
 
-#endif // GAMEHELP_H_INCLUDED
+#endif // GAMEDIALOG_H_INCLUDED

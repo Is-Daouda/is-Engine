@@ -18,10 +18,10 @@ public:
     virtual void setFilePath(std::string filePath) {m_strFilePath = filePath;}
 
     /// Return file path
-    virtual std::string getFilePath() {return m_strFilePath;}
+    virtual std::string getFilePath() const {return m_strFilePath;}
 
     /// Allows to know if file is loaded
-    virtual bool getFileIsLoaded() {return m_fileIsLoaded;}
+    virtual bool getFileIsLoaded() const {return m_fileIsLoaded;}
 
 protected:
     std::string m_strFilePath;

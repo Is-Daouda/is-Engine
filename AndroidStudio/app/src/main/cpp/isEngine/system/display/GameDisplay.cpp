@@ -17,8 +17,8 @@ GameDisplay::GameDisplay(sf::RenderWindow &window, sf::View &view, sf::RenderTex
     m_optionIndex(0),
     m_waitTime(0),
     m_msgWaitTime(0),
-    m_sceneWidth(0),
-    m_sceneHeight(0),
+    m_sceneWidth(window.getSize().x),
+    m_sceneHeight(window.getSize().y),
     DELTA_TIME(0.f),
     m_viewW(is::GameConfig::VIEW_WIDTH),
     m_viewH(is::GameConfig::VIEW_HEIGHT),
@@ -363,6 +363,31 @@ void GameDisplay::loadParentResources()
                    0.f, 0.f, true, 18);
 }
 
+void GameDisplay::setIsRunning(bool val)
+{
+    m_isRunning = val;
+}
+
+void GameDisplay::setIsPlaying(bool val)
+{
+    m_isPlaying = val;
+}
+
+void GameDisplay::setSceneStart(bool val)
+{
+    m_sceneStart = val;
+}
+
+void GameDisplay::setSceneEnd(bool val)
+{
+    m_sceneEnd = val;
+}
+
+void GameDisplay::setKeyBackPressed(bool val)
+{
+    m_keyBackPressed = val;
+}
+
 float GameDisplay::getDeltaTime()
 {
     float dt = m_clock.restart().asSeconds();
@@ -399,4 +424,158 @@ bool GameDisplay::isRunning() const
 {
     return m_isRunning;
 }
+
+#if defined(IS_ENGINE_USE_SDM)
+void GameDisplay::SDMmanageScene()
+{
+    DELTA_TIME = getDeltaTime();
+    updateTimeWait(DELTA_TIME);
+
+    // even loop
+    SDMmanageSceneEvents();
+
+    // starting mechanism
+    if (m_sceneStart)
+    {
+        // window has focus
+        if (m_windowIsActive)
+        {
+            if (!m_showMsg)
+            {
+                SDMstep();
+            }
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                      MESSAGE BOX
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+            else
+            {
+                updateMsgBox(DELTA_TIME);
+
+                // when user closes message box in update function execute this instruction
+                // "m_waitTime" allow to disable clicks on objects during a moment when user closes message box
+                if (!m_showMsg) SDMmanageSceneMsgAnswers();
+            }
+        }
+    }
+}
+
+void GameDisplay::SDMstep()
+{
+    // update scene objects
+    for (std::list<std::shared_ptr<MainObject>>::iterator it = m_SDMsceneObjects.begin();
+        it != m_SDMsceneObjects.end(); ++it)
+    {
+        if (is::instanceExist(*it))
+        {
+            if ((*it)->m_SDMcallStep)
+            {
+                (*it)->step(DELTA_TIME);
+            }
+            if (*it != nullptr)
+            {
+                if ((*it)->isDestroyed())
+                {
+                    it->reset();
+                    ///m_SDMsceneObjects.erase(m_SDMsceneObjects.begin() + _I);
+                }
+            }
+        }
+    }
+}
+
+void GameDisplay::SDMdraw()
+{
+    if (m_SDMsortArray)
+    {
+        is::sortObjArrayByDepth(m_SDMsceneObjects);
+        m_SDMsortArray = false;
+    }
+
+    // draw scene objects
+    for (std::list<std::shared_ptr<MainObject>>::iterator it = m_SDMsceneObjects.begin();
+        it != m_SDMsceneObjects.end(); ++it)
+    {
+        if (is::instanceExist(*it))
+        {
+            if ((*it)->m_SDMcallDraw)
+            {
+                (*it)->draw(m_surface);
+            }
+        }
+    }
+    drawMsgBox();
+}
+#endif // defined
+
+#if defined(IS_ENGINE_USE_GSM)
+void GameDisplay::GSMplaySound(std::string name)
+{
+    bool soundExist(false);
+    WITH (m_GSMsound.size())
+    {
+        if (m_GSMsound[_I]->getName() == name)
+        {
+            soundExist = true;
+            if (m_GSMsound[_I]->getFileIsLoaded()) m_gameSysExt.playSound(m_GSMsound[_I]->getSound());
+            else is::showLog("ERROR: Sound exists but can't play <" + name + "> sound!");
+            break;
+        }
+    }
+    if (!soundExist) is::showLog("ERROR: Can't play <" + name + "> sound because sound not exists!");
+}
+
+void GameDisplay::GSMpauseSound(std::string name)
+{
+    bool soundExist(false);
+    WITH (m_GSMsound.size())
+    {
+        if (m_GSMsound[_I]->getName() == name)
+        {
+            soundExist = true;
+            if (m_GSMsound[_I]->getFileIsLoaded())
+            {
+                if (m_GSMsound[_I]->getSound().getStatus() == sf::Sound::Playing) m_GSMsound[_I]->getSound().pause();
+            }
+            else is::showLog("ERROR: Sound exists but can't stop <" + name + "> sound!");
+            break;
+        }
+    }
+    if (!soundExist) is::showLog("ERROR: Can't pause <" + name + "> sound because sound not exists!");
+}
+
+void GameDisplay::GSMplayMusic(std::string name)
+{
+    bool musicExist(false);
+    WITH (m_GSMmusic.size())
+    {
+        if (m_GSMmusic[_I]->getName() == name)
+        {
+            musicExist = true;
+            if (m_GSMmusic[_I]->getFileIsLoaded()) m_gameSysExt.playMusic(m_GSMmusic[_I]->getMusic());
+            else is::showLog("ERROR: Music exists but can't play <" + name + "> music!");
+            break;
+        }
+    }
+    if (!musicExist) is::showLog("ERROR: Can't play <" + name + "> music because music not exists!");
+}
+
+void GameDisplay::GSMpauseMusic(std::string name)
+{
+    bool musicExist(false);
+    WITH (m_GSMmusic.size())
+    {
+        if (m_GSMmusic[_I]->getName() == name)
+        {
+            musicExist = true;
+            if (m_GSMmusic[_I]->getFileIsLoaded())
+            {
+                if (m_GSMmusic[_I]->getMusic().getStatus() == sf::Sound::Playing) m_GSMmusic[_I]->getMusic().pause();
+            }
+            else is::showLog("ERROR: Music exists but can't stop <" + name + "> music!");
+            break;
+        }
+    }
+    if (!musicExist) is::showLog("ERROR: Can't pause <" + name + "> music because music not exists!");
+}
+#endif // defined
 }

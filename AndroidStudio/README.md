@@ -23,8 +23,8 @@
 - Move the **AndroidStudio project** of is::Engine to your **C:/** (C:/AndroidStudio)
 - Open the **AndroidStudio** folder with **Android Studio** and start the compilation.
 
-If all goes well you will have a *Platform game* on your *Android emulator*
+If all goes well you will have a **Hello World Screen** on your **Android emulator**
 
-![Image](https://i48.servimg.com/u/f48/20/16/75/27/is_eng14.png)
+![Image](./images/demo_screen.png)
 
 **Enjoy!**

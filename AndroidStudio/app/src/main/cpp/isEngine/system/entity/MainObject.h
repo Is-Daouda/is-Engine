@@ -2,14 +2,13 @@
 #define MAINOBJECT_H_INCLUDED
 
 #include <memory>
+#include <list>
 
 #include "../entity/Form.h"
 #include "../entity/parents/Name.h"
 #include "../function/GameFunction.h"
 
-#if !defined(IS_ENGINE_USE_SDM)
-#include "../display/GameDisplay.h"
-#else
+#if defined(IS_ENGINE_USE_SDM)
 #include "../entity/parents/Destructible.h"
 #include "../entity/parents/DepthObject.h"
 #endif // defined
@@ -41,7 +40,10 @@ public:
     bool m_SDMcallDraw = true;
 
     /// Allow to update object
-    virtual void step(float const &DELTA_TIME) {}
+    virtual void step(float const &DELTA_TIME)
+    {
+        updateSprite();
+    }
     #endif // defined
 
     /// Set x initial position
@@ -122,10 +124,10 @@ public:
     /// Set image index
     virtual void setImageIndex(int val);
 
-    /// Set mask w
+    /// Set mask width
     virtual void setMaskW(int val);
 
-    /// Set mask h
+    /// Set mask height
     virtual void setMaskH(int val);
 
     /// Set active
@@ -149,8 +151,14 @@ public:
     /// Draw the main sprite of object
     virtual void draw(sf::RenderTexture &surface);
 
-    /// Return the rectangle mask
+    /// Draw the collision mask
+    virtual void drawMask(sf::RenderTexture &surface, sf::Color color = sf::Color::Blue);
+
+    /// Return the rectangle (default) mask
     virtual is::Rectangle getMask() const;
+
+    /// Return the circle mask
+    virtual is::Circle getCircleMask() const;
 
     /// Return the x position
     virtual float getX() const;
@@ -240,10 +248,10 @@ public:
     virtual int getInstanceId() const;
 
     /// Return the width of collision mask
-    virtual int getMaskWidth() const;
+    virtual unsigned int getMaskW() const;
 
     /// Return the height of collision mask
-    virtual int getMaskHeight() const;
+    virtual unsigned int getMaskH() const;
 
     /// Return image alpha
     virtual int getImageAlpha() const;
@@ -276,18 +284,22 @@ public:
     virtual sf::Sprite& getSprite();
 
 protected:
-
     /// Set frame limit
     virtual void setFrame(float frameStart, float frameEnd = -1.f);
+
+    /// sub function of placeMeting method
+    bool placeMettingSubFunction(float x, float y, MainObject const *other) const;
 
     float m_x, m_y, m_xStart, m_yStart, m_xPrevious, m_yPrevious;
     float m_speed, m_hsp, m_vsp;
     float m_frameStart, m_frameEnd, m_frame, m_imageXscale, m_imageYscale, m_imageScale, m_imageAngle;
     float m_xOffset, m_yOffset;
     float m_time;
-    int m_w, m_h, m_instanceId, m_imageAlpha, m_imageIndex;
+    unsigned int m_w, m_h;
+    int m_instanceId, m_imageAlpha, m_imageIndex;
     bool m_isActive;
     is::Rectangle m_aabb;
+    is::Circle m_circle;
     sf::Sprite m_sprParent;
 };
 
@@ -318,7 +330,7 @@ public:
 
 /// Sort object array by x position
 template<class T>
-void sortObjArrayByX(std::vector<std::shared_ptr<T>> &v)
+void sortObjArrayByX(std::list<std::shared_ptr<T>> &v)
 {
     std::sort(v.begin(), v.end(), is::CompareX());
 }
@@ -335,11 +347,11 @@ public:
     }
 };
 
-/// Sort object array by x position
+/// Sort object array by depth
 template<class T>
-void sortObjArrayByDepth(std::vector<std::shared_ptr<T>> &v)
+void sortObjArrayByDepth(std::list<std::shared_ptr<T>> &v)
 {
-    std::sort(v.begin(), v.end(), is::CompareDepth());
+    v.sort(is::CompareDepth());
 }
 #endif // defined
 

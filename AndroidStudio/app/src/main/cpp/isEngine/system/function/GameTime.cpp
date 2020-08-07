@@ -113,6 +113,11 @@ unsigned int GameTime::getMSecond() const
     return m_mSecond;
 }
 
+bool GameTime::compareTime(unsigned int m, unsigned int s, unsigned int ms) const
+{
+    return (((m * 3600) + (s * 60) + ms) > getTimeValue());
+}
+
 std::string GameTime::getTimeString() const
 {
     std::string str;

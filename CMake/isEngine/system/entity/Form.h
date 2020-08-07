@@ -16,52 +16,22 @@ public:
         m_right(0),
         m_bottom(0)
     {}
-
     int m_left, m_top, m_right, m_bottom;
 };
 
 ////////////////////////////////////////////////////////////
-/// \brief Class to manage point collision
+/// \brief Class to manage circle collision
 ///
 ////////////////////////////////////////////////////////////
-class Point
+class Circle
 {
 public:
-    Point():
-        m_x(0),
-        m_y(0)
+    Circle():
+        m_x(0.f),
+        m_y(0.f),
+        m_raduis(0.f)
     {}
-
-    Point(float x, float y):
-        m_x(x),
-        m_y(y)
-    {}
-
-    float m_x, m_y;
-};
-
-////////////////////////////////////////////////////////////
-/// \brief Class to manage line collision
-///
-////////////////////////////////////////////////////////////
-class Line
-{
-public:
-    Line():
-        m_x1(0),
-        m_y1(0),
-        m_x2(0),
-        m_y2(0)
-    {}
-
-    Line(float x1, float y1, float x2, float y2):
-        m_x1(x1),
-        m_y1(y1),
-        m_x2(x2),
-        m_y2(y2)
-    {}
-
-    float m_x1, m_y1, m_x2, m_y2;
+    float m_x, m_y, m_raduis;
 };
 }
 

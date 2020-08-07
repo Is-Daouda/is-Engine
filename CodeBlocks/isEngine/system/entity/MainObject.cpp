@@ -276,27 +276,38 @@ void MainObject::setIsActive(bool val)
 
 void MainObject::updateCollisionMask()
 {
-    m_aabb.m_left   = static_cast<int>(m_x);
-    m_aabb.m_top    = static_cast<int>(m_y);
-    m_aabb.m_right  = static_cast<int>(m_x) + m_w;
-    m_aabb.m_bottom = static_cast<int>(m_y) + m_h;
+    if (m_w > 0 && m_h > 0)
+    {
+        m_aabb.m_left   = static_cast<int>(m_x);
+        m_aabb.m_top    = static_cast<int>(m_y);
+        m_aabb.m_right  = static_cast<int>(m_x) + m_w;
+        m_aabb.m_bottom = static_cast<int>(m_y) + m_h;
+    }
+    else {m_circle.m_x = m_x; m_circle.m_y = m_y;}
 }
 
 void MainObject::updateCollisionMask(int x, int y)
 {
-    m_aabb.m_left   = static_cast<int>(x);
-    m_aabb.m_top    = static_cast<int>(y);
-    m_aabb.m_right  = static_cast<int>(x) + m_w;
-    m_aabb.m_bottom = static_cast<int>(y) + m_h;
+    if (m_w > 0 && m_h > 0)
+    {
+        m_aabb.m_left   = static_cast<int>(x);
+        m_aabb.m_top    = static_cast<int>(y);
+        m_aabb.m_right  = static_cast<int>(x) + m_w;
+        m_aabb.m_bottom = static_cast<int>(y) + m_h;
+    }
+    else {m_circle.m_x = x; m_circle.m_y = y;}
 }
 
 void MainObject::centerCollisionMask(int x, int y)
 {
-    // center the mask by reducing the edge towards the inside
-    m_aabb.m_left   = static_cast<int>(m_x + x);
-    m_aabb.m_top    = static_cast<int>(m_y + y);
-    m_aabb.m_right  = static_cast<int>(m_x - x) + m_w;
-    m_aabb.m_bottom = static_cast<int>(m_y - y) + m_h;
+    if (m_w > 0 && m_h > 0)
+    {
+        m_aabb.m_left   = static_cast<int>(x - m_w / 2.f);
+        m_aabb.m_top    = static_cast<int>(y - m_h / 2.f);
+        m_aabb.m_right  = static_cast<int>(x + m_w / 2.f);
+        m_aabb.m_bottom = static_cast<int>(y + m_h / 2.f);
+    }
+    else {m_circle.m_x = x; m_circle.m_y = y;}
 }
 
 void MainObject::updateSprite()
@@ -320,6 +331,30 @@ void MainObject::draw(sf::RenderTexture &surface)
     surface.draw(m_sprParent);
 }
 
+void MainObject::drawMask(sf::RenderTexture &surface, sf::Color color)
+{
+    // We draw the AABB (rectangle, square) mask only if it has dimensions
+    if (m_w > 0 && m_h > 0)
+    {
+        sf::RectangleShape rec({static_cast<float>(m_w), static_cast<float>(m_h)});
+        rec.setOutlineThickness(1.f);
+        rec.setFillColor(sf::Color::Transparent);
+        rec.setOutlineColor(color);
+        rec.setPosition({static_cast<float>(m_aabb.m_left), static_cast<float>(m_aabb.m_top)});
+        surface.draw(rec);
+    }
+    else if (m_circle.m_raduis > 0.f) // We draw the circle mask only if it has dimensions
+    {
+        sf::CircleShape circle(m_circle.m_raduis);
+        circle.setOutlineThickness(1.f);
+        circle.setFillColor(sf::Color::Transparent);
+        is::centerSFMLObj(circle);
+        circle.setOutlineColor(color);
+        circle.setPosition({m_circle.m_x, m_circle.m_y});
+        surface.draw(circle);
+    }
+}
+
 void MainObject::setFrame(float frameStart, float frameEnd)
 {
     if (frameEnd > -1.f)
@@ -332,22 +367,22 @@ void MainObject::setFrame(float frameStart, float frameEnd)
 
 float MainObject::distantToPoint(float x, float y) const
 {
-   float X = (getX() + getMaskWidth() / 2)  - x;
-   float Y = (getY() + getMaskHeight() / 2) - y;
+   float X = (getX() + getMaskW() / 2)  - x;
+   float Y = (getY() + getMaskH() / 2) - y;
    return sqrt(X * X + Y * Y);
 }
 
 float MainObject::distantToObject(MainObject const *other, bool useSpritePosition) const
 {
-   float X = ((useSpritePosition) ? getSpriteX() - other->getSpriteX() : (getX() + (getMaskWidth() / 2))  - (other->getX() + (other->getMaskWidth() / 2)));
-   float Y = ((useSpritePosition) ? getSpriteY() - other->getSpriteY() : (getY() + (getMaskHeight() / 2)) - (other->getY() + (other->getMaskHeight() / 2)));
+   float X = ((useSpritePosition) ? getSpriteX() - other->getSpriteX() : (getX() + (getMaskW() / 2))  - (other->getX() + (other->getMaskW() / 2)));
+   float Y = ((useSpritePosition) ? getSpriteY() - other->getSpriteY() : (getY() + (getMaskH() / 2)) - (other->getY() + (other->getMaskH() / 2)));
    return sqrt(X * X + Y * Y);
 }
 
 float MainObject::distantToObject(std::shared_ptr<MainObject> const &other, bool useSpritePosition) const
 {
-   float X = ((useSpritePosition) ? getSpriteX() - other->getSpriteX() : (getX() + (getMaskWidth() / 2))  - (other->getX() + (other->getMaskWidth() / 2)));
-   float Y = ((useSpritePosition) ? getSpriteY() - other->getSpriteY() : (getY() + (getMaskHeight() / 2)) - (other->getY() + (other->getMaskHeight() / 2)));
+   float X = ((useSpritePosition) ? getSpriteX() - other->getSpriteX() : (getX() + (getMaskW() / 2))  - (other->getX() + (other->getMaskW() / 2)));
+   float Y = ((useSpritePosition) ? getSpriteY() - other->getSpriteY() : (getY() + (getMaskH() / 2)) - (other->getY() + (other->getMaskH() / 2)));
    return sqrt(X * X + Y * Y);
 }
 
@@ -471,12 +506,12 @@ int MainObject::getInstanceId() const
     return m_instanceId;
 }
 
-int MainObject::getMaskWidth() const
+unsigned int MainObject::getMaskW() const
 {
     return m_w;
 }
 
-int MainObject::getMaskHeight() const
+unsigned int MainObject::getMaskH() const
 {
     return m_h;
 }
@@ -526,49 +561,63 @@ int MainObject::getSpriteCenterY() const
     return (m_sprParent.getTextureRect().height / 2);
 }
 
-bool MainObject::placeMetting(int x, int y, MainObject const *other)
+bool MainObject::placeMettingSubFunction(float x, float y, MainObject const *other) const
 {
     is::Rectangle testRec = this->getMask();
-
     testRec.m_left += x;
     testRec.m_right += x;
     testRec.m_top += y;
     testRec.m_bottom += y;
-
-    bool isCollision = false;
+    is::Circle testCircle = this->getCircleMask();
+    testCircle.m_x += x;
+    testCircle.m_y += y;
 
     is::Rectangle otherRectangle = other->getMask();
+    is::Circle otherCircle = other->getCircleMask();
 
-    if (is::collisionTest(testRec, otherRectangle))
+    if (m_w > 0 && m_h > 0 && other->getMaskW() > 0 && other->getMaskH() > 0)
     {
-        isCollision = true;
+        return (is::collisionTest(testRec, otherRectangle));
     }
-    return isCollision;
+    else if ((m_w == 0 || m_h == 0) && other->getMaskW() > 0 && other->getMaskH() > 0)
+    {
+        return (is::collisionTest(testCircle, otherRectangle));
+    }
+    else if ((m_w > 0 && m_h > 0) && (other->getMaskW() == 0 || other->getMaskH() == 0))
+    {
+        return (is::collisionTest(testRec, otherCircle));
+    }
+    else if ((m_w == 0 || m_h == 0) && testCircle.m_raduis > 0.f &&
+             (other->getMaskW() == 0 || other->getMaskH() == 0) && otherCircle.m_raduis > 0.f)
+    {
+        return (is::collisionTest(testCircle, otherCircle));
+    }
+    else
+    {
+        is::showLog("ERROR: Badly defined collision masks between these objects: <" + m_strName +
+                    "> & <" + other->getName() + ">", true);
+    }
+    return false;
+}
+
+bool MainObject::placeMetting(int x, int y, MainObject const *other)
+{
+    return placeMettingSubFunction(x, y, other);
 }
 
 bool MainObject::placeMetting(int x, int y, std::shared_ptr<MainObject> const &other)
 {
-    is::Rectangle testRec = this->getMask();
-
-    testRec.m_left += x;
-    testRec.m_right += x;
-    testRec.m_top += y;
-    testRec.m_bottom += y;
-
-    bool isCollision = false;
-
-    is::Rectangle otherRectangle = other->getMask();
-
-    if (is::collisionTest(testRec, otherRectangle))
-    {
-        isCollision = true;
-    }
-    return isCollision;
+    return placeMettingSubFunction(x, y, other.get());
 }
 
 Rectangle MainObject::getMask() const
 {
     return m_aabb;
+}
+
+Circle MainObject::getCircleMask() const
+{
+    return m_circle;
 }
 
 sf::Sprite& MainObject::getSprite()

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.isdaouda.isenginedemo">
+          package="com.author.isengine">
 
   	<!--uncomment this line if you want to use this permission-->
     <!--uses-permission android:name="android.permission.DISABLE_KEYGUARD"/-->
@@ -25,7 +25,7 @@
 				  android:screenOrientation="sensorLandscape">
 				  
             <meta-data android:name="android.app.lib_name" android:value="sfml-activity-d" /><!-- Never change this! -->
-            <meta-data android:name="sfml.app.lib_name" android:value="isenginedemo" /> <!-- This has to match the moduleName in build.gradle -->
+            <meta-data android:name="sfml.app.lib_name" android:value="isengine" /> <!-- This has to match the moduleName in build.gradle -->
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

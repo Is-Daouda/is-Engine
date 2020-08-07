@@ -1,22 +1,24 @@
 ![header](./images/is_Engine_logo.png)
 ----------------------------
 
-# is::Engine (Infinity Solutions::Engine) v2.1
+# is::Engine (Infinity Solutions::Engine) v2.2
 
-is::Engine is a 2D game engine based on SFML which allows you to easily develop video games on PC (Windows, Linux) and Android. It integrates **SWOOSH, Box 2D, Virtual Game Pad for Android, Admob, Tiny File Dialogs and components that allows you to manage the different parts of a game** : introduction, main menu with options, levels, game over (You no longer need to implement them!).
+is::Engine is a 2D game engine based on SFML which allows you to easily develop video games on PC (Windows, Linux) and Android. It integrates **SWOOSH, Box 2D, Virtual Game Pad for Android, Admob, Tiny File Dialogs and components that allows you to manage the different parts of a game**.
 
 [![SFML logo](https://www.sfml-dev.org/images/logo.png)](https://www.sfml-dev.org) [![logo](https://i.imgur.com/tri24Y5.png)](https://github.com/TheMaverickProgrammer/Swoosh) [![Box2D Logo](https://box2d.org/images/logo.svg)](https://github.com/erincatto/box2d) [![Admob Logo](https://i48.servimg.com/u/f48/20/16/75/27/admob_10.png)](https://admob.google.com/) [![Tiny File Dialog](https://a.fsdn.com/allura/p/tinyfiledialogs/icon?1582196333?&w=90)](https://github.com/native-toolkit/tinyfiledialogs)
 
 ## Features
 - Language manager (English and French language support by default)
 - Scene System
+- Automatic management of a window
 - SDM (Step and Draw Manager)
 - GSM (Game Sound Manager)
 - Entity system
+- Background System
 - Sprite Animation
+- Basic collision engine
 - 2D physic engine (Box 2D)
 - Screen Transition effect (SWOOSH Library)
-- [Level Editor](https://github.com/Is-Daouda/is-Level-Editor)
 - Message Box System (Modifiable appearance via Sprites and Font)
 - Dialog Box System (as for RPG games)
 - [Windows, Linux] Tiny File Dialogs to manage the dialog boxes of type: Message, File Save, Load File, Folder Selection
@@ -27,17 +29,17 @@ is::Engine is a 2D game engine based on SFML which allows you to easily develop 
 - [Android] Show Ad Banner
 - [Android] Show Reward Video
 
-## What's new in version 2.1 ?
-- This version of the engine allows you to automatically update and display the objects of a game, manage the display depth of each object (very useful for making 3D effects in a 2D game).
-- You can also play sounds or musics in games without using an object (`sf::Sound`, `sf:SoundBuffer` & `sf::Music`).
-- Support for C++ 17, SFML 2.5.1, CMake and Android NDK 20
+## What's new in version 2.2 ?
+- Automatic management of the SFML window (events, closing with confirmation box)
+- Improvement of the basic collision engine with the possibility to draw the collision masks of an object
+- Background module to create scrollable (with speed) and stretchable backgrounds
 
 ## Extras
-The engine comes with an example (2D platform game) that uses only the functions of the engine, in order to show you its power and how to use it. Now imagine what you can do when you use Box 2D and the other tools!
+The engine comes with a **[Demo (2D Platform Game)](https://github.com/Is-Daouda/is-Engine-Demo)** that uses only the functions of the engine, in order to show you its power and how to use it. Now imagine what you can do when you use Box 2D and the other tools!
 
 ## Game Engine User Guide
-- [English version](https://github.com/Is-Daouda/is-Engine/blob/2.1.x/doc/isEngine_api_doc_eng.pdf)
-- [French version](https://github.com/Is-Daouda/is-Engine/blob/2.1.x/doc/isEngine_api_doc_fr.pdf)
+- [English version](./doc/isEngine_api_doc_eng.html)
+- [French version](./doc/isEngine_api_doc_fr.html)
 
 ## Example of a project created with the engine
 - [I Can Transform](https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=En)

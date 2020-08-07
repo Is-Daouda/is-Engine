@@ -22,7 +22,7 @@ public:
             m_snd.setBuffer(m_sb);
             m_fileIsLoaded = true;
         }
-        else showLog("Can't load file : " + filePath);
+        else showLog("ERROR: Can't load file : " + filePath);
     }
 
     void loadResources(std::string filePath)
@@ -36,7 +36,7 @@ public:
         else
         {
             m_fileIsLoaded = false;
-            showLog("Can't load file : " + filePath);
+            showLog("ERROR: Can't load file : " + filePath);
         }
     }
 

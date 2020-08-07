@@ -11,7 +11,7 @@ namespace is
 class Name
 {
 public:
-    explicit Name(std::string name = ""):
+    explicit Name(std::string name = "Unknown"):
         m_strName(name)
     {}
 
@@ -19,7 +19,7 @@ public:
     virtual void setName(std::string name) {m_strName = name;}
 
     /// Return name
-    virtual std::string getName() {return m_strName;}
+    virtual std::string getName() const {return m_strName;}
 
 protected:
     std::string m_strName;

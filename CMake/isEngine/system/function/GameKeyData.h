@@ -41,6 +41,10 @@ public:
          m_keyBPressed,
          m_keyAUsed,
          m_keyBUsed,
+         m_keyLeftUsed,
+         m_keyRightUsed,
+         m_keyUpUsed,
+         m_keyDownUsed,
          m_disableAllKey,
          m_hideGamePad;
 

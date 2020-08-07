@@ -59,6 +59,10 @@ public:
     /// Returns the millisecond
     unsigned int getMSecond() const;
 
+    /// Compare the entered time and the time of the object
+    /// \return true if the time entered is greater than the time of the object false if not
+    bool compareTime(unsigned int m, unsigned int s = 0, unsigned int ms = 0) const;
+
     /// Equality comparison operator
     GameTime& operator=(GameTime const &t);
 

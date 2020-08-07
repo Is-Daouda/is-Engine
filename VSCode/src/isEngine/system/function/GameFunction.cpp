@@ -19,7 +19,7 @@ int getMSecond(float const &DELTA_TIME)
     return static_cast<int>(DELTA_TIME * (VALUE_TIME * VALUE_CONVERSION));
 }
 
-void showLog(std::string str)
+void showLog(std::string str, bool stopApplication)
 {
     #if defined(IS_ENGINE_USE_SHOWLOG)
     #if !defined(__ANDROID__)
@@ -28,6 +28,7 @@ void showLog(std::string str)
     __android_log_print(ANDROID_LOG_DEBUG, "LOG_INFO", "%s\n", str.c_str());
     #endif
     #endif // defined
+    if (stopApplication) std::terminate();
 }
 
 bool isIn(unsigned short valNumber, int const var, int x1, int x2, int x3, int x4, int x5, int x6, int x7, int x8, int x9)
@@ -68,73 +69,6 @@ void setFrame(sf::Sprite &sprite, float frame, int subFrame, int frameSize, int 
     sprite.setTextureRect(sf::IntRect(frameSize * (static_cast<int>(frame) - (subFrame * frameLineIndex)), frameSize * frameLineIndex, recWidth, recHeight));
 }
 
-/*
-bool isCrossing(float l1, float r1, float l2, float r2)
-{
-    if (is::isBetween(l1, l2, r2))      return true;
-    else if (is::isBetween(r1, l2, r2)) return true;
-    else if (is::isBetween(l2, l1, r1)) return true;
-    else return false;
-}
-
-bool isCollision(Rectangle r1, Rectangle r2)
-{
-    return
-    (
-        isCrossing(r1.m_left, r1.m_right, r2.m_left, r2.m_right) and
-        isCrossing(r1.m_top, r1.m_bottom, r2.m_top, r2.m_bottom)
-    );
-}
-
-bool isCollision(Rectangle r, Point p)
-{
-    return
-    (
-        is::isBetween(p.x, r.m_left, r.m_right) and
-        is::isBetween(p.y, r.m_top, r.m_bottom)
-    );
-}
-
-bool isCollision(Point p, Rectangle r)
-{
-    return isCollision(r, p);
-}
-
-bool isCollision(Rectangle r, Line l)
-{
-    Line l1(r.m_left, r.m_top, r.m_right, r.m_top);
-    Line l2(r.m_left, r.m_top, r.m_left, r.m_bottom);
-    Line l3(r.m_right, r.m_top, r.m_right, r.m_bottom);
-    Line l4(r.m_left, r.m_bottom, r.m_right, r.m_bottom);
-
-    Point p(l.x1, l.y1);
-
-    if (isCollision(r, p))       return true;
-    else if (isCollision(l1, l)) return true;
-    else if (isCollision(l2, l)) return true;
-    else if (isCollision(l3, l)) return true;
-    else if (isCollision(l4, l)) return true;
-    else return false;
-}
-
-bool isCollision(Line l, Rectangle r)
-{
-    return isCollision(r, l);
-}
-
-bool isCollision(Line l1, Line l2)
-{
-    Point a(l1.x1, l1.y1);
-    Point b(l1.x2, l1.y2);
-    Point c(l2.x1, l2.y1);
-    Point d(l2.x2, l2.y2);
-
-    if (side(a, c, d) * side(b, c, d) > 0)      return false;
-    else if (side(c, a, b) * side(d, a, b) > 0) return false;
-    else return true;
-}
-*/
-
 int sign(float x)
 {
     if (x > 0.f)      return 1;
@@ -142,21 +76,58 @@ int sign(float x)
     else return 0;
 }
 
-int side(Point m, Point a, Point b)
+bool collisionTest(Rectangle const &a, Rectangle const &b)
 {
-    Point ab(b.m_x - a.m_x, b.m_y - a.m_y);
-    Point am(m.m_x - a.m_x, m.m_y - a.m_y);
-    float vectoriel = ab.m_x * am.m_y - am.m_x * ab.m_y;
-    return sign(vectoriel);
+    if (a.m_bottom <= b.m_top)    return false;
+    if (a.m_top    >= b.m_bottom) return false;
+    if (a.m_right  <= b.m_left)   return false;
+    if (a.m_left   >= b.m_right)  return false;
+    return true;
 }
 
-bool collisionTest(Rectangle const &firstBox, Rectangle const &secondBox)
+bool collisionTest(Circle const &a, Circle const &b)
 {
-    if (firstBox.m_bottom <= secondBox.m_top)    return false;
-    if (firstBox.m_top    >= secondBox.m_bottom) return false;
-    if (firstBox.m_right  <= secondBox.m_left)   return false;
-    if (firstBox.m_left   >= secondBox.m_right)  return false;
-    return true;
+    auto distanceSquared = [](int x1, int y1, int x2, int y2)
+    {
+        int deltaX = x2 - x1;
+        int deltaY = y2 - y1;
+        return deltaX * deltaX + deltaY * deltaY;
+    };
+
+    // Calculate total radius squared
+    int totalRadiusSquared = a.m_raduis + b.m_raduis;
+    totalRadiusSquared = totalRadiusSquared * totalRadiusSquared;
+
+    // If the distance between the centers of the circles is less than the sum of their radii
+    if (distanceSquared(a.m_x, a.m_y, b.m_x, b.m_y) < totalRadiusSquared) return true; // The circles have collided
+    return false; // If not
+}
+
+bool collisionTest(Circle const &circle, Rectangle const &rec)
+{
+    // temporary variables to set edges for testing
+    float testX = circle.m_x;
+    float testY = circle.m_y;
+
+    // which edge is closest?
+    if (circle.m_x < rec.m_left) testX = rec.m_left;   // test left edge
+    else if (circle.m_x > rec.m_right)   testX = rec.m_right;  // right edge
+    if (circle.m_y < rec.m_top)  testY = rec.m_top;    // top edge
+    else if (circle.m_y > rec.m_bottom)  testY = rec.m_bottom; // bottom edge
+
+    // get distance from closest edges
+    float distX = circle.m_x - testX;
+    float distY = circle.m_y - testY;
+    float distance = sqrt((distX * distX) + (distY * distY));
+
+    // if the distance is less than the radius, collision!
+    if (distance <= circle.m_raduis) return true;
+    return false;
+}
+
+bool collisionTest(Rectangle const &rec, Circle const &circle)
+{
+    return collisionTest(circle, rec);
 }
 
 float pointDistance(float x1, float y1, float x2, float y2)

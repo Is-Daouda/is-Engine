@@ -33,7 +33,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion '27.0.3'
     defaultConfig {
-        applicationId "com.isdaouda.isenginedemo"
+        applicationId "com.author.isengine"
         //Replace this with your real package name (e.g. com.StudioName.GameName)
         minSdkVersion 14
         targetSdkVersion 26

@@ -2,6 +2,7 @@
 #define SDM_H_INCLUDED
 
 #include "../entity/MainObject.h"
+#include <list>
 
 namespace is
 {
@@ -14,19 +15,20 @@ class SDM
 {
 public:
     /// Scene objects container
-    std::vector<std::shared_ptr<MainObject>> m_SDMsceneObjects;
+    std::list<std::shared_ptr<MainObject>> m_SDMsceneObjects;
 
     /// Allow to get object in container by his name
     MainObject* SDMgetObject(std::string name)
     {
         // update scene objects
-        WITH (m_SDMsceneObjects.size())
+        for (std::list<std::shared_ptr<MainObject>>::iterator it = m_SDMsceneObjects.begin();
+            it != m_SDMsceneObjects.end(); ++it)
         {
-            if (is::instanceExist(m_SDMsceneObjects[_I]))
+            if (is::instanceExist(*it))
             {
-                if (m_SDMsceneObjects[_I]->getName() == name)
+                if (it->get()->getName() == name)
                 {
-                    return m_SDMsceneObjects[_I].get();
+                    return it->get();
                 }
             }
         }
@@ -47,7 +49,7 @@ public:
         obj->m_SDMcallDraw = callDrawFunction;
         if (name != "null") obj->setName(name);
         m_SDMsceneObjects.push_back(obj);
-        is::sortObjArrayByDepth(m_SDMsceneObjects);
+        m_SDMsortArray = true;
     }
 
     //////////////////////////////////////////////////////
@@ -57,27 +59,39 @@ public:
     /// \param name of sprite which will be used to identify it in the container in order to be able to access it
     /// \param depth display depth
     //////////////////////////////////////////////////////
-    virtual void SDMaddSprite(sf::Sprite &spr, std::string name, int depth = DepthObject::NORMAL_DEPTH)
+    virtual void SDMaddSprite(sf::Sprite spr, std::string name, int depth = DepthObject::NORMAL_DEPTH)
     {
         std::shared_ptr<MainObject> obj(new MainObject(spr));
         obj->setName(name);
         obj->setDepth(depth);
-        obj->m_SDMcallStep = false;
         m_SDMsceneObjects.push_back(obj);
-        is::sortObjArrayByDepth(m_SDMsceneObjects);
+        m_SDMsortArray = true;
     }
 
-    /// change the display depth of an object
+    /// change the display depth of an object by his name
     template <class T>
     void SDMsetObjDepth(std::string name, int depth)
     {
         if (auto obj = SDMgetObject(name); obj != nullptr)
         {
             obj->setDepth(depth);
-            is::sortObjArrayByDepth(m_SDMsceneObjects);
+            m_SDMsortArray = true;
         }
-        else is::showLog("Cannot change depth because object not found !");
+        else is::showLog("ERROR: Can't change depth because object <" + name + "> not found !");
     }
+
+    /// change the display depth of an object
+    void SDMsetObjDepth(MainObject *obj, int depth)
+    {
+        if (obj->getDepth() != depth)
+        {
+            obj->setDepth(depth);
+            m_SDMsortArray = true;
+        }
+    }
+
+protected:
+    bool m_SDMsortArray = false;
 };
 }
 
