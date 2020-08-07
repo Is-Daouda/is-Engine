@@ -25,6 +25,6 @@
 
 If all goes well you will have a **Hello World Screen** on your **Android emulator**
 
-![Image](./images/demo_screen.png)
+![Image](https://github.com/Is-Daouda/is-Engine/blob/2.2.x/images/demo_screen.png)
 
 **Enjoy!**
