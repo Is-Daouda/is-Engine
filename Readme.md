@@ -3,7 +3,7 @@
 
 # is::Engine (Infinity Solutions::Engine) 3.0
 
-is::Engine is a 2D game engine based on SFML which allows you to easily develop video games on Android and PC (Windows, Linux).
+**is::Engine** is a 2D open source game engine based on **SFML** which allows you to easily develop video games on **Android and PC (Windows, Linux)**.
 
 [![SFML logo](https://www.sfml-dev.org/images/logo.png)](https://www.sfml-dev.org) [![logo](https://i.imgur.com/tri24Y5.png)](https://github.com/TheMaverickProgrammer/Swoosh) [![Box2D Logo](https://box2d.org/images/logo.svg)](https://github.com/erincatto/box2d) [![Tiled Logo](https://i.servimg.com/u/f48/20/16/75/27/tiled_10.png)](https://www.mapeditor.org) [![Admob Logo](https://i48.servimg.com/u/f48/20/16/75/27/admob_10.png)](https://admob.google.com/) [![Tiny File Dialog](https://a.fsdn.com/allura/p/tinyfiledialogs/icon?1582196333?&w=90)](https://github.com/native-toolkit/tinyfiledialogs)
 
