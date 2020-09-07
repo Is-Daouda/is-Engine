@@ -86,7 +86,7 @@ If all goes well you will have a **Hello World Screen** on your **Android emulat
 **Enjoy!**
 
 **3. Adding Source Files**
-So that Android Studio can detect your source files (.cpp) and compile them you must include them in the **CMakeLists.txt** file which is in **is-Engine/app**.
+- So that Android Studio can detect your source files (.cpp) and compile them you must include them in the **CMakeLists.txt** file which is in **is-Engine/app**.
 
 **4. Application location**
 - The application can be found in **is-Engine/app/build/outputs/apk**.
