@@ -28,7 +28,7 @@ bool GameEngine::basicSFMLmain()
     image.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
 
     sf::Music music;
-    if (!music.openFromFile(is::GameConfig::MUSIC_DIR + "world_1_music.ogg")) return false;
+    if (!music.openFromFile(is::GameConfig::MUSIC_DIR + "game_music.ogg")) return false;
     music.play();
 
     bool focus = true;
