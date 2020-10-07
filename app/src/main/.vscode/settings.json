@@ -20,6 +20,7 @@
 		// hide file
 		"res": true
 		"save": true
+		"CMakeLists.txt": true
 		"AndroidManifest.xml": true
 		"codeblocks": true
 		"cmake": true

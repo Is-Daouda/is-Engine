@@ -18,15 +18,14 @@ GameDialog::GameDialog(sf::Texture &tex, sf::Font &fnt, GameDisplay *m_scene) :
     m_strName = "GameDialog"; // object name
 
     m_imageScale = 0.f;
-    is::createText(fnt, m_txtDialog, "", m_x, m_y, 16, false, false);
-    is::createText(fnt, m_txtSkip, "", m_x, m_y, 13, false, true);
-    is::setSFMLObjFillColor(m_txtSkip, is::GameConfig::DEFAULT_RPG_DIALOG_SELECTED_TEXT_COLOR);
+    is::createText(fnt, m_txtDialog, "", m_x, m_y, is::GameConfig::DEFAULT_RPG_DIALOG_TEXT_COLOR, 16, false, false);
+    is::createText(fnt, m_txtSkip, is::lang::pad_dialog_skip[m_scene->getGameSystem().m_gameLanguage],
+                   m_x, m_y, is::GameConfig::DEFAULT_RPG_DIALOG_SELECTED_TEXT_COLOR, 13, false, true);
     m_strDialog = L"";
     is::createSprite(tex, m_sprParent, sf::IntRect(0, 0, 480, 96), sf::Vector2f(0.f, 0.f), sf::Vector2f(240.f, 48.f), true);
     is::createSprite(tex, m_sprNext, sf::IntRect(64, 96, 32, 32), sf::Vector2f(0.f, 0.f), sf::Vector2f(16.f, 16.f));
     is::createSprite(tex, m_sprSkip, sf::IntRect(0, 96, 64, 24), sf::Vector2f(0.f, 0.f), sf::Vector2f(32.f, 12.f));
     is::setSFMLObjScale(m_txtDialog, 0.f);
-    m_txtSkip.setString(is::lang::pad_dialog_skip[m_scene->getGameSystem().m_gameLanguage]);
     is::centerSFMLObj(m_txtSkip);
     is::setSFMLObjScale(m_txtSkip, 0.f);
     is::setSFMLObjScale(m_sprParent, 0.f);
@@ -65,7 +64,12 @@ void GameDialog::step(const float &DELTA_TIME)
         {
             if (m_time > 1.f)
             {
-                std::wstring tempoStr = m_txtDialog.getString();
+                std::wstring tempoStr = m_txtDialog.
+                                                    #if defined(IS_ENGINE_HTML_5)
+                                                    getWString();
+                                                    #else
+                                                    getString();
+                                                    #endif
                 if (m_newLine)
                 {
                     m_scene->GSMplaySound("change_option"); // We play this sound
@@ -121,10 +125,7 @@ void GameDialog::step(const float &DELTA_TIME)
             }
         }
 
-        if (!m_dialogEnd)
-        {
-            is::increaseVar(DELTA_TIME, m_imageScale, 0.1f, 1.f, 1.f);
-        }
+        if (!m_dialogEnd) is::increaseVar(DELTA_TIME, m_imageScale, 0.1f, 1.f, 1.f);
         else
         {
             is::decreaseVar(DELTA_TIME, m_imageScale, 0.1f, 0.f, 0.f);
@@ -165,15 +166,15 @@ void GameDialog::setMouseInCollison(bool val)
     m_mouseInCollison = val;
 }
 
-void GameDialog::draw(sf::RenderTexture &surface)
+void GameDialog::draw(is::Render &surface)
 {
     if (m_imageScale > 0.05)
     {
-        surface.draw(m_sprParent);
-        surface.draw(m_txtDialog);
-        surface.draw(m_txtSkip);
-        surface.draw(m_sprSkip);
-        if (m_blindTime < 18.f && m_size == (static_cast<int>(m_strDialog.size()) - 1)) surface.draw(m_sprNext);
+        is::draw(surface, m_sprParent);
+        is::draw(surface, m_txtDialog);
+        is::draw(surface, m_txtSkip);
+        is::draw(surface, m_sprSkip);
+        if (m_blindTime < 18.f && m_size == (static_cast<int>(m_strDialog.size()) - 1)) is::draw(surface, m_sprNext);
     }
 }
 }

@@ -1,21 +1,17 @@
 #ifndef GAMESYSTEM_H_INCLUDED
 #define GAMESYSTEM_H_INCLUDED
 
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
 #include <fstream>
 #include <cstdio>
 #include <iostream>
-#include <typeinfo>
 
 #include "GameFunction.h"
-#include "../../../app_src/config/GameConfig.h"
 
 //////////////////////////////////////////////////////
 // is::Engine version
 //////////////////////////////////////////////////////
 #define IS_ENGINE_VERSION_MAJOR 3
-#define IS_ENGINE_VERSION_MINOR 0
+#define IS_ENGINE_VERSION_MINOR 1
 #define IS_ENGINE_VERSION_PATCH 0
 
 namespace is
@@ -39,7 +35,7 @@ public:
         KEYBOARD = -1,    ///< Represent Keyboard validation button
         ALL_BUTTONS = -2, ///< Represent Mouse and Keyboard validation button (If it is used then it becomes touch action on android)
     };
-    GameSystem();
+    GameSystem(sf::RenderWindow &window);
 
     //////////////////////////////////////////////////////
     /// On PC Platform check if mouse / keyboard validation key button is pressed
@@ -49,7 +45,7 @@ public:
     /// \param finger Finger index (on Android)
     /// \param validationButton Represents the validation button to use to take the test
     //////////////////////////////////////////////////////
-    bool isPressed(
+    virtual bool isPressed(
                    #if defined(__ANDROID__)
                    int finger = 0
                    #else
@@ -58,71 +54,84 @@ public:
                    ) const;
 
     //////////////////////////////////////////////////////
-    /// \brief Check if keyboard key is pressed
+    /// \brief Check if key is pressed
     ///
     /// \return true if key is pressed false if not
     //////////////////////////////////////////////////////
-    bool keyIsPressed(sf::Keyboard::Key key) const;
+    virtual bool keyIsPressed(
+                              #if !defined(IS_ENGINE_HTML_5)
+                              sf::Keyboard::Key
+                              #else
+                              short
+                              #endif
+                              key) const;
 
+    /*
+     * When using is::Engine to develop on HTML 5 the keyboard and mouse keys are represented
+     * by integers. They are no longer differentiated by an enum, so this function is no longer
+     * useful when using the SDK which allows to develop on the web.
+     */
+    #if !defined(IS_ENGINE_HTML_5)
     //////////////////////////////////////////////////////
     /// \brief Check if mouse button is pressed
     ///
     /// \return true if button is pressed false if not
     //////////////////////////////////////////////////////
-    bool keyIsPressed(sf::Mouse::Button button) const;
+    virtual bool keyIsPressed(sf::Mouse::Button button) const;
+    #endif
 
     //////////////////////////////////////////////////////
     /// \brief Check if file exist
     ///
     /// \return true is file is found false if not
     //////////////////////////////////////////////////////
-    bool fileExist(std::string const &fileName) const;
+    virtual bool fileExist(std::string const &fileName) const;
 
     /// Allows to play a sound if the option is activated
-    void playSound(sf::Sound &obj)
+    virtual void playSound(sf::Sound &obj)
     {
-        if (m_enableSound) obj.play();
+        if (m_enableSound) is::playSFMLSnd(obj);
     }
 
     /// Allows to play a music if the option is activated
-    void playMusic(sf::Music &obj)
+    virtual void playMusic(sf::Music &obj)
     {
-        if (m_enableMusic) obj.play();
+        if (m_enableMusic) is::playSFMLSnd(obj);
     }
 
     /// Allows to stop a sound
-    void stopSound(sf::Sound &obj)
+    virtual void stopSound(sf::Sound &obj)
     {
         if (m_enableSound)
         {
-            if (obj.getStatus() == sf::Sound::Playing) obj.stop();
+            if (is::checkSFMLSndState(obj, SFMLSndStatus::Playing)) is::stopSFMLSnd(obj);
         }
     }
 
     /// Allows to stop a music
-    void stopMusic(sf::Music &obj)
+    virtual void stopMusic(sf::Music &obj)
     {
         if (m_enableMusic)
         {
-            if (obj.getStatus() == sf::Sound::Playing) obj.stop();
+            if (is::checkSFMLSndState(obj, SFMLSndStatus::Playing)) is::stopSFMLSnd(obj);
         }
     }
 
     /// Allows to use vibrate if the option is activated (only for Android)
     /// \param ms representing the duration of the vibrator in millisecond
-    void useVibrate(short ms);
+    virtual void useVibrate(short ms);
 
     /// Save game configuration data
-    void saveConfig(std::string const &fileName);
+    virtual void saveConfig(std::string const &fileName);
 
     /// Load game configuration data
-    void loadConfig(std::string const &fileName);
+    virtual void loadConfig(std::string const &fileName);
 
     /// Save virtual game pad configuration data
-    void savePadConfig(std::string const &fileName);
+    virtual void savePadConfig(std::string const &fileName);
 
     /// Load virtual game pad configuration data
-    void loadPadConfig(std::string const &fileName);
+    virtual void loadPadConfig(std::string const &fileName);
 
     ////////////////////////////////////////////////////////////
     // Do not touch these variables unless you know what you are doing
@@ -146,7 +155,11 @@ public:
     float m_padDirXPos, m_padDirYPos, m_padActionXPos, m_padActionYPos;
     float m_defaultPadDirXPos, m_defaultPadDirYPos, m_defaultPadActionXPos, m_defaultPadActionYPos;
     bool  m_permutePadAB;
+
+    /// Application
+    sf::RenderWindow &m_window;
     ////////////////////////////////////////////////////////////
 };
 }
+
 #endif // GAMESYSTEM_H_INCLUDED

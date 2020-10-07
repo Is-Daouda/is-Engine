@@ -2,8 +2,8 @@
 
 namespace is
 {
-GameSystemExtended::GameSystemExtended() :
-    GameSystem()
+GameSystemExtended::GameSystemExtended(sf::RenderWindow &window) :
+    GameSystem(window)
 {
     initProgress();
 

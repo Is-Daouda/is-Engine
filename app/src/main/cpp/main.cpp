@@ -23,7 +23,7 @@ int main()
 #endif
     game.play();
 
-    // uncomment "game.basicSFMLmain()" to display a basic sfml window
+    // uncomment "game.basicSFMLmain()" to display a basic SFML window
     // if this line is uncommented you must comment this one "game.play()"
     // to avoid using the main engine rendering loop
     /*

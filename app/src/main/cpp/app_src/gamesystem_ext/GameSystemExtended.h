@@ -1,8 +1,7 @@
 #ifndef GAMESYSTEMEXTENDED_H_INCLUDED
 #define GAMESYSTEMEXTENDED_H_INCLUDED
 
-#include "../../isEngine/system/function/GameFunction.h"
-#include "../config/GameConfig.h"
+#include "../../isEngine/system/function/GameSystem.h"
 #include "../levels/Level.h"
 
 ////////////////////////////////////////////////////////////
@@ -15,10 +14,10 @@
 ////////////////////////////////////////////////////////////
 namespace is
 {
-class GameSystemExtended : public is::GameSystem
+class GameSystemExtended : public GameSystem
 {
 public:
-    GameSystemExtended();
+    GameSystemExtended(sf::RenderWindow &window);
 
     /// Initialize the data link to the game engine
     void initSystemData();

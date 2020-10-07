@@ -2,11 +2,12 @@ cmake_minimum_required (VERSION 3.1)
 
 project(isengine)
 
+set(ISENGINE_PC true) # This confirms that we are using is::Engine to develop on PC (Windows / Linux)
+set(ISENGINE_MAIN_DIR  "${CMAKE_CURRENT_SOURCE_DIR}/app/src/main")
+set(ISENGINE_SRC_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/app/src/main/cpp")
+set(ISENGINE_CMAKE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/app/src/main/cmake")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
-set(ISENGINE_MAIN_DIR "${CMAKE_CURRENT_SOURCE_DIR}/app/src/main")
-set(ISENGINE_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/app/src/main/cpp")
-set(ISENGINE_CMAKE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/app/src/main/cmake")
 
 # SFML on Windows OS
 if (WIN32)

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>is::Engine 3.1</title>
+	<link rel="icon" href="favicon.png">
+	<style>
+	canvas {
+		padding-left: 0;
+		padding-right: 0;
+		margin-left: auto;
+		margin-right: auto;
+		display: block;
+		width: 800px;
+		background:black;
+	}
+	.image {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		-webkit-animation:spin 4s linear infinite;
+		-moz-animation:spin 4s linear infinite;
+		animation:spin 4s linear infinite;
+	}
+	@-moz-keyframes spin {
+		100% {-moz-transform: rotate(360deg);}
+	}
+	@-webkit-keyframes spin {
+		100% {-webkit-transform: rotate(360deg);}
+	}
+	@keyframes spin {
+		100% {-webkit-transform: rotate(360deg); transform:rotate(360deg);}
+	}
+	</style>
+</head>
+<body>
+	<img class="image" id="loading" src="loading.png" alt="Loading..." width="32" height="32">
+	
+    <canvas id="canvas" oncontextmenu="event.preventDefault()">
+      Loading... 
+    </canvas>
+
+    <script type="text/javascript">
+		window.Module = {
+			canvas: document.getElementById('canvas'),
+			print: console.log,
+			printErr: console.error,
+		};
+		
+		var second = 0;
+		function chrono() {
+			second++;
+			if (second > 4)
+			{
+				document.getElementById('loading').style.visibility = 'hidden';
+			}
+		}
+		setInterval("chrono()", 1000);
+    </script>
+
+    <script async src="isengine.js"></script>
+</body>
+</html>

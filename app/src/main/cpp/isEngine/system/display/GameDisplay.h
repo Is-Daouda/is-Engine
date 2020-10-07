@@ -6,11 +6,10 @@
 
 #if defined(IS_ENGINE_USE_SDM)
 #include "SDM.h"
+#endif // defined
 
-#endif // defined
-#if defined(IS_ENGINE_USE_GSM)
 #include "../sound/GSM.h"
-#endif // defined
+#include "../graphic/GRM.h"
 
 #if defined(__ANDROID__)
 #if defined(IS_ENGINE_USE_ADMOB)
@@ -20,31 +19,26 @@
 
 namespace is
 {
+#if !defined(IS_ENGINE_HTML_5)
+class GameDisplay;
+sf::Vector2f getMapPixelToCoords(GameDisplay const *scene, sf::Vector2i pixelPos);
+#endif
+
 //////////////////////////////////////////////////////
 /// \brief Class for manage game scene
 ///
 //////////////////////////////////////////////////////
-class GameDisplay;
-
-sf::Vector2f getMapPixelToCoords(GameDisplay const *scene, sf::Vector2i pixelPos);
-
 class GameDisplay
-#if defined(IS_ENGINE_USE_SDM) && defined(IS_ENGINE_USE_GSM)
-    : public SDM, public GSM
+#if defined(IS_ENGINE_USE_SDM)
+    : public SDM, public GSM, public GRM
 #else
-    #if defined(IS_ENGINE_USE_SDM)
-    : public SDM
-    #endif // defined
-    #if defined(IS_ENGINE_USE_GSM)
-    : public GSM
-    #endif // defined
+    : public GSM, public GRM
 #endif // defined
-
 {
 public:
     bool m_isClose;
 
-    GameDisplay(sf::RenderWindow &window, sf::View &view, sf::RenderTexture &surface, GameSystemExtended &gameSysExt, sf::Color bgColor);
+    GameDisplay(sf::RenderWindow &window, sf::View &view, is::Render &surface, GameSystemExtended &gameSysExt, sf::Color bgColor);
     virtual ~GameDisplay();
 
 #if defined(__ANDROID__)
@@ -137,7 +131,7 @@ public:
     virtual void drawScreen();
 
     /// Draw temporal loading (simulation)
-    virtual void showTempLoading(float time = 3.f * 59.f);
+    virtual void showTempLoading(float time = 3.f * is::SECOND);
 
     /// Allows to change an option by playing a sound and making an animation
     virtual void setOptionIndex(int optionIndexValue, bool callWhenClick, float buttonScale = 1.3f);
@@ -227,16 +221,16 @@ public:
     virtual sf::RenderWindow& getRenderWindow() const {return m_window;}
 
     /// Return render texture
-    virtual sf::RenderTexture& getRenderTexture() const {return m_surface;}
+    virtual is::Render& getRenderTexture() const {return m_surface;}
 
     /// Return game system controller
     virtual GameSystemExtended& getGameSystem() {return m_gameSysExt;}
 
     /// Return font system
-    virtual sf::Font& getFontSystem() {return m_fontSystem;}
+    virtual sf::Font& getFontSystem() {return GRMgetFont("font_system");}
 
     /// Return font msg
-    virtual sf::Font& getFontMsg() {return m_fontMsg;}
+    virtual sf::Font& getFontMsg() {return GRMgetFont("font_msg");}
 
     /// Return Button Select sprite
     virtual sf::Sprite& getSprButtonSelect() {return m_sprButtonSelect;}
@@ -297,26 +291,27 @@ public:
                         #endif // defined
                         )
     {
-        // A rectangle that will allow to test with the SFML object
-        sf::RectangleShape cursor(sf::Vector2f(3.f, 3.f));
-        is::centerSFMLObj(cursor);
-
+        sf::Vector2i pixelPos =
         #if defined(__ANDROID__)
-        sf::Vector2i pixelPos = sf::Touch::getPosition(finger, m_window);
+                                sf::Touch::getPosition(finger, m_window);
         #else
-        sf::Vector2i pixelPos = sf::Mouse::getPosition(m_window);
+                                sf::Mouse::getPosition(m_window);
         #endif // defined
 
+        #if !defined(IS_ENGINE_HTML_5)
         sf::Vector2f worldPos = getMapPixelToCoords(this, pixelPos);
+        #else
+        sf::Vector2i worldPos = pixelPos;
+        #endif
         float dx = pointDistance(m_viewX, m_viewY, worldPos.x, m_viewY);
         float dy = pointDistance(m_viewX, m_viewY, m_viewX, worldPos.y);
-
         if (worldPos.x < m_viewX) dx *= -1;
         if (worldPos.y < m_viewY) dy *= -1;
 
-        is::setSFMLObjX_Y(cursor, m_viewX + dx, m_viewY + dy);
-        if (obj.getGlobalBounds().intersects(cursor.getGlobalBounds())) return true;
-        else return false;
+        // A rectangle that will allow to test with the SFML object
+        sf::FloatRect const cursor(m_viewX + dx, m_viewY + dy, (m_viewX + dx) + 3, (m_viewY + dy) + 3);
+        if (obj.getGlobalBounds().intersects(cursor)) return true;
+        return false;
     }
 
     //////////////////////////////////////////////////////
@@ -324,38 +319,39 @@ public:
     /// scene with the mouse cursor on PC platform / touch on mobile
     ///
     /// \param obj SFML object with which we want to test
-    /// \param cursor Allows to get the position of the collision point
+    /// \param position Allows to get the position of the collision point
     /// \param finger Finger index (on Android)
     //////////////////////////////////////////////////////
     template <class T>
-    bool mouseCollision(T const &obj, sf::RectangleShape &cursor
+    bool mouseCollision(T const &obj, sf::Vector2f &position
                         #if defined(__ANDROID__)
                         , unsigned int finger = 0
                         #endif // defined
                         )
     {
-        // A rectangle that will allow to test with the SFML object
-        // If size is empty set default value
-        if (static_cast<int>(is::getSFMLObjWidth(cursor)) == 0 && static_cast<int>(is::getSFMLObjHeight(cursor)) == 0)
-            is::setSFMLObjSize(cursor, sf::Vector2f(3.f, 3.f));
-        is::centerSFMLObj(cursor);
-
+        sf::Vector2i pixelPos =
         #if defined(__ANDROID__)
-        sf::Vector2i pixelPos = sf::Touch::getPosition(finger, m_window);
+                                sf::Touch::getPosition(finger, m_window);
         #else
-        sf::Vector2i pixelPos = sf::Mouse::getPosition(m_window);
+                                sf::Mouse::getPosition(m_window);
         #endif // defined
 
+        #if !defined(IS_ENGINE_HTML_5)
         sf::Vector2f worldPos = getMapPixelToCoords(this, pixelPos);
+        #else
+        sf::Vector2i worldPos = pixelPos;
+        #endif
         float dx = pointDistance(m_viewX, m_viewY, worldPos.x, m_viewY);
         float dy = pointDistance(m_viewX, m_viewY, m_viewX, worldPos.y);
 
         if (worldPos.x < m_viewX) dx *= -1;
         if (worldPos.y < m_viewY) dy *= -1;
+        is::setVector2(position, m_viewX + dx, m_viewY + dy);
 
-        is::setSFMLObjX_Y(cursor, m_viewX + dx, m_viewY + dy);
-        if (obj.getGlobalBounds().intersects(cursor.getGlobalBounds())) return true;
-        else return false;
+        // A rectangle that will allow to test with the SFML object
+        sf::IntRect cursor(position.x, position.y, position.x + 3, position.y + 3);
+        if (obj.getGlobalBounds().intersects(cursor)) return true;
+        return false;
     }
 
     #if defined(IS_ENGINE_USE_SDM)
@@ -367,19 +363,35 @@ public:
     virtual void SDMmanageSceneEvents()
     {
         sf::Event event;
+        #if !defined(IS_ENGINE_HTML_5)
         while (m_window.pollEvent(event)) // even loop
         {
+        #endif
             controlEventFocusClosing(event);
-            if (event.type == sf::Event::KeyReleased)
+            if (
+                #if !defined(IS_ENGINE_HTML_5)
+                event.type == sf::Event::KeyReleased
+                #else
+                m_window.input().IsKeyReleased(is::GameConfig::KEY_CANCEL)
+                #endif
+                )
             {
-                if (event.key.code == is::GameConfig::KEY_CANCEL)
+                if (
+                    #if !defined(IS_ENGINE_HTML_5)
+                    event.key.code == is::GameConfig::KEY_CANCEL
+                    #else
+                    m_gameSysExt.keyIsPressed(is::GameConfig::KEY_CANCEL)
+                    #endif
+                    )
                 {
                     if (!m_showMsg) showMessageBox(is::lang::msg_quit_game[m_gameSysExt.m_gameLanguage]);
                     else m_keyBackPressed = true;
                 }
             }
+        #if !defined(IS_ENGINE_HTML_5)
             SDMcallObjectsEvents(event);
         }
+        #endif
     }
 
     /// Allows to define how the answers of the dialog box will be handled
@@ -407,7 +419,6 @@ public:
     virtual void SDMdraw();
     #endif // defined
 
-    #if defined(IS_ENGINE_USE_GSM)
     /// Allows to play sound in container by his name
     virtual void GSMplaySound(std::string name);
 
@@ -419,11 +430,10 @@ public:
 
     /// Allows to pause music in container by his name
     virtual void GSMpauseMusic(std::string name);
-    #endif // defined
 
     /// Show message box according to type
-    template<class T>
-    void showMessageBox(T const &msgBody, bool mbYesNo = true)
+    template<class T1>
+    void showMessageBox(T1 const &msgBody, bool mbYesNo = true)
     {
         m_showMsg = true;
         m_mbYesNo = mbYesNo;
@@ -434,36 +444,36 @@ public:
         m_txtMsgBoxNo.setString(is::lang::pad_answer_no[m_gameSysExt.m_gameLanguage]);
         m_txtMsgBoxOK.setString(is::lang::pad_answer_ok[m_gameSysExt.m_gameLanguage]);
 
-        is::centerSFMLObj(m_txtMsgBoxYes);
-        is::centerSFMLObj(m_txtMsgBoxNo);
-        is::centerSFMLObj(m_txtMsgBoxOK);
+        centerSFMLObj(m_txtMsgBoxYes);
+        centerSFMLObj(m_txtMsgBoxNo);
+        centerSFMLObj(m_txtMsgBoxOK);
 
-        is::setSFMLObjX_Y(m_recMsgBox, sf::Vector2f(m_view.getCenter().x, m_view.getCenter().y));
-        is::setSFMLObjX_Y(m_sprMsgBox, sf::Vector2f(m_view.getCenter().x, m_view.getCenter().y));
+        setSFMLObjX_Y(m_recMsgBox, sf::Vector2f(m_view.getCenter().x, m_view.getCenter().y));
+        setSFMLObjX_Y(m_sprMsgBox, sf::Vector2f(m_view.getCenter().x, m_view.getCenter().y));
         const float dim(6.f),
                     boxXOrigin(is::getSFMLObjOriginX(m_sprMsgBox)),
                     boxYOrigin(is::getSFMLObjOriginY(m_sprMsgBox));
-        is::setSFMLObjX_Y(m_sprMsgBoxButton1,
+        setSFMLObjX_Y(m_sprMsgBoxButton1,
                           is::getSFMLObjX(m_sprMsgBox) - boxXOrigin + is::getSFMLObjOriginX(m_sprMsgBoxButton1) + dim,
                           is::getSFMLObjY(m_sprMsgBox) + boxYOrigin - is::getSFMLObjHeight(m_sprMsgBoxButton1) + dim);
-        is::setSFMLObjX_Y(m_sprMsgBoxButton2,
+        setSFMLObjX_Y(m_sprMsgBoxButton2,
                           is::getSFMLObjX(m_sprMsgBox) + boxXOrigin - is::getSFMLObjOriginX(m_sprMsgBoxButton2) - dim,
                           is::getSFMLObjY(m_sprMsgBox) + boxYOrigin - is::getSFMLObjHeight(m_sprMsgBoxButton2) + dim);
-        is::setSFMLObjX_Y(m_sprMsgBoxButton3,
+        setSFMLObjX_Y(m_sprMsgBoxButton3,
                           is::getSFMLObjX(m_sprMsgBox),
                           is::getSFMLObjY(m_sprMsgBox) + boxYOrigin - is::getSFMLObjHeight(m_sprMsgBoxButton1) + dim);
-        is::setSFMLObjX_Y(m_txtMsgBox,
+        setSFMLObjX_Y(m_txtMsgBox,
                           is::getSFMLObjX(m_sprMsgBox)- boxXOrigin + 16.f,
                           is::getSFMLObjY(m_sprMsgBox) - boxYOrigin + 8.f);
         m_txtMsgBox.setString(msgBody);
 
         // Adjust the text on button
         float const adjustVal(8.f);
-        is::setSFMLObjX_Y(m_txtMsgBoxYes, is::getSFMLObjX(m_sprMsgBoxButton1),
+        setSFMLObjX_Y(m_txtMsgBoxYes, is::getSFMLObjX(m_sprMsgBoxButton1),
                           is::getSFMLObjY(m_sprMsgBoxButton1) - adjustVal);
-        is::setSFMLObjX_Y(m_txtMsgBoxNo, is::getSFMLObjX(m_sprMsgBoxButton2),
+        setSFMLObjX_Y(m_txtMsgBoxNo, is::getSFMLObjX(m_sprMsgBoxButton2),
                           is::getSFMLObjY(m_sprMsgBoxButton2) - adjustVal);
-        is::setSFMLObjX_Y(m_txtMsgBoxOK, is::getSFMLObjX(m_sprMsgBoxButton3),
+        setSFMLObjX_Y(m_txtMsgBoxOK, is::getSFMLObjX(m_sprMsgBoxButton3),
                           is::getSFMLObjY(m_sprMsgBoxButton3) - adjustVal);
 
         is::setSFMLObjAlpha(m_sprMsgBoxButton1, m_msgWaitTime);
@@ -503,10 +513,9 @@ protected:
     sf::RenderWindow &m_window;
     sf::View &m_view;
 
-    sf::RenderTexture &m_surface;
+    is::Render &m_surface;
     GameSystemExtended &m_gameSysExt;
 
-    sf::Font m_fontSystem, m_fontMsg;
     sf::Sprite m_sprButtonSelect;
     sf::Clock m_clock;
     sf::Color m_windowBgColor;
@@ -526,7 +535,6 @@ protected:
     bool m_keyBackPressed;
     bool m_showMsg, m_mbYesNo, m_msgBoxMouseInCollison;
 
-    sf::Texture m_texMsgBox, m_texMsgButton;
     sf::Sprite m_sprMsgBox, m_sprMsgBoxButton1, m_sprMsgBoxButton2, m_sprMsgBoxButton3;
     sf::Text m_txtMsgBox, m_txtMsgBoxYes, m_txtMsgBoxNo, m_txtMsgBoxOK;
     sf::RectangleShape m_recMsgBox, m_recCursor;

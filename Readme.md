@@ -1,11 +1,11 @@
 ![header](./images/is_Engine_logo.png)
 ----------------------------
 
-# is::Engine (Infinity Solutions::Engine) 3.0
+# is::Engine (Infinity Solutions::Engine) 3.1
 
-**is::Engine** is a 2D open source game engine based on **SFML** which allows you to easily develop video games on **Android and PC (Windows, Linux)**.
+Open source C++ game engine based on **SFML** which allows you to easily develop games on **Web (HTML 5 - CSS 3), Android and PC (Windows, Linux)**.
 
-[![SFML logo](https://www.sfml-dev.org/images/logo.png)](https://www.sfml-dev.org) [![logo](https://i.imgur.com/tri24Y5.png)](https://github.com/TheMaverickProgrammer/Swoosh) [![Box2D Logo](https://box2d.org/images/logo.svg)](https://github.com/erincatto/box2d) [![Tiled Logo](https://i.servimg.com/u/f48/20/16/75/27/tiled_10.png)](https://www.mapeditor.org) [![Admob Logo](https://i48.servimg.com/u/f48/20/16/75/27/admob_10.png)](https://admob.google.com/) [![Tiny File Dialog](https://a.fsdn.com/allura/p/tinyfiledialogs/icon?1582196333?&w=90)](https://github.com/native-toolkit/tinyfiledialogs)
+[![SFML logo](https://www.sfml-dev.org/images/logo.png)](https://www.sfml-dev.org) ![Web](https://i48.servimg.com/u/f48/20/16/75/27/web_lo10.png) [![Box2D Logo](https://box2d.org/images/logo.svg)](https://github.com/erincatto/box2d) [![Tiled Logo](https://i.servimg.com/u/f48/20/16/75/27/tiled_10.png)](https://www.mapeditor.org) [![SMK](https://i48.servimg.com/u/f48/20/16/75/27/smk10.png)](https://github.com/ArthurSonzogni/smk) [![Admob Logo](https://i48.servimg.com/u/f48/20/16/75/27/admob_10.png)](https://admob.google.com/) [![swoosh](https://i.imgur.com/tri24Y5.png)](https://github.com/TheMaverickProgrammer/Swoosh) [![Tiny File Dialog](https://a.fsdn.com/allura/p/tinyfiledialogs/icon?1582196333?&w=90)](https://github.com/native-toolkit/tinyfiledialogs)
 
 ## Features
 - Language manager (English and French language support by default)
@@ -13,6 +13,8 @@
 - Automatic management of a window
 - SDM (Step and Draw Manager)
 - GSM (Game Sound Manager)
+- GRM (Graphics Resources Manager)
+- CFF (CMake Files Fusion)
 - [TMX Lite](https://github.com/Is-Daouda/is-Engine-TMXLite)
 - [TMX Loader](https://github.com/Is-Daouda/is-Engine-TMXLoader)
 - Entity system
@@ -33,14 +35,15 @@
 - [Android] Show Ad Banner
 - [Android] Show Reward Video
 
-## What's new in version 3.0 ?
-- Support for **TMXLite** and **TMXLoader** library: which allows you to use the [Tiled editor](https://www.mapeditor.org) with the engine.
-Official supported version is **[TMXLite](https://github.com/Is-Daouda/is-Engine-TMXLite)** but you can use another engine version with **[TMXLoader](https://github.com/Is-Daouda/is-Engine-TMXLoader)**
-- Use Android Studio, CMake, Visual Studio and Code::Blocks with the same project
-- **Button System:** Allows you to create customizable buttons and use them in your games
-- **Event system for object:** allows to use SFML events in objects
-- **Engine optimization:** The games are two (2) times faster
-- **Android Studio 4.0.1** support
+## What's new in version 3.1 ?
+1. **Web support (HTML 5 - CSS 3):** you can now run your C / C ++ games in a web browser thanks to the **[SMK (Simple Multimedia Kit)](https://github.com/ArthurSonzogni/smk)** library which is based on **[Emscripten Technology](https://emscripten.org/)**.
+- ***[Please read this it is VERY IMPORTANT!](#-very-important)*** ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png)
+2. **GRM (Graphics Resources Manager) system:** allows you to use **Textures and Fonts** without using (instantiating) an **SFML object** in the code.
+3. **CFF (CMake Files Fusion) system:** Now all the **CMakeLists.txt** files that allow you to compile your games on **Android, PC and Web** are all linked to the same **include file (app_src.cmake / isengine.cmake)**.
+- Explanation:
+When you fill in a **source file (.cpp)** in the **app_src.cmake or isengine.cmake include file**, it is automatically detected in **all CMakeLists.txt** files that allow you to compile on **different platform (Web, Windows, Linux & Android)**.
+- Note that:
+You can decide how the file will be included (eg: avoid C++ files which are intended for PC only from being supported when compiling on Android / Web)!
 
 ## Extras
 The engine comes with a **[Demo (2D Platform Game)](https://github.com/Is-Daouda/is-Engine-Demo)** that uses only the functions of the engine, in order to show you its power and how to use it. Now imagine what you can do when you use Box 2D and the other tools!
@@ -63,7 +66,7 @@ The engine comes with a **[Demo (2D Platform Game)](https://github.com/Is-Daouda
 ---
 
 ## How to use is::Engine with the different development tools:
-## Android Studio
+## ![android](https://i48.servimg.com/u/f48/20/16/75/27/icon_a10.png) Android Studio
 **1. Prerequisites**
 - Android Studio (4.0.1 +)
 - Android SDK and NDK (r20b)
@@ -81,19 +84,68 @@ The engine comes with a **[Demo (2D Platform Game)](https://github.com/Is-Daouda
 
 If all goes well you will have a **Hello World Screen** on your **Android emulator**.
 
-![Image](https://github.com/Is-Daouda/is-Engine/blob/2.2.x/images/demo_screen.png)
+![Image](https://github.com/Is-Daouda/is-Engine/blob/3.1.x/images/demo_screen.png)
 
 **Enjoy!**
 
 **3. Adding Source Files**
-- So that Android Studio can detect your source files (.cpp) and compile them you must include them in the **CMakeLists.txt** file which is in **is-Engine/app**.
+- So that Android Studio can detect your source files (.cpp) and compile them you must include them in the **app_rsc.cmake or isengine.cmake** file which is in **is-Engine/app/src/main/cmake**.
 
 **4. Application location**
 - The application can be found in **is-Engine/app/build/outputs/apk**.
 
 ---
 
-## CMake
+## ![web](https://i48.servimg.com/u/f48/20/16/75/27/icon_w10.png) Web (HTML 5 - CSS 3)
+**1. Prerequisites**
+- Emscripen (1.39.7 +)
+- Python (3.8.1 +)
+- CMake (3.1 +)
+- Java
+- SMK SDK **(It is downloaded with the internet connection when executing commands)**
+
+**2. Installation**
+##### Windows
+1. Download [Emscripten](https://github.com/emscripten-core/emsdk) and install it in **C:/emsdk**, define its path in the environment variable **Path**
+2. Download [Python](https://www.python.org/downloads/release/python-381/) after installation, define its path in the environment variable **Path**
+3. Download [CMake](https://cmake.org/download/) after installation, define its path in the environment variable **Path**
+4. Download [Java](https://www.oracle.com/java/technologies/javase-jre8-downloads.html) after installation, define its path in the environment variable **Path**
+5. Move the **is-Engine** project to your **C:/ (C:/is-Engine)**.
+6. Execute this command :
+```bash
+cd c:/is-Engine/app/src/main
+mkdir bin-web
+emsdk activate latest
+cd bin-web
+emcmake cmake ..
+make -j3
+python -m http.server
+```
+7. Visit this url **localhost:8000** in your **Web Browser**.
+
+If all goes well you will have a **Hello World Screen** on your **Web Browser**.
+
+![Image](https://github.com/Is-Daouda/is-Engine/blob/3.1.x/images/demo_screen.png)
+
+**Enjoy!**
+
+**3. Adding Source Files**
+- In order for CMake to detect your source files (.cpp) you must include them in the **app_rsc.cmake or isengine.cmake** file which is located in the **is-Engine/app/src/main/cmake** location.
+
+## ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) Very important
+- **SMK** is a **library** which is a **little different** from **SFML**, but the way the **Graphics, Audio and System parts** are used is a bit similar to **SFML**.
+- It does not currently support some SFML features such as: Events, RenderTexture, etc. The way objects initialize is a little different too. Even the names spaces and functions are different.
+- **is::Engine** allows to **interconnect the SMK and SFML library**, so that they can use the same **namespace (sf), Classes and functions names** in order to facilitate development (avoid preprocessors, compatibility with several platforms).
+- When using SMK with with is::Engine, the Music class works the same as sf::Sound.
+- These libraries: **SWOOSH, TMXLite, TMXLoader, TinyFileDialog** are not supported in the web version of is::Engine.
+- But don't worry, **AS LONG AS YOU USE THE FEATURES OF is::Engine you won't notice the difference between these two (2) libraries when you create your games**.
+- Believe me, there is everything you need to create a great game!
+- To see the differences I advise you to see the **basicSFMLmain.cpp file** (this file allows you to create your games without using the main rendering loop of the engine, i.e. avoids using the main features of the engine) which is found in **[is-Engine/app/src/main/cpp/](https://github.com/Is-Daouda/is-Engine/blob/3.1.x/app/src/main/cpp/basicSFMLmain.cpp)**.
+- If you want more information on the SMK library I advise you to see [the documentation](https://arthursonzogni.com/SMK/doc/).
+
+---
+
+## ![cmake](https://i48.servimg.com/u/f48/20/16/75/27/icon_c11.png) CMake
 **1. Prerequisites**
 - CMake (3.1 +)
 
@@ -122,11 +174,11 @@ sudo make
 - You will have a **bin** folder in which the engine demo is located.
 
 **5. Adding Source Files**
-- In order for CMake to detect your source files (.cpp) you must include them in the **app_src.cmake** file which is located in the **is-Engine/app/src/main/cmake** location.
+- In order for CMake to detect your source files (.cpp) you must include them in the **app_rsc.cmake or isengine.cmake** file which is located in the **is-Engine/app/src/main/cmake** location.
 
 ---
 
-## Visual Studio Code
+## ![vs](https://i48.servimg.com/u/f48/20/16/75/27/icon_v10.png) Visual Studio Code
 This project uses the template of **andrew-r-king**. For more information on this template [click here](https://github.com/andrew-r-king/sfml-vscode-boilerplate).
 
 **1. Prerequisites**
@@ -165,7 +217,7 @@ code -n "./app/src/main"
 
 ---
 
-## Code::Blocks
+## ![cb](https://i48.servimg.com/u/f48/20/16/75/27/icon_c10.png) Code::Blocks
 **1. Prerequisites**
 
 #### Windows
@@ -200,7 +252,7 @@ codeblocks "./app/src/main/is-Engine-linux.cbp"
 
 ---
 
-## Change application icon:
+## ![icon](https://i48.servimg.com/u/f48/20/16/75/27/icon10.png) Change application icon:
 #### Android
 - To change the icon of the application you must go to the location **is-Engine/app/src/main/res** replace all the images (PNG) which are in the **drawable** subfolders.
 

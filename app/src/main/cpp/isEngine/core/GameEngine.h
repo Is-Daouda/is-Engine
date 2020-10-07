@@ -1,20 +1,24 @@
 #ifndef GAMEENGINE_H_INCLUDED
 #define GAMEENGINE_H_INCLUDED
 
+#if !defined(IS_ENGINE_HTML_5)
 #include "../../app_src/activity/GameActivity.h"
+#else
+#include "ActivityController.h"
+#endif
 
 ////////////////////////////////////////////////////////////
 // PC version code
 #if !defined(__ANDROID__)
-#if !defined(SFML_SYSTEM_LINUX)
+    #if !defined(SFML_SYSTEM_LINUX) && !defined(IS_ENGINE_HTML_5)
 #include <direct.h>
-#else
+    #else
 #include <sys/stat.h>
-#endif // defined
+    #endif // defined
 #else
-#if defined(IS_ENGINE_USE_ADMOB)
+    #if defined(IS_ENGINE_USE_ADMOB)
 #include "../system/android/AdmobManager.h"
-#endif
+    #endif
 #endif // defined
 ////////////////////////////////////////////////////////////
 
@@ -28,7 +32,7 @@ namespace is
 class GameEngine
 {
 public:
-    GameEngine(){};
+    GameEngine();
     ~GameEngine();
 
     /// Initialize game engine

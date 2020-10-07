@@ -24,7 +24,7 @@ class MainObject : public Name
 #endif // defined
 {
 public:
-    MainObject();
+    explicit MainObject();
     MainObject(float x, float y);
     MainObject(sf::Sprite &spr, float x = 0.f, float y = 0.f);
     virtual ~MainObject();
@@ -51,8 +51,11 @@ public:
     /// Allows to use object event
     virtual void event(sf::Event &ev)
     {
+        #if !defined(IS_ENGINE_HTML_5)
         is::showLog("WARNING: MainObject event called in object <" + m_strName + ">! This method must be overloaded!");
+        #endif // defined
     }
+
     #endif // defined
 
     /// Set x initial position
@@ -170,10 +173,10 @@ public:
     virtual void updateSprite(float x, float y, float angle = 0.f, int alpha = 255, float xScale = 1.f, float yScale = 1.f, float xOffset = 0.f, float yOffset = 0.f);
 
     /// Draw the main sprite of object
-    virtual void draw(sf::RenderTexture &surface);
+    virtual void draw(is::Render &surface);
 
     /// Draw the collision mask
-    virtual void drawMask(sf::RenderTexture &surface, sf::Color color = sf::Color::Blue);
+    virtual void drawMask(is::Render &surface, sf::Color color = sf::Color::Blue);
 
     /// Return the rectangle (default) mask
     virtual const Rectangle& getMask() const noexcept {return m_aabb;}

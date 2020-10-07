@@ -356,34 +356,42 @@ void MainObject::updateSprite(float x, float y, float angle, int alpha, float xS
     is::setSFMLObjX_Y(m_sprParent, x + xOffset, y + yOffset);
 }
 
-void MainObject::draw(sf::RenderTexture &surface)
+void MainObject::draw(is::Render &surface)
 {
     updateSprite();
-    surface.draw(m_sprParent);
+    is::draw(surface, m_sprParent);
     if (m_drawMask) drawMask(surface);
 }
 
-void MainObject::drawMask(sf::RenderTexture &surface, sf::Color color)
+void MainObject::drawMask(is::Render &surface, sf::Color color)
 {
     // We draw the AABB (rectangle, square) mask only if it has dimensions
     if (m_w > 0 && m_h > 0)
     {
-        sf::RectangleShape rec({static_cast<float>(m_w), static_cast<float>(m_h)});
+        sf::RectangleShape rec(sf::Vector2f(static_cast<float>(m_w), static_cast<float>(m_h)));
+        #if !defined(IS_ENGINE_HTML_5)
         rec.setOutlineThickness(1.f);
         rec.setFillColor(sf::Color::Transparent);
         rec.setOutlineColor(color);
-        rec.setPosition({static_cast<float>(m_aabb.m_left), static_cast<float>(m_aabb.m_top)});
-        surface.draw(rec);
+        #else
+        rec.setColor(sf::Color::Red);
+        #endif
+        is::setSFMLObjX_Y(rec, static_cast<float>(m_aabb.m_left), static_cast<float>(m_aabb.m_top));
+        is::draw(surface, rec);
     }
     else if (m_circle.m_raduis > 0.f) // We draw the circle mask only if it has dimensions
     {
         sf::CircleShape circle(m_circle.m_raduis);
+        #if !defined(IS_ENGINE_HTML_5)
         circle.setOutlineThickness(1.f);
         circle.setFillColor(sf::Color::Transparent);
-        is::centerSFMLObj(circle);
         circle.setOutlineColor(color);
-        circle.setPosition({m_circle.m_x, m_circle.m_y});
-        surface.draw(circle);
+        #else
+        circle.setColor(sf::Color::Red);
+        #endif
+        is::centerSFMLObj(circle);
+        is::setSFMLObjX_Y(circle, m_circle.m_x, m_circle.m_y);
+        is::draw(surface, circle);
     }
 }
 

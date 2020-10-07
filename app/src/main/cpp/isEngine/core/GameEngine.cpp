@@ -2,6 +2,12 @@
 
 namespace is
 {
+GameEngine::GameEngine():
+    m_gameSysExt(m_window)
+{
+    srand((unsigned int)time(0));
+}
+
 GameEngine::~GameEngine()
 {
     #if defined(__ANDROID__)
@@ -13,24 +19,30 @@ GameEngine::~GameEngine()
 void GameEngine::initEngine()
 {
     m_gameSysExt.initSystemData();
+    #if !defined(IS_ENGINE_HTML_5)
     m_window.create(sf::VideoMode(is::GameConfig::WINDOW_WIDTH, is::GameConfig::WINDOW_HEIGHT),
                     is::GameConfig::GAME_NAME,
                     is::getWindowStyle());
+    #else
+    m_window = sf::RenderWindow(is::GameConfig::WINDOW_WIDTH, is::GameConfig::WINDOW_HEIGHT, is::GameConfig::GAME_NAME);
+    #endif
 
     #if !defined(__ANDROID__)
+    #if !defined(IS_ENGINE_HTML_5)
     // load application icon
     sf::Image iconTex;
     if (iconTex.loadFromFile(is::GameConfig::GUI_DIR + "icon.png"))
     	m_window.setIcon(iconTex.getSize().x, iconTex.getSize().y, iconTex.getPixelsPtr());
+    #endif
 
     // create saving directory
     if (!m_gameSysExt.fileExist(is::GameConfig::CONFIG_FILE))
     {
-        #if !defined(SFML_SYSTEM_LINUX)
-        mkdir("save");
-        #else
-        mkdir("save", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-        #endif
+        mkdir(is::GameConfig::DATA_PARENT_DIR.c_str()
+                #if defined(SFML_SYSTEM_LINUX) || defined(IS_ENGINE_HTML_5)
+                , S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH
+                #endif
+              );
         m_gameSysExt.saveConfig(is::GameConfig::CONFIG_FILE);
     }
     #else
@@ -38,7 +50,7 @@ void GameEngine::initEngine()
         // is::setScreenLock(true);
     #endif // defined
 
-    m_window.setFramerateLimit(is::GameConfig::FPS);
+    setFPS(m_window, is::GameConfig::FPS);
 }
 
 bool GameEngine::play()
@@ -64,27 +76,36 @@ bool GameEngine::play()
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                         GAME STARTUP
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    ActivityController app(m_window);
-    app.push<GameActivity>(m_gameSysExt);
-
-#if 1 || __ANDROID__
-    app.optimizeForPerformance(true);
-#endif
-
-    // run the program as long as the window is open
+#if !defined(IS_ENGINE_HTML_5)
     float elapsed(0.0f);
     sf::Clock clock;
-    srand((unsigned int)time(0));
+    ActivityController app(m_window);
+    app.push<GameActivity>(m_gameSysExt);
+#if defined(IS_ENGINE_OPTIMIZE_PERF)
+    app.optimizeForPerformance(true);
+#endif
     while (m_window.isOpen())
+#else
+    ActivityController app(m_gameSysExt);
+    m_window.ExecuteMainLoop([&]
+#endif
     {
-        clock.restart();
+        #if defined(IS_ENGINE_HTML_5)
+        m_window.PoolEvents();
+        app.update();
+        #else
         m_window.clear();
         app.update(elapsed);
+        #endif
         app.draw();
+        #if !defined(IS_ENGINE_HTML_5)
         m_window.display();
         elapsed = static_cast<float>(clock.getElapsedTime().asSeconds());
+        #endif
     }
+    #if defined(IS_ENGINE_HTML_5)
+    );
+    #endif // defined
 
     #if defined(__ANDROID__)
     #if defined(IS_ENGINE_USE_ADMOB)
@@ -97,4 +118,5 @@ bool GameEngine::play()
     #endif // defined
     return true;
 }
+
 }

@@ -73,7 +73,7 @@ public:
     /// launch a dialog based on the enumeration index
     void setDialog(DialogIndex dialogIndex);
     void setMouseInCollison(bool val);
-    void draw(sf::RenderTexture &surface);
+    void draw(is::Render &surface);
 
     DialogIndex getDialogIndex() const
     {

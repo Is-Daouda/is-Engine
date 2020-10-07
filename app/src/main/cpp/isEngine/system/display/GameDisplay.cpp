@@ -2,16 +2,22 @@
 
 namespace is
 {
+#if !defined(IS_ENGINE_HTML_5)
 sf::Vector2f getMapPixelToCoords(GameDisplay const *scene, sf::Vector2i pixelPos)
 {
     return scene->getRenderWindow().mapPixelToCoords(pixelPos, scene->getView());
 }
+#endif
 
-GameDisplay::GameDisplay(sf::RenderWindow &window, sf::View &view, sf::RenderTexture &surface, GameSystemExtended &gameSysExt, sf::Color bgColor):
+GameDisplay::GameDisplay(sf::RenderWindow &window, sf::View &view, is::Render &surface, GameSystemExtended &gameSysExt, sf::Color bgColor):
     m_isClose(false),
     m_window(window),
     m_view(view),
+    #if defined(IS_ENGINE_HTML_5)
+    m_surface(window),
+    #else
     m_surface(surface),
+    #endif
     m_gameSysExt(gameSysExt),
     m_vibrateTimeDuration(40),
     m_optionIndex(0),
@@ -156,6 +162,7 @@ void GameDisplay::setWindowBgColor(sf::Color color)
 
 void GameDisplay::controlEventFocusClosing(sf::Event &event)
 {
+    #if !defined(IS_ENGINE_HTML_5)
     // Manage the state of window
     if (event.type == sf::Event::GainedFocus) m_windowIsActive = true;
     if (event.type == sf::Event::LostFocus)   m_windowIsActive = false;
@@ -166,6 +173,7 @@ void GameDisplay::controlEventFocusClosing(sf::Event &event)
         m_isRunning = false;  // quit the main render loop
         m_window.close();
     }
+    #endif
 }
 
 void GameDisplay::updateMsgBox(float const &DELTA_TIME, sf::Color textDefaultColor, sf::Color selectedTextColor)
@@ -194,7 +202,7 @@ void GameDisplay::updateMsgBox(float const &DELTA_TIME, sf::Color textDefaultCol
         // If is YES / NO message box
         if (m_mbYesNo)
         {
-            if (((sf::Keyboard::isKeyPressed(is::GameConfig::KEY_LEFT) &&
+            if (((m_gameSysExt.keyIsPressed(is::GameConfig::KEY_LEFT) &&
                   !mouseCollision(m_sprMsgBoxButton2)) ||
                   mouseCollision(m_sprMsgBoxButton1)) && m_msgAnswer == MsgAnswer::NO)
             {
@@ -202,7 +210,7 @@ void GameDisplay::updateMsgBox(float const &DELTA_TIME, sf::Color textDefaultCol
                 GSMplaySound("change_option");
                 m_msgAnswer = MsgAnswer::YES; // answer = yes
             }
-            else if (((sf::Keyboard::isKeyPressed(is::GameConfig::KEY_RIGHT) &&
+            else if (((m_gameSysExt.keyIsPressed(is::GameConfig::KEY_RIGHT) &&
                      !mouseCollision(m_sprMsgBoxButton1)) ||
                       mouseCollision(m_sprMsgBoxButton2)) && m_msgAnswer == MsgAnswer::YES)
             {
@@ -210,7 +218,7 @@ void GameDisplay::updateMsgBox(float const &DELTA_TIME, sf::Color textDefaultCol
                 GSMplaySound("change_option");
                 m_msgAnswer = MsgAnswer::NO;  // answer = no
             }
-            else if (sf::Keyboard::isKeyPressed(is::GameConfig::KEY_VALIDATION_KEYBOARD) ||
+            else if (m_gameSysExt.keyIsPressed(is::GameConfig::KEY_VALIDATION_KEYBOARD) ||
                     ((mouseCollision(m_sprMsgBoxButton1) ||
                       mouseCollision(m_sprMsgBoxButton2)) &&
                       m_gameSysExt.isPressed() && !m_gameSysExt.m_keyIsPressed))
@@ -246,7 +254,7 @@ void GameDisplay::updateMsgBox(float const &DELTA_TIME, sf::Color textDefaultCol
                 m_msgAnswer = MsgAnswer::YES; // answer = OK
                 is::setSFMLObjFillColor(m_txtMsgBoxOK, selectedTextColor);
             }
-            else if (((sf::Keyboard::isKeyPressed(is::GameConfig::KEY_VALIDATION_KEYBOARD) || m_keyBackPressed) &&
+            else if (((m_gameSysExt.keyIsPressed(is::GameConfig::KEY_VALIDATION_KEYBOARD) || m_keyBackPressed) &&
                      !mouseCollision(m_sprMsgBoxButton3)) || (mouseCollision(m_sprMsgBoxButton3) &&
                      m_gameSysExt.isPressed() && !m_gameSysExt.m_keyIsPressed)
                      )
@@ -316,42 +324,40 @@ void GameDisplay::drawMsgBox()
 {
     if (m_showMsg)
     {
-        m_surface.draw(m_recMsgBox);
-        m_surface.draw(m_sprMsgBox);
+        is::draw(m_surface, m_recMsgBox);
+        is::draw(m_surface, m_sprMsgBox);
 
         if (m_mbYesNo)
         {
-            m_surface.draw(m_txtMsgBoxYes);
-            m_surface.draw(m_txtMsgBoxNo);
-            m_surface.draw(m_sprMsgBoxButton1);
-            m_surface.draw(m_sprMsgBoxButton2);
+            is::draw(m_surface, m_txtMsgBoxYes);
+            is::draw(m_surface, m_txtMsgBoxNo);
+            is::draw(m_surface, m_sprMsgBoxButton1);
+            is::draw(m_surface, m_sprMsgBoxButton2);
         }
         else
         {
-            m_surface.draw(m_txtMsgBoxOK);
-            m_surface.draw(m_sprMsgBoxButton3);
+            is::draw(m_surface, m_txtMsgBoxOK);
+            is::draw(m_surface, m_sprMsgBoxButton3);
         }
-
-        m_surface.draw(m_txtMsgBox);
+        is::draw(m_surface, m_txtMsgBox);
     }
 }
 
 void GameDisplay::drawScreen()
 {
+    is::clear(m_surface, m_windowBgColor);
     #if defined(__ANDROID__)
     // On Android when the window is no longer active, nothing is displayed just a black screen.
     // Its allows to optimize the application
     if (m_windowIsActive)
     {
     #endif // defined
-        m_surface.clear(m_windowBgColor);
         draw();
     #if defined(__ANDROID__)
     }
     else
     {
-        m_window.clear(m_windowBgColor);
-        m_window.display();
+        is::display(m_window);
     }
     #endif // defined
 }
@@ -359,19 +365,17 @@ void GameDisplay::drawScreen()
 void GameDisplay::showTempLoading(float time)
 {
     float timeToQuit(0.f);
-    sf::Texture texTmploading, texTmploading2;
-    texTmploading.loadFromFile(is::GameConfig::GUI_DIR + "temp_loading.png");
-    texTmploading2.loadFromFile(is::GameConfig::GUI_DIR + "loading_icon.png");
     sf::Sprite sprTmploading, sprTmploading2;
-    is::createSprite(texTmploading, sprTmploading, sf::IntRect(0, 0, 640, 480),
+    is::createSprite(GRMgetTexture("temp_loading"), sprTmploading, sf::IntRect(0, 0, 640, 480),
                      sf::Vector2f(0.f, 0.f), sf::Vector2f(320.f, 240.f));
-    is::createSprite(texTmploading2, sprTmploading2, sf::IntRect(0, 0, 32, 32),
+    is::createSprite(GRMgetTexture("loading_icon"), sprTmploading2, sf::IntRect(0, 0, 32, 32),
                      sf::Vector2f(304.f, 240.f), sf::Vector2f(16.f, 16.f));
     while (timeToQuit < time)
     {
         float dTime = getDeltaTime();
         timeToQuit += is::getMSecond(dTime);
         sprTmploading2.rotate((5.f * is::VALUE_CONVERSION) * dTime);
+        #if !defined(IS_ENGINE_HTML_5)
         sf::Event ev;
         while (m_window.pollEvent(ev))
         {
@@ -385,10 +389,11 @@ void GameDisplay::showTempLoading(float time)
                 #endif // defined
             }
         }
-        m_window.clear(sf::Color::Black);
-        m_surface.draw(sprTmploading);
-        m_surface.draw(sprTmploading2);
-        m_window.display();
+        #endif // defined
+        is::clear(m_window, sf::Color::Black);
+        is::draw(m_surface, sprTmploading);
+        is::draw(m_surface, sprTmploading2);
+        is::display(m_window);
     }
 }
 
@@ -400,13 +405,17 @@ void GameDisplay::loadParentResources()
     GSMaddSound("select_option", is::GameConfig::SFX_DIR + "select_option.ogg");
 
     // Load message box sprite
-    loadSFMLObjResource(m_texMsgBox, is::GameConfig::GUI_DIR + "confirm_box.png");
-    loadSFMLObjResource(m_texMsgButton, is::GameConfig::GUI_DIR + "confirm_box_button.png");
+    auto &texMsgBox    = GRMaddTexture("confirm_box", is::GameConfig::GUI_DIR + "confirm_box.png");
+    auto &texMsgButton = GRMaddTexture("confirm_box_button", is::GameConfig::GUI_DIR + "confirm_box_button.png");
 
-    is::createSprite(m_texMsgBox, m_sprMsgBox, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
-    is::createSprite(m_texMsgButton, m_sprMsgBoxButton1, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
-    is::createSprite(m_texMsgButton, m_sprMsgBoxButton2, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
-    is::createSprite(m_texMsgButton, m_sprMsgBoxButton3, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
+    // Temporal loading texture
+    GRMaddTexture("temp_loading", is::GameConfig::GUI_DIR + "temp_loading.png");
+    GRMaddTexture("loading_icon", is::GameConfig::GUI_DIR + "loading_icon.png");
+
+    is::createSprite(texMsgBox, m_sprMsgBox, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
+    is::createSprite(texMsgButton, m_sprMsgBoxButton1, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
+    is::createSprite(texMsgButton, m_sprMsgBoxButton2, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
+    is::createSprite(texMsgButton, m_sprMsgBoxButton3, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
 
     is::createRectangle(m_recMsgBox, sf::Vector2f(m_viewW + 40.f, m_viewH + 40.f), sf::Color(0, 0, 0, 200), 0.f, 0.f);
 
@@ -416,15 +425,15 @@ void GameDisplay::loadParentResources()
     is::centerSFMLObj(m_sprMsgBoxButton3);
 
     // Load font
-    loadSFMLObjResource(m_fontSystem, GameConfig::FONT_DIR + "sansation.ttf");
-    loadSFMLObjResource(m_fontMsg, GameConfig::FONT_DIR + "brush_script_std_medium.ttf");
+    auto &fontSystem = GRMaddFont("font_system", GameConfig::FONT_DIR + "sansation.ttf", 18);
+    GRMaddFont("font_msg", GameConfig::FONT_DIR + "brush_script_std_medium.ttf", 18);
 
-    is::createText(m_fontSystem, m_txtMsgBox, "", 0.f, 0.f, 20);
-    is::createText(m_fontSystem, m_txtMsgBoxYes, is::lang::pad_answer_yes[m_gameSysExt.m_gameLanguage],
+    is::createText(fontSystem, m_txtMsgBox, "", 0.f, 0.f, 20);
+    is::createText(fontSystem, m_txtMsgBoxYes, is::lang::pad_answer_yes[m_gameSysExt.m_gameLanguage],
                    0.f, 0.f, true, 18);
-    is::createText(m_fontSystem, m_txtMsgBoxNo, is::lang::pad_answer_no[m_gameSysExt.m_gameLanguage],
+    is::createText(fontSystem, m_txtMsgBoxNo, is::lang::pad_answer_no[m_gameSysExt.m_gameLanguage],
                    0.f, 0.f, true, 18);
-    is::createText(m_fontSystem, m_txtMsgBoxOK, is::lang::pad_answer_ok[m_gameSysExt.m_gameLanguage],
+    is::createText(fontSystem, m_txtMsgBoxOK, is::lang::pad_answer_ok[m_gameSysExt.m_gameLanguage],
                    0.f, 0.f, true, 18);
 }
 
@@ -572,6 +581,9 @@ void GameDisplay::SDMstep()
             m_SDMsortArray = false;
         }
     }
+    #if defined(IS_ENGINE_HTML_5)
+    is::display(m_surface);
+    #endif // defined
 }
 
 void GameDisplay::SDMdraw()
@@ -595,7 +607,6 @@ void GameDisplay::SDMdraw()
 }
 #endif // defined
 
-#if defined(IS_ENGINE_USE_GSM)
 void GameDisplay::GSMplaySound(std::string name)
 {
     bool soundExist(false);
@@ -622,7 +633,7 @@ void GameDisplay::GSMpauseSound(std::string name)
             soundExist = true;
             if (m_GSMsound[_I]->getFileIsLoaded())
             {
-                if (m_GSMsound[_I]->getSound().getStatus() == sf::Sound::Playing) m_GSMsound[_I]->getSound().pause();
+                if (is::checkSFMLSndState(m_GSMsound[_I]->getSound(), is::SFMLSndStatus::Playing)) m_GSMsound[_I]->getSound().pause();
             }
             else is::showLog("ERROR: Sound exists but can't stop <" + name + "> sound!");
             break;
@@ -657,7 +668,7 @@ void GameDisplay::GSMpauseMusic(std::string name)
             musicExist = true;
             if (m_GSMmusic[_I]->getFileIsLoaded())
             {
-                if (m_GSMmusic[_I]->getMusic().getStatus() == sf::Sound::Playing) m_GSMmusic[_I]->getMusic().pause();
+                if (is::checkSFMLSndState(m_GSMmusic[_I]->getMusic(), is::SFMLSndStatus::Playing)) m_GSMmusic[_I]->getMusic().pause();
             }
             else is::showLog("ERROR: Music exists but can't stop <" + name + "> music!");
             break;
@@ -665,5 +676,4 @@ void GameDisplay::GSMpauseMusic(std::string name)
     }
     if (!musicExist) is::showLog("ERROR: Can't pause <" + name + "> music because music not exists!");
 }
-#endif // defined
 }

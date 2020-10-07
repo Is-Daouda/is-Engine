@@ -53,9 +53,6 @@
 		<Unit filename="cpp/app_src/gamesystem_ext/GameSystemExtended.h" />
 		<Unit filename="cpp/app_src/language/GameLanguage.h" />
 		<Unit filename="cpp/app_src/levels/Level.h" />
-		<Unit filename="cpp/app_src/levels/level_1.h" />
-		<Unit filename="cpp/app_src/levels/level_2.h" />
-		<Unit filename="cpp/app_src/levels/level_3.h" />
 		<Unit filename="cpp/app_src/objects/HelloWorld.h" />
 		<Unit filename="cpp/app_src/objects/tmxExample/AddRemoveObjects.h" />
 		<Unit filename="cpp/app_src/objects/tmxExample/Benchmark.h" />
@@ -70,6 +67,7 @@
 		<Unit filename="cpp/app_src/objects/widgets/GameDialog.h" />
 		<Unit filename="cpp/app_src/scenes/HelloScene/HelloScene.h" />
 		<Unit filename="cpp/basicSFMLmain.cpp" />
+		<Unit filename="cpp/isEngine/core/ActivityController.h" />
 		<Unit filename="cpp/isEngine/core/GameEngine.cpp" />
 		<Unit filename="cpp/isEngine/core/GameEngine.h" />
 		<Unit filename="cpp/isEngine/ext_lib/Box2D/Box2D.h" />
@@ -265,6 +263,11 @@
 		<Unit filename="cpp/isEngine/system/function/GameSystem.h" />
 		<Unit filename="cpp/isEngine/system/function/GameTime.cpp" />
 		<Unit filename="cpp/isEngine/system/function/GameTime.h" />
+		<Unit filename="cpp/isEngine/system/graphic/GRM.h" />
+		<Unit filename="cpp/isEngine/system/graphic/GameFont.h" />
+		<Unit filename="cpp/isEngine/system/graphic/GameTexture.h" />
+		<Unit filename="cpp/isEngine/system/isEngineWrapper.cpp" />
+		<Unit filename="cpp/isEngine/system/isEngineWrapper.h" />
 		<Unit filename="cpp/isEngine/system/sound/GSM.h" />
 		<Unit filename="cpp/isEngine/system/sound/GameMusic.h" />
 		<Unit filename="cpp/isEngine/system/sound/GameSound.h" />

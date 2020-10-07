@@ -47,31 +47,8 @@ bool isIn(unsigned short valNumber, int const var, int x1, int x2, int x3, int x
 
 bool isBetween(float a, float b, float c)
 {
- if (b <= c)
- return (b <= a && a <= c) ;
- else
- return (c <= a && a <= b) ;
-}
-
-void setFrame(sf::Sprite &sprite, float frame, int subFrame, int frameWidth, int frameHeight, int recWidth, int recHeight)
-{
-    /* Description of the image decoupage algorithm
-     * be << frame >> number of the image to get (to have it start counting images from 0 to X)
-     * either << subFrame >> number of images on one line
-     * be << frameLineIndex >> number of the line corresponding to the image
-     * (frame / subFrame) returns the number of times there is << frame >> in << subFrame >> to determine the number of the line of the image
-     * 32 * (frame - (subFrame * frameLineIndex)) returns the position (number) of the image on the X axis can return the value 0 (1st image on the line)
-     * when the value of << frame >> exceeds the number of image on the X axis (the value of << subFrame >>) then we are on a new line
-     * (32 * frameLineIndex) gives the position of the image on the Y axis its value varies according to the << frame >>
-     * example: 32 * frameLineIndex = 1 when frame > subFrame; 32 * frameLineIndex = 2 when frame > subFrame * 2; ...
-     */
-    int frameLineIndex = (frame / subFrame);
-    sprite.setTextureRect(sf::IntRect(frameWidth * (static_cast<int>(frame) - (subFrame * frameLineIndex)), frameHeight * frameLineIndex, recWidth, recHeight));
-}
-
-void setFrame(sf::Sprite &sprite, float frame, int subFrame, int frameSize)
-{
-    setFrame(sprite, frame, subFrame, frameSize, frameSize, frameSize, frameSize);
+    if (b <= c) return (b <= a && a <= c);
+    else return (c <= a && a <= b);
 }
 
 int sign(float x)
@@ -79,6 +56,38 @@ int sign(float x)
     if (x > 0.f)      return 1;
     else if (x < 0.f) return -1;
     else return 0;
+}
+
+float pointDistance(float x1, float y1, float x2, float y2)
+{
+    float X = x1 - x2;
+    float Y = y1 - y2;
+    return sqrt(X * X + Y * Y);
+}
+
+float pointDirection(float x1, float y1, float x2, float y2)
+{
+    return atan((y1 - y2) / (x1 - x2));
+}
+
+float radToDeg(float x)
+{
+    return static_cast<float>((x * 180.f) / 3.14159235f);
+}
+
+float degToRad(float x)
+{
+    return static_cast<float>((x * 3.14159235f) / 180.f);
+}
+
+float lengthDirX(float dir, float angle)
+{
+    return dir * std::cos(degToRad(angle));
+}
+
+float lengthDirY(float dir, float angle)
+{
+    return dir * std::sin(degToRad(angle));
 }
 
 bool collisionTest(Rectangle const &a, Rectangle const &b)
@@ -135,46 +144,36 @@ bool collisionTest(Rectangle const &rec, Circle const &circle)
     return collisionTest(circle, rec);
 }
 
-float pointDistance(float x1, float y1, float x2, float y2)
+void setFrame(sf::Sprite &sprite, float frame, int subFrame, int frameWidth, int frameHeight, int recWidth, int recHeight)
 {
-    float X = x1 - x2;
-    float Y = y1 - y2;
-    return sqrt(X * X + Y * Y);
+    /* Description of the image decoupage algorithm
+     * be << frame >> number of the image to get (to have it start counting images from 0 to X)
+     * either << subFrame >> number of images on one line
+     * be << frameLineIndex >> number of the line corresponding to the image
+     * (frame / subFrame) returns the number of times there is << frame >> in << subFrame >> to determine the number of the line of the image
+     * 32 * (frame - (subFrame * frameLineIndex)) returns the position (number) of the image on the X axis can return the value 0 (1st image on the line)
+     * when the value of << frame >> exceeds the number of image on the X axis (the value of << subFrame >>) then we are on a new line
+     * (32 * frameLineIndex) gives the position of the image on the Y axis its value varies according to the << frame >>
+     * example: 32 * frameLineIndex = 1 when frame > subFrame; 32 * frameLineIndex = 2 when frame > subFrame * 2; ...
+     */
+    int frameLineIndex = (frame / subFrame);
+    setSFMLObjTexRec(sprite, frameWidth * (static_cast<int>(frame) - (subFrame * frameLineIndex)), frameHeight * frameLineIndex, recWidth, recHeight);
 }
 
-float pointDirection(float x1, float y1, float x2, float y2)
+void setFrame(sf::Sprite &sprite, float frame, int subFrame, int frameSize)
 {
-    return atan((y1 - y2) / (x1 - x2));
-}
-
-float radToDeg(float x)
-{
-    return static_cast<float>((x * 180.f) / 3.14159235f);
-}
-
-float degToRad(float x)
-{
-    return static_cast<float>((x * 3.14159235f) / 180.f);
-}
-
-float lengthDirX(float dir, float angle)
-{
-    return dir * std::cos(degToRad(angle));
-}
-
-float lengthDirY(float dir, float angle)
-{
-    return dir * std::sin(degToRad(angle));
+    setFrame(sprite, frame, subFrame, frameSize, frameSize, frameSize, frameSize);
 }
 
 void createRectangle(sf::RectangleShape &rec, sf::Vector2f recSize, sf::Color color, float x, float y, bool center)
 {
     rec.setSize(recSize);
-    rec.setFillColor(color);
-    if (center) rec.setOrigin(rec.getGlobalBounds().width / 2, rec.getGlobalBounds().height / 2);
-    rec.setPosition(x, y);
+    setSFMLObjFillColor(rec, color);
+    if (center) is::centerSFMLObj(rec);
+    is::setSFMLObjX_Y(rec, x, y);
 }
 
+#if !defined(IS_ENGINE_HTML_5)
 void textStyleConfig(sf::Text &txt, bool underLined, bool boldText, bool italicText)
 {
     if (underLined && boldText && italicText) txt.setStyle(sf::Text::Underlined | sf::Text::Bold | sf::Text::Italic);
@@ -185,108 +184,113 @@ void textStyleConfig(sf::Text &txt, bool underLined, bool boldText, bool italicT
     else if (boldText)                        txt.setStyle(sf::Text::Bold);
     else if (italicText)                      txt.setStyle(sf::Text::Italic);
 }
+#endif
 
-void createWText(sf::Font const& fnt, sf::Text &txt, std::wstring const &text, float x, float y, sf::Color color, int txtSize, bool underLined, bool boldText, bool italicText)
+void createWText(sf::Font
+                 #if !defined(IS_ENGINE_HTML_5)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, std::wstring const &text, float x, float y, sf::Color color, int txtSize, bool underLined, bool boldText, bool italicText)
 {
     txt.setFont(fnt);
+    txt.setString(text);
+    #if !defined(IS_ENGINE_HTML_5)
     if (txtSize > 0) txt.setCharacterSize(txtSize);
     else txt.setCharacterSize(is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
     textStyleConfig(txt, underLined, boldText, italicText);
-    txt.setFillColor(color);
-    txt.setString(text);
-    txt.setPosition(x, y);
+    #endif
+    is::setSFMLObjX_Y(txt, x, y);
+    is::setSFMLObjFillColor(txt, color);
 }
 
-void createText(sf::Font const& fnt, sf::Text &txt, std::string const &text, float x, float y, int txtSize, bool underLined, bool boldText, bool italicText)
+void createText(sf::Font
+                 #if !defined(IS_ENGINE_HTML_5)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, std::string const &text, float x, float y, int txtSize, bool underLined, bool boldText, bool italicText)
 {
     txt.setFont(fnt);
+    txt.setString(text);
+    #if !defined(IS_ENGINE_HTML_5)
     if (txtSize > 0) txt.setCharacterSize(txtSize);
     else txt.setCharacterSize(is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
     textStyleConfig(txt, underLined, boldText, italicText);
-    txt.setFillColor(is::GameConfig::DEFAULT_SFML_TEXT_COLOR);
-    txt.setString(text);
-    txt.setPosition(x, y);
+    #endif
+    is::setSFMLObjX_Y(txt, x, y);
+    is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_TEXT_COLOR);
 }
 
-void createText(sf::Font const& fnt, sf::Text &txt, std::string const &text, float x, float y, bool centerText, int txtSize, bool underLined, bool boldText, bool italicText)
+void createText(sf::Font
+                 #if !defined(IS_ENGINE_HTML_5)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, std::string const &text, float x, float y, bool centerText, int txtSize, bool underLined, bool boldText, bool italicText)
 {
-    txt.setFont(fnt);
-    if (txtSize > 0) txt.setCharacterSize(txtSize);
-    else txt.setCharacterSize(is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
-    textStyleConfig(txt, underLined, boldText, italicText);
-    txt.setFillColor(is::GameConfig::DEFAULT_SFML_TEXT_COLOR);
-    txt.setString(text);
+    createText(fnt, txt, text, x, y, txtSize, underLined, boldText, italicText);
     if (centerText) is::centerSFMLObj(txt);
-    txt.setPosition(x, y);
+    is::setSFMLObjX_Y(txt, x, y);
 }
 
-void createText(sf::Font const& fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, int txtSize, bool underLined, bool boldText, bool italicText)
+void createText(sf::Font
+                 #if !defined(IS_ENGINE_HTML_5)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, int txtSize, bool underLined, bool boldText, bool italicText)
 {
-    txt.setFont(fnt);
-    if (txtSize > 0) txt.setCharacterSize(txtSize);
-    else txt.setCharacterSize(is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
-    textStyleConfig(txt, underLined, boldText, italicText);
-    txt.setFillColor(color);
-    txt.setString(text);
-    txt.setPosition(x, y);
+    createText(fnt, txt, text, x, y, txtSize, underLined, boldText, italicText);
+    is::setSFMLObjFillColor(txt, color);
 }
 
-void createText(sf::Font const& fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, bool centerText, int txtSize, bool underLined, bool boldText, bool italicText)
+void createText(sf::Font
+                 #if !defined(IS_ENGINE_HTML_5)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, bool centerText, int txtSize, bool underLined, bool boldText, bool italicText)
 {
-    txt.setFont(fnt);
-    if (txtSize > 0) txt.setCharacterSize(txtSize);
-    else txt.setCharacterSize(is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
-    textStyleConfig(txt, underLined, boldText, italicText);
-    txt.setFillColor(color);
-    txt.setString(text);
-    if (centerText) is::centerSFMLObj(txt);
-    txt.setPosition(x, y);
+    createText(fnt, txt, text, x, y, centerText, txtSize, underLined, boldText, italicText);
+    is::setSFMLObjFillColor(txt, color);
 }
 
-void createText(sf::Font const& fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, sf::Color outlineColor, int txtSize, bool underLined, bool boldText, bool italicText)
+void createText(sf::Font
+                 #if !defined(IS_ENGINE_HTML_5)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, sf::Color outlineColor, int txtSize, bool underLined, bool boldText, bool italicText)
 {
-    txt.setFont(fnt);
-    if (txtSize > 0) txt.setCharacterSize(txtSize);
-    else txt.setCharacterSize(is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
-    textStyleConfig(txt, underLined, boldText, italicText);
-    txt.setFillColor(color);
+    createText(fnt, txt, text, x, y, txtSize, underLined, boldText, italicText);
+    #if !defined(IS_ENGINE_HTML_5)
     txt.setOutlineColor(outlineColor);
     txt.setOutlineThickness(1.f);
-    txt.setString(text);
-    txt.setPosition(x, y);
+    #endif
 }
 
 void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::Vector2f position, sf::Vector2f origin, bool smooth)
 {
+    #if !defined(IS_ENGINE_HTML_5)
     tex.setSmooth(smooth);
+    #endif
     spr.setTexture(tex);
     spr.setOrigin(origin.x, origin.y);
-    spr.setPosition(position.x + origin.x, position.y + origin.y);
+    is::setSFMLObjX_Y(spr, position.x, position.y);
 }
 
 void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::IntRect rec, sf::Vector2f position, sf::Vector2f origin, bool repeatTexture, bool smooth)
 {
-    tex.setSmooth(smooth);
-    spr.setTexture(tex);
-    spr.setTextureRect(rec);
+    createSprite(tex, spr, position, origin, smooth);
+    is::setSFMLObjTexRec(spr, rec.left, rec.top, rec.width, rec.height);
+    #if !defined(IS_ENGINE_HTML_5)
     if (repeatTexture) tex.setRepeated(true);
-    spr.setOrigin(origin.x, origin.y);
-    spr.setPosition(position.x + origin.x, position.y + origin.y);
+    #endif
 }
 
 void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::IntRect rec, sf::Vector2f position, sf::Vector2f origin, sf::Vector2f scale, unsigned int alpha, bool repeatTexture, bool smooth)
 {
-    tex.setSmooth(smooth);
-    spr.setTexture(tex);
-    spr.setTextureRect(rec);
-    if (repeatTexture) tex.setRepeated(true);
-    spr.setOrigin(origin.x, origin.y);
-    spr.setPosition(position.x + origin.x, position.y + origin.y);
-    spr.setScale(scale.x, scale.y);
-    spr.setColor(sf::Color(255, 255, 255, alpha));
+    createSprite(tex, spr, rec, position, origin, repeatTexture, smooth);
+    is::setSFMLObjScaleX_Y(spr, scale.x, scale.y);
+    is::setSFMLObjAlpha(spr, alpha);
 }
 
-int vibrate(sf::Time duration)
+short vibrate(short duration)
 {
     #if defined(__ANDROID__)
     // First we'll need the native activity handle
@@ -322,7 +326,7 @@ int vibrate(sf::Time duration)
     jmethodID vibrate = env->GetMethodID(vib_cls, "vibrate", "(J)V");
 
     // Determine the timeframe
-    jlong length = duration.asMilliseconds();
+    jlong length = duration;
 
     // Bzzz!
     env->CallVoidMethod(vib_obj, vibrate, length);
@@ -337,8 +341,10 @@ int vibrate(sf::Time duration)
     // Detach thread again
     // this line is comment because it cause a bug
     // vm->DetachCurrentThread();
+    #elif defined(IS_ENGINE_HTML_5)
+    smk::Vibrate(duration);
     #else
-    is::showLog("Vibrate Called ! Time : " + is::numToStr(duration.asMicroseconds()) + " ms");
+    is::showLog("Vibrate Called ! Time : " + is::numToStr(duration) + " ms");
     #endif // defined
 
     return EXIT_SUCCESS;
@@ -485,5 +491,6 @@ std::string getDeviceId(JNIEnv *env, ANativeActivity *activity)
     env->DeleteLocalRef(telephony);
     return jstring2string(env, strId);
 }
+
 #endif
 }

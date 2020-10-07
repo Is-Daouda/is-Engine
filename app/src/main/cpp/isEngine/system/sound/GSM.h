@@ -22,7 +22,8 @@ public:
     //////////////////////////////////////////////////////
     /// \brief Allows to add SFML Sound in GSM container
     ///
-    /// \param name of sound which will be used to identify it in the container in order to be able to access it
+    /// \param name of sound which will be used to identify
+    /// it in the container in order to be able to access it
     /// \param filePath path of the sound file to add
     //////////////////////////////////////////////////////
     virtual void GSMaddSound(std::string name, std::string filePath)
@@ -34,7 +35,8 @@ public:
     //////////////////////////////////////////////////////
     /// \brief Allows to add SFML Music in GSM container
     ///
-    /// \param name of msuic which will be used to identify it in the container in order to be able to access it
+    /// \param name of music which will be used to identify
+    /// it in the container in order to be able to access it
     /// \param filePath path of the music file to add
     //////////////////////////////////////////////////////
     virtual void GSMaddMusic(std::string name, std::string filePath)

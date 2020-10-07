@@ -8,14 +8,14 @@
 class HelloWorld : public is::MainObject
 {
 public:
-    HelloWorld(sf::Texture &tex, float x, float y, is::GameDisplay *scene):
+    HelloWorld(float x, float y, is::GameDisplay *scene):
         is::MainObject(x ,y),
         m_scene(scene)
     {
         // Create the sprite of object and center it
         m_xOffset = 64.f; // set offset x to center the image
         m_yOffset = 65.f; // set offset y to center the image
-        is::createSprite(tex, m_sprParent, sf::Vector2f(m_x, m_y), sf::Vector2f(m_xOffset, m_yOffset));
+        is::createSprite(scene->GRMgetTexture("hello_world"), m_sprParent, sf::Vector2f(m_x, m_y), sf::Vector2f(m_xOffset, m_yOffset));
 
         // Display depth of the object in the scene
         m_depth = -1;

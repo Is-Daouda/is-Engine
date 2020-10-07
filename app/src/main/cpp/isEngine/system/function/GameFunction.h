@@ -5,14 +5,14 @@
 #include <ctime>
 #include <sstream>
 #include <string>
-#include <SFML/Graphics.hpp>
+#include <iostream>
+
+#include "../isEngineWrapper.h"
+#include "../entity/Form.h"
+#include "../../../app_src/config/GameConfig.h"
 
 /// Allows to browse object container (std::vector, ...)
 #define WITH(_SIZE) for(unsigned int _I = 0; _I < _SIZE; ++_I)
-
-#include "../entity/Form.h"
-#include "../function/GameSystem.h"
-#include "../../../app_src/config/GameConfig.h"
 
 #if defined(__ANDROID__)
 // These headers are only needed for direct NDK/JDK interaction
@@ -36,6 +36,17 @@ static float const VALUE_TIME(1.538f);     ///< game execution timing variables
 ////////////////////////////////////////////////////////////
 
 static float const PI(3.14f);
+
+////////////////////////////////////////////////////////////
+/// \brief SFML Sound or Music state
+///
+////////////////////////////////////////////////////////////
+enum SFMLSndStatus
+{
+    Playing,
+    Stopped,
+    Paused
+};
 
 /// Convert wchart_t to string
 std::string w_chart_tToStr(wchar_t const *str);
@@ -115,6 +126,12 @@ T choose(unsigned short valNumber, T x1, T x2, T x3 = 0, T x4 = 0, T x5 = 0, T x
         default : break;
     }
     return x1;
+}
+
+/// Return a random value
+inline int random(unsigned int limit)
+{
+    return (rand() % limit);
 }
 
 /// Set variable limit
@@ -199,6 +216,12 @@ bool collisionTest(Circle const &circle, Rectangle const &rec);
 /// Test collision between rectangle and circle
 bool collisionTest(Rectangle const &rec, Circle const &circle);
 
+////////////////////////////////////////////////////////////
+//                      WARNING !!!
+// Below this comment all the functions that will be defined
+// will be linked to the SFML library.
+////////////////////////////////////////////////////////////
+
 /// Return the angle of SFML object
 template <class T>
 float getSFMLObjAngle(T &obj)
@@ -266,14 +289,14 @@ float getSFMLObjY(T &obj)
 template <class T>
 float getSFMLObjX(T *obj)
 {
-    return obj->getPosition().x;
+    return getSFMLObjX(&obj);
 }
 
 /// Return the y position of SFML object (pointer object)
 template <class T>
 float getSFMLObjY(T *obj)
 {
-    return obj->getPosition().y;
+    return getSFMLObjY(&obj);
 }
 
 /// Set the angle of SFML object
@@ -301,14 +324,14 @@ void setSFMLObjScaleX_Y(T &obj, float x, float y)
 template <class T>
 void setSFMLObjScale(T &obj, float scale)
 {
-    obj.setScale(scale, scale);
+    setSFMLObjScaleX_Y(obj, scale, scale);
 }
 
 /// Set origin of SFML object
 template <class T>
 void setSFMLObjOrigin(T &obj, float x, float y)
 {
-    obj.setOrigin(sf::Vector2f(x, y));
+    obj.setOrigin(x, y);
 }
 
 /// Set x position of SFML object
@@ -327,16 +350,16 @@ void setSFMLObjY(T &obj, float y)
 
 /// Set x, y position of SFML object
 template <class T>
-void setSFMLObjX_Y(T &obj, sf::Vector2f position)
+void setSFMLObjX_Y(T &obj, float x, float y)
 {
-    obj.setPosition(position.x, position.y);
+    obj.setPosition(x, y);
 }
 
 /// Set x, y position of SFML object
 template <class T>
-void setSFMLObjX_Y(T &obj, float x, float y)
+void setSFMLObjX_Y(T &obj, sf::Vector2f position)
 {
-    obj.setPosition(x, y);
+    setSFMLObjX_Y(obj, position.x, position.y);
 }
 
 /// Move SFML object on x axis
@@ -364,7 +387,7 @@ void setSFMLObjSize(T &obj, float x, float y)
 template <class T>
 void setSFMLObjSize(T &obj, sf::Vector2f v)
 {
-    obj.setSize(v);
+    setSFMLObjSize(obj, v.x, v.y);
 }
 
 /// Set the alpha of SFML object
@@ -378,21 +401,27 @@ void setSFMLObjAlpha(T &obj, unsigned int alpha)
 template <class T>
 void setSFMLObjAlpha2(T &obj, unsigned int alpha)
 {
+    #if !defined(IS_ENGINE_HTML_5)
     obj.setFillColor(sf::Color(obj.getFillColor().r, obj.getFillColor().g, obj.getFillColor().b, alpha));
+    #else
+    setSFMLObjAlpha(obj, alpha);
+    #endif
 }
 
-/// Set the alpha and RGB distinct color of SFML object
-template <class T>
-void setSFMLObjAlpha(T &obj, unsigned int alpha, sf::Uint8 r, sf::Uint8 g, sf::Uint8 b)
-{
-    obj.setColor(sf::Color(r, g, b, alpha));
-}
-
+#if !defined(IS_ENGINE_HTML_5)
 /// Set the alpha and uniform RGB color of SFML object
 template <class T>
 void setSFMLObjAlpha(T &obj, unsigned int alpha, sf::Uint8 rgb)
 {
     obj.setColor(sf::Color(rgb, rgb, rgb, alpha));
+}
+#endif
+
+/// Set the alpha and RGB distinct color of SFML object
+template <class T>
+void setSFMLObjAlpha(T &obj, unsigned int alpha, int r, int g, int b)
+{
+    obj.setColor(sf::Color(r, g, b, alpha));
 }
 
 /// Set the color of SFML object
@@ -406,7 +435,11 @@ void setSFMLObjColor(T &obj, sf::Color color)
 template <class T>
 void setSFMLObjFillColor(T &obj, sf::Color color)
 {
+    #if !defined(IS_ENGINE_HTML_5)
     obj.setFillColor(color);
+    #else
+    obj.setColor(color);
+    #endif
 }
 
 /// Allows to make scale animation
@@ -415,7 +448,7 @@ void scaleAnimation(float const &DELTA_TIME, float &var, T &obj, short varSign =
 {
     if (var > scaleSize) var -= ((0.05f * is::VALUE_CONVERSION) * DELTA_TIME);
     else var = scaleSize;
-    obj.setScale(varSign * var, varSign * var);
+    setSFMLObjScale(obj, varSign * var);
 }
 
 /// Set the sprite frame with different size (e.g 64x32)
@@ -424,6 +457,7 @@ void setFrame(sf::Sprite &sprite, float frame, int subFrame, int frameWidth, int
 /// Set the sprite frame with the same size (e.g 64x64)
 void setFrame(sf::Sprite &sprite, float frame, int subFrame, int frameSize);
 
+#if !defined(IS_ENGINE_HTML_5)
 /// Set the outline color of SFML object
 template <class T>
 void setSFMLObjOutlineColor(T &obj, sf::Color color)
@@ -438,6 +472,7 @@ void setSFMLObjOutlineColor(T &obj, float thickness, sf::Color color)
     obj.setOutlineThickness(thickness);
     obj.setOutlineColor(color);
 }
+#endif
 
 /// Set Texture Rec of SFML object
 template <class T>
@@ -450,12 +485,17 @@ void setSFMLObjTexRec(T &obj, int x, int y, int w = 32, int h = 32)
 template <class T>
 void setSFMLObjProperties(T &obj, float x, float y, float angle = 0.f, int alpha = 255, float xScale = 1.f, float yScale = 1.f)
 {
-    is::setSFMLObjAlpha(obj, alpha);
+    is::setSFMLObjAlpha(obj, alpha
+                        #if defined(IS_ENGINE_HTML_5)
+                        , 1.f, 1.f, 1.f
+                        #endif
+                        );
     is::setSFMLObjAngle(obj, angle);
     is::setSFMLObjScaleX_Y(obj, xScale, yScale);
     is::setSFMLObjX_Y(obj, x, y);
 }
 
+#if !defined(IS_ENGINE_HTML_5)
 /// Set SFML Object Resource
 template <class T>
 bool loadSFMLObjResource(T &obj, std::string filePath, bool stopExecution = false)
@@ -476,43 +516,170 @@ inline bool loadSFMLObjResource(sf::SoundBuffer &sb, sf::Sound &snd, std::string
     showLog("ERROR: Can't load file : " + filePath, stopExecution);
     return false;
 }
+#endif
 
-/// Get SFML Sound state
+/// Check SFML Sound state
 template <class T>
-bool getSFMLSndState(T &obj, sf::Sound::Status state)
+bool checkSFMLSndState(T &obj, SFMLSndStatus state)
 {
     switch (state)
     {
-        case sf::Sound::Status::Playing:
-            return (obj.getStatus() == sf::Sound::Status::Playing);
+        case SFMLSndStatus::Playing:
+            return (obj.
+                    #if !defined(IS_ENGINE_HTML_5)
+                    getStatus() == sf::Sound::Status::Playing
+                    #else
+                    IsPlaying() ? true : false
+                    #endif
+                    );
         break;
-        case sf::Sound::Status::Stopped:
+        case SFMLSndStatus::Stopped:
+        #if !defined(IS_ENGINE_HTML_5)
             return (obj.getStatus() == sf::Sound::Status::Stopped);
         break;
-        case sf::Sound::Status::Paused:
+        case SFMLSndStatus::Paused:
             return (obj.getStatus() == sf::Sound::Status::Paused);
+        #else
+        case SFMLSndStatus::Paused:
+            return (!obj.IsPlaying() ? true : false);
+        #endif
         break;
     }
     return false;
 }
 
-/// Get SFML Sound state
+/// Check SFML Sound state
 template <class T>
-bool getSFMLSndState(T *obj, sf::Sound::Status state)
+bool checkSFMLSndState(T *obj, SFMLSndStatus state)
 {
     switch (state)
     {
-        case sf::Sound::Status::Playing:
-            return (obj->getStatus() == sf::Sound::Status::Playing);
-            break;
-        case sf::Sound::Status::Stopped:
+        case SFMLSndStatus::Playing:
+            return (obj->
+                    #if !defined(IS_ENGINE_HTML_5)
+                    getStatus() == sf::Sound::Status::Playing
+                    #else
+                    IsPlaying() ? true : false
+                    #endif
+                    );
+        break;
+        case SFMLSndStatus::Stopped:
+        #if !defined(IS_ENGINE_HTML_5)
             return (obj->getStatus() == sf::Sound::Status::Stopped);
-            break;
-        case sf::Sound::Status::Paused:
+        break;
+        case SFMLSndStatus::Paused:
             return (obj->getStatus() == sf::Sound::Status::Paused);
-            break;
+        #else
+        case SFMLSndStatus::Paused:
+            return (!obj->IsPlaying() ? true : false);
+        #endif
+        break;
     }
     return false;
+}
+
+/// Allows to play SFML Sound or Music
+template <class T>
+void playSFMLSnd(T &obj)
+{
+    obj.
+        #if !defined(IS_ENGINE_HTML_5)
+        play
+        #else
+        Play
+        #endif
+        ();
+}
+
+/// Allows to play SFML Sound or Music
+template <class T>
+void playSFMLSnd(T *obj)
+{
+    obj->
+        #if !defined(IS_ENGINE_HTML_5)
+        play
+        #else
+        Play
+        #endif
+        ();
+}
+
+/// Allows to stop SFML Sound or Music
+template <class T>
+void stopSFMLSnd(T &obj)
+{
+    obj.
+        #if !defined(IS_ENGINE_HTML_5)
+        stop
+        #else
+        Stop
+        #endif
+        ();
+}
+
+/// Allows to stop SFML Sound or Music
+template <class T>
+void stopSFMLSnd(T *obj)
+{
+    obj->
+        #if !defined(IS_ENGINE_HTML_5)
+        stop
+        #else
+        Stop
+        #endif
+        ();
+}
+
+/// Allows to pause SFML Sound or Music
+template <class T>
+void pauseSFMLSnd(T &obj)
+{
+    obj.
+        #if !defined(IS_ENGINE_HTML_5)
+        pause
+        #else
+        Stop
+        #endif
+        ();
+}
+
+/// Allows to pause SFML Sound or Music
+template <class T>
+void pauseSFMLSnd(T *obj)
+{
+    obj->
+        #if !defined(IS_ENGINE_HTML_5)
+        pause
+        #else
+        Stop
+        #endif
+        ();
+}
+
+/// Allows to set SFML Sound or Music loop
+template <class T>
+void loopSFMLSnd(T &obj, bool val)
+{
+    obj.
+        #if !defined(IS_ENGINE_HTML_5)
+        loop
+        #else
+        SetLoop
+        #endif
+        (val);
+}
+
+/// Allows to set SFML Sound or Music loop
+template <class T>
+void loopSFMLSnd(T *obj, bool val)
+{
+    obj->
+        #if !defined(IS_ENGINE_HTML_5)
+        loop
+        #else
+        SetLoop
+        #endif
+        (val);
 }
 
 /// Test collision between SFML object
@@ -529,22 +696,46 @@ void createRectangle(sf::RectangleShape &rec, sf::Vector2f recSize, sf::Color co
 void textStyleConfig(sf::Text &txt, bool underLined, bool boldText, bool italicText);
 
 /// Create SFML wtext with color
-void createWText(sf::Font const& fnt, sf::Text &txt, std::wstring const &text, float x, float y, sf::Color color, int txtSize = 20, bool underLined = false, bool boldText = false, bool italicText = false);
+void createWText(sf::Font
+                 #if !defined(IS_ENGINE_HTML_5)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, std::wstring const &text, float x, float y, sf::Color color, int txtSize = 20, bool underLined = false, bool boldText = false, bool italicText = false);
 
 /// Create SFML text
-void createText(sf::Font const& fnt, sf::Text &txt, std::string const &text, float x, float y, int txtSize = 20, bool underLined = false, bool boldText = false, bool italicText = false);
+void createText(sf::Font
+                 #if !defined(IS_ENGINE_HTML_5)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, std::string const &text, float x, float y, int txtSize = 20, bool underLined = false, bool boldText = false, bool italicText = false);
 
 /// Create SFML text with center parameter
-void createText(sf::Font const& fnt, sf::Text &txt, std::string const &text, float x, float y, bool centerText, int txtSize = 20, bool underLined = false, bool boldText = false, bool italicText = false);
+void createText(sf::Font
+                 #if !defined(IS_ENGINE_HTML_5)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, std::string const &text, float x, float y, bool centerText, int txtSize = 20, bool underLined = false, bool boldText = false, bool italicText = false);
 
 /// Create SFML text with color and size
-void createText(sf::Font const& fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, int txtSize = 20, bool underLined = false, bool boldText = false, bool italicText = false);
+void createText(sf::Font
+                 #if !defined(IS_ENGINE_HTML_5)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, int txtSize = 20, bool underLined = false, bool boldText = false, bool italicText = false);
 
 /// Create SFML text with color, size and center
-void createText(sf::Font const& fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, bool centerText, int txtSize = 20, bool underLined = false, bool boldText = false, bool italicText = false);
+void createText(sf::Font
+                 #if !defined(IS_ENGINE_HTML_5)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, bool centerText, int txtSize = 20, bool underLined = false, bool boldText = false, bool italicText = false);
 
 /// Create SFML text outline with color and size
-void createText(sf::Font const& fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, sf::Color outlineColor, int txtSize = 20, bool underLined = false, bool boldText = false, bool italicText = false);
+void createText(sf::Font
+                 #if !defined(IS_ENGINE_HTML_5)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, sf::Color outlineColor, int txtSize = 20, bool underLined = false, bool boldText = false, bool italicText = false);
 
 /// Create SFML sprites without IntRec
 void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::Vector2f position, sf::Vector2f origin, bool smooth = true);
@@ -590,17 +781,18 @@ bool mouseCollision(sf::RenderWindow &window, T const &obj
                     #endif // defined
                     )
 {
-    // A rectangle that will allow to test with the SFML object
-    sf::RectangleShape cursor(sf::Vector2f(3.f, 3.f));
-    is::centerSFMLObj(cursor);
-
+    sf::Vector2i pixelPos =
     #if defined(__ANDROID__)
-    sf::Vector2i pixelPos = sf::Touch::getPosition(finger, window);
+                            sf::Touch::getPosition(finger, window);
     #else
-    sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+                            sf::Mouse::getPosition(window);
     #endif // defined
 
+    #if !defined(IS_ENGINE_HTML_5)
     sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos, window.getView());
+    #else
+    sf::Vector2i worldPos = pixelPos;
+    #endif
     float dx = pointDistance(window.getView().getCenter().x, window.getView().getCenter().y,
                              worldPos.x, window.getView().getCenter().y);
     float dy = pointDistance(window.getView().getCenter().x, window.getView().getCenter().y,
@@ -609,9 +801,11 @@ bool mouseCollision(sf::RenderWindow &window, T const &obj
     if (worldPos.x < window.getView().getCenter().x) dx *= -1;
     if (worldPos.y < window.getView().getCenter().y) dy *= -1;
 
-    is::setSFMLObjX_Y(cursor, window.getView().getCenter().x + dx, window.getView().getCenter().y + dy);
-    if (obj.getGlobalBounds().intersects(cursor.getGlobalBounds())) return true;
-    else return false;
+    // A rectangle that will allow to test with the SFML object
+    sf::IntRect cursor(window.getView().getCenter().x + dx, window.getView().getCenter().y + dy,
+                       window.getView().getCenter().x + dx + 3, window.getView().getCenter().y + dy + 3);
+    if (obj.getGlobalBounds().intersects(cursor)) return true;
+    return false;
 }
 
 //////////////////////////////////////////////////////
@@ -619,29 +813,28 @@ bool mouseCollision(sf::RenderWindow &window, T const &obj
 /// with the mouse cursor on PC platform / touch on mobile
 ///
 /// \param obj SFML object with which we want to test
-/// \param cursor Allows to get the position of the collision point
+/// \param position Allows to get the position of the collision point
 /// \param finger Finger index (on Android)
 //////////////////////////////////////////////////////
 template <class T>
-bool mouseCollision(sf::RenderWindow &window, T const &obj, sf::RectangleShape &cursor
+bool mouseCollision(sf::RenderWindow &window, T const &obj, sf::Vector2f &position
                     #if defined(__ANDROID__)
                     , unsigned int finger = 0
                     #endif // defined
                     )
 {
-    // A rectangle that will allow to test with the SFML object
-    // If size is empty set default value
-    if (static_cast<int>(is::getSFMLObjWidth(cursor)) == 0 && static_cast<int>(is::getSFMLObjHeight(cursor)) == 0)
-        is::setSFMLObjSize(cursor, sf::Vector2f(3.f, 3.f));
-    is::centerSFMLObj(cursor);
-
+    sf::Vector2i pixelPos =
     #if defined(__ANDROID__)
-    sf::Vector2i pixelPos = sf::Touch::getPosition(finger, window);
+                            sf::Touch::getPosition(finger, window);
     #else
-    sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+                            sf::Mouse::getPosition(window);
     #endif // defined
 
+    #if !defined(IS_ENGINE_HTML_5)
     sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos, window.getView());
+    #else
+    sf::Vector2i worldPos = pixelPos;
+    #endif
     float dx = pointDistance(window.getView().getCenter().x, window.getView().getCenter().y,
                              worldPos.x, window.getView().getCenter().y);
     float dy = pointDistance(window.getView().getCenter().x, window.getView().getCenter().y,
@@ -650,11 +843,15 @@ bool mouseCollision(sf::RenderWindow &window, T const &obj, sf::RectangleShape &
     if (worldPos.x < window.getView().getCenter().x) dx *= -1;
     if (worldPos.y < window.getView().getCenter().y) dy *= -1;
 
-    is::setSFMLObjX_Y(cursor, window.getView().getCenter().x + dx, window.getView().getCenter().y + dy);
-    if (obj.getGlobalBounds().intersects(cursor.getGlobalBounds())) return true;
-    else return false;
+    setVector2(position, window.getView().getCenter().x + dx, window.getView().getCenter().y + dy);
+
+    // A rectangle that will allow to test with the SFML object
+    sf::IntRect cursor(position.x, position.y, position.x + 3, position.y + 3);
+    if (obj.getGlobalBounds().intersects(cursor)) return true;
+    return false;
 }
 
+#if !defined(IS_ENGINE_HTML_5)
 /// Do not touch this function it allows to manage the style of the window
 inline int getWindowStyle()
 {
@@ -668,9 +865,69 @@ inline int getWindowStyle()
         default: return sf::Style::Default; break;
     }
 }
+#endif
+
+/// Clear render
+template <class T1, class T2>
+void clear(T1 &render, T2 color)
+{
+    #if !defined(IS_ENGINE_HTML_5)
+    render.clear(color);
+    #else
+    glm::vec4 smkColor;
+    smkColor[0] = color.r;
+    smkColor[1] = color.g;
+    smkColor[2] = color.b;
+    smkColor[3] = color.a;
+    render.Clear(smkColor);
+    #endif
+}
+
+/// Draw on render
+template <class T1, class T2>
+void draw(T1 &render, T2 &obj)
+{
+    render.
+        #if !defined(IS_ENGINE_HTML_5)
+        draw(obj);
+        #else
+        Draw(obj);
+        #endif
+}
+
+template <class T1, class T2>
+void draw(T1 &render, T2 *obj)
+{
+    render.
+        #if !defined(IS_ENGINE_HTML_5)
+        draw(&obj);
+        #else
+        Draw(&obj);
+        #endif
+}
+
+/// Display Render
+template <class T>
+void display(T &render)
+{
+    render.
+        #if !defined(IS_ENGINE_HTML_5)
+        display
+        #else
+        Display
+        #endif
+        ();
+}
+
+/// Allows to set frame per second
+template <class T>
+void setFPS(T &render, float fps)
+{
+    render.setFramerateLimit(fps);
+}
 
 /// Allows to use Android vibrate
-int vibrate(sf::Time duration);
+short vibrate(short duration);
 
 /// Open URL in default navigator
 /// \param urlStr represent the web url (e.g www.website.com)

@@ -10,6 +10,7 @@ namespace is
 ////////////////////////////////////////////////////////////
 inline const char *getKeyName(const sf::Keyboard::Key key)
 {
+    /**
     switch(key)
     {
         default:
@@ -117,18 +118,24 @@ inline const char *getKeyName(const sf::Keyboard::Key key)
                 return "Comma";
         case sf::Keyboard::Period:
                 return "Period";
+#if !defined(IS_ENGINE_HTML_5)
         case sf::Keyboard::Quote:
                 return "Quote";
+#endif
         case sf::Keyboard::Slash:
                 return "Slash";
         case sf::Keyboard::BackSlash:
                 return "BackSlash";
+#if !defined(IS_ENGINE_HTML_5)
         case sf::Keyboard::Tilde:
                 return "Tilde";
+#endif
         case sf::Keyboard::Equal:
                 return "Equal";
+#if !defined(IS_ENGINE_HTML_5)
         case sf::Keyboard::Dash:
                 return "Dash";
+#endif
         case sf::Keyboard::Space:
                 return "Space";
         case sf::Keyboard::Return:
@@ -217,7 +224,8 @@ inline const char *getKeyName(const sf::Keyboard::Key key)
                 return "F15";
         case sf::Keyboard::Pause:
                 return "Pause";
-    }
+    }*/
+    return "";
 }
 
 ////////////////////////////////////////////////////////////
@@ -227,6 +235,7 @@ inline const char *getKeyName(const sf::Keyboard::Key key)
 ////////////////////////////////////////////////////////////
 inline std::wstring getKeyWName(const sf::Keyboard::Key key)
 {
+    /**
     switch(key)
     {
         default:
@@ -334,18 +343,24 @@ inline std::wstring getKeyWName(const sf::Keyboard::Key key)
                 return L"Comma";
         case sf::Keyboard::Period:
                 return L"Period";
+#if !defined(IS_ENGINE_HTML_5)
         case sf::Keyboard::Quote:
                 return L"Quote";
+#endif
         case sf::Keyboard::Slash:
                 return L"Slash";
         case sf::Keyboard::BackSlash:
                 return L"BackSlash";
+#if !defined(IS_ENGINE_HTML_5)
         case sf::Keyboard::Tilde:
                 return L"Tilde";
+#endif
         case sf::Keyboard::Equal:
                 return L"Equal";
+#if !defined(IS_ENGINE_HTML_5)
         case sf::Keyboard::Dash:
                 return L"Dash";
+#endif
         case sf::Keyboard::Space:
                 return L"Space";
         case sf::Keyboard::Return:
@@ -435,6 +450,8 @@ inline std::wstring getKeyWName(const sf::Keyboard::Key key)
         case sf::Keyboard::Pause:
                 return L"Pause";
     }
+    */
+    return L"";
 }
 }
 

@@ -105,7 +105,7 @@ public:
                                  m_imageAngle, m_imageAlpha, m_imageScale, m_imageScale);
     }
 
-    virtual void draw(sf::RenderTexture &surface)
+    virtual void draw(is::Render &surface)
     {
         surface.draw(m_sprParent);
         surface.draw(m_txtTitle);

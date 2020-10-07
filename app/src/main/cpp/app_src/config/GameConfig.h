@@ -9,8 +9,8 @@
 // uncomment to enable SDM function
 #define IS_ENGINE_USE_SDM ///< Allows to use Step and Draw Manager
 
-// uncomment to enable SGM function
-#define IS_ENGINE_USE_GSM ///< Allows to use Game Sound Manager
+// uncomment to disable this function
+#define IS_ENGINE_OPTIMIZE_PERF ///< Allows to activate the optimization in certain parts of the engine
 
 #if defined(__ANDROID__)
 // uncomment this line to use Admob
@@ -32,7 +32,7 @@ enum DisplayOption
     HELLO_SCENE,   ///< Access the hello scene
 
     // example
-    // YOUR_SCENE ///< Access to your scene
+    // YOUR_SCENE, ///< Access to your scene
 };
 
 ////////////////////////////////////////////////////////////
@@ -64,33 +64,50 @@ namespace GameConfig
 
 	static const DisplayOption LAUNCH_OPTION = DisplayOption::HELLO_SCENE; ///< Represents the first scene to be launched
 
-    static const sf::Mouse::Button KEY_VALIDATION_MOUSE    = sf::Mouse::Left;      ///< Represent the key which validates the options with the Mouse
-    static const sf::Keyboard::Key KEY_VALIDATION_KEYBOARD = sf::Keyboard::Return; ///< Represent the key which validates the options with the Keyboard
-    static const sf::Keyboard::Key KEY_CANCEL              = sf::Keyboard::Escape; ///< Represent the key which cancel the options with the Keyboard
+	/// Represent the key which validates the options with the Mouse
+    static const sf::Mouse::Button KEY_VALIDATION_MOUSE    = sf::Mouse::Left;
 
-    static const sf::Keyboard::Key KEY_A = sf::Keyboard::W;         ///< Represents the button A key
-    static const sf::Keyboard::Key KEY_B = sf::Keyboard::X;         ///< Represents the button B key
-    static const sf::Keyboard::Key KEY_LEFT = sf::Keyboard::Left;   ///< Represents the Left directional key
-    static const sf::Keyboard::Key KEY_RIGHT = sf::Keyboard::Right; ///< Represents the Right directional key
-    static const sf::Keyboard::Key KEY_UP = sf::Keyboard::Up;       ///< Represents the Up directional key
-    static const sf::Keyboard::Key KEY_DOWN = sf::Keyboard::Down;   ///< Represents the Down directional key
+    /// Represent the key which validates the options with the Keyboard
+    static const sf::Keyboard::Key KEY_VALIDATION_KEYBOARD = sf::Keyboard::Return;
+
+    /// Represent the key which cancel the options with the Keyboard
+    static const sf::Keyboard::Key KEY_CANCEL = sf::Keyboard::Escape;;
+
+    /// Represents the button A key
+    static const sf::Keyboard::Key KEY_A      = sf::Keyboard::W;
+
+    /// Represents the button B key
+    static const sf::Keyboard::Key KEY_B      = sf::Keyboard::X;
+
+    /// Represents the Left directional key
+    static const sf::Keyboard::Key KEY_LEFT   = sf::Keyboard::Left;
+
+    /// Represents the Right directional key
+    static const sf::Keyboard::Key KEY_RIGHT  = sf::Keyboard::Right;
+
+    /// Represents the Up directional key
+    static const sf::Keyboard::Key KEY_UP     = sf::Keyboard::Up;
+
+    /// Represents the Down directional key
+    static const sf::Keyboard::Key KEY_DOWN   = sf::Keyboard::Down;
 
     ////////////////////////////////////////////////////////////
     /// Default values that SFML texts will take when they are created
     ////////////////////////////////////////////////////////////
-    static const int DEFAULT_SFML_TEXT_SIZE = 20;
-    static const sf::Color DEFAULT_SFML_TEXT_COLOR = sf::Color::Blue;
-    static const sf::Color DEFAULT_SFML_SELECTED_TEXT_COLOR = sf::Color::White;
-    static const sf::Color DEFAULT_MSG_BOX_TEXT_COLOR = sf::Color::White;
-    static const sf::Color DEFAULT_MSG_BOX_SELECTED_TEXT_COLOR = sf::Color::Red;
-    static const sf::Color DEFAULT_RPG_DIALOG_SELECTED_TEXT_COLOR = sf::Color::Blue;
-	
+    static const int        DEFAULT_SFML_TEXT_SIZE                 = 20;
+    static const sf::Color &DEFAULT_SFML_TEXT_COLOR                = sf::Color::Blue;
+    static const sf::Color &DEFAULT_SFML_SELECTED_TEXT_COLOR       = sf::Color::White;
+    static const sf::Color &DEFAULT_MSG_BOX_TEXT_COLOR             = sf::Color::White;
+    static const sf::Color &DEFAULT_MSG_BOX_SELECTED_TEXT_COLOR    = sf::Color::Red;
+    static const sf::Color &DEFAULT_RPG_DIALOG_TEXT_COLOR          = sf::Color::White;
+    static const sf::Color &DEFAULT_RPG_DIALOG_SELECTED_TEXT_COLOR = sf::Color::Blue;
+
     static const std::string MAJOR = "1"; ///< Game major version
     static const std::string MINOR = "0"; ///< Game minor version
     inline std::string getGameVersion() {return MAJOR + "." + MINOR;} ///< return version of the game
 
-    static std::wstring const GAME_NAME     = L"Hello"; ///< Windows title name
-    static std::wstring const GAME_AUTHOR   = L"Author";
+    static std::string const GAME_NAME     = "Hello"; ///< Windows title name
+    static std::string const GAME_AUTHOR   = "Author";
 
     #if defined(IS_ENGINE_USE_ADMOB)
     ////////////////////////////////////////////////////////////
@@ -117,9 +134,12 @@ namespace GameConfig
     }
     #endif // defined
 
+    // parent directory
 	static std::string const ASSETS_DIR =
 	#if !defined(__ANDROID__)
                                            "assets/";
+    #elif defined(IS_ENGINE_HTML_5)
+                                           "/assets/"
 	#else
                                            "";
 	#endif // defined
@@ -139,17 +159,26 @@ namespace GameConfig
     /// You must apply this name for the applicationId in the build.gradle file
     ////////////////////////////////////////////////////////////
     static std::string const PACKAGE_NAME   = "com.author.isengine";
-
-    // file path
-    static std::string const GAME_DATA_FILE = "/data/data/" + PACKAGE_NAME + "/game_data.bin";       ///< Path to save game progress file based on package name
-    static std::string const CONFIG_FILE    = "/data/data/" + PACKAGE_NAME + "/game_config.dat";     ///< Path to save game menu configuration file based on package name
-    static std::string const GAME_PAD_FILE  = "/data/data/" + PACKAGE_NAME + "/game_pad_config.dat"; ///< Path to save game pad configuration file based on package name
-    #else
-    static std::string GAME_DATA_FILE       = "save/game_data.bin";       ///< Path to save game progress file
-    static std::string const CONFIG_FILE    = "save/game_config.dat";     ///< Path to save game menu configuration
-    static std::string const GAME_PAD_FILE  = "save/game_pad_config.dat"; ///< Path to save game pad configuration
     #endif // defined
 
+    // parent directory
+    static std::string DATA_PARENT_DIR =
+                                        #if defined(__ANDROID__)
+                                        "/data/data/" + PACKAGE_NAME + "/"
+                                        #elif defined(IS_ENGINE_HTML_5)
+                                        "/save/"
+                                        #else
+                                        "save/"
+                                        #endif
+                                        ;
+    ///< Path to save game progress file
+    static std::string const GAME_DATA_FILE = DATA_PARENT_DIR + "game_data.bin";
+
+    ///< Path to save game menu configuration file
+    static std::string const CONFIG_FILE    = DATA_PARENT_DIR + "game_config.dat";
+
+    ///< Path to save game pad configuration file
+    static std::string const GAME_PAD_FILE  = DATA_PARENT_DIR + "game_pad_config.dat";
 }
 }
 

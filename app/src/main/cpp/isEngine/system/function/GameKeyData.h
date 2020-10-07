@@ -61,13 +61,13 @@ public:
     GameKeyData(is::GameDisplay *scene);
 
     /// Load the image that will serve as Virtual Game Pad (only for Android)
-    virtual void loadResources(sf::Texture &tex);
+    virtual void loadResources();
 
     /// Manages the positioning of the Virtual Game Pad relative to the screen (only for Android)
     virtual void step(float const &DELTA_TIME);
 
     /// Draw the Virtual Game Pad on the screen (only for Android)
-    virtual void draw(sf::RenderTexture &surface);
+    virtual void draw(is::Render &surface);
 
     /// Check if the Left directional button is pressed
     virtual bool keyLeftPressed();
@@ -89,13 +89,14 @@ public:
 
 private:
     bool virtualKeyPressed(VirtualKeyIndex virtualKeyIndex);
+    #if defined(__ANDROID__)
     float m_moveObj;
+    #endif
     is::GameDisplay *m_scene;
 
     sf::Sprite m_sprJoystick[2];
     sf::RectangleShape m_recJoystickMask[2];
     sf::RectangleShape m_recKeyLeftMask, m_recKeyRightMask, m_recKeyUpMask, m_recKeyDownMask, m_recKeyAMask, m_recKeyBMask;
-    sf::RectangleShape m_recLeft, m_recRight;
 };
 };
 

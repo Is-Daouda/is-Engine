@@ -1,7 +1,7 @@
 # engine source file
 set(
-    isengine
-
+	commun_sources
+	
 	${ISENGINE_SRC_DIR}/main.cpp
 
 	# Basic SFML rendering loop
@@ -11,6 +11,8 @@ set(
 	${ISENGINE_SRC_DIR}/isEngine/core/GameEngine.cpp
 
 	# system
+	${ISENGINE_SRC_DIR}/isEngine/system/isEngineWrapper.cpp
+	
 	# display
 	${ISENGINE_SRC_DIR}/isEngine/system/display/GameDisplay.cpp
 	
@@ -22,9 +24,6 @@ set(
 	${ISENGINE_SRC_DIR}/isEngine/system/function/GameKeyData.cpp
 	${ISENGINE_SRC_DIR}/isEngine/system/function/GameSystem.cpp
 	${ISENGINE_SRC_DIR}/isEngine/system/function/GameTime.cpp
-	
-	# tiny file dialogs
-	${ISENGINE_SRC_DIR}/isEngine/ext_lib/TinyFileDialogs/tinyfiledialogs.cpp
 	
 	# box 2d source
 	${ISENGINE_SRC_DIR}/isEngine/ext_lib/Box2D/Collision/b2BroadPhase.cpp
@@ -72,8 +71,12 @@ set(
 	${ISENGINE_SRC_DIR}/isEngine/ext_lib/Box2D/Dynamics/Joints/b2RopeJoint.cpp
 	${ISENGINE_SRC_DIR}/isEngine/ext_lib/Box2D/Dynamics/Joints/b2WeldJoint.cpp
 	${ISENGINE_SRC_DIR}/isEngine/ext_lib/Box2D/Dynamics/Joints/b2WheelJoint.cpp
+)
 
-	# tmx lite
+# tmx lite
+set(
+	tmxlite_sources
+	
 	${ISENGINE_SRC_DIR}/isEngine/ext_lib/TMXLite/FreeFuncs.cpp
 	${ISENGINE_SRC_DIR}/isEngine/ext_lib/TMXLite/ImageLayer.cpp
 	${ISENGINE_SRC_DIR}/isEngine/ext_lib/TMXLite/LayerGroup.cpp
@@ -85,4 +88,29 @@ set(
 	${ISENGINE_SRC_DIR}/isEngine/ext_lib/TMXLite/Tileset.cpp
 	${ISENGINE_SRC_DIR}/isEngine/ext_lib/TMXLite/detail/pugixml.cpp
 	${ISENGINE_SRC_DIR}/isEngine/ext_lib/TMXLite/miniz.c
-)
+	)
+
+# is::Engine Windows & Linux version
+if (DEFINED ISENGINE_PC)
+	set(
+		isengine
+		${commun_sources}
+		${tmxlite_sources}
+		
+		# tiny file dialogs
+		${ISENGINE_SRC_DIR}/isEngine/ext_lib/TinyFileDialogs/tinyfiledialogs.cpp
+		)
+# is::Engine Android version
+elseif (DEFINED ISENGINE_ANDROID)
+	set(
+		isengine
+		${commun_sources}
+		${tmxlite_sources}
+		)
+# is::Engine HTML version
+elseif (DEFINED ISENGINE_HTML_5)
+	set(
+		isengine
+		${commun_sources}
+		)
+endif()
