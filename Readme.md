@@ -115,8 +115,8 @@ If all goes well you will have a **Hello World Screen** on your **Android emulat
 ```bash
 cd c:/is-Engine/app/src/main
 mkdir bin-web
-emsdk activate latest
 cd bin-web
+emsdk activate latest
 emcmake cmake ..
 make -j3
 python -m http.server
