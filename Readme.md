@@ -65,13 +65,10 @@ The engine comes with a **[Demo (2D Platform Game)](https://github.com/Is-Daouda
 
 ## Example
 ```cpp
-class HelloScene : public is::GameDisplay
-{
+class HelloScene : public is::GameDisplay {
 public:
     HelloScene(sf::RenderWindow &window, sf::View &view, is::Render &surface, is::GameSystemExtended &gameSysExt):
         GameDisplay(window, view, surface, gameSysExt, sf::Color::White /* => scene color*/) {}
-
-    sf::Sprite spr;
 
     void loadResources() {
         m_gameSysExt.m_gameLanguage = is::lang::ENGLISH; // set default game language
@@ -90,8 +87,7 @@ public:
         SDMaddSceneObject(std::make_shared<is::Background>(texBg, 0.f, 0.f, this, 0.5f, -0.5f, false, false));
 
         // add a SFML sprite that will be above the background
-        spr.setTexture(GRMgetTexture("is_engine_logo"));
-        SDMaddSprite(spr, "Logo", -1);
+        SDMaddSprite(sf::Sprite(GRMgetTexture("is_engine_logo")), "Logo", -1);
         SDMgetObject("Logo")->setY(85.5f); // change the logo position
 
         // add an object that will be updated and displayed
