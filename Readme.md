@@ -269,13 +269,13 @@ codeblocks "./app/src/main/is-Engine-linux.cbp"
 ----------------------------
 - The source files of the project can be found in the **[is-Engine/app/src/main/cpp](./app/src/main/cpp/)** location.
 
-#### [main.cpp](./app/src/main/cpp/main.cpp) file
+#### 1. [main.cpp](./app/src/main/cpp/main.cpp) file
 Contains the entry point of the program, inside there are two instructions :
 - `game.play()`: Launches the engine rendering loop which allows to manage the introduction screen, main menu, level and game over.
 - `game.basicSFMLmain()` (disabled by default): Launches the display of a classic SFML window. The implementation is in the **[basicSFMLmain.cpp](./app/src/main/cpp/basicSFMLmain.cpp)** file. *Very useful if you already have a project under development and you want to associate it with the engine. You can also use it to implement your own components to the engine.*
 
 ----------------------------
-#### [app_src](./app/src/main/cpp/app_src/) folder
+#### 2. [app_src](./app/src/main/cpp/app_src/) folder
 Contains the source code of the game.
 Description of these sub-directories:
 - **[activity](./app/src/main/cpp/app_src/activity/)** : Contains the **[Activity](./app/src/main/cpp/app_src/activity/GameActivity.h)** class which allows the interaction of the different scenes of the game.
@@ -287,11 +287,11 @@ Description of these sub-directories:
 - **[scenes](./app/src/main/cpp/app_src/scenes/)** : Contains the different scenes of the game (Introduction, Main menu, ...).
 
 ----------------------------
-#### [assets](./app/src/main/assets/) folder
+#### 3. [assets](./app/src/main/assets/) folder
 Contains game resource files (music, sound sfx, image, ...)
 
 ----------------------------
-#### [isEngine](./app/src/main/cpp/isEngine/) folder
+#### 4. [isEngine](./app/src/main/cpp/isEngine/) folder
 Contains the source code of the game engine
 
 ---
