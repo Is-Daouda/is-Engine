@@ -84,12 +84,12 @@ The engine comes with a **[Demo (2D Platform Game)](https://github.com/Is-Daouda
 
 If all goes well you will have a **Hello World Screen** on your **Android emulator**.
 
-![Image](https://github.com/Is-Daouda/is-Engine/blob/3.1.x/images/demo_screen.png)
+![Image](./images/demo_screen.png)
 
 **Enjoy!**
 
 **3. Adding Source Files**
-- So that Android Studio can detect your source files (.cpp) and compile them you must include them in the **app_rsc.cmake or isengine.cmake** file which is in **is-Engine/app/src/main/cmake**.
+- So that Android Studio can detect your source files (.cpp) you must include them in the **[app_src.cmake](./app/src/main/cmake/app_src.cmake) or [isengine.cmake](./app/src/main/cmake/isengine.cmake)** file which is located in the **[is-Engine/app/src/main/cmake](./app/src/main/cmake/)** location.
 
 **4. Application location**
 - The application can be found in **is-Engine/app/build/outputs/apk**.
@@ -125,12 +125,12 @@ python -m http.server
 
 If all goes well you will have a **Hello World Screen** on your **Web Browser**.
 
-![Image](https://github.com/Is-Daouda/is-Engine/blob/3.1.x/images/demo_screen.png)
+![Image](./images/demo_screen.png)
 
 **Enjoy!**
 
 **3. Adding Source Files**
-- In order for CMake to detect your source files (.cpp) you must include them in the **app_rsc.cmake or isengine.cmake** file which is located in the **is-Engine/app/src/main/cmake** location.
+- In order for CMake to detect your source files (.cpp) you must include them in the **[app_src.cmake](./app/src/main/cmake/app_src.cmake) or [isengine.cmake](./app/src/main/cmake/isengine.cmake)** file which is located in the **[is-Engine/app/src/main/cmake](./app/src/main/cmake/)** location.
 
 ## ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) Very important
 - **SMK** is a **library** which is a **little different** from **SFML**, but the way the **Graphics, Audio and System parts** are used is a bit similar to **SFML**.
@@ -140,7 +140,7 @@ If all goes well you will have a **Hello World Screen** on your **Web Browser**.
 - These libraries: **SWOOSH, TMXLite, TMXLoader, TinyFileDialog** are not supported in the web version of is::Engine.
 - But don't worry, **AS LONG AS YOU USE THE FEATURES OF is::Engine you won't notice the difference between these two (2) libraries when you create your games**.
 - Believe me, there is everything you need to create a great game!
-- To see the differences I advise you to see the **basicSFMLmain.cpp file** (this file allows you to create your games without using the main rendering loop of the engine, i.e. avoids using the main features of the engine) which is found in **[is-Engine/app/src/main/cpp/](https://github.com/Is-Daouda/is-Engine/blob/3.1.x/app/src/main/cpp/basicSFMLmain.cpp)**.
+- To see the differences I advise you to see the **[basicSFMLmain.cpp](./app/src/main/cpp/basicSFMLmain.cpp) file** (this file allows you to create your games without using the main rendering loop of the engine, i.e. avoids using the main features of the engine).
 - If you want more information on the SMK library I advise you to see [the documentation](https://arthursonzogni.com/SMK/doc/).
 
 ---
@@ -174,7 +174,7 @@ sudo make
 - You will have a **bin** folder in which the engine demo is located.
 
 **5. Adding Source Files**
-- In order for CMake to detect your source files (.cpp) you must include them in the **app_rsc.cmake or isengine.cmake** file which is located in the **is-Engine/app/src/main/cmake** location.
+- In order for CMake to detect your source files (.cpp) you must include them in the **[app_src.cmake](./app/src/main/cmake/app_src.cmake) or [isengine.cmake](./app/src/main/cmake/isengine.cmake)** file which is located in the **[is-Engine/app/src/main/cmake](./app/src/main/cmake/)** location.
 
 ---
 
@@ -210,7 +210,7 @@ code -n "./app/src/main"
 ```
 
 #### All
-3. Or open the **is-Engine/app/src/main** folder with **Solution Explorer**.
+3. Or open the **[is-Engine/app/src/main](./app/src/main/)** folder with **Solution Explorer**.
 
 **4. Executable location**
 - The compiler files can be found in **is-Engine/app/src/main/bin-vscode**.
@@ -238,14 +238,14 @@ code -n "./app/src/main"
 
 #### Windows
 1. Run the file **open_codeblocks.bat** in the main directory.
-2. Or open the file **is-Engine-windows.cbp** in the location **is-Engine/app/src/main**
+2. Or open the file **is-Engine-windows.cbp** in the location **[is-Engine/app/src/main](./app/src/main/)**
 
 #### Linux
 1. Execute this command in the main directory:
 ```bash
 codeblocks "./app/src/main/is-Engine-linux.cbp"
 ```
-2. Or open the file **is-Engine-linux.cbp** in the location **is-Engine/app/src/main**.
+2. Or open the file **is-Engine-linux.cbp** in the location **[is-Engine/app/src/main](./app/src/main/)**.
 
 **3. Executable location**
 - The compiler files can be found in **is-Engine/app/src/main/bin-codeblocks**.
@@ -254,56 +254,56 @@ codeblocks "./app/src/main/is-Engine-linux.cbp"
 
 ## ![icon](https://i48.servimg.com/u/f48/20/16/75/27/icon10.png) Change application icon:
 #### Android
-- To change the icon of the application you must go to the location **is-Engine/app/src/main/res** replace all the images (PNG) which are in the **drawable** subfolders.
+- To change the icon of the application you must go to the location **[is-Engine/app/src/main/res](./app/src/main/res/)**** replace all the images (PNG) which are in the **drawable** subfolders.
 
 #### Windows
-- To change the icon of the application you must go to the location **is-Engine/app/src/main/env/windows** replace all the images **(Attention CMake uses the same resources).**
+- To change the icon of the application you must go to the location **[is-Engine/app/src/main/env/windows](./app/src/main/env/windows)**** replace all the images **(Attention CMake uses the same resources).**
 
 #### Linux
-- To change the icon of the application you must go to the location **is-Engine/app/src/main/env/linux**.
+- To change the icon of the application you must go to the location **[is-Engine/app/src/main/env/linux](./app/src/main/env/linux)**.
 
 ---
 
 ## Description of the project structure:
 ![header](./images/is_Engine_structure.png)
 ----------------------------
-- The source files of the project can be found in the **is-Engine/app/src/main/cpp** location.
+- The source files of the project can be found in the **[is-Engine/app/src/main/cpp](./app/src/main/cpp/)** location.
 
-#### `main.cpp` file
+#### [main.cpp](./app/src/main/cpp/main.cpp) file
 Contains the entry point of the program, inside there are two instructions :
 - `game.play()`: Launches the engine rendering loop which allows to manage the introduction screen, main menu, level and game over.
-- `game.basicSFMLmain()` (disabled by default): Launches the display of a classic SFML window. The implementation is in the `basicSFMLmain.cpp` file. *Very useful if you already have a project under development and you want to associate it with the engine. You can also use it to implement your own components to the engine.*
+- `game.basicSFMLmain()` (disabled by default): Launches the display of a classic SFML window. The implementation is in the **[basicSFMLmain.cpp](./app/src/main/cpp/basicSFMLmain.cpp)** file. *Very useful if you already have a project under development and you want to associate it with the engine. You can also use it to implement your own components to the engine.*
 
 ----------------------------
-#### `app_src` folder
+#### [app_src](./app/src/main/cpp/app_src/) folder
 Contains the source code of the game.
 Description of these sub-directories:
-- `activity` : Contains the `Activity` class which allows the interaction of the different scenes of the game.
-- `config`   : Contains the `GameConfig.cpp` file which allows to define the general parameters of the game.
-- `gamesystem_ext` : Contains a class derived from `GameSystem` which allows to manipulate game data (save, load, ...).
-- `language` : Contains the `GameLanguage.cpp` file which allows to manage everything related to game languages.
-- `levels`   : Contains game levels and the `Level.h` file which allows to integrate them into the game.
-- `objects`  : Contains the objects that will be used in the different scenes.
-- `scenes`   : Contains the different scenes of the game (Introduction, Main menu, ...).
+- **[activity](./app/src/main/cpp/app_src/activity/)** : Contains the **[Activity](./app/src/main/cpp/app_src/activity/GameActivity.h)** class which allows the interaction of the different scenes of the game.
+- **[config](./app/src/main/cpp/app_src/config/)** : Contains the **[GameConfig.cpp](./app/src/main/cpp/app_src/config/GameConfig.cpp)** file which allows to define the general parameters of the game.
+- **[gamesystem_ext](./app/src/main/cpp/app_src/gamesystem_ext/)** : Contains a **[class](./app/src/main/cpp/app_src/gamesystem_ext/GameSystemExtended.h)** derived from **[GameSystem](./app/src/main/cpp/isEngine/system/function/GameSystem.h)** which allows to manipulate game data (save, load, ...).
+- **[language](./app/src/main/cpp/app_src/language/)** : Contains the **[GameLanguage.cpp](./app/src/main/cpp/app_src/language/GameLanguage.h)** file which allows to manage everything related to game languages.
+- **[levels](./app/src/main/cpp/app_src/level/)** : Contains game levels and the **[Level.h](./app/src/main/cpp/app_src/level/Level.h)** file which allows to integrate them into the game.
+- **[objects](./app/src/main/cpp/app_src/objects/)** : Contains the objects that will be used in the different scenes.
+- **[scenes](./app/src/main/cpp/app_src/scenes/)** : Contains the different scenes of the game (Introduction, Main menu, ...).
 
 ----------------------------
-#### `data` folder
+#### [assets](./app/src/main/assets/) folder
 Contains game resource files (music, sound sfx, image, ...)
 
 ----------------------------
-#### `isEngine` folder
+#### [isEngine](./app/src/main/cpp/isEngine/) folder
 Contains the source code of the game engine
 
 ---
 
 ## How to contribute?
 Here are some examples of how to contribute:
-- You have developed a module and want it to be part of the engine, you are welcome.
-- You have thought of a feature and you want it to be integrated into the engine, do not hesitate to submit it to us with your **name** of course.
-- You want to participate in the development of the engine, well welcome to the team!
-- You have developed a game or application with the engine, we gladly accept it to publish it!
-- You noticed a bug, well done! Let us know Mr. Hacker.
+- have You developed a module and want it to be part of the engine? You are welcome!
+- have You thought of a feature and you want it to be integrated into the engine? Do not hesitate to submit it to us with your **name** of course!
+- You want to participate in the development of the engine? Well! welcome to the team!
+- You have developed a game or application with the engine? We gladly accept it to publish it!
+- You noticed a bug? Well done! Let us know Mr. Hacker!
 
 ## Contacts
-  * For any help or other contribution please contact me on my [email address](mailto:isdaouda.n@gmail.com)
+  * For any help please contact me on my [email address](mailto:isdaouda.n@gmail.com)
   * You can follow me on Twitter for more informations on my activities [@Is Daouda Games](https://twitter.com/IsDaouda_Games)
