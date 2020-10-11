@@ -280,7 +280,7 @@ Contains the source code of the game.
 Description of these sub-directories:
 - **[activity](./app/src/main/cpp/app_src/activity/)** : Contains the **[Activity](./app/src/main/cpp/app_src/activity/GameActivity.h)** class which allows the interaction of the different scenes of the game.
 - **[config](./app/src/main/cpp/app_src/config/)** : Contains the **[GameConfig.cpp](./app/src/main/cpp/app_src/config/GameConfig.cpp)** file which allows to define the general parameters of the game.
-- **[gamesystem_ext](./app/src/main/cpp/app_src/gamesystem_ext/)** : Contains a **[class](./app/src/main/cpp/app_src/gamesystem_ext/GameSystemExtended.h)** derived from **[GameSystem](./app/src/main/cpp/isEngine/system/function/GameSystem.h)** which allows to manipulate game data (save, load, ...).
+- **[gamesystem_ext](./app/src/main/cpp/app_src/gamesystem_ext/)** : Contains **[GameSystemExtended](./app/src/main/cpp/app_src/gamesystem_ext/GameSystemExtended.h)** a class derived from **[GameSystem](./app/src/main/cpp/isEngine/system/function/GameSystem.h)** which allows to manipulate game data (save, load, ...).
 - **[language](./app/src/main/cpp/app_src/language/)** : Contains the **[GameLanguage.cpp](./app/src/main/cpp/app_src/language/GameLanguage.h)** file which allows to manage everything related to game languages.
 - **[levels](./app/src/main/cpp/app_src/level/)** : Contains game levels and the **[Level.h](./app/src/main/cpp/app_src/level/Level.h)** file which allows to integrate them into the game.
 - **[objects](./app/src/main/cpp/app_src/objects/)** : Contains the objects that will be used in the different scenes.
