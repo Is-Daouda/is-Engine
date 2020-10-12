@@ -12,10 +12,11 @@ Open source C++ game engine based on **SFML** which allows you to easily develop
 - [Example of a project created with the engine](#example-of-a-project-created-with-the-engine)
 - [Hello Scene Example](#hello-scene-example)
 - [Prerequisites](#prerequisites)
-- [How to use is::Engine with the different development tools:](#how-to-use-isengine-with-the-different-development-tools:)
+- [How to use is::Engine with the different development tools:](#how-to-use-isengine-with-the-different-development-tools)
 - [Description of the project structure:](#description-of-the-project-structure)
 - [How to contribute?](#how-to-contribute)
 
+##
 [![SFML logo](https://www.sfml-dev.org/images/logo.png)](https://www.sfml-dev.org) ![Web](https://i48.servimg.com/u/f48/20/16/75/27/web_lo10.png) [![Box2D Logo](https://box2d.org/images/logo.svg)](https://github.com/erincatto/box2d) [![Tiled Logo](https://i.servimg.com/u/f48/20/16/75/27/tiled_10.png)](https://www.mapeditor.org) [![SMK](https://i48.servimg.com/u/f48/20/16/75/27/smk10.png)](https://github.com/ArthurSonzogni/smk) [![Admob Logo](https://i48.servimg.com/u/f48/20/16/75/27/admob_10.png)](https://admob.google.com/) [![swoosh](https://i.imgur.com/tri24Y5.png)](https://github.com/TheMaverickProgrammer/Swoosh) [![Tiny File Dialog](https://a.fsdn.com/allura/p/tinyfiledialogs/icon?1582196333?&w=90)](https://github.com/native-toolkit/tinyfiledialogs)
 
 ## Features
