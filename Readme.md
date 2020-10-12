@@ -70,7 +70,7 @@ Here is an example code of a Scene (the place where the game objects come to lif
 - Display a background that scrolls vertically and horizontally with a speed
 - Manages the display depth of each object
 - Automatically manages the game window (closing confirmation, events, ...)
-- Change the background color of the window
+- Change the background color of the window (scene color)
 
 ```cpp
 class HelloScene : public is::GameDisplay {
