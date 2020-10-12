@@ -102,10 +102,10 @@ public:
         auto &texBg = GRMaddTexture("background", is::GameConfig::TILES_DIR + "background.png");
         auto &texDialog = GRMaddTexture("dialog_box", is::GameConfig::GUI_DIR + "dialog_box.png");
 
-        // add a background that will fill the scene and scroll it (scroll speed = 0.5)
+        // add a background to the position x = 0, y = 0 which will fill the scene and which will be scrolled (scrolling speed = 0.5)
         SDMaddSceneObject(std::make_shared<is::Background>(texBg, 0.f, 0.f, this, 0.5f, -0.5f, false, false));
 
-        // add an object that will be updated and displayed
+        // add an object at position x = 0 y = 0 which will be updated and displayed in the scene
         SDMaddSceneObject(std::make_shared<HelloWorld>(0.f, 0.f, this));
 
         // add RPG style game dialog

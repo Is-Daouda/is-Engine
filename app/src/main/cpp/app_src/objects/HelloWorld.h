@@ -28,10 +28,10 @@ public:
         // of the program
         m_imageAngle += (is::VALUE_CONVERSION * 0.5f) * DELTA_TIME; // rotate the image
 
-        // moved the object to the right
+        // moved the object to the right (in pixel)
         m_x += (is::VALUE_CONVERSION * 2.f) * DELTA_TIME;
 
-        // When you touch (on Android) or click on the sprite of the object it moves down
+        // When you touch (on Android) or click on the sprite of the object it moves down (in pixel)
         if (m_scene->mouseCollision(m_sprParent) && m_scene->getGameSystem().isPressed())
             m_y += (is::VALUE_CONVERSION * 1.f) * DELTA_TIME;
 
