@@ -59,10 +59,6 @@ The engine comes with a **[Demo (2D Platform Game)](https://github.com/Is-Daouda
 - [Pac-Pac Prandial War](https://www.youtube.com/watch?v=7CXkiD_jTRg&t=25s&authuser=0)
 - [Soldier VS Zombies](https://www.youtube.com/watch?v=qK-Aj-7-czM&authuser=0)
 
-## Prerequisites
-- [SFML Library (2.4 +)](https://www.sfml-dev.org/download.php)
-- GCC Compiler (7.3 +)
-
 ## Hello Scene Example
 Here is an example code of a Scene (the place where the game objects come to life).
 In less than 50 lines of code, the engine allows to:
@@ -111,6 +107,10 @@ public:
     }
 };
 ```
+
+## Prerequisites
+- [SFML Library (2.4 +)](https://www.sfml-dev.org/download.php)
+- GCC Compiler (7.3 +)
 
 ---
 
