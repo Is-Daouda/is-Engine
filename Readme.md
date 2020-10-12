@@ -61,7 +61,7 @@ The engine comes with a **[Demo (2D Platform Game)](https://github.com/Is-Daouda
 
 ## Hello Scene Example
 Here is an example code of a Scene (the place where the game objects come to life).
-In less than 50 lines of code, the engine allows to:
+**In less than 50 lines of code, the engine allows to:**
 - Change the language of the game (English / French)
 - Display an RPG type message with interaction
 - Animate an **[object](./app/src/main/cpp/app_src/objects/HelloWorld.h)** with the possibility of interacting with it (by clicking / touching it)
