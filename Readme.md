@@ -359,8 +359,8 @@ Contains the source code of the game engine
 
 ## How to contribute?
 Here are some examples of how to contribute:
-- have You developed a module and want it to be part of the engine? You are welcome!
-- have You thought of a feature and you want it to be integrated into the engine? Do not hesitate to submit it to us with your **name** of course!
+- Have you developed a module and want it to be part of the engine? You are welcome!
+- Have you thought of a feature and you want it to be integrated into the engine? Do not hesitate to submit it to us with your **name** of course!
 - You want to participate in the development of the engine? Well! welcome to the team!
 - You have developed a game or application with the engine? We gladly accept it to publish it!
 - You noticed a bug? Well done! Let us know Mr. Hacker!
