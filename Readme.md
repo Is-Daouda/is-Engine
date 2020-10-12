@@ -63,7 +63,19 @@ The engine comes with a **[Demo (2D Platform Game)](https://github.com/Is-Daouda
 - [SFML Library (2.4 +)](https://www.sfml-dev.org/download.php)
 - GCC Compiler (7.3 +)
 
-## Example
+## Hello Scene Example
+Here is an example code of a Scene (the place where the game objects come to life).
+In less than 50 lines of code, the engine allows to:
+- Change the language of the game (English / French)
+- Display an RPG type message with interaction
+- Animate an **[object](./app/src/main/cpp/app_src/objects/HelloWorld.h)** with the possibility of interacting with it (by clicking / touching it)
+- Load resources (Textures, Music)
+- Play music
+- Display a background that scrolls vertically and horizontally with a speed
+- Manages the display depth of each object
+- Automatically manages the game window (closing confirmation, events, ...)
+- Change the background color of the window
+
 ```cpp
 class HelloScene : public is::GameDisplay {
 public:
@@ -78,17 +90,12 @@ public:
 
         // load font and texture
         GameDisplay::loadParentResources(); // allows to load system resource (very important never forgot to call him)
-        GRMaddTexture("is_engine_logo", is::GameConfig::SPRITES_DIR + "is_engine_logo.png");
         GRMaddTexture("hello_world",    is::GameConfig::SPRITES_DIR + "hello_world.png");
         auto &texBg = GRMaddTexture("background",     is::GameConfig::TILES_DIR + "background.png");
         auto &texDialog = GRMaddTexture("dialog_box", is::GameConfig::GUI_DIR     + "dialog_box.png");
 
         // add a background that will fill the scene and scroll it (scroll speed = 0.5)
         SDMaddSceneObject(std::make_shared<is::Background>(texBg, 0.f, 0.f, this, 0.5f, -0.5f, false, false));
-
-        // add a SFML sprite that will be above the background
-        SDMaddSprite(sf::Sprite(GRMgetTexture("is_engine_logo")), "Logo", -1);
-        SDMgetObject("Logo")->setY(85.5f); // change the logo position
 
         // add an object that will be updated and displayed
         SDMaddSceneObject(std::make_shared<HelloWorld>(0.f, 0.f, this));
@@ -99,9 +106,8 @@ public:
         gameDialog->setDialog(is::GameDialog::DialogIndex::DIALOG_HELLO); // set the corresponding dialog (See GameDialog.h and GameLanguage.h for more details on creating a message for dialogue)
         SDMaddSceneObject(gameDialog);
 
-        // add and play music
-        GSMaddMusic("game_music", is::GameConfig::MUSIC_DIR + "game_music.ogg");
-        GSMplayMusic("game_music");
+        GSMaddMusic("game_music", is::GameConfig::MUSIC_DIR + "game_music.ogg"); // add music
+        GSMplayMusic("game_music"); // play music
     }
 };
 ```
