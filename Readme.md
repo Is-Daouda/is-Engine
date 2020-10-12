@@ -12,8 +12,8 @@ Open source C++ game engine based on **SFML** which allows you to easily develop
 - [Example of a project created with the engine](#example-of-a-project-created-with-the-engine)
 - [Hello Scene Example](#hello-scene-example)
 - [Prerequisites](#prerequisites)
-- [How to use is::Engine with the different development tools:](#how-to-use-isengine-with-the-different-development-tools)
-- [Description of the project structure:](#description-of-the-project-structure)
+- [How to use is::Engine with the different development tools](#how-to-use-isengine-with-the-different-development-tools)
+- [Description of the project structure](#description-of-the-project-structure)
 - [How to contribute?](#how-to-contribute)
 
 ##
