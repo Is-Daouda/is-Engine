@@ -86,9 +86,9 @@ public:
 
         // load font and texture
         GameDisplay::loadParentResources(); // allows to load system resource (very important never forgot to call him)
-        GRMaddTexture("hello_world",    is::GameConfig::SPRITES_DIR + "hello_world.png");
-        auto &texBg = GRMaddTexture("background",     is::GameConfig::TILES_DIR + "background.png");
-        auto &texDialog = GRMaddTexture("dialog_box", is::GameConfig::GUI_DIR     + "dialog_box.png");
+        GRMaddTexture("hello_world", is::GameConfig::SPRITES_DIR + "hello_world.png");
+        auto &texBg = GRMaddTexture("background", is::GameConfig::TILES_DIR + "background.png");
+        auto &texDialog = GRMaddTexture("dialog_box", is::GameConfig::GUI_DIR + "dialog_box.png");
 
         // add a background that will fill the scene and scroll it (scroll speed = 0.5)
         SDMaddSceneObject(std::make_shared<is::Background>(texBg, 0.f, 0.f, this, 0.5f, -0.5f, false, false));
