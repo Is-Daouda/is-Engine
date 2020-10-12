@@ -105,7 +105,7 @@ public:
         // add a background to the position x = 0, y = 0 which will fill the scene and which will be scrolled (scrolling speed = 0.5)
         SDMaddSceneObject(std::make_shared<is::Background>(texBg, 0.f, 0.f, this, 0.5f, -0.5f, false, false));
 
-        // add an object at position x = 0 y = 0 which will be updated and displayed in the scene
+        // add an object at position x = 0, y = 0 which will be updated and displayed in the scene
         SDMaddSceneObject(std::make_shared<HelloWorld>(0.f, 0.f, this));
 
         // add RPG style game dialog
