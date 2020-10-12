@@ -5,7 +5,7 @@
 
 Open source C++ game engine based on **SFML** which allows you to easily develop games on **Web (HTML 5 - CSS 3), Android and PC (Windows, Linux)**.
 
-## Navigation
+#### Navigation
 - [Features](#features)
 - [Extras](#extras)
 - [Game Engine User Guide](#game-engine-user-guide)
