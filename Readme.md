@@ -2,7 +2,7 @@
 ----------------------------
 
 # is::Engine (Infinity Solutions::Engine) 3.1
-Open source C++ game engine based on **SFML** which allows you to easily develop games on **Web (HTML 5 - CSS 3), Android and PC (Windows, Linux)**.
+Open source C++ framework based on **SFML** which allows you to easily develop games and multimedia applications on **Web (HTML 5 - CSS 3), Android and PC (Windows, Linux)**.
 
 ## Contents
 - [Features](#features)
