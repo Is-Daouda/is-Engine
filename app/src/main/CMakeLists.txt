@@ -38,7 +38,7 @@ if(EMSCRIPTEN)
 	set_property(TARGET isengine APPEND_STRING PROPERTY LINK_FLAGS " -s TOTAL_MEMORY=134217728")
 
 	# Release flags
-	#set_property(TARGET isengine APPEND_STRING PROPERTY LINK_FLAGS " --closure 1")
+	set_property(TARGET isengine APPEND_STRING PROPERTY LINK_FLAGS " --emrun")
 	set_property(TARGET isengine APPEND_STRING PROPERTY LINK_FLAGS " --js-opts 3")
 	set_property(TARGET isengine APPEND_STRING PROPERTY LINK_FLAGS " --llvm-lto 3")
 	set_property(TARGET isengine APPEND_STRING PROPERTY LINK_FLAGS " --llvm-opts 3")
