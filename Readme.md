@@ -58,7 +58,7 @@ When you fill in a **source file (.cpp)** in the **app_src.cmake or isengine.cma
 You can decide how the file will be included (eg: avoid C++ files which are intended for PC only from being supported when compiling on Android / Web)!
 
 ## Extras
-- You can access the web demo **[here](https://github.com/Is-Daouda/is-Engine-Web-Demo)**. **Note this:** I don't have a web server yet so you need to run it on your machine with **emscripten**.
+- You can access the web demo **[here](https://is-daouda.github.io/)**.
 - The engine comes with a **[Demo (2D Platform Game)](https://github.com/Is-Daouda/is-Engine-Demo)** that uses only the functions of the engine, in order to show you its power and how to use it. Now imagine what you can do when you use Box 2D and the other tools!
 
 [![Image](https://i48.servimg.com/u/f48/20/16/75/27/is_eng20.png)](https://github.com/Is-Daouda/is-Engine-Demo)
