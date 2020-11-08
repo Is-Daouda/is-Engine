@@ -1,7 +1,7 @@
 ![header](./images/is_Engine_logo.png)
 ----------------------------
 
-# is::Engine (Infinity Solutions::Engine) 3.1
+# is::Engine (Infinity Solutions::Engine) 3.1.1
 Open source C++ framework based on **SFML** which allows you to easily develop **games and multimedia applications** on **Web (HTML 5 - CSS 3), Android and PC (Windows, Linux)**.
 
 ## Contents
@@ -56,7 +56,10 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 5. Support of Render Texture in web development
 
 ## Extras
-- You can access the web demo **[here](https://is-daouda.github.io/)**.
+- Here is a **[web game](https://is-daouda.github.io/)** (A special version) created with the game engine to celebrate the two (2) years anniversary of the game I Can Transform released on **[Android](https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=En)** with C ++ / SFML.
+
+[![Image](https://i48.servimg.com/u/f48/20/16/75/27/i_can_10.png)](https://is-daouda.github.io/)
+
 - The engine comes with a **[Demo (2D Platform Game)](https://github.com/Is-Daouda/is-Engine-Demo)** that uses only the functions of the engine, in order to show you its power and how to use it. Now imagine what you can do when you use Box 2D and the other tools!
 
 [![Image](https://i48.servimg.com/u/f48/20/16/75/27/is_eng20.png)](https://github.com/Is-Daouda/is-Engine-Demo)
@@ -66,6 +69,7 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 - [French version](./doc/isEngine_api_doc_fr.html)
 
 ## Example of a project created with the engine
+- [I Can Transform Web](https://is-daouda.github.io/)
 - [I Can Transform](https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=En)
 - [Pac-Pac Prandial War](https://www.youtube.com/watch?v=7CXkiD_jTRg&t=25s&authuser=0)
 - [Soldier VS Zombies](https://www.youtube.com/watch?v=qK-Aj-7-czM&authuser=0)
