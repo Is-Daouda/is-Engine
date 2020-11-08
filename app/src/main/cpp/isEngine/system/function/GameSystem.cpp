@@ -5,6 +5,7 @@ namespace is
 GameSystem::GameSystem(sf::RenderWindow &window):
     m_window(window)
 {
+    m_gameLanguage = 0; // 0 = default language
     m_validationMouseKey    = GameConfig::KEY_VALIDATION_MOUSE;
     m_validationKeyboardKey = GameConfig::KEY_VALIDATION_KEYBOARD;
     m_disableKey = false;
@@ -52,7 +53,7 @@ bool GameSystem::isPressed(
                 #if !defined(IS_ENGINE_HTML_5)
                 sf::Keyboard::isKeyPressed
                 #else
-                m_window.input().IsKeyPressed
+                m_window.input().IsKeyHold
                 #endif
                 (m_validationKeyboardKey)) return true;
         break;
@@ -68,7 +69,7 @@ bool GameSystem::isPressed(
                      #if !defined(IS_ENGINE_HTML_5)
                      sf::Keyboard::isKeyPressed
                      #else
-                     m_window.input().IsKeyPressed
+                     m_window.input().IsKeyHold
                      #endif
                      (m_validationKeyboardKey)) return true;
         break;
@@ -91,7 +92,7 @@ bool GameSystem::keyIsPressed(
     if (sf::Keyboard::isKeyPressed(key)) return true;
     #else
     if ((key >= 0 && key <= 7) && m_window.input().IsMousePressed(key)) return true;
-    if ((key > 7 || key == -1) && m_window.input().IsKeyPressed(key)) return true;
+    if ((key > 7 || key == -1) && m_window.input().IsKeyHold(key)) return true;
     #endif
     return false;
 }
@@ -109,6 +110,13 @@ bool GameSystem::fileExist(std::string const &fileName) const
 {
     std::ifstream file(fileName.c_str());
     return !file.fail();
+}
+
+void GameSystem::removeFile(std::string const &fileName)
+{
+#if defined(GAME_FULL_VERSION)
+    remove(fileName.c_str());
+#endif // defined
 }
 
 void GameSystem::useVibrate(short ms)

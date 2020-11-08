@@ -1,0 +1,8 @@
+#ifndef EXTRACONFIG_H_INCLUDED
+#define EXTRACONFIG_H_INCLUDED
+
+#if !defined(IS_ENGINE_RENDER)
+#define IS_ENGINE_RENDER
+#endif
+
+#endif // EXTRACONFIG_H_INCLUDED

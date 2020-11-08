@@ -10,7 +10,41 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e389bc80-d9c4-4a12-8425-56cdf9b375b0" name="Default" comment="" />
+    <list default="true" id="e389bc80-d9c4-4a12-8425-56cdf9b375b0" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/image/sprites/hello_world.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/image/sprites/hello_world.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/image/sprites/is_engine_logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/image/sprites/is_engine_logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/sound/music/game_music.ogg" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/sound/music/game_music.ogg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cmake/isengine.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cmake/isengine.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/app_src/activity/GameActivity.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/app_src/activity/GameActivity.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/app_src/objects/HelloWorld.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/app_src/objects/HelloWorld.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/isEngine/core/ActivityController.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/isEngine/core/ActivityController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/isEngine/core/GameEngine.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/isEngine/core/GameEngine.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/isEngine/core/GameEngine.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/isEngine/core/GameEngine.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/display/GameDisplay.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/display/GameDisplay.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/display/GameDisplay.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/display/GameDisplay.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/entity/MainObject.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/entity/MainObject.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/entity/MainObject.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/entity/MainObject.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/function/GameFunction.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/function/GameFunction.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/function/GameFunction.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/function/GameFunction.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/function/GameSystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/function/GameSystem.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/function/GameSystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/function/GameSystem.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/function/GameTime.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/function/GameTime.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/isEngineWrapper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/isEngineWrapper.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/isEngineWrapper.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/isEngineWrapper.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/sound/GSM.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/sound/GSM.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/sound/GameSound.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/cpp/isEngine/system/sound/GameSound.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/is-Engine-linux.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/is-Engine-linux.cbp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/is-Engine-windows.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/is-Engine-windows.cbp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/is_Engine_logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/is_Engine_logo.png" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,7 +64,7 @@
     </system>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/app/src/main/build-web/_deps/freetype2-src" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds">

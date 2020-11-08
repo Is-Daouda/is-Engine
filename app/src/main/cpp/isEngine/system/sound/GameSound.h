@@ -18,7 +18,11 @@ public:
         FilePath(filePath)
 #if defined(IS_ENGINE_HTML_5)
         , m_sb(filePath),
-        m_snd(m_sb) {m_fileIsLoaded = true;}
+        m_snd(m_sb)
+        {
+            m_fileIsLoaded = true;
+            // is::showLog("sound loaded name: " << soundName << "\n";
+        }
 #else
     {
         if (m_sb.loadFromFile(m_strFilePath))

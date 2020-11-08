@@ -19,9 +19,13 @@ set(
 	# entity
 	${ISENGINE_SRC_DIR}/isEngine/system/entity/MainObject.cpp
 	
+	# graphic
+	${ISENGINE_SRC_DIR}/isEngine/system/graphic/TransitionEffect.cpp
+	
 	# function
 	${ISENGINE_SRC_DIR}/isEngine/system/function/GameFunction.cpp		
 	${ISENGINE_SRC_DIR}/isEngine/system/function/GameKeyData.cpp
+	${ISENGINE_SRC_DIR}/isEngine/system/function/GameSlider.cpp
 	${ISENGINE_SRC_DIR}/isEngine/system/function/GameSystem.cpp
 	${ISENGINE_SRC_DIR}/isEngine/system/function/GameTime.cpp
 	

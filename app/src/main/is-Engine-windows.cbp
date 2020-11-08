@@ -61,6 +61,7 @@
 		</Unit>
 		<Unit filename="cpp/app_src/activity/GameActivity.h" />
 		<Unit filename="cpp/app_src/activity/SwooshFiles.h" />
+		<Unit filename="cpp/app_src/config/ExtraConfig.h" />
 		<Unit filename="cpp/app_src/config/GameConfig.h" />
 		<Unit filename="cpp/app_src/gamesystem_ext/GameSystemExtended.cpp" />
 		<Unit filename="cpp/app_src/gamesystem_ext/GameSystemExtended.h" />
@@ -264,6 +265,8 @@
 		<Unit filename="cpp/isEngine/system/function/GameKeyData.cpp" />
 		<Unit filename="cpp/isEngine/system/function/GameKeyData.h" />
 		<Unit filename="cpp/isEngine/system/function/GameKeyName.h" />
+		<Unit filename="cpp/isEngine/system/function/GameSlider.cpp" />
+		<Unit filename="cpp/isEngine/system/function/GameSlider.h" />
 		<Unit filename="cpp/isEngine/system/function/GameSystem.cpp" />
 		<Unit filename="cpp/isEngine/system/function/GameSystem.h" />
 		<Unit filename="cpp/isEngine/system/function/GameTime.cpp" />
@@ -271,6 +274,8 @@
 		<Unit filename="cpp/isEngine/system/graphic/GRM.h" />
 		<Unit filename="cpp/isEngine/system/graphic/GameFont.h" />
 		<Unit filename="cpp/isEngine/system/graphic/GameTexture.h" />
+		<Unit filename="cpp/isEngine/system/graphic/TransitionEffect.cpp" />
+		<Unit filename="cpp/isEngine/system/graphic/TransitionEffect.h" />
 		<Unit filename="cpp/isEngine/system/isEngineWrapper.cpp" />
 		<Unit filename="cpp/isEngine/system/isEngineWrapper.h" />
 		<Unit filename="cpp/isEngine/system/sound/GSM.h" />

@@ -34,6 +34,7 @@ MainObject::MainObject():
     m_imageAlpha(255),
     m_imageIndex(0),
     m_isActive(false),
+    m_isSDMSprite(false),
     m_drawMask(false)
 {
     updateCollisionMask();
@@ -71,6 +72,7 @@ MainObject::MainObject(float x, float y):
     m_imageAlpha(255),
     m_imageIndex(0),
     m_isActive(false),
+    m_isSDMSprite(false),
     m_drawMask(false)
 {
     updateCollisionMask();
@@ -108,6 +110,7 @@ MainObject::MainObject(sf::Sprite &spr, float x, float y):
     m_imageAlpha(255),
     m_imageIndex(0),
     m_isActive(false),
+    m_isSDMSprite(true),
     m_drawMask(false),
     m_sprParent(spr)
 {
@@ -252,7 +255,7 @@ void MainObject::setXYOffset()
     m_yOffset = is::getSFMLObjOriginY(m_sprParent);
 }
 
-void MainObject::setImageScale(float x, float y)
+void MainObject::setImageScaleX_Y(float x, float y)
 {
     m_imageXscale = x;
     m_imageYscale = y;
@@ -358,7 +361,7 @@ void MainObject::updateSprite(float x, float y, float angle, int alpha, float xS
 
 void MainObject::draw(is::Render &surface)
 {
-    updateSprite();
+    if (m_isSDMSprite) updateSprite();
     is::draw(surface, m_sprParent);
     if (m_drawMask) drawMask(surface);
 }
@@ -650,9 +653,43 @@ bool MainObject::placeMetting(int x, int y, std::shared_ptr<MainObject> const &o
     return placeMettingSubFunction(x, y, other.get());
 }
 
+bool MainObject::inViewRec(sf::View const &view, bool useTexRec)
+{
+    is::Rectangle testRec;
+    if (useTexRec)
+    {
+        testRec.m_left   = m_x;
+        testRec.m_top    = m_y;
+        testRec.m_right  = m_x + ((m_sprParent.getGlobalBounds().width  < 1) ? 32 : m_sprParent.getGlobalBounds().width);
+        testRec.m_bottom = m_y + ((m_sprParent.getGlobalBounds().height < 1) ? 32 : m_sprParent.getGlobalBounds().height);
+    }
+    else testRec = this->getMask();
+
+    is::Rectangle viewRec;
+    viewRec.m_left   = view.getCenter().x - view.getSize().x / 2.f;
+    viewRec.m_right  = view.getCenter().x + view.getSize().x / 2.f;
+    viewRec.m_top    = view.getCenter().y - view.getSize().y / 2.f;
+    viewRec.m_bottom = view.getCenter().y + view.getSize().y / 2.f;
+
+    if (is::collisionTest(testRec, viewRec)) return true;
+    return false;
+}
+
 sf::Sprite& MainObject::getSprite()
 {
     return m_sprParent;
+}
+
+bool operator<(const MainObject *a, const MainObject &b)
+{
+    if (is::instanceExist(a)) return a->getX()  < (b.getX() - 460.f);
+    else return false;
+}
+
+bool operator<(const MainObject &b, const MainObject *a)
+{
+    if (is::instanceExist(a)) return (b.getX() + 460.f) < a->getX();
+    else return false;
 }
 
 bool operator<(std::shared_ptr<MainObject> const &a, const MainObject &b)

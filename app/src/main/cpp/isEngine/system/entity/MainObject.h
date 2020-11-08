@@ -131,7 +131,7 @@ public:
     virtual void setXYOffset();
 
     /// Set image scale
-    virtual void setImageScale(float x, float y);
+    virtual void setImageScaleX_Y(float x, float y);
 
     /// Set time
     virtual void setTime(float x);
@@ -299,10 +299,13 @@ public:
     virtual bool getIsActive() const;
 
     /// Test collision in comparison with another
-    virtual bool placeMetting(int x, int y, MainObject const *other);
+    bool placeMetting(int x, int y, MainObject const *other);
 
     /// Test collision in comparison with another
-    virtual bool placeMetting(int x, int y, std::shared_ptr<MainObject> const &other);
+    bool placeMetting(int x, int y, std::shared_ptr<MainObject> const &other);
+
+    /// Test if object is in view rectangle (vision)
+    bool inViewRec(sf::View const &view, bool useTexRec = true);
 
     /// Return the sprite of object
     virtual sf::Sprite& getSprite();
@@ -322,7 +325,7 @@ protected:
     float m_time;
     unsigned int m_w, m_h;
     int m_instanceId, m_imageAlpha, m_imageIndex;
-    bool m_isActive;
+    bool m_isActive, m_isSDMSprite;
 
     /// Allows to draw collision mask
     bool m_drawMask;
@@ -345,6 +348,17 @@ bool instanceExist(T const *obj)
     return (obj != nullptr);
 }
 
+/// destroye instance
+template<class T>
+void instanceDestroy(T *obj)
+{
+    if (is::instanceExist(obj))
+    {
+        delete obj;
+        obj = 0;
+    }
+}
+
 /// Functor for compare the x position of objects
 class CompareX
 {
@@ -355,7 +369,17 @@ public:
         float xB = ((is::instanceExist(b)) ? b->getX() : 0.f);
         return (xA < xB);
     }
+    bool operator()(MainObject const *a, MainObject const *b) const
+    {
+        float xA = ((is::instanceExist(a)) ? a->getX() : 0.f);
+        float xB = ((is::instanceExist(b)) ? b->getX() : 0.f);
+        return (xA < xB);
+    }
 };
+bool operator<(const MainObject *a, const MainObject &b);
+bool operator<(const MainObject &b, const MainObject *a);
+bool operator<(std::shared_ptr<MainObject> const &a, const MainObject &b);
+bool operator<(const MainObject &b, std::shared_ptr<MainObject> const &a);
 
 /// Sort object array by x position
 template<class T>
@@ -384,9 +408,6 @@ void sortObjArrayByDepth(std::list<std::shared_ptr<T>> &v)
     v.sort(is::CompareDepth());
 }
 #endif // defined
-
-bool operator<(std::shared_ptr<MainObject> const &a, const MainObject &b);
-bool operator<(const MainObject &b, std::shared_ptr<MainObject> const &a);
 }
 
 #endif // MAINOBJECT_H_INCLUDED

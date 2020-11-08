@@ -19,7 +19,7 @@ GameDisplay::GameDisplay(sf::RenderWindow &window, sf::View &view, is::Render &s
     m_surface(surface),
     #endif
     m_gameSysExt(gameSysExt),
-    m_vibrateTimeDuration(40),
+    m_timeVibrateDuration(40),
     m_optionIndex(0),
     m_waitTime(0),
     m_msgWaitTime(0),
@@ -41,6 +41,7 @@ GameDisplay::GameDisplay(sf::RenderWindow &window, sf::View &view, is::Render &s
     m_mbYesNo(false),
     m_msgBoxMouseInCollison(false)
 {
+    setViewSize(m_viewW, m_viewH);
     m_windowBgColor = bgColor;
 
 #if defined(__ANDROID__)
@@ -56,12 +57,8 @@ void GameDisplay::setOptionIndex(int optionIndexValue, bool callWhenClick, float
 {
     if (m_waitTime == 0)
     {
-        m_gameSysExt.useVibrate(m_vibrateTimeDuration);
-        //////////////////////////////////////////////////////////
-        #if !defined(__ANDROID__)
+        m_gameSysExt.useVibrate(m_timeVibrateDuration);
         GSMplaySound("change_option");
-        #endif
-        //////////////////////////////////////////////////////////
         m_sprButtonSelectScale = buttonScale;
         if (!callWhenClick)
         {
@@ -132,6 +129,16 @@ void GameDisplay::setViewVarXY(float x, float y)
     m_viewY = y;
 }
 
+void GameDisplay::setViewSize(sf::Vector2f v)
+{
+    m_view.setSize(v.x, v.y);
+}
+
+void GameDisplay::setViewSize(float x, float y)
+{
+    m_view.setSize(x, y);
+}
+
 void GameDisplay::setWindowSize(sf::Vector2u v, bool updateViewSize)
 {
     #if defined(__ANDROID__)
@@ -176,7 +183,8 @@ void GameDisplay::controlEventFocusClosing(sf::Event &event)
     #endif
 }
 
-void GameDisplay::updateMsgBox(float const &DELTA_TIME, sf::Color textDefaultColor, sf::Color selectedTextColor)
+void GameDisplay::updateMsgBox(int sliderDirection, bool rightSideValidation,
+                               sf::Color textDefaultColor, sf::Color selectedTextColor)
 {
     if (m_msgWaitTime < 240) m_msgWaitTime += static_cast<int>((8.f * is::VALUE_CONVERSION) * DELTA_TIME);
     else m_msgWaitTime = 255;
@@ -189,12 +197,25 @@ void GameDisplay::updateMsgBox(float const &DELTA_TIME, sf::Color textDefaultCol
          m_msgBoxMouseInCollison = false;
      else m_msgBoxMouseInCollison = true;
 
+    /*
+     * sliderDirection is the enum variable found in is::GameSlider. It was not called from the instance
+     * because its use is not mandatory in a Scene. This avoids the error message which implies that the
+     * instance has not been declared because here we have implemented are not used in even if it does not exist
+     * These different values (represents the enum of the class)
+        SLIDE_NONE = 0,
+        SLIDE_UP = 1,
+        SLIDE_DOWN = 2,
+        SLIDE_RIGHT = 3,
+        SLIDE_LEFT = 4
+     */
+
     // Avoid the long pressing button effect
-    if (!m_msgBoxMouseInCollison && m_gameSysExt.isPressed(
-                                                           #if !defined(__ANDROID__)
-                                                           is::GameSystem::ValidationButton::MOUSE
-                                                           #endif
-                                                           ))
+    if (!m_msgBoxMouseInCollison && sliderDirection == 0 &&
+        m_gameSysExt.isPressed(
+                               #if !defined(__ANDROID__)
+                               is::GameSystem::ValidationButton::MOUSE
+                               #endif
+                               ))
         m_gameSysExt.m_keyIsPressed = true;
 
     if (m_msgWaitTime == 255 && m_windowIsActive)
@@ -203,25 +224,26 @@ void GameDisplay::updateMsgBox(float const &DELTA_TIME, sf::Color textDefaultCol
         if (m_mbYesNo)
         {
             if (((m_gameSysExt.keyIsPressed(is::GameConfig::KEY_LEFT) &&
-                  !mouseCollision(m_sprMsgBoxButton2)) ||
+                  !mouseCollision(m_sprMsgBoxButton2)) || (sliderDirection == 4) ||
                   mouseCollision(m_sprMsgBoxButton1)) && m_msgAnswer == MsgAnswer::NO)
             {
-                m_gameSysExt.useVibrate(m_vibrateTimeDuration);
+                m_gameSysExt.useVibrate(m_timeVibrateDuration);
                 GSMplaySound("change_option");
                 m_msgAnswer = MsgAnswer::YES; // answer = yes
             }
             else if (((m_gameSysExt.keyIsPressed(is::GameConfig::KEY_RIGHT) &&
-                     !mouseCollision(m_sprMsgBoxButton1)) ||
+                     !mouseCollision(m_sprMsgBoxButton1)) || (sliderDirection == 3) ||
                       mouseCollision(m_sprMsgBoxButton2)) && m_msgAnswer == MsgAnswer::YES)
             {
-                m_gameSysExt.useVibrate(m_vibrateTimeDuration);
+                m_gameSysExt.useVibrate(m_timeVibrateDuration);
                 GSMplaySound("change_option");
                 m_msgAnswer = MsgAnswer::NO;  // answer = no
             }
             else if (m_gameSysExt.keyIsPressed(is::GameConfig::KEY_VALIDATION_KEYBOARD) ||
+                     (rightSideValidation) ||
                     ((mouseCollision(m_sprMsgBoxButton1) ||
                       mouseCollision(m_sprMsgBoxButton2)) &&
-                      m_gameSysExt.isPressed() && !m_gameSysExt.m_keyIsPressed))
+                      m_gameSysExt.isPressed(is::GameSystem::MOUSE) && !m_gameSysExt.m_keyIsPressed))
             {
                 m_showMsg = false;
                 m_gameSysExt.m_keyIsPressed = true;
@@ -249,14 +271,14 @@ void GameDisplay::updateMsgBox(float const &DELTA_TIME, sf::Color textDefaultCol
         {
             if (mouseCollision(m_sprMsgBoxButton3) && m_msgAnswer == MsgAnswer::NO)
             {
-                m_gameSysExt.useVibrate(m_vibrateTimeDuration);
+                m_gameSysExt.useVibrate(m_timeVibrateDuration);
                 GSMplaySound("change_option");
                 m_msgAnswer = MsgAnswer::YES; // answer = OK
                 is::setSFMLObjFillColor(m_txtMsgBoxOK, selectedTextColor);
             }
             else if (((m_gameSysExt.keyIsPressed(is::GameConfig::KEY_VALIDATION_KEYBOARD) || m_keyBackPressed) &&
-                     !mouseCollision(m_sprMsgBoxButton3)) || (mouseCollision(m_sprMsgBoxButton3) &&
-                     m_gameSysExt.isPressed() && !m_gameSysExt.m_keyIsPressed)
+                     !mouseCollision(m_sprMsgBoxButton3)) || (rightSideValidation)|| (mouseCollision(m_sprMsgBoxButton3) &&
+                     m_gameSysExt.isPressed(is::GameSystem::MOUSE) && !m_gameSysExt.m_keyIsPressed)
                      )
             {
                 m_showMsg = false;
@@ -298,19 +320,19 @@ void GameDisplay::updateMsgBox(float const &DELTA_TIME, sf::Color textDefaultCol
             {
                 m_msgAnswer = MsgAnswer::YES;
                 GSMplaySound("select_option");
-                m_gameSysExt.useVibrate(m_vibrateTimeDuration);
+                m_gameSysExt.useVibrate(m_timeVibrateDuration);
             }
             else GSMplaySound("cancel");
         }
         else
         {
             GSMplaySound("select_option");
-            m_gameSysExt.useVibrate(m_vibrateTimeDuration);
+            m_gameSysExt.useVibrate(m_timeVibrateDuration);
         }
     }
 }
 
-void GameDisplay::updateTimeWait(float const &DELTA_TIME)
+void GameDisplay::updateTimeWait()
 {
     // Waiting time before validating an option
     if (m_waitTime > 0)
@@ -354,10 +376,6 @@ void GameDisplay::drawScreen()
     #endif // defined
         draw();
     #if defined(__ANDROID__)
-    }
-    else
-    {
-        is::display(m_window);
     }
     #endif // defined
 }
@@ -425,8 +443,8 @@ void GameDisplay::loadParentResources()
     is::centerSFMLObj(m_sprMsgBoxButton3);
 
     // Load font
-    auto &fontSystem = GRMaddFont("font_system", GameConfig::FONT_DIR + "sansation.ttf", 18);
-    GRMaddFont("font_msg", GameConfig::FONT_DIR + "brush_script_std_medium.ttf", 18);
+    auto &fontSystem = GRMaddFont("font_system", GameConfig::FONT_DIR + "brush_script_std_medium.ttf", 18);
+    GRMaddFont("font_msg", GameConfig::FONT_DIR + "sansation.ttf", 18);
 
     is::createText(fontSystem, m_txtMsgBox, "", 0.f, 0.f, 20);
     is::createText(fontSystem, m_txtMsgBoxYes, is::lang::pad_answer_yes[m_gameSysExt.m_gameLanguage],
@@ -469,6 +487,35 @@ float GameDisplay::getDeltaTime()
     return dt;
 }
 
+sf::Vector2f GameDisplay::getCursor(
+                                    #if defined(__ANDROID__)
+                                    unsigned int finger
+                                    #endif // defined
+                                    ) const
+{
+    sf::Vector2i pixelPos =
+    #if defined(__ANDROID__)
+                            sf::Touch::getPosition(finger, m_window);
+    #else
+                            sf::Mouse::getPosition(m_window);
+    #endif // defined
+
+    #if !defined(IS_ENGINE_HTML_5)
+    sf::Vector2f worldPos = m_window.mapPixelToCoords(pixelPos, m_window.getView());
+    #else
+    sf::Vector2i worldPos = pixelPos;
+    #endif
+    float dx = pointDistance(m_window.getView().getCenter().x, m_window.getView().getCenter().y,
+                             worldPos.x, m_window.getView().getCenter().y);
+    float dy = pointDistance(m_window.getView().getCenter().x, m_window.getView().getCenter().y,
+                             m_window.getView().getCenter().x, worldPos.y);
+
+    if (worldPos.x < m_window.getView().getCenter().x) dx *= -1;
+    if (worldPos.y < m_window.getView().getCenter().y) dy *= -1;
+
+    return sf::Vector2f(m_window.getView().getCenter().x + dx, m_window.getView().getCenter().y + dy);
+}
+
 bool GameDisplay::inViewRec(is::MainObject *obj, bool useTexRec)
 {
     is::Rectangle testRec;
@@ -503,7 +550,7 @@ bool GameDisplay::getIsRunning() const
 void GameDisplay::SDMmanageScene()
 {
     DELTA_TIME = getDeltaTime();
-    updateTimeWait(DELTA_TIME);
+    updateTimeWait();
 
     // even loop
     SDMmanageSceneEvents();
@@ -523,7 +570,7 @@ void GameDisplay::SDMmanageScene()
 //////////////////////////////////////////////////////////////////////////////////////////////////////
             else
             {
-                updateMsgBox(DELTA_TIME);
+                updateMsgBox(0, false);
 
                 // when user closes message box in update function execute this instruction
                 // "m_waitTime" allow to disable clicks on objects during a moment when user closes message box
@@ -581,9 +628,6 @@ void GameDisplay::SDMstep()
             m_SDMsortArray = false;
         }
     }
-    #if defined(IS_ENGINE_HTML_5)
-    is::display(m_surface);
-    #endif // defined
 }
 
 void GameDisplay::SDMdraw()
@@ -642,6 +686,25 @@ void GameDisplay::GSMpauseSound(std::string name)
     if (!soundExist) is::showLog("ERROR: Can't pause <" + name + "> sound because sound not exists!");
 }
 
+void GameDisplay::GSMstopSound(std::string name)
+{
+    bool soundExist(false);
+    WITH (m_GSMsound.size())
+    {
+        if (m_GSMsound[_I]->getName() == name)
+        {
+            soundExist = true;
+            if (m_GSMsound[_I]->getFileIsLoaded())
+            {
+                if (is::checkSFMLSndState(m_GSMsound[_I]->getSound(), is::SFMLSndStatus::Playing)) m_GSMsound[_I]->getSound().stop();
+            }
+            else is::showLog("ERROR: Sound exists but can't stop <" + name + "> sound!");
+            break;
+        }
+    }
+    if (!soundExist) is::showLog("ERROR: Can't stop <" + name + "> sound because sound not exists!");
+}
+
 void GameDisplay::GSMplayMusic(std::string name)
 {
     bool musicExist(false);
@@ -675,5 +738,24 @@ void GameDisplay::GSMpauseMusic(std::string name)
         }
     }
     if (!musicExist) is::showLog("ERROR: Can't pause <" + name + "> music because music not exists!");
+}
+
+void GameDisplay::GSMstopMusic(std::string name)
+{
+    bool musicExist(false);
+    WITH (m_GSMmusic.size())
+    {
+        if (m_GSMmusic[_I]->getName() == name)
+        {
+            musicExist = true;
+            if (m_GSMmusic[_I]->getFileIsLoaded())
+            {
+                if (is::checkSFMLSndState(m_GSMmusic[_I]->getMusic(), is::SFMLSndStatus::Playing)) m_GSMmusic[_I]->getMusic().stop();
+            }
+            else is::showLog("ERROR: Music exists but can't stop <" + name + "> music!");
+            break;
+        }
+    }
+    if (!musicExist) is::showLog("ERROR: Can't stop <" + name + "> music because music not exists!");
 }
 }

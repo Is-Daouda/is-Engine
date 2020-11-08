@@ -36,15 +36,19 @@ void GameEngine::initEngine()
     #endif
 
     // create saving directory
+#if !defined(IS_ENGINE_HTML_5)
     if (!m_gameSysExt.fileExist(is::GameConfig::CONFIG_FILE))
     {
+
         mkdir(is::GameConfig::DATA_PARENT_DIR.c_str()
-                #if defined(SFML_SYSTEM_LINUX) || defined(IS_ENGINE_HTML_5)
+                #if defined(SFML_SYSTEM_LINUX)
                 , S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH
                 #endif
               );
+
         m_gameSysExt.saveConfig(is::GameConfig::CONFIG_FILE);
     }
+#endif
     #else
         /// uncomment to disable lock screen on Android
         // is::setScreenLock(true);
@@ -77,29 +81,35 @@ bool GameEngine::play()
 //                                         GAME STARTUP
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 #if !defined(IS_ENGINE_HTML_5)
+    #if defined(IS_ENGINE_RENDER)
+    ActivityController app(m_gameSysExt);
+    #else
     float elapsed(0.0f);
     sf::Clock clock;
     ActivityController app(m_window);
     app.push<GameActivity>(m_gameSysExt);
-#if defined(IS_ENGINE_OPTIMIZE_PERF)
-    app.optimizeForPerformance(true);
-#endif
+        #if defined(IS_ENGINE_OPTIMIZE_PERF)
+        app.optimizeForPerformance(true);
+        #endif
+    #endif
     while (m_window.isOpen())
 #else
     ActivityController app(m_gameSysExt);
     m_window.ExecuteMainLoop([&]
 #endif
     {
-        #if defined(IS_ENGINE_HTML_5)
-        m_window.PoolEvents();
+        #if (defined(IS_ENGINE_HTML_5) || defined(IS_ENGINE_RENDER))
+            #if defined(IS_ENGINE_HTML_5)
+            m_window.PoolEvents();
+            #endif
         app.update();
         #else
         m_window.clear();
         app.update(elapsed);
         #endif
         app.draw();
-        #if !defined(IS_ENGINE_HTML_5)
-        m_window.display();
+        is::display(m_window);
+        #if (!defined(IS_ENGINE_HTML_5) && !defined(IS_ENGINE_RENDER))
         elapsed = static_cast<float>(clock.getElapsedTime().asSeconds());
         #endif
     }

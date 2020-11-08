@@ -1,6 +1,7 @@
 #ifndef GSM_H_INCLUDED
 #define GSM_H_INCLUDED
 
+#include <memory>
 #include "../sound/GameSound.h"
 #include "../sound/GameMusic.h"
 
@@ -43,6 +44,34 @@ public:
     {
         auto obj = std::make_shared<GameMusic>(name, filePath);
         m_GSMmusic.push_back(obj);
+    }
+
+    /// Allows to set sound loop
+    virtual void GSMsetSoundLoop(std::string name, bool loop)
+    {
+        WITH (m_GSMsound.size())
+        {
+            if (m_GSMsound[_I]->getName() == name)
+            {
+                m_GSMsound[_I]->getSound().setLoop(loop);
+                return;
+            }
+        }
+        is::showLog("ERROR: <" + name + "> sound does not exist!");
+    }
+
+    /// Allows to set music loop
+    virtual void GSMsetMusicLoop(std::string name, bool loop)
+    {
+        WITH (m_GSMmusic.size())
+        {
+            if (m_GSMmusic[_I]->getName() == name)
+            {
+                m_GSMmusic[_I]->getMusic().setLoop(loop);
+                return;
+            }
+        }
+        is::showLog("ERROR: <" + name + "> sound does not exist!");
     }
 
     /// Allows to get sound in container by his name

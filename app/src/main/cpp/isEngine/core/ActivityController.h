@@ -3,7 +3,7 @@
 
 #include "../../app_src/activity/GameActivity.h"
 
-#if defined(IS_ENGINE_HTML_5)
+#if (defined(IS_ENGINE_HTML_5) || defined(IS_ENGINE_RENDER))
 class ActivityController
 {
 public:

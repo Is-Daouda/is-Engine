@@ -1,6 +1,10 @@
 #ifndef ISENGINEWRAPPER_H_INCLUDED
 #define ISENGINEWRAPPER_H_INCLUDED
 
+#if defined(IS_ENGINE_HTML_5)
+#include <smk/Color.hpp>
+#endif
+
 namespace is
 {
 template <class T1, typename T2>
@@ -9,6 +13,58 @@ void setVector2(T1 &v, T2 x, T2 y)
     v.x = x;
     v.y = y;
 };
+
+/// Clear render
+template <class T1, class T2>
+void clear(T1 &render, T2 color)
+{
+    #if !defined(IS_ENGINE_HTML_5)
+    render.clear(color);
+    #else
+    glm::vec4 smkColor;
+    smkColor[0] = color.r;
+    smkColor[1] = color.g;
+    smkColor[2] = color.b;
+    smkColor[3] = color.a;
+    render.Clear(smkColor);
+    #endif
+}
+
+/// Draw on render
+template <class T1, class T2>
+void draw(T1 &render, T2 &obj)
+{
+    render.
+        #if !defined(IS_ENGINE_HTML_5)
+        draw(obj);
+        #else
+        Draw(obj);
+        #endif
+}
+
+template <class T1, class T2>
+void draw(T1 &render, T2 *obj)
+{
+    render.
+        #if !defined(IS_ENGINE_HTML_5)
+        draw(&obj);
+        #else
+        Draw(&obj);
+        #endif
+}
+
+/// Display Render
+template <class T>
+void display(T &render)
+{
+    render.
+        #if !defined(IS_ENGINE_HTML_5)
+        display
+        #else
+        Display
+        #endif
+        ();
+}
 }
 
 #if !defined(IS_ENGINE_HTML_5)
@@ -17,10 +73,11 @@ void setVector2(T1 &v, T2 x, T2 y)
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+#include "../../app_src/config/ExtraConfig.h"
 #else
 #include <memory>
+#include <algorithm>
 #include <smk/Audio.hpp>
-#include <smk/Color.hpp>
 #include <smk/Font.hpp>
 #include <smk/Input.hpp>
 #include <smk/Rectangle.hpp>
@@ -31,10 +88,17 @@ void setVector2(T1 &v, T2 x, T2 y)
 #include <smk/Text.hpp>
 #include <smk/Texture.hpp>
 #include <smk/Vibrate.hpp>
+#include <smk/Framebuffer.hpp>
 #include <smk/Window.hpp>
 
 namespace sf
 {
+// Allows to display an error message in the console when there is not a similar function of SFML in SMK
+inline void functionNotSupported(const std::string &className, const std::string &functionName)
+{
+    std::cout << "\n" + className + "::" + functionName + "() is not supported on the SMK library\n";
+}
+
 template <typename T>
 class Vector2
 {
@@ -70,33 +134,45 @@ public:
         width(_width),
         height(_height) {}
 
-    bool intersects(Rect const &rec) const
+    bool intersects(Rect const &rec) const;
+    bool intersects(Rect const &rec1, Rect const &rec2) const;
+
+    template<typename T>
+    bool contains(T x, T y) const
     {
-        if (height <= rec.top)    return false;
-        if (top    >= rec.height) return false;
-        if (width  <= rec.left)   return false;
-        if (left   >= rec.width)  return false;
-        return true;
+        T minX = static_cast<T>(left);
+        T maxX = static_cast<T>(left + width);
+        T minY = static_cast<T>(top);
+        T maxY = static_cast<T>(top + height);
+        return (x >= minX) && (x < maxX) && (y >= minY) && (y < maxY);
+    }
+    template<typename T>
+    bool contains(const Vector2<T>& point) const
+    {
+        return contains(point.x, point.y);
     }
 };
 
 typedef Rect IntRect;
 typedef Rect FloatRect;
 
+class Color;
+void setObjectWrapperColor(Color &color, float red, float green, float blue, float alpha);
+
 class Color
 {
 public:
     float r, g, b, a;
-    Color():
-        r(1.f),
-        g(1.f),
-        b(1.f),
-        a(1.f) {}
-    Color(float red, float green, float blue, float alpha):
-        r(red),
-        g(green),
-        b(blue),
-        a(alpha) {}
+    Color(): r(1.f), g(1.f), b(1.f), a(1.f) {}
+
+    Color(float red, float green, float blue, float alpha): r(1.f), g(1.f), b(1.f), a(1.f)
+    {
+        setObjectWrapperColor(*this, red, green, blue, alpha);
+    }
+    Color(float red, float green, float blue): r(1.f), g(1.f), b(1.f), a(1.f)
+    {
+        setObjectWrapperColor(*this, red, green, blue, a);
+    }
 
     static glm::vec4 RGBA(float red, float green, float blue, float alpha) {return {red, green, blue, alpha};}
     static glm::vec4 RGB(float red, float green, float blue) {return {red, green, blue, 1.f};}
@@ -132,14 +208,174 @@ class Texture : public smk::Texture
 {
 public:
     Texture(): smk::Texture() {}
-    Texture(const std::string& filename): smk::Texture(filename) {}
-    Vector2u getSize() const
+    Texture(const std::string& filename): smk::Texture(filename)
     {
-        Vector2u m_size;
         is::setVector2(m_size, width(), height());
+    }
+    const Vector2u& getSize() const noexcept
+    {
         return m_size;
     }
+
+private:
+    Vector2u m_size;
 };
+
+class View : public smk::View
+{
+public:
+    void setCenter(float x, float y)
+    {
+        m_center.x = x;
+        m_center.y = y;
+        SetCenter(x, y);
+    }
+    void setCenter(const Vector2f& center)
+    {
+        setCenter(center.x, center.y);
+    }
+    void setSize(float width, float height)
+    {
+        m_size.x = width;
+        m_size.y = height;
+        SetSize(m_size.x, m_size.y);
+    }
+    void setSize(const Vector2f& size)
+    {
+        setSize(size.x, size.y);
+    }
+
+    const Vector2f& getSize() const noexcept {return m_size;}
+    const Vector2f& getCenter() const noexcept {return m_center;}
+
+private:
+    sf::Vector2f m_size;
+    sf::Vector2f m_center;
+};
+
+class Event {};
+
+class ViewManager
+{
+public:
+    const View& getView() {return m_view;}
+    const View& getDefaultView() {return m_view;}
+    const Vector2u& getSize() const noexcept {return m_size;}
+
+protected:
+    Vector2u m_size;
+    View m_view;
+};
+
+class String : public std::string {};
+
+class RenderWindow : public smk::Window, public ViewManager
+{
+public:
+    RenderWindow(): smk::Window() {}
+    RenderWindow(int width, int height, const std::string& title):
+        smk::Window(width, height, title)
+    {
+        is::setVector2(m_size, width, height);
+    }
+
+    void setFramerateLimit(float fps) {LimitFrameRate(fps);}
+    void setSize(const Vector2u& size) {is::setVector2(m_size, size.x, size.y);}
+    void setTitle(const String& text) {functionNotSupported("RenderWindow", "setTitle");}
+    void setView(const View& view)
+    {
+        m_view = view;
+        SetView(m_view);
+    }
+
+    template<class T1>
+    void clear(T1 &color)
+    {
+        is::clear(*this, color);
+    }
+
+    template<class T1>
+    void draw(T1 &obj)
+    {
+        is::draw(*this, obj);
+    }
+
+    template<class T1>
+    void draw(T1 *obj)
+    {
+        is::draw(this, obj);
+    }
+
+    void display()
+    {
+        is::display(*this);
+    }
+    void close() {std::terminate();}
+
+    bool pollEvent(Event &event) {return false;}
+};
+
+class RenderTexture;
+static void createRenderTexture(RenderTexture &renderTexture, unsigned int width, unsigned int height);
+
+class RenderTexture : public smk::Framebuffer, public ViewManager
+{
+public:
+    RenderTexture(): smk::Framebuffer(0, 0)
+    {
+        m_texture = static_cast<Texture*>(&color_texture);
+    }
+
+    RenderTexture(unsigned int width, unsigned int height):
+        smk::Framebuffer(width, height)
+    {
+        m_texture = static_cast<Texture*>(&color_texture);
+    }
+
+    bool create(unsigned int width, unsigned int height)
+    {
+        createRenderTexture(*this, width, height);
+        is::setVector2(m_size, width, height);
+        return true;
+    }
+
+    template<class T1>
+    void clear(T1 &color)
+    {
+        is::clear(*this, color);
+    }
+
+    template<class T1>
+    void draw(T1 &obj)
+    {
+        is::draw(*this, obj);
+    }
+
+    template<class T1>
+    void draw(T1 *obj)
+    {
+        is::draw(this, obj);
+    }
+
+    void display() {functionNotSupported("RenderTexture", "display");}
+
+    const Texture& getTexture() const
+    {
+        functionNotSupported("RenderTexture", "getTexture");
+        return *m_texture;
+    }
+
+private:
+    Texture *m_texture = nullptr;
+};
+
+void createRenderTexture(RenderTexture &renderTexture, unsigned int width, unsigned int height)
+{
+    renderTexture = sf::RenderTexture(width, height);
+}
+
+Rect functionGetGlobalBounds(const Vector2f &position, const Vector2f &origin, const Vector2f &size);
+//Color functionGetColor(Color &color);
 
 template <class T>
 class ObjectWrapper : public T
@@ -160,6 +396,13 @@ public:
         is::setVector2(m_size, texture.width(), texture.height());
         is::setVector2(m_scale, 1.f, 1.f);
     }
+    ObjectWrapper(RenderTexture &renderTexture) :
+        T(renderTexture),
+        m_renderTexture(&(renderTexture))
+    {
+        is::setVector2(m_size, renderTexture.getSize().x, renderTexture.getSize().y);
+        is::setVector2(m_scale, 1.f, 1.f);
+    }
 
     ObjectWrapper(smk::Font& font) : T(font)
     {
@@ -176,25 +419,38 @@ public:
         is::setVector2(m_size, T::ComputeDimensions().x, T::ComputeDimensions().y);
         is::setVector2(m_scale, 1.f, 1.f);
     }
-
     void setPosition(float x, float y)
     {
         is::setVector2(m_position, x, y);
         T::SetPosition(m_position.x, m_position.y);
+    }
+    void setPosition(const Vector2f &v)
+    {
+        setPosition(v.x, v.y);
     }
     void setScale(float x, float y)
     {
         is::setVector2(m_scale, x, y);
         T::SetScale(x, y);
     }
-    void setSize(float x, float y)
+    void setScale(const Vector2f &v)
     {
-        float xScale = (x * m_scale.x) / m_size.x;
-        float yScale = (y * m_scale.y) / m_size.y;
-        is::setVector2(m_size, x, y);
-        setScale(xScale, yScale);
+        setScale(v.x, v.y);
     }
-    void setSize(Vector2f size)
+    void scale(float x, float y)
+    {
+        is::setVector2(m_scale, m_scale.x + x, m_scale.y + y);
+        T::SetScale(m_scale.x, m_scale.y);
+    }
+    void scale(const Vector2f &v)
+    {
+        setScale(v.x, v.y);
+    }
+    virtual void setSize(float x, float y)
+    {
+        is::setVector2(m_size, x, y);
+    }
+    virtual void setSize(const Vector2f &size)
     {
         setSize(size.x, size.y);
     }
@@ -203,44 +459,44 @@ public:
         is::setVector2(m_origin, x, y);
         T::SetCenter(x, y);
     }
+    void setOrigin(const Vector2f &v)
+    {
+        setOrigin(v.x, v.y);
+    }
     void setRotation(float angle)
     {
-        m_rotation = angle;
-        T::SetRotation(angle);
+        m_rotation = static_cast<float>(fmod(angle, 360));
+        if (m_rotation < 0)
+            m_rotation += 360.f;
+        T::SetRotation(-m_rotation);
     }
     void rotate(float angle)
     {
-        m_rotation += angle;
-        T::SetRotation(angle);
+        setRotation(m_rotation + angle);
     }
     virtual void setColor(float r, float g, float b, float a)
     {
-        m_color.r = r;
-        m_color.g = g;
-        m_color.b = b;
-        m_color.a = a;
+        setObjectWrapperColor(m_color, r, g, b, a);
         T::SetColor(smk::Color::RGBA(m_color.r, m_color.g, m_color.b, m_color.a));
     }
     virtual void setColor(Color const &color)
     {
         setColor(color.r, color.g, color.b, color.a);
     }
-    virtual Vector2f getPosition() const {return m_position;}
-    virtual Vector2f getScale() const {return m_scale;}
-    virtual Vector2f getSize() const {return m_size;}
-    virtual Vector2f getOrigin() const {return m_origin;}
-    virtual float getRotation() const {return m_rotation;}
-    virtual const Rect getGlobalBounds() const noexcept
+    virtual void setFillColor(Color const &color)
     {
-        Rect aabb;
-        aabb.left   = m_position.x;
-        aabb.top    = m_position.y;
-        aabb.width  = aabb.left + m_size.x;
-        aabb.height = aabb.top + m_size.y;
-        return aabb;
+        setColor(color.r, color.g, color.b, color.a);
     }
+    virtual const Vector2f& getPosition() const noexcept {return m_position;}
+    virtual const Vector2f& getScale() const noexcept {return m_scale;}
+    virtual const Vector2f& getSize() const noexcept {return m_size;}
+    virtual const Vector2f& getOrigin() const noexcept {return m_origin;}
+    virtual float getRotation() const {return m_rotation;}
+    virtual Rect getGlobalBounds() const {return functionGetGlobalBounds(m_position, m_origin, m_size);}
     virtual const Color& getColor() const noexcept {return m_color;}
+    virtual const Color& getFillColor() const noexcept {return getColor();}
     Texture* getTexture() const {return m_texture;}
+    RenderTexture* getRenderTexture() const {return m_renderTexture;}
     virtual const Rect getTextureRect() const noexcept
     {
         Rect aabb;
@@ -251,6 +507,7 @@ public:
 
 protected:
     Texture *m_texture = nullptr;
+    RenderTexture *m_renderTexture = nullptr;
     float m_rotation = 0.f;
     Vector2f m_position;
     Vector2f m_scale;
@@ -263,6 +520,13 @@ class Shape : public ObjectWrapper<smk::Transformable>
 {
 public:
     Shape(smk::Transformable shape) : ObjectWrapper(shape) {}
+    virtual void setSize(float x, float y);
+    virtual void setSize(const Vector2f &size)
+    {
+        setSize(size.x, size.y);
+    }
+    void setOrigin(float x, float y) {;}
+    void setOrigin(const Vector2f &v) {;}
 };
 
 class CircleShape : public Shape
@@ -275,15 +539,12 @@ class RectangleShape : public Shape
 {
 public:
     static smk::Transformable RoundedRectangle(float width, float height, float radius);
-    RectangleShape() : Shape(RoundedRectangle(0.f, 0.f, 0.f))
-    {
-        is::setVector2(ObjectWrapper::m_size, 0.f, 0.f);
-    }
+    RectangleShape() : Shape(RoundedRectangle(0.f, 0.f, 0.f)) {}
     RectangleShape(float width, float height, float raduis = 0.f) : Shape(RoundedRectangle(width, height, raduis))
     {
         is::setVector2(ObjectWrapper::m_size, width, height);
     }
-    RectangleShape(Vector2f size) : Shape(RoundedRectangle(size.x, size.y, 0.f))
+    RectangleShape(const Vector2f &size) : Shape(RoundedRectangle(size.x, size.y, 0.f))
     {
         ObjectWrapper::m_size = size;
         is::setVector2(ObjectWrapper::m_size, size.x, size.y);
@@ -295,36 +556,22 @@ class Sprite : public ObjectWrapper<smk::Sprite>
 public:
     Sprite() : ObjectWrapper() {}
     Sprite(Texture &texture) : ObjectWrapper(texture) {}
+    Sprite(RenderTexture &renderTexture) : ObjectWrapper(renderTexture) {}
 
     void setTexture(const sf::Texture& texture)
     {
         SetTexture(texture);
         is::setVector2(m_size, texture.width(), texture.height());
     }
-    void setTextureRect(IntRect rec)
-    {
-        smk::Rectangle smkRec;
-        smkRec.left = rec.left;
-        smkRec.top = rec.top;
-        smkRec.right = rec.left + rec.width;
-        smkRec.bottom = rec.top + rec.height;
-        SetTextureRectangle(smkRec);
-        is::setVector2(m_size, rec.width, rec.height);
-    }
+    void setTextureRect(IntRect rec);
 };
-
-class String : public std::string {};
 
 class Font : public smk::Font
 {
 public:
-    Font(const std::string& filename, float line_height) : smk::Font(filename, line_height)
-    {
-        m_size = line_height;
-        m_filename = filename;
-    }
+    Font(const std::string& filename, float line_height);
     const std::string& getFileName() const noexcept {return m_filename;}
-    float getCharacterSize() const {return m_size;}
+    float getSize() const {return m_size;}
 
 private:
     float m_size = 0.f;
@@ -386,43 +633,12 @@ public:
     {
         return m_wstring;
     }
+    float getCharacterSize() {return m_font->getSize();}
 
 private:
     Font *m_font = nullptr;
     std::string m_string;
     std::wstring m_wstring;
-};
-
-class View : public smk::View
-{
-public:
-    void setCenter(float x, float y)
-    {
-        m_center.x = x;
-        m_center.y = y;
-        SetCenter(x, y);
-    }
-    void setCenter(Vector2f center)
-    {
-        setCenter(center.x, center.y);
-    }
-    void setSize(float width, float height)
-    {
-        m_size.x = width;
-        m_size.y = height;
-        SetSize(m_size.x, m_size.y);
-    }
-    void setSize(Vector2f size)
-    {
-        setSize(size.x, size.y);
-    }
-
-    Vector2f getSize() const {return m_size;}
-    Vector2f getCenter() const {return m_center;}
-
-private:
-    sf::Vector2f m_size;
-    sf::Vector2f m_center;
 };
 
 class Time
@@ -472,49 +688,60 @@ public:
 //    std::chrono::steady_clock::time_point m_startTime;
 };
 
-class RenderWindow : public smk::Window
-{
-public:
-    RenderWindow(): smk::Window() {}
-    RenderWindow(int width, int height, const std::string& title):
-        smk::Window(width, height, title)
-    {
-        is::setVector2(m_size, width, height);
-    }
-
-    void setFramerateLimit(float fps) {LimitFrameRate(fps);}
-    void setSize(Vector2u size) {is::setVector2(m_size, size.x, size.y);}
-    void setTitle(const String& text) {;}
-    void setView(const View& view)
-    {
-        m_view = view;
-        SetView(m_view);
-    }
-    void close() {std::terminate();}
-
-    const View& getView() {return m_view;}
-    const View& getDefaultView() {return m_view;}
-    Vector2u getSize() const {return m_size;}
-
-private:
-    Vector2u m_size;
-    View m_view;
-};
-
-class Event {};
-
 class SoundBuffer : public smk::SoundBuffer
 {
 public:
     SoundBuffer(const std::string filename): smk::SoundBuffer(filename) {}
 };
 
-class Sound : public smk::Sound
+class SoundSource
 {
 public:
-    Sound(const SoundBuffer& buffer) : smk::Sound(buffer) {}
-    void play() {Play();}
-    void pause() {Stop();}
+    enum Status
+    {
+        Stopped,
+        Playing,
+        Paused
+    };
+    SoundSource() : m_status(Stopped) {}
+
+    Status getStatus()
+    {
+        return m_status;
+    }
+
+protected:
+    Status m_status;
+};
+
+class Sound : public smk::Sound, public SoundSource
+{
+public:
+    Sound(const SoundBuffer& buffer) :
+        smk::Sound(buffer),
+        SoundSource()
+        {}
+
+    void play()
+    {
+        Play();
+        m_status = Status::Playing;
+    }
+    void pause()
+    {
+        Stop();
+        m_status = Status::Paused;
+    }
+    void stop()
+    {
+        Stop();
+        m_status = Status::Stopped;
+    }
+    void setLoop(bool loop)
+    {
+        SetLoop(loop);
+    }
+    void setVolume(float volume);
 };
 
 class Music : public Sound
@@ -645,35 +872,13 @@ public:
         Middle = GLFW_MOUSE_BUTTON_MIDDLE, ///< The middle (wheel) mouse button
     };
 
-    static Vector2i getPosition(RenderWindow &window)
-    {
-        Vector2i position(-1, -1);
-        glm::vec2 p1 = window.input().cursor();
-        is::setVector2(position, p1[0], p1[1]);
-        return position;
-    }
+    static Vector2i getPosition(RenderWindow &window);
 };
 
 class Touch
 {
 public:
-    static Vector2i getPosition(unsigned int finger, RenderWindow &window)
-    {
-        Vector2i position(-1, -1);
-        int _finger(0);
-        for (const auto& it : window.input().touches())
-        {
-            const auto& touch = it.second;
-            for (int i = 1; i < touch.data_points.size(); ++i)
-            {
-                glm::vec2 p = touch.data_points[i - 1].position;
-                if (_finger == 0 && finger == 0) is::setVector2(position, p[0], p[1]);
-                if (_finger == 1 && finger == 1) is::setVector2(position, p[0], p[1]);
-            }
-            _finger++;
-        }
-        return position;
-    }
+    static Vector2i getPosition(unsigned int finger, RenderWindow &window);
 };
 
 // Init OpenAL.
@@ -684,7 +889,7 @@ static smk::Audio audio;
 namespace is
 {
 // Define the type of rendering according to the target platform
-#if defined(IS_ENGINE_HTML_5)
+#if (defined(IS_ENGINE_HTML_5) || defined(IS_ENGINE_RENDER))
 typedef sf::RenderWindow Render;
 #else
 typedef sf::RenderTexture Render;

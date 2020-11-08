@@ -165,12 +165,32 @@ void setFrame(sf::Sprite &sprite, float frame, int subFrame, int frameSize)
     setFrame(sprite, frame, subFrame, frameSize, frameSize, frameSize, frameSize);
 }
 
+/*
+void createRenderTexture(sf::RenderTexture &renderTexture, unsigned int width, unsigned int height)
+{
+    #if !defined(IS_ENGINE_HTML_5)
+    renderTexture.create(width, height);
+    #else
+    renderTexture = sf::RenderTexture(width, height);
+    #endif
+}*/
+
 void createRectangle(sf::RectangleShape &rec, sf::Vector2f recSize, sf::Color color, float x, float y, bool center)
 {
+    float SMKxOrigin(0.f), SMKyOrigin(0.f);
+#if !defined(IS_ENGINE_HTML_5)
     rec.setSize(recSize);
-    setSFMLObjFillColor(rec, color);
     if (center) is::centerSFMLObj(rec);
-    is::setSFMLObjX_Y(rec, x, y);
+#else
+    rec = sf::RectangleShape(recSize.x, recSize.y);
+    if (!center)
+    {
+        SMKxOrigin = recSize.x / 2.f;
+        SMKyOrigin = recSize.y / 2.f;
+    }
+#endif
+    setSFMLObjFillColor(rec, color);
+    is::setSFMLObjX_Y(rec, x + SMKxOrigin, y + SMKyOrigin);
 }
 
 #if !defined(IS_ENGINE_HTML_5)
@@ -190,15 +210,18 @@ void createWText(sf::Font
                  #if !defined(IS_ENGINE_HTML_5)
                  const
                  #endif
-                 &fnt, sf::Text &txt, std::wstring const &text, float x, float y, sf::Color color, int txtSize, bool underLined, bool boldText, bool italicText)
+                 &fnt, sf::Text &txt, std::wstring const &text, float x, float y, sf::Color color, bool centerText, int txtSize, bool underLined, bool boldText, bool italicText)
 {
+    #if defined(IS_ENGINE_HTML_5)
+    setTextFont(fnt, txt, txtSize);
+    #else
     txt.setFont(fnt);
-    txt.setString(text);
-    #if !defined(IS_ENGINE_HTML_5)
     if (txtSize > 0) txt.setCharacterSize(txtSize);
     else txt.setCharacterSize(is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
     textStyleConfig(txt, underLined, boldText, italicText);
     #endif
+    txt.setString(text);
+    if (centerText) is::centerSFMLObj(txt);
     is::setSFMLObjX_Y(txt, x, y);
     is::setSFMLObjFillColor(txt, color);
 }
@@ -209,13 +232,15 @@ void createText(sf::Font
                  #endif
                  &fnt, sf::Text &txt, std::string const &text, float x, float y, int txtSize, bool underLined, bool boldText, bool italicText)
 {
+    #if defined(IS_ENGINE_HTML_5)
+    setTextFont(fnt, txt, txtSize);
+    #else
     txt.setFont(fnt);
-    txt.setString(text);
-    #if !defined(IS_ENGINE_HTML_5)
     if (txtSize > 0) txt.setCharacterSize(txtSize);
     else txt.setCharacterSize(is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
     textStyleConfig(txt, underLined, boldText, italicText);
     #endif
+    txt.setString(text);
     is::setSFMLObjX_Y(txt, x, y);
     is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_TEXT_COLOR);
 }

@@ -6,6 +6,8 @@
 
 #if defined(IS_ENGINE_USE_SDM)
 #include "SDM.h"
+#else
+#include "../entity/MainObject.h"
 #endif // defined
 
 #include "../sound/GSM.h"
@@ -166,6 +168,12 @@ public:
     /// Set view x and y variable
     virtual void setViewVarXY(float x, float y);
 
+    /// Set view size
+    virtual void setViewSize(sf::Vector2f v);
+
+    /// Set view size
+    virtual void setViewSize(float x, float y);
+
     /// Set window size
     virtual void setWindowSize(sf::Vector2u v, bool updateViewSize = false);
 
@@ -199,7 +207,7 @@ public:
     /// Check if scene is running
     virtual bool getIsRunning() const;
 
-    /// Return isPlaying
+    /// Return m_isPlaying
     virtual bool getIsPlaying() const {return m_isPlaying;}
 
     /// Return scene start
@@ -248,7 +256,7 @@ public:
     virtual unsigned int getSceneHeight() const {return m_sceneHeight;}
 
     /// Return vibrate time duration
-    virtual short getVibrateTimeDuration() const {return m_vibrateTimeDuration;}
+    virtual short getVibrateTimeDuration() const {return m_timeVibrateDuration;}
 
     /// Return the delta time elapsed independent of the main rendering loop
     virtual float getDeltaTime();
@@ -271,6 +279,13 @@ public:
     /// Return view H
     virtual float getViewH() const {return m_viewH;}
 
+    /// Return Cursor Position
+    virtual sf::Vector2f getCursor(
+                                    #if defined(__ANDROID__)
+                                    unsigned int finger = 0
+                                    #endif // defined
+                                   ) const;
+
     /// Return the scene background color
     virtual sf::Color& getBgColor() {return m_windowBgColor;}
 
@@ -291,27 +306,7 @@ public:
                         #endif // defined
                         )
     {
-        sf::Vector2i pixelPos =
-        #if defined(__ANDROID__)
-                                sf::Touch::getPosition(finger, m_window);
-        #else
-                                sf::Mouse::getPosition(m_window);
-        #endif // defined
-
-        #if !defined(IS_ENGINE_HTML_5)
-        sf::Vector2f worldPos = getMapPixelToCoords(this, pixelPos);
-        #else
-        sf::Vector2i worldPos = pixelPos;
-        #endif
-        float dx = pointDistance(m_viewX, m_viewY, worldPos.x, m_viewY);
-        float dy = pointDistance(m_viewX, m_viewY, m_viewX, worldPos.y);
-        if (worldPos.x < m_viewX) dx *= -1;
-        if (worldPos.y < m_viewY) dy *= -1;
-
-        // A rectangle that will allow to test with the SFML object
-        sf::FloatRect const cursor(m_viewX + dx, m_viewY + dy, (m_viewX + dx) + 3, (m_viewY + dy) + 3);
-        if (obj.getGlobalBounds().intersects(cursor)) return true;
-        return false;
+        return is::mouseCollision(m_window, obj);
     }
 
     //////////////////////////////////////////////////////
@@ -329,29 +324,7 @@ public:
                         #endif // defined
                         )
     {
-        sf::Vector2i pixelPos =
-        #if defined(__ANDROID__)
-                                sf::Touch::getPosition(finger, m_window);
-        #else
-                                sf::Mouse::getPosition(m_window);
-        #endif // defined
-
-        #if !defined(IS_ENGINE_HTML_5)
-        sf::Vector2f worldPos = getMapPixelToCoords(this, pixelPos);
-        #else
-        sf::Vector2i worldPos = pixelPos;
-        #endif
-        float dx = pointDistance(m_viewX, m_viewY, worldPos.x, m_viewY);
-        float dy = pointDistance(m_viewX, m_viewY, m_viewX, worldPos.y);
-
-        if (worldPos.x < m_viewX) dx *= -1;
-        if (worldPos.y < m_viewY) dy *= -1;
-        is::setVector2(position, m_viewX + dx, m_viewY + dy);
-
-        // A rectangle that will allow to test with the SFML object
-        sf::IntRect cursor(position.x, position.y, position.x + 3, position.y + 3);
-        if (obj.getGlobalBounds().intersects(cursor)) return true;
-        return false;
+        return is::mouseCollision(m_window, obj, position);
     }
 
     #if defined(IS_ENGINE_USE_SDM)
@@ -425,11 +398,17 @@ public:
     /// Allows to pause sound in container by his name
     virtual void GSMpauseSound(std::string name);
 
+    /// Allows to stop sound in container by his name
+    virtual void GSMstopSound(std::string name);
+
     /// Allows to play music in container by his name
     virtual void GSMplayMusic(std::string name);
 
     /// Allows to pause music in container by his name
     virtual void GSMpauseMusic(std::string name);
+
+    /// Allows to stop music in container by his name
+    virtual void GSMstopMusic(std::string name);
 
     /// Show message box according to type
     template<class T1>
@@ -501,11 +480,12 @@ protected:
     };
 
     /// Update message box components
-    void updateMsgBox(float const &DELTA_TIME, sf::Color textDefaultColor = is::GameConfig::DEFAULT_MSG_BOX_TEXT_COLOR,
+    void updateMsgBox(int sliderDirection, bool rightSideValidation,
+                      sf::Color textDefaultColor = is::GameConfig::DEFAULT_MSG_BOX_TEXT_COLOR,
                       sf::Color selectedTextColor = is::GameConfig::DEFAULT_MSG_BOX_SELECTED_TEXT_COLOR);
 
     /// Update time wait
-    void updateTimeWait(float const &DELTA_TIME);
+    void updateTimeWait();
 
     /// Show message box
     void drawMsgBox();
@@ -520,7 +500,7 @@ protected:
     sf::Clock m_clock;
     sf::Color m_windowBgColor;
 
-    short const m_vibrateTimeDuration; ///< Represent the time of vibration (ms)
+    short const m_timeVibrateDuration; ///< Represent the time of vibration (ms)
 
     int m_optionIndex;
     int m_waitTime, m_msgWaitTime;
@@ -537,8 +517,7 @@ protected:
 
     sf::Sprite m_sprMsgBox, m_sprMsgBoxButton1, m_sprMsgBoxButton2, m_sprMsgBoxButton3;
     sf::Text m_txtMsgBox, m_txtMsgBoxYes, m_txtMsgBoxNo, m_txtMsgBoxOK;
-    sf::RectangleShape m_recMsgBox, m_recCursor;
-
+    sf::RectangleShape m_recMsgBox;
 #if defined(__ANDROID__)
 #if defined(IS_ENGINE_USE_ADMOB)
     AdmobManager *m_admobManager;

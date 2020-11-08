@@ -33,6 +33,7 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 - Object Event System
 - Button System
 - Background System
+- Game Slider
 - Sprite Animation
 - Basic collision engine
 - 2D physic engine (Box 2D)
@@ -47,15 +48,12 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 - [Android] Show Ad Banner
 - [Android] Show Reward Video
 
-## What's new in version 3.1 ?
-1. **Web support (HTML 5 - CSS 3):** you can now run your C / C ++ games in a web browser thanks to the **[SMK (Simple Multimedia Kit)](https://github.com/ArthurSonzogni/smk)** library which is based on **[Emscripten Technology](https://emscripten.org/)**.
-- ***[Please read this it is VERY IMPORTANT!](#-very-important)*** ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png)
-2. **GRM (Graphics Resources Manager) system:** allows you to use **Textures and Fonts** without using (instantiating) an **SFML object** in the code.
-3. **CFF (CMake Files Fusion) system:** Now all the **CMakeLists.txt** files that allow you to compile your games on **Android, PC and Web** are all linked to the same **include file (app_src.cmake / isengine.cmake)**.
-- Explanation:
-When you fill in a **source file (.cpp)** in the **app_src.cmake or isengine.cmake include file**, it is automatically detected in **all CMakeLists.txt** files that allow you to compile on **different platform (Web, Windows, Linux & Android)**.
-- Note that:
-You can decide how the file will be included (eg: avoid C++ files which are intended for PC only from being supported when compiling on Android / Web)!
+## What's new in version 3.1.1 ?
+1. **IS_ENGINE_RENDER**: allows to optimize your games so that they run on old computers. But you can no longer use the SWOOSH library
+2. **Game Slider**: allows to do sliding actions (like on smartphones) to manipulate your menus.
+3. **Transition Effect**: allows to make Fade Out and Fade In type transition effects.
+4. **Improved web support**: many bugs have been fixed
+5. Support of Render Texture in web development
 
 ## Extras
 - You can access the web demo **[here](https://is-daouda.github.io/)**.
@@ -341,7 +339,7 @@ Contains the entry point of the program, inside there are two instructions :
 Contains the source code of the game.
 Description of these sub-directories:
 - **[activity](./app/src/main/cpp/app_src/activity/)** : Contains the **[Activity](./app/src/main/cpp/app_src/activity/GameActivity.h)** class which allows the interaction of the different scenes of the game.
-- **[config](./app/src/main/cpp/app_src/config/)** : Contains the **[GameConfig.h](./app/src/main/cpp/app_src/config/GameConfig.h)** file which allows to define the general parameters of the game.
+- **[config](./app/src/main/cpp/app_src/config/)** : Contains the **[GameConfig.h](./app/src/main/cpp/app_src/config/GameConfig.h)** file which allows to define the general parameters of the game. It also contains the file **[ExtraConfig.h](./app/src/main/cpp/app_src/config/ExtraConfig.h)** which allows to activate / deactivate the **IS_ENGINE_RENDER** Macro wich allows the optimization of the game, it also allows to launch scenes automatically (if it is activated you can no longer use the SWOOSH library).
 - **[gamesystem_ext](./app/src/main/cpp/app_src/gamesystem_ext/)** : Contains **[GameSystemExtended](./app/src/main/cpp/app_src/gamesystem_ext/GameSystemExtended.h)** a class derived from **[GameSystem](./app/src/main/cpp/isEngine/system/function/GameSystem.h)** which allows to manipulate game data (save, load, ...).
 - **[language](./app/src/main/cpp/app_src/language/)** : Contains the **[GameLanguage.h](./app/src/main/cpp/app_src/language/GameLanguage.h)** file which allows to manage everything related to game languages.
 - **[levels](./app/src/main/cpp/app_src/levels/)** : Contains game levels and the **[Level.h](./app/src/main/cpp/app_src/levels/Level.h)** file which allows to integrate them into the game.

@@ -12,7 +12,7 @@
 //////////////////////////////////////////////////////
 #define IS_ENGINE_VERSION_MAJOR 3
 #define IS_ENGINE_VERSION_MINOR 1
-#define IS_ENGINE_VERSION_PATCH 0
+#define IS_ENGINE_VERSION_PATCH 1
 
 namespace is
 {
@@ -86,6 +86,9 @@ public:
     /// \return true is file is found false if not
     //////////////////////////////////////////////////////
     virtual bool fileExist(std::string const &fileName) const;
+
+    /// Allows to remove file
+    static void removeFile(std::string const &fileName);
 
     /// Allows to play a sound if the option is activated
     virtual void playSound(sf::Sound &obj)

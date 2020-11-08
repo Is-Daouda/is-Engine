@@ -36,10 +36,10 @@ public:
     void step(float const &DELTA_TIME, float const &VALUE_CONVERSION, float const &VALUE_TIME);
 
     /// Add the minute, second and millisecond to the current time
-    void addTimeValue(int m, int s = 0, int ms = 0);
+    void addTimeValue(int m, int s, int ms);
 
     /// Set a new minute, second and millisecond to the current time
-    void setTimeValue(int m, int s = 0, int ms = 0);
+    void setTimeValue(int m, int s, int ms);
 
     /// Set the milliseconds which are distributed in minutes and seconds
     void setMSecond(int ms);

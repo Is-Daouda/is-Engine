@@ -1,7 +1,9 @@
 #ifndef GAMEENGINE_H_INCLUDED
 #define GAMEENGINE_H_INCLUDED
 
-#if !defined(IS_ENGINE_HTML_5)
+#define IS_ENGINE_RENDER
+
+#if !defined(IS_ENGINE_HTML_5) && !defined(IS_ENGINE_RENDER)
 #include "../../app_src/activity/GameActivity.h"
 #else
 #include "ActivityController.h"
