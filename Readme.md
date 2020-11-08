@@ -49,16 +49,16 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 - [Android] Show Reward Video
 
 ## What's new in version 3.1.1 ?
-1. **IS_ENGINE_RENDER**: allows to optimize your games so that they run on old computers. But you can no longer use the SWOOSH library
+1. **IS_ENGINE_RENDER**: allows to optimize your games so that they can run on old computers. But you can no longer use the SWOOSH library (The way its rendering is handled is different from that of the engine).
 2. **Game Slider**: allows to do sliding actions (like on smartphones) to manipulate your menus.
 3. **Transition Effect**: allows to make Fade Out and Fade In type transition effects.
-4. **Improved web support**: many bugs have been fixed
-5. Support of Render Texture in web development
+4. **Improved web support**: many bugs have been fixed.
+5. Support of Render Texture in web development.
 
 ## Extras
 - Here is a **[web game](https://is-daouda.github.io/)** (A special version) created with the game engine to celebrate the two (2) years anniversary of the game I Can Transform released on **[Android](https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=En)** with C ++ / SFML.
 
-[![Image](https://i48.servimg.com/u/f48/20/16/75/27/i_can_10.png)](https://is-daouda.github.io/)
+[![Image](https://i48.servimg.com/u/f48/20/16/75/27/ict_sc10.png)](https://is-daouda.github.io/)
 
 - The engine comes with a **[Demo (2D Platform Game)](https://github.com/Is-Daouda/is-Engine-Demo)** that uses only the functions of the engine, in order to show you its power and how to use it. Now imagine what you can do when you use Box 2D and the other tools!
 
@@ -198,7 +198,7 @@ If all goes well you will have a **Hello World Screen** on your **Web Browser**.
 
 ## ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) Very important
 - **SMK** is a **library** which is a **little different** from **SFML**, but the way the **Graphics, Audio and System parts** are used is a bit similar to **SFML**.
-- It does not currently support some SFML features such as: Events, RenderTexture, etc. The way objects initialize is a little different too. Even the names spaces and functions are different.
+- It does not currently support some SFML features such as: Events, etc. The way objects initialize is a little different too. Even the names spaces and functions are different.
 - **is::Engine** allows to **interconnect the SMK and SFML library**, so that they can use the same **namespace (sf), Classes and functions names** in order to facilitate development (avoid preprocessors, compatibility with several platforms).
 - When using SMK with with is::Engine, the Music class works the same as sf::Sound.
 - These libraries: **SWOOSH, TMXLite, TMXLoader, TinyFileDialog** are not supported in the web version of is::Engine.
@@ -343,7 +343,7 @@ Contains the entry point of the program, inside there are two instructions :
 Contains the source code of the game.
 Description of these sub-directories:
 - **[activity](./app/src/main/cpp/app_src/activity/)** : Contains the **[Activity](./app/src/main/cpp/app_src/activity/GameActivity.h)** class which allows the interaction of the different scenes of the game.
-- **[config](./app/src/main/cpp/app_src/config/)** : Contains the **[GameConfig.h](./app/src/main/cpp/app_src/config/GameConfig.h)** file which allows to define the general parameters of the game. It also contains the file **[ExtraConfig.h](./app/src/main/cpp/app_src/config/ExtraConfig.h)** which allows to activate / deactivate the **IS_ENGINE_RENDER** Macro wich allows the optimization of the game, it also allows to launch scenes automatically (if it is activated you can no longer use the SWOOSH library).
+- **[config](./app/src/main/cpp/app_src/config/)** : Contains the **[GameConfig.h](./app/src/main/cpp/app_src/config/GameConfig.h)** file which allows to define the general parameters of the game. It also contains the file **[ExtraConfig.h](./app/src/main/cpp/app_src/config/ExtraConfig.h)** which allows to activate / deactivate the **IS_ENGINE_RENDER** Macro wich allows the optimization of the game, it also allows to launch scenes automatically.
 - **[gamesystem_ext](./app/src/main/cpp/app_src/gamesystem_ext/)** : Contains **[GameSystemExtended](./app/src/main/cpp/app_src/gamesystem_ext/GameSystemExtended.h)** a class derived from **[GameSystem](./app/src/main/cpp/isEngine/system/function/GameSystem.h)** which allows to manipulate game data (save, load, ...).
 - **[language](./app/src/main/cpp/app_src/language/)** : Contains the **[GameLanguage.h](./app/src/main/cpp/app_src/language/GameLanguage.h)** file which allows to manage everything related to game languages.
 - **[levels](./app/src/main/cpp/app_src/levels/)** : Contains game levels and the **[Level.h](./app/src/main/cpp/app_src/levels/Level.h)** file which allows to integrate them into the game.
