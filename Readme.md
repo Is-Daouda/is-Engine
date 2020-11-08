@@ -53,7 +53,7 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 2. **Game Slider**: allows to do sliding actions (like on smartphones) to manipulate your menus.
 3. **Transition Effect**: allows to make Fade Out and Fade In type transition effects.
 4. **Improved web support**: many bugs have been fixed.
-5. Support of Render Texture in web development.
+5. **Support of Render Texture in web development.**
 
 ## Extras
 - Here is a **[web game](https://is-daouda.github.io/)** (A special version) created with the game engine to celebrate the two (2) years anniversary of the game **I Can Transform** released on **[Android](https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=En)** with C ++ / SFML.
