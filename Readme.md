@@ -49,7 +49,7 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 - [Android] Show Reward Video
 
 ## What's new in version 3.1.1 ?
-1. **IS_ENGINE_RENDER**: allows to optimize your games so that they can run on old computers. But you can no longer use the SWOOSH library (The way its rendering is handled is different from that of the engine).
+1. **IS_ENGINE_RENDER**: allows to optimize your games so that they can run on old computers. When it is enabled you can no longer use SWOOSH library (The way its rendering is handled is different from that of the engine). **It is enabled by default from this version of the engine.**
 2. **Game Slider**: allows to do sliding actions (like on smartphones) to manipulate your menus.
 3. **Transition Effect**: allows to make Fade Out and Fade In type transition effects.
 4. **Improved web support**: many bugs have been fixed.
