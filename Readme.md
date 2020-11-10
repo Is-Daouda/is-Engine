@@ -199,7 +199,7 @@ If all goes well you will have a **Hello World Screen** on your **Web Browser**.
 
 ## ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) Very important
 - **is::Engine** works on the Web thanks to **[SMK](https://github.com/ArthurSonzogni/smk)** a C++ library which uses **[Emscripten](https://emscripten.org)**.
-- **SMK** is a **library** which is a **little different** from **SFML**, but the way the **Graphics, Audio and System parts** are used is a bit similar to **SFML**.
+- **SMK** is a **library** which is a **little different** from **SFML**, But the **Graphic, Audio, System** part looks a bit like that of **SFML**.
 - It does not currently support some SFML features such as: Events, etc. The way objects initialize is a little different too. Even the names spaces and functions are different.
 - **is::Engine** allows to **interconnect the SMK and SFML library**, so that they can use the same **namespace (sf), Classes and functions names** in order to facilitate development (avoid preprocessors, compatibility with several platforms).
 - When using SMK with with is::Engine, the Music class works the same as sf::Sound.
