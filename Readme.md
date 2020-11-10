@@ -198,7 +198,7 @@ If all goes well you will have a **Hello World Screen** on your **Web Browser**.
 - In order for CMake to detect your source files (.cpp) you must include them in the **[app_src.cmake](./app/src/main/cmake/app_src.cmake) or [isengine.cmake](./app/src/main/cmake/isengine.cmake)** file which is located in the **[is-Engine/app/src/main/cmake](./app/src/main/cmake/)** location.
 
 ## ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) Very important
-- **is::Engine** works on the Web thanks to **[SMK](https://arthursonzogni.com/SMK)** a C++ library which uses **[Emscripten](https://emscripten.org)**.
+- **is::Engine** works on the Web thanks to **[SMK](https://github.com/ArthurSonzogni/smk)** a C++ library which uses **[Emscripten](https://emscripten.org)**.
 - **SMK** is a **library** which is a **little different** from **SFML**, but the way the **Graphics, Audio and System parts** are used is a bit similar to **SFML**.
 - It does not currently support some SFML features such as: Events, etc. The way objects initialize is a little different too. Even the names spaces and functions are different.
 - **is::Engine** allows to **interconnect the SMK and SFML library**, so that they can use the same **namespace (sf), Classes and functions names** in order to facilitate development (avoid preprocessors, compatibility with several platforms).
