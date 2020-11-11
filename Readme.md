@@ -57,7 +57,7 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 6. **[Web Game (I Can Transform : Two Years Anniversary)](https://is-daouda.github.io/).**
 
 ## Extras
-- Here is a **[Web Game](https://is-daouda.github.io/)** (A special version) created with the game engine to celebrate the two (2) years anniversary of the game **I Can Transform** released on **[Android](https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=En)** with C ++ / SFML. **It's a Web Game so it's playable on PC and mobile.**
+- Here is a **[Web Game](https://is-daouda.github.io/)** (A special version) created with the game engine to celebrate the two (2) years anniversary of the game **I Can Transform** released on **[Android](https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=En)** with C++ / SFML. **It's a Web Game so it's playable on PC and mobile.**
 
 [![Image](https://i48.servimg.com/u/f48/20/16/75/27/ict_sc10.png)](https://is-daouda.github.io/)
 
