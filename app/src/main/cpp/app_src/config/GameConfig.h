@@ -2,24 +2,7 @@
 #define GAMECONFIG_H_INCLUDED
 
 #include <string>
-
-// uncomment to enable showLog function
-#define IS_ENGINE_USE_SHOWLOG ///< Allows to show text in console
-
-// uncomment to enable SDM function
-#define IS_ENGINE_USE_SDM ///< Allows to use Step and Draw Manager
-
-// uncomment to disable this function
-#define IS_ENGINE_OPTIMIZE_PERF ///< Allows to activate the optimization in certain parts of the engine
-
-#if defined(__ANDROID__)
-// uncomment this line to use Admob
-// #define IS_ENGINE_USE_ADMOB ///< Allows to use Admob Manager
-
-// if you enable Admob you need to uncomment line in
-// CMakeLists and Gradle files to link the Firebase library on your project
-#endif // defined
-////////////////////////////////////////////////////////////
+#include "ExtraConfig.h"
 
 namespace is
 {

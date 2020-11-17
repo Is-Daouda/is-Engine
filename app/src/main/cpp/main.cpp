@@ -21,14 +21,13 @@ int main()
 	windowsHelper.setIcon(game.getRenderWindow().getSystemHandle());
 #endif
 #endif
-    game.play();
 
-    // uncomment "game.basicSFMLmain()" to display a basic SFML window
-    // if this line is uncommented you must comment this one "game.play()"
-    // to avoid using the main engine rendering loop
-    /*
+#if defined(IS_ENGINE_USE_MAIN_LOOP)
+    game.play();
+#else
     game.basicSFMLmain();
-    */
+#endif // defined
+
     #if defined (__ANDROID__)
     std::terminate(); // close application
     #else

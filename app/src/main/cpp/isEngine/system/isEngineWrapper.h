@@ -93,11 +93,15 @@ void display(T &render)
 
 namespace sf
 {
+/*
 // Allows to display an error message in the console when there is not a similar function of SFML in SMK
-inline void functionNotSupported(const std::string &className, const std::string &functionName)
+inline void functionNotSupported(const std::string &className, const std::string &functionName, const std::string &suitableFunction = "")
 {
-    std::cout << "\n" + className + "::" + functionName + "() is not supported on the SMK library\n";
+    std::cout << "\n" + ((className != "") ? className + "::" : "") + functionName + "() is not supported on the SMK library\n";
+    if (suitableFunction != "") std::cout << "Use this function instead is::" + suitableFunction + "()\n";
+    std::terminate;
 }
+*/
 
 template <typename T>
 class Vector2
@@ -216,7 +220,12 @@ public:
     {
         return m_size;
     }
-
+/*
+    void loadFromImage()  {functionNotSupported("Texture", "loadFromImage", "loadSFMLTexture");}
+    void loadFromFile()   {functionNotSupported("Texture", "loadFromFile", "loadSFMLTexture");}
+    void loadFromMemory() {functionNotSupported("Texture", "loadFromMemory", "loadSFMLTexture");}
+    void loadFromStream() {functionNotSupported("Texture", "loadFromStream", "loadSFMLTexture");}
+*/
 private:
     Vector2u m_size;
 };
@@ -281,7 +290,9 @@ public:
 
     void setFramerateLimit(float fps) {LimitFrameRate(fps);}
     void setSize(const Vector2u& size) {is::setVector2(m_size, size.x, size.y);}
+/*
     void setTitle(const String& text) {functionNotSupported("RenderWindow", "setTitle");}
+*/
     void setView(const View& view)
     {
         m_view = view;
@@ -311,8 +322,13 @@ public:
         is::display(*this);
     }
     void close() {std::terminate();}
-
-    bool pollEvent(Event &event) {return false;}
+/*
+    bool pollEvent(Event &event)
+    {
+        functionNotSupported("RenderWindow", "pollEvent");
+        return false;
+    }
+*/
 };
 
 class RenderTexture;
@@ -356,7 +372,7 @@ public:
     {
         is::draw(this, obj);
     }
-
+/*
     void display() {functionNotSupported("RenderTexture", "display");}
 
     const Texture& getTexture() const
@@ -364,7 +380,7 @@ public:
         functionNotSupported("RenderTexture", "getTexture");
         return *m_texture;
     }
-
+*/
 private:
     Texture *m_texture = nullptr;
 };
@@ -569,10 +585,15 @@ public:
 class Font : public smk::Font
 {
 public:
+    Font() {}
     Font(const std::string& filename, float line_height);
     const std::string& getFileName() const noexcept {return m_filename;}
     float getSize() const {return m_size;}
-
+/*
+    void loadFromFile()   {functionNotSupported("Font", "loadFromFile", "loadSFMLFont");}
+    void loadFromMemory() {functionNotSupported("Font", "loadFromMemory", "loadSFMLFont");}
+    void loadFromStream() {functionNotSupported("Font", "loadFromStream", "loadSFMLFont");}
+*/
 private:
     float m_size = 0.f;
     std::string m_filename = "";
@@ -644,7 +665,7 @@ private:
 class Time
 {
 public:
-    Time() : m_microseconds(0.f) {};
+    Time() : m_microseconds(1.f) {};
     Time(float second) : m_microseconds(second) {};
     float asMicroseconds() {return m_microseconds;}
     float asMilliseconds() {return m_microseconds;}
@@ -691,7 +712,20 @@ public:
 class SoundBuffer : public smk::SoundBuffer
 {
 public:
-    SoundBuffer(const std::string filename): smk::SoundBuffer(filename) {}
+    SoundBuffer() {}
+    SoundBuffer(const std::string filename):
+        smk::SoundBuffer(filename),
+        m_filename(filename)
+    {}
+    const std::string& getFileName() const noexcept {return m_filename;}
+/*
+    void loadFromFile()    {functionNotSupported("SoundBuffer", "loadFromFile", "loadSFMLSoundBuffer");}
+    void loadFromMemory()  {functionNotSupported("SoundBuffer", "loadFromMemory", "loadSFMLSoundBuffer");}
+    void loadFromStream()  {functionNotSupported("SoundBuffer", "loadFromStream", "loadSFMLSoundBuffer");}
+    void loadFromSamples() {functionNotSupported("SoundBuffer", "loadFromSamples", "loadSFMLSoundBuffer");}
+*/
+private:
+    std::string m_filename = "";
 };
 
 class SoundSource
@@ -711,12 +745,13 @@ public:
     }
 
 protected:
-    Status m_status;
+    Status m_status = Stopped;
 };
 
 class Sound : public smk::Sound, public SoundSource
 {
 public:
+    Sound() {}
     Sound(const SoundBuffer& buffer) :
         smk::Sound(buffer),
         SoundSource()
@@ -747,7 +782,13 @@ public:
 class Music : public Sound
 {
 public:
+    explicit Music() {}
     Music(const SoundBuffer& buffer) : Sound(buffer) {}
+/*
+    void openFromFile()   {functionNotSupported("Music", "openFromFile", "loadSFMLMusic");}
+    void openFromMemory() {functionNotSupported("Music", "openFromMemory", "loadSFMLMusic");}
+    void openFromStream() {functionNotSupported("Music", "openFromStream", "loadSFMLMusic");}
+*/
 };
 
 class Keyboard

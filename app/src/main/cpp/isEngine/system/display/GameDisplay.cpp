@@ -159,7 +159,9 @@ void GameDisplay::setWindowSize(sf::Vector2u v, bool updateViewSize)
 
 void GameDisplay::setWindowTitle(const sf::String &title)
 {
+    #if !defined(IS_ENGINE_HTML_5)
     m_window.setTitle(title);
+    #endif
 }
 
 void GameDisplay::setWindowBgColor(sf::Color color)

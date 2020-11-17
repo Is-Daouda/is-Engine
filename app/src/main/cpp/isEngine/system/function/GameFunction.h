@@ -14,6 +14,9 @@
 #if defined(IS_ENGINE_HTML_5)
 /// auto generate font container
 static std::vector<std::shared_ptr<sf::Font>> AUTO_GENERATE_FONT;
+
+/// auto generate music container
+static std::vector<std::shared_ptr<sf::SoundBuffer>> AUTO_GENERATE_SOUND_BUFFER;
 #endif // defined
 
 /// Allows to browse object container (std::vector, ...)
@@ -40,7 +43,7 @@ static float const SECOND(59.f);           ///< represent third value in second
 static float const VALUE_TIME(1.538f);     ///< game execution timing variables
 ////////////////////////////////////////////////////////////
 
-static float const PI(3.14f);
+static float const PI(3.14159f);
 
 ////////////////////////////////////////////////////////////
 /// \brief SFML Sound or Music state
@@ -488,28 +491,74 @@ void setSFMLObjProperties(T &obj, float x, float y, float angle = 0.f, int alpha
     is::setSFMLObjX_Y(obj, x, y);
 }
 
-#if !defined(IS_ENGINE_HTML_5)
-/// Set SFML Object Resource
-template <class T>
-bool loadSFMLObjResource(T &obj, std::string filePath, bool stopExecution = false)
+/// Load SFML Texture Resource
+inline void loadSFMLTexture(sf::Texture &obj, std::string filePath)
 {
-    if (obj.loadFromFile(filePath)) return true;
-    showLog("ERROR: Can't load file : " + filePath, stopExecution);
-    return false;
+    #if !defined(IS_ENGINE_HTML_5)
+    obj.loadFromFile(filePath);
+    #else
+    obj = sf::Texture(filePath);
+    #endif
 }
 
-/// Set SFML Sound Buffer and Sound
-inline bool loadSFMLObjResource(sf::SoundBuffer &sb, sf::Sound &snd, std::string filePath, bool stopExecution = false)
+/// Load SFML Font Resource
+/// When you develop for the Web you must define the size that the texts will have with this font
+inline void loadSFMLFont(sf::Font &obj, std::string filePath, float fontSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE)
 {
-    if (sb.loadFromFile(filePath))
-    {
-        snd.setBuffer(sb);
-        return true;
-    }
-    showLog("ERROR: Can't load file : " + filePath, stopExecution);
-    return false;
+    #if !defined(IS_ENGINE_HTML_5)
+    obj.loadFromFile(filePath);
+    #else
+    obj = sf::Font(filePath, fontSize);
+    #endif
 }
-#endif
+
+/// Load SFML Sound Buffer Resource
+inline void loadSFMLSoundBuffer(sf::SoundBuffer &obj, std::string filePath)
+{
+    #if !defined(IS_ENGINE_HTML_5)
+    obj.loadFromFile(filePath);
+    #else
+    obj = sf::SoundBuffer(filePath);
+    #endif
+}
+
+/// Load SFML Sound Buffer Resource and define it with the Sound
+inline void loadSFMLSoundBufferWithSnd(sf::SoundBuffer &sb, sf::Sound &snd, std::string filePath)
+{
+    #if !defined(IS_ENGINE_HTML_5)
+    if (sb.loadFromFile(filePath)) snd.setBuffer(sb);
+    else showLog("ERROR: Can't load Sound Buffer : " + filePath + " with sound");
+    #else
+    sb = sf::SoundBuffer(filePath);
+    snd = sf::Sound(sb);
+    #endif
+}
+
+/// Load SFML Music Resource
+inline void loadSFMLMusic(sf::Music &obj, std::string filePath)
+{
+    #if !defined(IS_ENGINE_HTML_5)
+    obj.openFromFile(filePath);
+    #else
+    bool musicExists(false);
+    unsigned int musicIndex(0);
+    WITH (AUTO_GENERATE_SOUND_BUFFER.size())
+    {
+        if (AUTO_GENERATE_SOUND_BUFFER[_I]->getFileName() == filePath)
+        {
+            musicIndex = _I;
+            musicExists = true;
+            break;
+        }
+    }
+    if (!musicExists)
+    {
+        AUTO_GENERATE_SOUND_BUFFER.push_back(std::make_shared<sf::SoundBuffer>(filePath));
+        musicIndex = (AUTO_GENERATE_SOUND_BUFFER.size() - 1);
+    }
+    obj = sf::Music(*AUTO_GENERATE_SOUND_BUFFER[musicIndex]);
+    #endif
+}
 
 /// Check SFML Sound state
 template <class T>
