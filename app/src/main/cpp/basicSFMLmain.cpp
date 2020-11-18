@@ -128,7 +128,7 @@ bool GameEngine::basicSFMLmain()
         // With the SMK library, musics can only be played if they are in the render loop
         if (is::checkSFMLSndState(music, is::SFMLSndStatus::Stopped)) music.play();
 
-        // This function allows the use Keyboard and Mouse inputs
+        // This function "m_gameSysExt.keyIsPressed()" allows to use Keyboard and Mouse inputs
         // Here it is used to stop the music
         if (m_gameSysExt.keyIsPressed(is::GameConfig::KEY_VALIDATION_KEYBOARD) ||
             m_gameSysExt.keyIsPressed(is::GameConfig::KEY_VALIDATION_MOUSE))
