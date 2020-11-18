@@ -17,7 +17,7 @@ bool GameEngine::basicSFMLmain()
     sf::Image iconTex;
     if (!iconTex.loadFromFile(is::GameConfig::GUI_DIR + "icon.png")) return false;
     m_window.setIcon(32, 32, iconTex.getPixelsPtr());
-    #else // using the SFML library (Web development)
+    #else // using the SMK library (Web development)
     m_window = sf::RenderWindow(is::GameConfig::WINDOW_WIDTH, is::GameConfig::WINDOW_HEIGHT, is::GameConfig::GAME_NAME);
     #endif // defined
 #endif // defined
