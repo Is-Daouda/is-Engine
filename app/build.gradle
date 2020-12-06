@@ -1,0 +1,113 @@
+buildscript {
+
+    repositories {
+        google()
+        mavenLocal()
+        maven {url 'https://maven.google.com'}
+        jcenter()
+    }
+
+    // Uncomment if you want to use Admob
+    /*
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.3'
+        classpath 'com.google.gms:google-services:4.0.1'
+    }
+    */
+}
+
+apply plugin: 'com.android.application'
+
+def ndkDir = System.getenv("ANDROID_NDK")
+def propertiesFile = project.rootProject.file('local.properties')
+if (propertiesFile.exists()) {
+    Properties properties = new Properties()
+    properties.load(propertiesFile.newDataInputStream())
+    ndkDir = properties.getProperty('ndk.dir')
+}
+
+def abiARM = "armeabi-v7a"
+def abiX86 = "x86"
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion '27.0.3'
+    defaultConfig {
+        applicationId "com.author.isengine"
+        //Replace this with your real package name (e.g. com.StudioName.GameName)
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++1z -std=c++14 -frtti -fexceptions"
+                arguments "-DANDROID_TOOLCHAIN=clang",
+                        "-DANDROID_STL=c++_shared",
+                        "-DSFML_INCLUDE_DIR=${ndkDir}/sources/sfml/include",
+                        "-DSFML_LIBRARY_DIR=${ndkDir}/sources/sfml/lib/",
+                        "-DSFML_EXT_LIBRARY_DIR=${ndkDir}/sources/sfml/extlibs/lib/" //,
+                // uncomment if you want to use Admob
+                /*
+                        "-DFIREBASE_INCLUDE_DIR=${ndkDir}/sources/firebase_cpp_sdk/include",
+                        "-DFIREBASE_LIBRARY_DIR=${ndkDir}/sources/firebase_cpp_sdk/libs/android/"
+                */
+                abiFilters "${abiARM}", "${abiX86}"
+                // multiple ABIs are supported
+                // but you have to compile SFML for every ABI you want to support
+                // abiFilters 'armeabi-v7a', 'armeabi', 'x86'
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            jniDebuggable true
+            debuggable true
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            
+            // uncomment if you want to use Admob
+            /*
+            proguardFile file("${ndkDir}/sources/firebase_cpp_sdk/libs/android/app.pro")
+            proguardFile file("${ndkDir}/sources/firebase_cpp_sdk/libs/android/admob.pro")
+            */
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+    sourceSets {
+        main {
+            // let gradle pack the shared library into apk
+            jniLibs.srcDirs = [
+                                "${ndkDir}/sources/sfml/lib",
+                                "${ndkDir}/sources/sfml/extlibs/lib/"
+                                // uncomment if you want to use Admob
+                                // ,"${ndkDir}/sources/firebase_cpp_sdk/libs/android/"
+                               ]
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:multidex:1.0.3'
+
+    // uncomment if you want to use Admob
+    /*
+    implementation 'com.google.firebase:firebase-core:16.0.3'
+    implementation 'com.google.firebase:firebase-ads:15.0.1'
+    implementation 'com.google.firebase:firebase-common:16.0.2'
+    */
+    testImplementation 'junit:junit:4.12'
+}
+
+// uncomment if you want to use Admob
+// apply plugin: 'com.google.gms.google-services'
