@@ -259,21 +259,14 @@ sudo make
 
 **1. Installation**
 #### Windows
-1. Download Qt Creator MinGW [here](http://qtproject.mirror.liquidtelecom.com/archive/qt/5.12/5.12.9/qt-opensource-windows-x86-5.12.9.exe) and install it.
-2. Download this [version of SFML](https://github.com/Is-Daouda/SFML_Qt_MinGW) already compiled for Qt Creator and extract it in **C:/ (C:/SFML_Qt_MinGW)**.
+1. Download Qt Creator 5.12.9 MinGW [here](http://qtproject.mirror.liquidtelecom.com/archive/qt/5.12/5.12.9/qt-opensource-windows-x86-5.12.9.exe) and install it.
+2. Download this [version of SFML](https://github.com/Is-Daouda/SFML_Qt_MinGW) already compiled for Qt Creator 5.12.9 and extract it in **C:/ (C:/SFML_Qt_MinGW)**.
 
 **2. Opening the project with the IDE:**
 
 #### Windows
 1. Run the file **open_qt_creator.bat** in the main directory *(Make sure you have included the path to the Qt Creator executable in your PATH environment variable)*.
 2. Or open the file **is-Engine.pro** in the location **[is-Engine/app/src/main/qt](./app/src/main/qt/)**
-
-#### Linux
-1. Execute this command in the main directory:
-```bash
-codeblocks "./app/src/main/qt/is-Engine-linux.pro"
-```
-2. Or open the file **is-Engine.pro** in the location **[is-Engine/app/src/main/qt](./app/src/main/qt/)**.
 
 **3. Executable location**
 - The compiler files can be found in **is-Engine/app/src/main/bin-Qt**.
@@ -324,7 +317,7 @@ code -n "./app/src/main"
 **1. Installation**
 #### Windows
 1. Download Code::Blocks 20.03 MinGW [here](https://sourceforge.net/projects/codeblocks/files/Binaries/20.03/Windows/codeblocks-20.03mingw-setup.exe/download) and install it.
-2. Download this [version of SFML](https://github.com/Is-Daouda/SFML_CB_MinGW) already compiled for Code::Blocks and extract it in **C:/ (C:/SFML_CB_MinGW)**.
+2. Download this [version of SFML](https://github.com/Is-Daouda/SFML_CB_MinGW) already compiled for Code::Blocks 20.03 and extract it in **C:/ (C:/SFML_CB_MinGW)**.
 
 #### Linux
 1. Download Code::Blocks 20.03 and install it.
