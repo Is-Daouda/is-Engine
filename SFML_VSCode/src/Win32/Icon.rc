@@ -1,6 +1,0 @@
-#ifdef _WIN32
-#include "Icon.h"
-
-WIN32_ICON_MAIN ICON "env/windows/app.ico"
-
-#endif
