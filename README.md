@@ -34,25 +34,25 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 - GSM (Game Sound Manager)
 - GRM (Graphics Resources Manager)
 - CFF (CMake Files Fusion)
-- [TMX Lite](https://github.com/Is-Daouda/is-Engine-Example-Pack/is-Engine-TMXLite)
+- [TMX Lite](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-TMXLite)
 - [TMX Loader (Old version)](https://github.com/Is-Daouda/is-Engine-TMXLoader)
 - Entity system
 - Object Event System
-- [Button System](https://github.com/Is-Daouda/is-Engine-Example-Pack/is-Engine-TinyFileDialog)
+- [Button System](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-TinyFileDialog)
 - Background System
-- [Game Slider](https://github.com/Is-Daouda/is-Engine-Example-Pack/is-Engine-GameSlider)
-- [Sprite Animation](https://github.com/Is-Daouda/is-Engine-Example-Pack/is-Engine-GameSlider)
+- [Game Slider](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-GameSlider)
+- [Sprite Animation](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-GameSlider)
 - Basic collision engine
-- [2D physic engine (Box 2D)](https://github.com/Is-Daouda/is-Engine-Example-Pack/is-Engine-Box2D)
+- [2D physic engine (Box 2D)](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Box2D)
 - Message Box System (Modifiable appearance via Sprites and Font)
 - Dialog Box System (as for RPG games)
-- [[Windows, Linux] Tiny File Dialogs to manage the dialog boxes of type: Message, File Save, Load File, Folder Selection](https://github.com/Is-Daouda/is-Engine-Example-Pack/is-Engine-TinyFileDialog)
+- [[Windows, Linux] Tiny File Dialogs to manage the dialog boxes of type: Message, File Save, Load File, Folder Selection](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-TinyFileDialog)
 - [Game Configuration System (sound, music, language, keyboard key, file path, ...)](./app/src/main/cpp/app_src/config/GameConfig.h)
 - Game Save System
-- [[Android] Virtual Game Pad with 6 keys (multi directional cross and A - B button)](https://github.com/Is-Daouda/is-Engine-Example-Pack/is-Engine-VirtualGamePad)
-- [[Android] Virtual Game Pad Configuration (Adjust Position, transparency, ...)](https://github.com/Is-Daouda/is-Engine-Example-Pack/is-Engine-VirtualGamePad)
-- [[Android] Show Ad Banner](https://github.com/Is-Daouda/is-Engine-Example-Pack/is-Engine-Admob)
-- [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/is-Engine-Admob)
+- [[Android] Virtual Game Pad with 6 keys (multi directional cross and A - B button)](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-VirtualGamePad)
+- [[Android] Virtual Game Pad Configuration (Adjust Position, transparency, ...)](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-VirtualGamePad)
+- [[Android] Show Ad Banner](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
+- [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 - Screen Transition effect (SWOOSH Library)
 
 ## What's new in version 3.2 ?
@@ -68,7 +68,7 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 - Here is a **[Web Game : Arkanoid](https://is-daouda.github.io/)** created with the game engine.
 **It's a Web Game so it's playable on PC and mobile.**
 
-[![Image](https://i48.servimg.com/u/f48/20/16/75/27/ict_sc10.png)](https://is-daouda.github.io/)
+[![Image](https://i48.servimg.com/u/f48/20/16/75/27/arkano10.png)](https://is-daouda.github.io/)
 
 - The engine comes with a **[Demo (2D Platform Game)](https://github.com/Is-Daouda/is-Engine-Demo)** that uses only the functions of the engine, in order to show you its power and how to use it. Now imagine what you can do when you use Box 2D and the other tools!
 
