@@ -60,11 +60,13 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 2. **[Youtube tutorial that shows how to import an SFML project into is::Engine in order to export it to other platform such as: the Web (HTML), Android, Windows and Linux](https://youtu.be/x_YQLHoPMbc).**
 3. **[Youtube tutorial that shows how to create a game (Arkanoid) with the game engine](https://youtu.be/wo2-ofNB7Hw).**
 4. **[Example Pack](https://github.com/Is-Daouda/is-Engine-Example-Pack)**
-5. **Improved SFML project import module**: allows you to integrate SFML projects in is::Engine in order to benefit from the game engine's functionalities (Export on the Web, Android, etc.).
-6. **Improved web support**: many bugs have been fixed.
+5. **[New Web Game : Arkanoid](https://is-daouda.github.io/)**
+6. **Improved SFML project import module**: allows you to integrate SFML projects in is::Engine in order to benefit from the game engine's functionalities (Export on the Web, Android, etc.).
+7. **Improved web support**: many bugs have been fixed.
 
 ## Extras
-- Here is a **[Web Game](https://is-daouda.github.io/)** (A special version) created with the game engine to celebrate the two (2) years anniversary of the game **I Can Transform** released on **[Android](https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=En)** with C++ / SFML. **It's a Web Game so it's playable on PC and mobile.**
+- Here is a **[Web Game : Arkanoid](https://is-daouda.github.io/)** created with the game engine.
+**It's a Web Game so it's playable on PC and mobile.**
 
 [![Image](https://i48.servimg.com/u/f48/20/16/75/27/ict_sc10.png)](https://is-daouda.github.io/)
 
@@ -81,7 +83,7 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 - [Youtube tutorial : How to create a game (Arkanoid) with the game engine](https://youtu.be/wo2-ofNB7Hw)
 
 ## Example of a project created with the engine
-- [I Can Transform Web : Two Years Anniversary](https://is-daouda.github.io/)
+- [Arkanoid Web](https://is-daouda.github.io/)
 - [I Can Transform](https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=En)
 - [Pac-Pac Prandial War](https://www.youtube.com/watch?v=7CXkiD_jTRg&t=25s&authuser=0)
 - [Soldier VS Zombies](https://www.youtube.com/watch?v=qK-Aj-7-czM&authuser=0)
