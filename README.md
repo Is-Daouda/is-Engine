@@ -23,8 +23,7 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 - Language manager (English and French language support by default)
 - Scene System
 - Automatic management of a window
-- Multi support for development tools (
-[Android Studio](#-android-studio), 
+- Multi support for development tools ([Android Studio](#-android-studio), 
 [Qt](#-qt-creator), 
 [CMake](#-cmake), 
 [Emscripten](#-web-html-5---css-3), 
