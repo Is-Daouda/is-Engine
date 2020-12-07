@@ -56,9 +56,9 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 
 ## What's new in version 3.2 ?
 1. **Qt Creator support**: no need to configure the IDE before developing with game engine.
-2. **[Youtube tutorial that shows how to import an SFML project into is::Engine in order to export it to other platform such as: the Web (HTML), Android, Windows and Linux](https://youtu.be/x_YQLHoPMbc).**
+2. **[Youtube tutorial that shows how to import an SFML project into is::Engine](https://youtu.be/x_YQLHoPMbc)** in order to export it to other platform such as: the Web (HTML), Android, Windows and Linux.
 3. **[Youtube tutorial that shows how to create a game (Arkanoid) with the game engine](https://youtu.be/wo2-ofNB7Hw).**
-4. **[Example Pack](https://github.com/Is-Daouda/is-Engine-Example-Pack)**
+4. **[Example Pack](https://github.com/Is-Daouda/is-Engine-Example-Pack)** that show how to use the various features of the game engine.
 5. **[New Web Game : Arkanoid](https://is-daouda.github.io/)**
 6. **Improved SFML project import module**: allows you to integrate SFML projects in is::Engine in order to benefit from the game engine's functionalities (Export on the Web, Android, etc.).
 7. **Improved web support**: many bugs have been fixed.
