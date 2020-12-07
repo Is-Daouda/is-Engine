@@ -9,7 +9,9 @@ GameSlider::GameSlider(is::GameDisplay *scene):
     m_slideDistance(64.f)
 {
     m_strName = "GameSlider";
+    #if defined(IS_ENGINE_USE_SDM)
     m_depth = 999999999; // will update this object before all others
+    #endif // defined
 }
 
 void GameSlider::step(float const &DELTA_TIME)

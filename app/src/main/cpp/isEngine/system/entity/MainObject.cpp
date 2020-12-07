@@ -114,8 +114,10 @@ MainObject::MainObject(sf::Sprite &spr, float x, float y):
     m_drawMask(false),
     m_sprParent(spr)
 {
+    #if defined(IS_ENGINE_USE_SDM)
     m_SDMcallStep = false;
     m_SDMcallEvent = false;
+    #endif // defined
     setRectangleMask(spr.getTexture()->getSize().x, spr.getTexture()->getSize().y);
     updateCollisionMask();
     updateSprite();
@@ -157,8 +159,10 @@ MainObject::MainObject(sf::Texture &tex, float x, float y, bool center):
     m_drawMask(false)
 {
     m_centerSpr = center;
+    #if defined(IS_ENGINE_USE_SDM)
     m_SDMcallStep = false;
     m_SDMcallEvent = false;
+    #endif // defined
     setRectangleMask(tex.getSize().x, tex.getSize().y);
     is::createSprite(tex, m_sprParent, sf::Vector2f(m_x, m_y), sf::Vector2f(0.f, 0.f));
     if (!m_centerSpr) updateCollisionMask();

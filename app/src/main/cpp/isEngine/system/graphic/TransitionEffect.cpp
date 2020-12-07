@@ -10,7 +10,9 @@ TransitionEffect::TransitionEffect(is::GameDisplay *scene):
 {
     m_strName = "TransitionEffect";
     m_imageAlpha = 255;
+    #if defined(IS_ENGINE_USE_SDM)
     m_depth = -999999999;
+    #endif // defined
 
     // transition rectangle
     is::createRectangle(m_recTransition, sf::Vector2f(scene->getViewW() + 10.f, scene->getViewH() + 10.f),
