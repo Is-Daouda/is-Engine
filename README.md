@@ -7,7 +7,7 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 ## Contents
 - [Features](#features)
 - [Extras](#extras)
-- [Game Engine User Guide](#game-engine-user-guide)
+- [Game Engine User Guide and Youtube Tutorial](#game-engine-user-guide-and-youtube-tutorial)
 - [Example of a project created with the engine](#example-of-a-project-created-with-the-engine)
 - [Hello Scene Example](#hello-scene-example)
 - [Prerequisites](#prerequisites)
