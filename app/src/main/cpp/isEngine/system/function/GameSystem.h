@@ -97,8 +97,20 @@ public:
         if (m_enableSound) is::playSFMLSnd(obj);
     }
 
+    /// Allows to play a sound if the option is activated
+    virtual void playSound(sf::Sound *obj)
+    {
+        if (m_enableSound) is::playSFMLSnd(obj);
+    }
+
     /// Allows to play a music if the option is activated
     virtual void playMusic(sf::Music &obj)
+    {
+        if (m_enableMusic) is::playSFMLSnd(obj);
+    }
+
+    /// Allows to play a music if the option is activated
+    virtual void playMusic(sf::Music *obj)
     {
         if (m_enableMusic) is::playSFMLSnd(obj);
     }
@@ -112,8 +124,26 @@ public:
         }
     }
 
+    /// Allows to stop a sound
+    virtual void stopSound(sf::Sound *obj)
+    {
+        if (m_enableSound)
+        {
+            if (is::checkSFMLSndState(obj, SFMLSndStatus::Playing)) is::stopSFMLSnd(obj);
+        }
+    }
+
     /// Allows to stop a music
     virtual void stopMusic(sf::Music &obj)
+    {
+        if (m_enableMusic)
+        {
+            if (is::checkSFMLSndState(obj, SFMLSndStatus::Playing)) is::stopSFMLSnd(obj);
+        }
+    }
+
+    /// Allows to stop a music
+    virtual void stopMusic(sf::Music *obj)
     {
         if (m_enableMusic)
         {

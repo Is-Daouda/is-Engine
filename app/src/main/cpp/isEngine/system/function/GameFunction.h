@@ -318,14 +318,14 @@ float getSFMLObjY(T &obj)
 template <class T>
 float getSFMLObjX(T *obj)
 {
-    return getSFMLObjX(&obj);
+    return obj->getPosition().x;
 }
 
 /// Return the y position of SFML object (pointer object)
 template <class T>
 float getSFMLObjY(T *obj)
 {
-    return getSFMLObjY(&obj);
+    return obj->getPosition().y;
 }
 
 /// Set the angle of SFML object
@@ -353,7 +353,7 @@ void setSFMLObjScaleX_Y(T &obj, float x, float y)
 template <class T>
 void setSFMLObjScale(T &obj, float scale)
 {
-    setSFMLObjScaleX_Y(obj, scale, scale);
+    obj.setScale(scale, scale);
 }
 
 /// Set origin of SFML object
