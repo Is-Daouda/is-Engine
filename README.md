@@ -24,7 +24,7 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 - Scene System
 - Automatic management of a window
 - Multi support for development tools ([Android Studio](#-android-studio), 
-[Qt](#-qt-creator), 
+[Qt](#-qt), 
 [CMake](#-cmake), 
 [Emscripten](#-web-html-5---css-3), 
 [Visual Studio Code](#-visual-studio-code), 
@@ -55,7 +55,7 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 - Screen Transition effect (SWOOSH Library)
 
 ## What's new in version 3.2 ?
-1. **Qt Creator support**: no need to configure the IDE before developing with game engine.
+1. **[Qt support](#-qt)**: no need to configure the IDE before developing with game engine.
 2. **[Youtube tutorial that shows how to import an SFML project into is::Engine](https://youtu.be/x_YQLHoPMbc)** in order to export it to other platform such as: the Web (HTML), Android, Windows and Linux.
 3. **[Youtube tutorial that shows how to create a game (Arkanoid) with the game engine](https://youtu.be/wo2-ofNB7Hw).**
 4. **[Example Pack](https://github.com/Is-Daouda/is-Engine-Example-Pack)** that show how to use the various features of the game engine.
@@ -256,17 +256,17 @@ sudo make
 
 ---
 
-## ![qt](https://i48.servimg.com/u/f48/20/16/75/27/qt_ico10.png) Qt Creator
+## ![qt](https://i48.servimg.com/u/f48/20/16/75/27/qt_ico10.png) Qt
 
 **1. Installation**
 #### Windows
-1. Download Qt Creator 5.12.9 MinGW [here](http://qtproject.mirror.liquidtelecom.com/archive/qt/5.12/5.12.9/qt-opensource-windows-x86-5.12.9.exe) and install it.
-2. Download this [version of SFML](https://github.com/Is-Daouda/SFML_Qt_MinGW) already compiled for Qt Creator 5.12.9 and extract it in **C:/ (C:/SFML_Qt_MinGW)**.
+1. Download Qt 5.12.9 MinGW [here](http://qtproject.mirror.liquidtelecom.com/archive/qt/5.12/5.12.9/qt-opensource-windows-x86-5.12.9.exe) and install it.
+2. Download this [version of SFML](https://github.com/Is-Daouda/SFML_Qt_MinGW) already compiled for Qt 5.12.9 and extract it in **C:/ (C:/SFML_Qt_MinGW)**.
 
 **2. Opening the project with the IDE:**
 
 #### Windows
-1. Run the file **open_qt_creator.bat** in the main directory *(Make sure you have included the path to the Qt Creator executable in your PATH environment variable)*.
+1. Run the file **open_qt_creator.bat** in the main directory *(Make sure you have included the path to the Qt executable in your PATH environment variable)*.
 2. Or open the file **is-Engine.pro** in the location **[is-Engine/app/src/main/qt](./app/src/main/qt/)**
 
 **3. Executable location**
