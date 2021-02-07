@@ -57,7 +57,7 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 - Screen Transition effect (SWOOSH Library)
 
 ## What's new in version 3.2.1 ?
-1. **[Web Push Notification Support](#-web-push-notification)**: Very used to inform your users when you update your [web game](#-web-html-5---css-3) (this is just one example among several).
+1. **[Web Push Notification Support](#-web-push-notification)**: Very used to inform your users when you update your [web game](#-web-html-5---css-3) (this is just one example among many, it's up to you to adapt it according to your needs ^^).
 2. **[Firebase 4.5 file available and the Admob example has been updated](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob#to-make-this-example-work-you-need)**.
 3. **[Tip for easily updating an is::Engine project](#how-to-update-an-isengine-project)**.
 
