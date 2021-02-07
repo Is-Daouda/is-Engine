@@ -2,16 +2,36 @@
 <html>
 <head>
     <meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-	<title>is::Engine</title>
+    <title>is::Engine</title>
 	<link rel="icon" href="favicon.png">
-
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
-	<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
-	<link rel="stylesheet" href="styles/index.css">
+	<style>
+	canvas {
+		padding-left: 0;
+		padding-right: 0;
+		margin-left: auto;
+		margin-right: auto;
+		display: block;
+		width: 800px;
+		background:black;
+	}
+	.image {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		-webkit-animation:spin 4s linear infinite;
+		-moz-animation:spin 4s linear infinite;
+		animation:spin 4s linear infinite;
+	}
+	@-moz-keyframes spin {
+		100% {-moz-transform: rotate(360deg);}
+	}
+	@-webkit-keyframes spin {
+		100% {-webkit-transform: rotate(360deg);}
+	}
+	@keyframes spin {
+		100% {-webkit-transform: rotate(360deg); transform:rotate(360deg);}
+	}
+	</style>
 </head>
 <body>
 	<img class="image" id="loading" src="loading.png" alt="Loading..." width="32" height="32">
@@ -21,27 +41,6 @@
       Loading... 
     </canvas>
 
-	<hr>
-	<main>
-		<p>The push messaging. The button below allows you to activate / deactivate the push subscription.</p>
-		<p>
-			<button disabled class="js-push-btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-				Enable Push Messaging
-			</button>
-		</p>
-		<section class="subscription-details js-subscription-details is-invisible">
-			<p>Once you've subscribed your user, you'd send their subscription to your
-			server to store in a database so that when you want to send a message
-			you can lookup the subscription and send a message to it.</p>
-			<p>Copy the following details
-			into the <a href="https://web-push-codelab.glitch.me//">Push Companion
-			Site</a> and it'll send a push message for you, using the application
-			server keys on the site - so make sure they match.</p>
-			<pre><code class="js-subscription-json"></code></pre>
-		</section>
-	</main>
-	<hr>
-	
     <script type="text/javascript">
 		window.Module = {
 			canvas: document.getElementById('canvas'),
@@ -60,8 +59,7 @@
 		}
 		setInterval("chrono()", 1000);
     </script>
+
     <script async src="isengine.js"></script>
-	<script src="scripts/main.js"></script>
-	<script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
 </body>
 </html>
