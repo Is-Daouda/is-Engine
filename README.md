@@ -1,7 +1,7 @@
 ![header](./images/is_Engine_logo.png)
 ----------------------------
 
-# is::Engine (Infinity Solutions::Engine) 3.2
+# is::Engine (Infinity Solutions::Engine) 3.2.1
 Open source C++ framework based on **SFML** which allows you to easily develop **games and multimedia applications** on **Web (HTML 5 - CSS 3), Android and PC (Windows, Linux)**.
 
 ## Contents
@@ -13,6 +13,7 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 - [Prerequisites](#prerequisites)
 - [How to use is::Engine with the different development tools](#how-to-use-isengine-with-the-different-development-tools)
 - [Description of the project structure](#description-of-the-project-structure)
+- [How to update an is::Engine project](#how-to-update-an-isengine-project)
 - [How to contribute?](#how-to-contribute)
 
 ## 
@@ -29,6 +30,7 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 [Emscripten](#-web-html-5---css-3), 
 [Visual Studio Code](#-visual-studio-code), 
 [Code::Block](#-codeblocks))
+- [Web Push Notification](#-web-push-notification)
 - SDM (Step and Draw Manager)
 - GSM (Game Sound Manager)
 - GRM (Graphics Resources Manager)
@@ -54,14 +56,10 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 - Screen Transition effect (SWOOSH Library)
 
-## What's new in version 3.2 ?
-1. **[Qt support](#-qt)**: no need to configure the IDE before developing with game engine.
-2. **[Youtube tutorial that shows how to import an SFML project into is::Engine](https://youtu.be/x_YQLHoPMbc)** in order to export it to other platform such as: the Web (HTML), Android, Windows and Linux.
-3. **[Youtube tutorial that shows how to create a game (Arkanoid) with the game engine](https://youtu.be/wo2-ofNB7Hw).**
-4. **[Example Pack](https://github.com/Is-Daouda/is-Engine-Example-Pack)** that show how to use the various features of the game engine.
-5. **[New Web Game : Arkanoid](https://is-daouda.github.io/)**
-6. **Improved SFML project import module**: allows you to integrate SFML projects in is::Engine in order to benefit from the game engine's functionalities (Export on the Web, Android, etc.).
-7. **Improved web support**: many bugs have been fixed.
+## What's new in version 3.2.1 ?
+1. **[Web Push Notification Support](#-web-push-notification)**: Very used to inform your users when you update your [web game](#-web-html-5---css-3) (this is just one example among several).
+2. **[Firebase 4.5 file available and the Admob example has been updated](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob#to-make-this-example-work-you-need)**.
+3. **[Tip for easily updating an is::Engine project](#how-to-update-an-isengine-project)**.
 
 ## Extras
 - Here is a **[Web Game : Arkanoid](https://is-daouda.github.io/)** created with the game engine.
@@ -174,6 +172,8 @@ If all goes well you will have a **Hello World Screen** on your **Android emulat
 ---
 
 ## ![web](https://i48.servimg.com/u/f48/20/16/75/27/icon_w10.png) Web (HTML 5 - CSS 3)
+- If you want to make your SFML project compatible with the Web (Be able to run it in a web browser), please watch this **[video tutorial](https://youtu.be/x_YQLHoPMbc)**.
+
 **1. Prerequisites**
 - Emscripen (1.39.7 +)
 - Python (3.8.1 +)
@@ -220,6 +220,29 @@ If all goes well you will have a **Hello World Screen** on your **Web Browser**.
 - Believe me, there is everything you need to create a great game!
 - To see the differences I advise you to see the **[basicSFMLmain.cpp](./app/src/main/cpp/basicSFMLmain.cpp) file** (this file allows you to create your games without using the main rendering loop of the engine, i.e. avoids using the main features of the engine).
 - If you want more information on the SMK library I advise you to see [the documentation](https://arthursonzogni.com/SMK/doc/).
+
+---
+
+## ![Web Push Notification](https://i48.servimg.com/u/f48/20/16/75/27/notif_10.png) Web Push Notification
+- If you want to make your SFML project compatible with the Web (Be able to run it in a web browser), please watch this **[video tutorial](https://youtu.be/x_YQLHoPMbc)**.
+
+#### Installation
+- This shows how to test the push notification. Note that normally to use it, you have to associate it with a database (backend). But here we will use it with the **Push Companion** site **(It will serve as a backend for us!)**.
+- For more information on Push Notification please see this [page](https://developers.google.com/web/fundamentals/codelabs/push-notifications).
+1. Web browser ([preferably Google Chrome](https://www.google.fr/chrome/?brand=CHBD&brand=XXVF&gclid=EAIaIQobChMI7a315b6c7gIVEKSyCh0O8QJjEAAYASABEgJfd_D_BwE&gclsrc=aw.ds))
+2. [Web server for Chrome](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb) or your own web server.
+3. Define the **Application Server Keys** in the [main.js](https://github.com/Is-Daouda/Sample/blob/master/app/src/main/web/scripts/main.js#L25) file. You can get this keys (We will use the public key) [here](https://web-push-codelab.glitch.me/).
+4. Launch the **[web](./app/src/main/web)** or **bin-web folder (generate using emscripten)** via the web server.
+5. Click on the **"Enable Push Messaging" button** to activate the sending of Push Notifications. Once done you will have a code (which can be used to send you push notifications).
+6. Go to this [site](https://web-push-codelab.glitch.me/) and enter the code in the **"Subscription to Send To" text field** followed by your message in **"Text to Send" text field**. Click on the **"Send Push Message" button**.
+7. If all goes well you will have a push notification followed by the message you sent in the console (development tool) of your browser.
+
+![image](https://i.servimg.com/u/f48/20/16/75/27/image10.jpg)
+
+#### Configure the Push Notification
+1. To change the **information (title, details, ...)** of the Push Notification you must refer to the [sw.js](./app/src/main/web/sw.js#L28) file.
+2. To change the **Push Notification image** files, refer to the [images](./app/src/main/web/images) folder.
+3. To change the **page that is launched** when you click on the notification, refer to the [sw.js](./app/src/main/web/sw.js#L45) file.
 
 ---
 
@@ -347,6 +370,9 @@ codeblocks "./app/src/main/is-Engine-linux.cbp"
 #### Android
 - To change the icon of the application you must go to the location **[is-Engine/app/src/main/res](./app/src/main/res/)** replace all the images (PNG) which are in the **drawable** subfolders.
 
+#### Web (HTML 5 - CSS 3)
+- To change the icon of the application you must go to the location **[is-Engine/app/src/main/web](./app/src/main/web/)**.
+
 #### Windows
 - To change the icon of the application you must go to the location **[is-Engine/app/src/main/env/windows](./app/src/main/env/windows)** replace all the images **(Attention CMake uses the same resources).**
 
@@ -384,6 +410,20 @@ Contains game resource files (music, sound sfx, image, ...)
 ----------------------------
 #### 4. [isEngine](./app/src/main/cpp/isEngine/) folder
 Contains the source code of the game engine
+
+---
+
+## How to update an is::Engine project
+1. First of all the part of is::Engine that changes most often during updates is the [isEngine](./app/src/main/cpp/isEngine/) folder. But it also happens that these files can be modified:
+- [GameActivity.h](./app/src/main/cpp/app_src/activity/GameActivity.h)
+- [GameConfig.h](./app/src/main/cpp/app_src/language/GameLanguage.h)
+- [ExtraConfig.h](./app/src/main/cpp/app_src/config/ExtraConfig.h)
+- [GameSystemExtended.h](./app/src/main/cpp/app_src/gamesystem_ext/GameSystemExtended.h)
+- [basicSFMLmain.cpp](./app/src/main/cpp/basicSFMLmain.cpp)
+- [GameLanguage.h](./app/src/main/cpp/app_src/language/GameLanguage.h)
+- And the files which is in [cmake](./app/src/main/cmake) and [web](./app/src/main/web) folder.
+- ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) **So watch them carefully in case you encounter any errors during migration!**
+2. To update your old project with a new version of is::Engine: the files (.h and .cpp) you need to move are in [objects](./app/src/main/cpp/app_src/objects/) and [scenes](./app/src/main/cpp/app_src/scenes/). **Note that these folders never change whatever the version!**
 
 ---
 
