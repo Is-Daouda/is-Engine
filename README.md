@@ -14,6 +14,7 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 - [How to use is::Engine with the different development tools](#how-to-use-isengine-with-the-different-development-tools)
 - [Description of the project structure](#description-of-the-project-structure)
 - [How to update an is::Engine project](#how-to-update-an-isengine-project)
+- [How to activate the use of Admob](#how-to-activate-the-use-of-admob)
 - [How to contribute?](#how-to-contribute)
 
 ## 
@@ -60,6 +61,7 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 1. **[Web Push Notification Support](#-web-push-notification)**: Very used to inform your users when you update your [web game](#-web-html-5---css-3) (this is just one example among many, it's up to you to adapt it according to your needs ^^).
 2. **[Firebase 4.5 file available and the Admob example has been updated](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob#to-make-this-example-work-you-need)**.
 3. **[Tip for easily updating an is::Engine project](#how-to-update-an-isengine-project)**.
+4. **[How to activate the use of Admob](#how-to-activate-the-use-of-admob)**.
 
 ## Extras
 - Here is a **[Web Game : Arkanoid](https://is-daouda.github.io/)** created with the game engine.
@@ -424,6 +426,26 @@ Contains the source code of the game engine
 - And the files which is in [cmake](./app/src/main/cmake) and [web](./app/src/main/web) folder.
 - ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) **So watch them carefully in case you encounter any errors during migration!**
 2. To update your old project with a new version of is::Engine: the files (.h and .cpp) you need to move are in [objects](./app/src/main/cpp/app_src/objects/) and [scenes](./app/src/main/cpp/app_src/scenes/). **Note that these folders never change whatever the version!**
+
+---
+
+## How to activate the use of Admob?
+- By default the use of Admob is disabled. To activate it you must follow these different steps (Remember to install the C++ Firebase SDK in the Android NDK/sources folder. You can download the corresponding version [here](https://drive.google.com/file/d/10CPcqvHkeFfMAbcwrnAltfZszpyk9eOo/view?usp=sharing)).
+
+- Note that there is an [Admob example](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob) of the engine that allows you to use Admob without going through all these steps!
+
+1. Uncomment the Admob macro in the [ExtraConfig.h](https://github.com/Is-Daouda/is-Engine/blob/master/app/src/main/cpp/app_src/config/ExtraConfig.h#L30) file
+2. Uncomment line 11 to 16 in the [build.gradle - classpath](https://github.com/Is-Daouda/is-Engine/blob/master/app/build.gradle#L10)
+3. Uncomment line 50 followed by 52 to 55 in the [build.gradle - cmake](https://github.com/Is-Daouda/is-Engine/blob/master/app/build.gradle#L50)
+4. Uncomment line 75 to 78 in the [build.gradle - proguardFile](https://github.com/Is-Daouda/is-Engine/blob/master/app/build.gradle#L74)
+5. Uncomment this line in the [build.gradle - sourceSets](https://github.com/Is-Daouda/is-Engine/blob/master/app/build.gradle#L93)
+6. Uncomment line 104 to 108 in [build.gradle - implementation](https://github.com/Is-Daouda/is-Engine/blob/master/app/build.gradle#L103)
+7. Uncomment this line in the [build.gradle - apply plugin](https://github.com/Is-Daouda/is-Engine/blob/master/app/build.gradle#L113). ***Don't forget to put the google-services.json file in the app folder (You can get this file [here](https://support.google.com/firebase/answer/7015592))***
+8. Uncomment line 19 to 20 in the [CMakeLists.txt - include](https://github.com/Is-Daouda/is-Engine/blob/master/app/CMakeLists.txt#L18)
+9. Uncomment line 75 to 76 in the [CMakeLists.txt - target link libraries](https://github.com/Is-Daouda/is-Engine/blob/master/app/CMakeLists.txt#L74)
+10. That's all!
+
+- You can set the ads information (id, banner size, keywords) in [GameConfig.h](https://github.com/Is-Daouda/is-Engine/blob/master/app/src/main/cpp/app_src/config/GameConfig.h#L98).
 
 ---
 
