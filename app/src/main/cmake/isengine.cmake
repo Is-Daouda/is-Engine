@@ -61,8 +61,10 @@ set(
 	# core
 	${ISENGINE_SRC_DIR}/isEngine/core/GameEngine.cpp
 
-	# system
-	${ISENGINE_SRC_DIR}/isEngine/system/isEngineWrapper.cpp
+	# islibconnect
+	${ISENGINE_SRC_DIR}/isEngine/system/islibconnect/isEngineWrapper.cpp
+	${ISENGINE_SRC_DIR}/isEngine/system/islibconnect/isEngineSDLWrapper.cpp
+	${ISENGINE_SRC_DIR}/isEngine/system/islibconnect/isEngineSMKWrapper.cpp
 	
 	# display
 	${ISENGINE_SRC_DIR}/isEngine/system/display/GameDisplay.cpp
@@ -72,7 +74,7 @@ set(
 	
 	# graphic
 	${ISENGINE_SRC_DIR}/isEngine/system/graphic/TransitionEffect.cpp
-
+	
 	# function
 	${ISENGINE_SRC_DIR}/isEngine/system/function/GameFunction.cpp		
 	${ISENGINE_SRC_DIR}/isEngine/system/function/GameKeyData.cpp
@@ -80,6 +82,7 @@ set(
 	${ISENGINE_SRC_DIR}/isEngine/system/function/GameSystem.cpp
 	${ISENGINE_SRC_DIR}/isEngine/system/function/GameTime.cpp
 	
+	# box 2d
 	${box2d_sources}
 )
 
@@ -115,7 +118,8 @@ elseif (DEFINED ISENGINE_ANDROID)
 	set(
 		isengine
 		${commun_sources}
-		${tmxlite_sources}
+		${ISENGINE_SRC_DIR}/SDL_android_main.c
+		#${tmxlite_sources}
 		)
 # is::Engine HTML version
 elseif (DEFINED ISENGINE_HTML_5)

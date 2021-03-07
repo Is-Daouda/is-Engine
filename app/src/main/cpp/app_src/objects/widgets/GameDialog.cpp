@@ -21,7 +21,7 @@ GameDialog::GameDialog(sf::Texture &tex, sf::Font &fnt, GameDisplay *m_scene) :
     is::createText(fnt, m_txtDialog, "", m_x, m_y, is::GameConfig::DEFAULT_RPG_DIALOG_TEXT_COLOR, 16);
     is::createText(fnt, m_txtSkip, is::lang::pad_dialog_skip[m_scene->getGameSystem().m_gameLanguage],
                    m_x, m_y, is::GameConfig::DEFAULT_RPG_DIALOG_SELECTED_TEXT_COLOR, true, 13);
-    m_strDialog = L"";
+    m_strDialog = "";
     is::createSprite(tex, m_sprParent, sf::IntRect(0, 0, 480, 96), sf::Vector2f(0.f, 0.f), sf::Vector2f(240.f, 48.f));
     is::createSprite(tex, m_sprNext, sf::IntRect(64, 96, 32, 32), sf::Vector2f(0.f, 0.f), sf::Vector2f(16.f, 16.f));
     is::createSprite(tex, m_sprSkip, sf::IntRect(0, 96, 64, 24), sf::Vector2f(0.f, 0.f), sf::Vector2f(32.f, 12.f));
@@ -63,7 +63,7 @@ void GameDialog::step(const float &DELTA_TIME)
             if (m_time > 1.f)
             {
                 std::wstring tempoStr = m_txtDialog.
-                                                    #if defined(IS_ENGINE_HTML_5)
+                                                    #if !defined(IS_ENGINE_SFML)
                                                     getWString();
                                                     #else
                                                     getString();
@@ -156,7 +156,7 @@ void GameDialog::setDialog(DialogIndex dialogIndex)
     m_msgIndex = 0;
     m_size = 0;
     m_dialogIndex = dialogIndex;
-    m_strDialog = L"";
+    m_strDialog = "";
     m_txtDialog.setString("");
     m_showDialog = true;
     m_newLine = true;

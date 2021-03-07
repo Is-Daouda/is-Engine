@@ -1,11 +1,12 @@
 ![header](./images/is_Engine_logo.png)
 ----------------------------
 
-# is::Engine (Infinity Solutions::Engine) 3.2.1
-Open source C++ framework based on **SFML** which allows you to easily develop **games and multimedia applications** on **Web (HTML 5 - CSS 3), Android and PC (Windows, Linux)**.
+# is::Engine (Infinity Solutions::Engine) 3.3
+Open source C++ framework which uses the mechanisms of **SFML 2** and which also allows to develop with several libraries at the same time **(SDL 2, SMK-Emscripten)** in order to easily export your games / applications on the **Web (HTML 5), Android** and **PC (Windows, Linux)**.
 
 ## Contents
 - [Features](#features)
+- [What's new in this version](#whats-new-in-this-version)
 - [Extras](#extras)
 - [Game Engine User Guide and Youtube Tutorial](#game-engine-user-guide-and-youtube-tutorial)
 - [Example of a project created with the engine](#example-of-a-project-created-with-the-engine)
@@ -14,23 +15,26 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 - [How to use is::Engine with the different development tools](#how-to-use-isengine-with-the-different-development-tools)
 - [Description of the project structure](#description-of-the-project-structure)
 - [How to update an is::Engine project](#how-to-update-an-isengine-project)
+- [Special things to know about the engine](#special-things-to-know-about-the-engine)
 - [How to activate the use of Admob](#how-to-activate-the-use-of-admob)
-- [How to contribute?](#how-to-contribute)
+- [Contribute](#contribute)
 
 ## 
 
-[![SFML logo](https://www.sfml-dev.org/images/logo.png)](https://www.sfml-dev.org) ![Web](https://i48.servimg.com/u/f48/20/16/75/27/web_lo10.png) [![Box2D Logo](https://box2d.org/images/logo.svg)](https://github.com/erincatto/box2d) [![Tiled Logo](https://i.servimg.com/u/f48/20/16/75/27/tiled_10.png)](https://www.mapeditor.org) [![SMK](https://i48.servimg.com/u/f48/20/16/75/27/smk10.png)](https://github.com/ArthurSonzogni/smk) [![Admob Logo](https://i48.servimg.com/u/f48/20/16/75/27/admob_10.png)](https://admob.google.com/) [![swoosh](https://i.imgur.com/tri24Y5.png)](https://github.com/TheMaverickProgrammer/Swoosh) [![Tiny File Dialog](https://a.fsdn.com/allura/p/tinyfiledialogs/icon?1582196333?&w=90)](https://github.com/native-toolkit/tinyfiledialogs)
+[![SFML logo](https://www.sfml-dev.org/images/logo.png)](https://www.sfml-dev.org) [![SDL](https://i48.servimg.com/u/f48/20/16/75/27/sdl_li10.png)](https://www.libsdl.org/) ![Web](https://i48.servimg.com/u/f48/20/16/75/27/web_lo10.png) [![Box2D Logo](https://box2d.org/images/logo.svg)](https://github.com/erincatto/box2d) [![Tiled Logo](https://i.servimg.com/u/f48/20/16/75/27/tiled_10.png)](https://www.mapeditor.org) [![SMK](https://i48.servimg.com/u/f48/20/16/75/27/smk10.png)](https://github.com/ArthurSonzogni/smk) [![Admob Logo](https://i48.servimg.com/u/f48/20/16/75/27/admob_10.png)](https://admob.google.com/) [![Tiny File Dialog](https://a.fsdn.com/allura/p/tinyfiledialogs/icon?1582196333?&w=90)](https://github.com/native-toolkit/tinyfiledialogs)
 
 ## Features
 - Language manager (English and French language support by default)
 - Scene System
 - Automatic management of a window
+- Run SFML game with SDL 2
 - Multi support for development tools ([Android Studio](#-android-studio), 
 [Qt](#-qt), 
 [CMake](#-cmake), 
 [Emscripten](#-web-html-5---css-3), 
 [Visual Studio Code](#-visual-studio-code), 
 [Code::Block](#-codeblocks))
+- is::LibConnect
 - [Web Push Notification](#-web-push-notification)
 - SDM (Step and Draw Manager)
 - GSM (Game Sound Manager)
@@ -55,14 +59,39 @@ Open source C++ framework based on **SFML** which allows you to easily develop *
 - [[Android] Virtual Game Pad Configuration (Adjust Position, transparency, ...)](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-VirtualGamePad)
 - [[Android] Show Ad Banner](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
-- Screen Transition effect (SWOOSH Library)
 
-## What's new in version 3.2.1 ?
-1. **[Web Push Notification Support](#-web-push-notification)**: Very used to inform your users when you update your [web game](#-web-html-5---css-3) (this is just one example among many, it's up to you to adapt it according to your needs ^^).
-2. **[Firebase 4.5 file available and the Admob example has been updated](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob#to-make-this-example-work-you-need)**.
-3. **[Tip for easily updating an is::Engine project](#how-to-update-an-isengine-project)**.
-4. **[How to activate the use of Admob](#how-to-activate-the-use-of-admob)**.
+## What's new in this version
+### 3.3
+1. **[The is::LibConnect function](#islibconnect)**: Allows you to develop with several game libraries at the same time (SFML, SDL 2, SMK (Emscripten)) in one and the same project!
+2. **[Possibility to develop C++ SFML games with SDL 2](#-develop-sfml-games-with-sdl-2)** (Your SFML games will run on the SDL 2 library! Yes, yes it is possible!). Book for Code::Block users for the moment!
+3. **Support for Android x64 architectures**: Now you can export your C++ games to several Android architectures (armeabi-v7a, arm64-v8a, x86, x64, ...).
+Which means that you can now publish your C++ games on Google Play! (Yeaaah !!!)
+- [You must read this very important](#-very-important)
+4. **[The OpenURL function](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L932) now allows you to open web links on many system**: PC (Windows / Linux), Web (HTML 5), Android.
+5. **[A new function to manipulate dates](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L111)**
+- Very practical data sending system for sending C++ data to Javascript.
 
+*Example code to display C++ data in Javascript:*
+```cpp
+std::vector<std::string> vectorArray;
+vectorArray.push_back("is::Engine is really great!");
+vectorArray.push_back("With it everything is possible!");
+vectorArray.push_back("I'm sure you'll love it!");
+
+// The javascripts part
+EM_ASM_ARGS({
+    var vectorArray = new Module.VectorString($0);
+    console.log(vectorArray.get(0));
+    console.log(vectorArray.get(1));
+    console.log(vectorArray.get(2));
+    }, &vectorArray);
+```
+*Output in the browser console:*
+```
+is::Engine is really great!
+With it everything is possible!
+I'm sure you'll love it!
+```
 ## Extras
 - Here is a **[Web Game : Arkanoid](https://is-daouda.github.io/)** created with the game engine.
 **It's a Web Game so it's playable on PC and mobile.**
@@ -103,8 +132,8 @@ Here is an example code of a Scene (the place where the game objects come to lif
 ```cpp
 class HelloScene : public is::GameDisplay {
 public:
-    HelloScene(sf::RenderWindow &window, sf::View &view, is::Render &surface, is::GameSystemExtended &gameSysExt):
-        GameDisplay(window, view, surface, gameSysExt, sf::Color::White /* => scene color*/) {}
+    HelloScene(is::GameSystemExtended &gameSysExt):
+        GameDisplay(gameSysExt, sf::Color::White /* => scene color*/) {}
 
     void loadResources() {
         m_gameSysExt.m_gameLanguage = is::lang::ENGLISH; // set default game language
@@ -130,24 +159,35 @@ public:
         gameDialog->setDialog(is::GameDialog::DialogIndex::DIALOG_HELLO); // set the corresponding dialog (See GameDialog.h and GameLanguage.h for more details on creating a message for dialogue)
         SDMaddSceneObject(gameDialog);
 
-        GSMaddMusic("game_music", is::GameConfig::MUSIC_DIR + "game_music.ogg"); // add music
-        GSMplayMusic("game_music"); // play music
+        GSMaddSound("game_music", is::GameConfig::MUSIC_DIR + "game_music.wav"); // add music
+        GSMplaySound("game_music"); // play music
     }
 };
 ```
 
 ## Prerequisites
 - [SFML Library (2.4 +)](https://www.sfml-dev.org/download.php)
+- [SDL 2 (2.0.12 +)]()
 - GCC Compiler (7.3 +)
 
 ---
 
 ## How to use is::Engine with the different development tools:
 ## ![android](https://i48.servimg.com/u/f48/20/16/75/27/icon_a10.png) Android Studio
+This project uses the template of **Georgik**. For more information on this template [click here](https://github.com/georgik/sdl2-android-example)
+
 **1. Prerequisites**
 - Android Studio (4.0.1 +)
 - Android SDK and NDK (r20b)
-- Firebase C++ SDK 4.5.0 (If you need it)
+
+## ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) Very important
+- On Android SFML games run with SDL library. If you want to use SDL functions in your source code, use the **IS_ENGINE_SDL_2 macro**.
+- The audio format supported at the moment is **.WAV**
+- When you use the image rotation function, it may happen that some images are distorted, this is caused by the screen resizing. Note that you can work around this bug by using your own rotating image (a sprite sheet for example).
+- Some SFML functions like: **Vertex Array, Render Texture** are not yet supported. These additions will be made soon!
+- **std::wstring** text is not yet well supported (special characters are not displayed well)
+- **Your help to improve the engine will be welcome!**
+- [Please read this](#Contribute).
 
 **2. Installation**
 ##### Windows
@@ -155,7 +195,6 @@ public:
 2. Download the [Android SDK](https://developer.android.com/studio) and install it in **C:/Android/SDK**.
 3. Download [Android NDK android-ndk-r20b-windows-x86_64](https://developer.android.com/ndk/downloads/older_releases.html) and create a folder on your disk as follows **C:/Android/NDK** then extract the contents of the zip in this folder.
 4. Set the environment variable **ANDROID_NDK** with the path **C:/Android/NDK**.
-5. Download this [version of SFML](https://github.com/Is-Daouda/SFML-2.5.1-build-for-NDK-r20b) already compiled for Android NDK and extract it in **C:/Android/NDK/sources/sfml**.
 6. Move the **is-Engine** project to your **C:/ (C:/is-Engine)**.
 7. Open the **is-Engine** folder with **Android Studio** and start the compilation.
 
@@ -164,6 +203,18 @@ If all goes well you will have a **Hello World Screen** on your **Android emulat
 ![Image](./images/demo_screen.png)
 
 **Enjoy!**
+
+**2. How to replace the package name (com.author.isengine) of the application**
+- Follow these steps carefully. A single error and the application will crash wonderfully when launching on emulator / mobile!
+1. Replace this line in the [gradle.app](./app/build.gradle#L32) file.
+2. Replace this line in the [AndroidManifest.xml](./app/src/main/AndroidManifest.xml#L3) file.
+3. Replace this line in the [SDLActivity.java](./app/src/main/java/com/author/isengine/SDLActivity.java#L1) file.
+4. Replace the abresence **[com/author/isengine](./app/src/main/java/com/author/isengine/)** in which is the file [SDLActivity.java](./app/src/main/java/com/author/isengine/SDLActivity.java#L1) that you have just modified at the top by yours (example **com/yourname/yourgamename**).
+5. Replace this part **..._ com_author_isengine _...** of line [20](./app/src/main/cpp/SDL_android_main.c#L20) and [23](./app/src/main/cpp/SDL_android_main.c#L23) in the file [SDL_android_main.c](./app/src/main/cpp/SDL_android_main.c#L20) by yours (example **com_yourname_yourgamename)**.
+6. Replace this part **..._ com_author_isengine _...** on the 23 lines of the file [SDL_android.c](./libs/SDL2/src/core/android/SDL_android.c#L156) by yours (example **com_yourname_yourgamename**).
+- **I strongly advise you to use the replace function of your text editor** (on Notepad++ we use Ctrl + F + Replace option).
+7. Replace this line in the [GameConfig.h](./app/src/main/cpp/app_src/config/GameConfig.h#L148) file.
+- Note that this part is only required if you want to use the game engine data save / load functions.
 
 **3. Adding Source Files**
 - So that Android Studio can detect your source files (.cpp) you must include them in the **[app_src.cmake](./app/src/main/cmake/app_src.cmake) or [isengine.cmake](./app/src/main/cmake/isengine.cmake)** file which is located in the **[is-Engine/app/src/main/cmake](./app/src/main/cmake/)** location.
@@ -233,7 +284,7 @@ If all goes well you will have a **Hello World Screen** on your **Web Browser**.
 - For more information on Push Notification please see this [page](https://developers.google.com/web/fundamentals/codelabs/push-notifications).
 1. Web browser ([preferably Google Chrome](https://www.google.fr/chrome/?brand=CHBD&brand=XXVF&gclid=EAIaIQobChMI7a315b6c7gIVEKSyCh0O8QJjEAAYASABEgJfd_D_BwE&gclsrc=aw.ds))
 2. [Web server for Chrome](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb) or your own web server.
-3. Define the **Application Server Keys** in the [main.js](https://github.com/Is-Daouda/Sample/blob/master/app/src/main/web/scripts/main.js#L25) file. You can get this keys (We will use the public key) [here](https://web-push-codelab.glitch.me/).
+3. Define the **Application Server Keys** in the [main.js](./app/src/main/web/scripts/main.js#L25) file. You can get this keys (We will use the public key) [here](https://web-push-codelab.glitch.me/).
 4. Launch the **[web](./app/src/main/web)** or **bin-web folder (generate using emscripten)** via the web server.
 5. Click on the **"Enable Push Messaging" button** to activate the sending of Push Notifications. Once done you will have a code (which can be used to send you push notifications).
 6. Go to this [site](https://web-push-codelab.glitch.me/) and enter the code in the **"Subscription to Send To" text field** followed by your message in **"Text to Send" text field**. Click on the **"Send Push Message" button**.
@@ -368,6 +419,28 @@ codeblocks "./app/src/main/is-Engine-linux.cbp"
 
 ---
 
+## ![cb](https://i48.servimg.com/u/f48/20/16/75/27/icon_c10.png) Develop SFML games with SDL 2
+
+**1. Installation**
+#### Windows
+1. Download Code::Blocks 20.03 MinGW [here](https://sourceforge.net/projects/codeblocks/files/Binaries/20.03/Windows/codeblocks-20.03mingw-setup.exe/download) and install it.
+2. Download this [version of SDL 2](https://github.com/Is-Daouda/SDL2) and extract it in **C:/ (C:/SDL2)**.
+3. Put the **.dll files** which is in the **bin** folder of SDL2 in the **[main](./app/src/main/)** folder.
+
+**2. Opening the project with the IDE:**
+1. Run the file **open_codeblocks_sdl.bat** in the main directory *(Make sure you have included the path to the Code::Blocks executable in your PATH environment variable)*.
+2. Or open the file **is-Engine-windows-SDL2.cbp** in the location **[is-Engine/app/src/main](./app/src/main/)**
+
+**3. Executable location**
+- The compiler files can be found in **is-Engine/app/src/main/bin-codeblocks**.
+
+## ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) Very important
+- If you want to use SDL functions in your source code, use the **IS_ENGINE_SDL_2 macro**.
+- Note that some SFML functions like: **Vertex Array, Render Texture** are not yet supported. These additions will be made soon!
+- **std::wstring** text is not yet well supported (special characters are not displayed well).
+
+---
+
 ## ![icon](https://i48.servimg.com/u/f48/20/16/75/27/icon10.png) Change application icon:
 #### Android
 - To change the icon of the application you must go to the location **[is-Engine/app/src/main/res](./app/src/main/res/)** replace all the images (PNG) which are in the **drawable** subfolders.
@@ -415,6 +488,31 @@ Contains the source code of the game engine
 
 ---
 
+## Special things to know about the engine
+### is::LibConnect
+With the is::LibConnect you can write code for a specific library. Here is how to do it:
+```cpp
+sf::Text text;
+text.setString(
+// on PC (Windows / Linux)
+#if define(IS_ENGINE_SFML)    
+    "We use SFML 2 library"
+
+// on Android or when you use SDL to create SFML games on PC (only for Code::Block at the moment)    
+#elif define(IS_ENGINE_SDL_2)
+    "Run SFML 2 with SDL 2"
+
+// When we develop for the web (HTML 5) with Emscripten    
+#elif define(IS_ENGINE_HTML_5)
+    "SFML 2 on Web"
+#endif
+              );
+```
+
+#### If you have discovered another way to use the game engine, don't hesitate to share it! We will put it in this Special section so that other people can benefit from it!
+
+---
+
 ## How to update an is::Engine project
 1. First of all the part of is::Engine that changes most often during updates is the [isEngine](./app/src/main/cpp/isEngine/) folder. But it also happens that these files can be modified:
 - [GameActivity.h](./app/src/main/cpp/app_src/activity/GameActivity.h)
@@ -430,32 +528,13 @@ Contains the source code of the game engine
 ---
 
 ## How to activate the use of Admob?
-- By default the use of Admob is disabled. To activate it you must follow these different steps (Remember to install the C++ Firebase SDK in the Android NDK/sources folder. You can download the corresponding version [here](https://drive.google.com/file/d/10CPcqvHkeFfMAbcwrnAltfZszpyk9eOo/view?usp=sharing)).
-
-- Note that there is an [Admob example](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob) of the engine that allows you to use Admob without going through all these steps!
-
-1. Uncomment the Admob macro in the [ExtraConfig.h](https://github.com/Is-Daouda/is-Engine/blob/master/app/src/main/cpp/app_src/config/ExtraConfig.h#L30) file
-2. Uncomment line 11 to 16 in the [build.gradle - classpath](https://github.com/Is-Daouda/is-Engine/blob/master/app/build.gradle#L10)
-3. Uncomment line 50 followed by 52 to 55 in the [build.gradle - cmake](https://github.com/Is-Daouda/is-Engine/blob/master/app/build.gradle#L50)
-4. Uncomment line 75 to 78 in the [build.gradle - proguardFile](https://github.com/Is-Daouda/is-Engine/blob/master/app/build.gradle#L74)
-5. Uncomment this line in the [build.gradle - sourceSets](https://github.com/Is-Daouda/is-Engine/blob/master/app/build.gradle#L93)
-6. Uncomment line 104 to 108 in [build.gradle - implementation](https://github.com/Is-Daouda/is-Engine/blob/master/app/build.gradle#L103)
-7. Uncomment this line in the [build.gradle - apply plugin](https://github.com/Is-Daouda/is-Engine/blob/master/app/build.gradle#L113). ***Don't forget to put the google-services.json file in the app folder (You can get this file [here](https://support.google.com/firebase/answer/7015592))***
-8. Uncomment line 19 to 20 in the [CMakeLists.txt - include](https://github.com/Is-Daouda/is-Engine/blob/master/app/CMakeLists.txt#L18)
-9. Uncomment line 75 to 76 in the [CMakeLists.txt - target link libraries](https://github.com/Is-Daouda/is-Engine/blob/master/app/CMakeLists.txt#L74)
-10. That's all!
-
-- You can set the ads information (id, banner size, keywords) in [GameConfig.h](https://github.com/Is-Daouda/is-Engine/blob/master/app/src/main/cpp/app_src/config/GameConfig.h#L98).
+Coming soon!
 
 ---
 
-## How to contribute?
-Here are some examples of how to contribute:
-- Have you developed a module and want it to be part of the engine? You are welcome!
-- Have you thought of a feature and you want it to be integrated into the engine? Do not hesitate to submit it to us with your **name** of course!
-- You want to participate in the development of the engine? Well! welcome to the team!
-- You have developed a game or application with the engine? We gladly accept it to publish it!
-- You noticed a bug? Well done! Let us know Mr. Hacker!
+## Contribute
+- If you want to participate in the development of the project to help me improve the engine, please note that you are welcome! Together we go further!
+- One of the objectives of this project is to create a large community that can work on the engine to allow many people around the world to easily realize their dream games / applications!
 
 ## Contacts
   * For any help please contact me on my [email address](mailto:isdaouda.n@gmail.com)

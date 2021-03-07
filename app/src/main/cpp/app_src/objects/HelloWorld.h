@@ -23,23 +23,28 @@ public:
 
     void step(float const &DELTA_TIME)
     {
-        // VALUE_CONVERSION : allows to avoid using large values to do operations
-        // (basically it converts small values to large) and it also acts on the timing
-        // of the program
-        m_imageAngle += (is::VALUE_CONVERSION * 0.5f) * DELTA_TIME; // rotate the image
+        // When you touch (on Android) or click on the sprite of the object it moves down (in pixel)
+        if (m_scene->mouseCollision(m_sprParent)  && m_scene->getGameSystem().isPressed())
+        {
+            // VALUE_CONVERSION : allows to avoid using large values to do operations
+            // (basically it converts small values to large) and it also acts on the timing
+            // of the program
+            m_imageScale += (is::VALUE_CONVERSION * 0.05f) * DELTA_TIME; // scale the image
+            if (m_imageScale > 2.f) m_imageScale = 1.f;
+            m_imageXscale = m_imageScale;
+            m_imageYscale = m_imageScale;
+
+            m_y += (is::VALUE_CONVERSION * 1.f) * DELTA_TIME; // move (down) object on y axis
+        }
 
         // moved the object to the right (in pixel)
         m_x += (is::VALUE_CONVERSION * 2.f) * DELTA_TIME;
-
-        // When you touch (on Android) or click on the sprite of the object it moves down (in pixel)
-        if (m_scene->mouseCollision(m_sprParent)  && m_scene->getGameSystem().isPressed())
-            m_y += (is::VALUE_CONVERSION * 1.f) * DELTA_TIME;
 
         // If the object comes out to the right or at the top of the scene, bring it back
         // to its starting position
         // By default the size of the scene is equal to that of the window
         if (m_x > m_scene->getSceneWidth())  m_x = m_xStart - (m_xOffset * 2.f);
-        if (m_y > m_scene->getSceneHeight()) m_y = m_yStart - m_yOffset;
+        if (m_y > m_scene->getSceneHeight() - 32.f) m_y = m_yStart - m_yOffset;
 
         updateSprite(); // update the sprite with all object variables (x, y, angle, scale, ...)
     }

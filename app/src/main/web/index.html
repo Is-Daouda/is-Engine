@@ -2,16 +2,17 @@
 <html>
 <head>
     <meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<title>is::Engine</title>
 	<link rel="icon" href="favicon.png">
 
+<!-- Uncomment when you use web push notification
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
 	<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+-->
 	<link rel="stylesheet" href="styles/index.css">
+	
 </head>
 <body>
 	<img class="image" id="loading" src="loading.png" alt="Loading..." width="32" height="32">
@@ -20,7 +21,8 @@
     <canvas id="canvas" oncontextmenu="event.preventDefault()">
       Loading... 
     </canvas>
-
+	
+<!-- Uncomment when you use web push notification
 	<hr>
 	<main>
 		<p>The push messaging. The button below allows you to activate / deactivate the push subscription.</p>
@@ -41,7 +43,7 @@
 		</section>
 	</main>
 	<hr>
-	
+-->
     <script type="text/javascript">
 		window.Module = {
 			canvas: document.getElementById('canvas'),
@@ -60,8 +62,12 @@
 		}
 		setInterval("chrono()", 1000);
     </script>
+
     <script async src="isengine.js"></script>
+	
+<!-- Uncomment when you use web push notification
 	<script src="scripts/main.js"></script>
 	<script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+-->
 </body>
 </html>

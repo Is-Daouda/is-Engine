@@ -6,8 +6,16 @@
 class HelloScene : public is::GameDisplay
 {
 public:
-    HelloScene(sf::RenderWindow &window, sf::View &view, is::Render &surface, is::GameSystemExtended &gameSysExt):
-        GameDisplay(window, view, surface, gameSysExt, sf::Color::White /* => scene color*/) {}
+
+    /*  					/!\ WARNING! /!\
+     * This constructor is no longer supported in this version of the engine. Use the one below.
+     *
+     * HelloScene(sf::RenderWindow &window, sf::View &view, is::Render &surface, is::GameSystemExtended &gameSysExt):
+     * GameDisplay(window, view, surface, gameSysExt, sf::Color::White) {}
+     */
+
+    HelloScene(is::GameSystemExtended &gameSysExt):
+        GameDisplay(gameSysExt, sf::Color::White /* => scene color*/) {}
 
     void loadResources() {
         m_gameSysExt.m_gameLanguage = is::lang::ENGLISH; // set default game language
@@ -21,7 +29,7 @@ public:
         GRMaddTexture("hello_world",    is::GameConfig::SPRITES_DIR + "hello_world.png");
         auto &texBg = GRMaddTexture("background",     is::GameConfig::TILES_DIR + "background.png");
         auto &texDialog = GRMaddTexture("dialog_box", is::GameConfig::GUI_DIR     + "dialog_box.png");
-		
+
         // add a background to the position x = 0, y = 0 which will fill the scene and which will be scrolled (scrolling speed = 0.5)
         SDMaddSceneObject(std::make_shared<is::Background>(texBg, 0.f, 0.f, this, 0.5f, -0.5f, false, false));
 
@@ -38,7 +46,8 @@ public:
         SDMaddSceneObject(gameDialog);
 
         // add and play music
-        GSMaddMusic("game_music", is::GameConfig::MUSIC_DIR + "game_music.ogg");
-        GSMplayMusic("game_music");
+        GSMaddSound("game_music", is::GameConfig::MUSIC_DIR + "game_music.wav");
+        GSMplaySound("game_music");
+        GSMsetSoundLoop("game_music", true);
     }
 };

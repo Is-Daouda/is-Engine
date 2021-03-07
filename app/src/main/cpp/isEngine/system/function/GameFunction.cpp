@@ -1,3 +1,24 @@
+/*
+  is::Engine (Infinity Solution Engine)
+  Copyright (C) 2018-2021 Is Daouda <isdaouda.n@gmail.com>
+
+  This software is provided 'as-is', without any express or implied
+  warranty.  In no event will the authors be held liable for any damages
+  arising from the use of this software.
+
+  Permission is granted to anyone to use this software for any purpose,
+  including commercial applications, and to alter it and redistribute it
+  freely, subject to the following restrictions:
+
+  1. The origin of this software must not be misrepresented; you must not
+     claim that you wrote the original software. If you use this software
+     in a product, an acknowledgment in the product documentation would be
+     appreciated but is not required.
+  2. Altered source versions must be plainly marked as such, and must not be
+     misrepresented as being the original software.
+  3. This notice may not be removed or altered from any source distribution.
+*/
+
 #include "GameFunction.h"
 
 namespace is
@@ -19,7 +40,16 @@ int getMSecond(float const &DELTA_TIME)
     return static_cast<int>(DELTA_TIME * (VALUE_TIME * VALUE_CONVERSION));
 }
 
-void showLog(std::string str, bool stopApplication)
+std::tm makeTime(int year, int month, int day)
+{
+    std::tm tm = {0};
+    tm.tm_year = year - 1900; // years count from 1900
+    tm.tm_mon = month - 1;    // months count from January=0
+    tm.tm_mday = day;         // days count from 1
+    return tm;
+}
+
+void showLog(const std::string& str, bool stopApplication)
 {
     #if defined(IS_ENGINE_USE_SHOWLOG)
     #if !defined(__ANDROID__)
@@ -186,7 +216,7 @@ void createRectangle(sf::RectangleShape &rec, sf::Vector2f recSize, sf::Color co
     is::setSFMLObjX_Y(rec, x + SMKxOrigin, y + SMKyOrigin);
 }
 
-#if !defined(IS_ENGINE_HTML_5)
+#if defined(IS_ENGINE_SFML)
 void textStyleConfig(sf::Text &txt, bool underLined, bool boldText, bool italicText)
 {
     if (underLined && boldText && italicText) txt.setStyle(sf::Text::Underlined | sf::Text::Bold | sf::Text::Italic);
@@ -200,7 +230,7 @@ void textStyleConfig(sf::Text &txt, bool underLined, bool boldText, bool italicT
 #endif
 
 void createWText(sf::Font
-                 #if !defined(IS_ENGINE_HTML_5)
+                 #if defined(IS_ENGINE_SFML)
                  const
                  #endif
                  &fnt, sf::Text &txt, std::wstring const &text, float x, float y, sf::Color color, bool centerText, int txtSize)
@@ -220,7 +250,7 @@ void createWText(sf::Font
 }
 
 void createText(sf::Font
-                 #if !defined(IS_ENGINE_HTML_5)
+                 #if defined(IS_ENGINE_SFML)
                  const
                  #endif
                  &fnt, sf::Text &txt, std::string const &text, float x, float y, int txtSize)
@@ -239,7 +269,7 @@ void createText(sf::Font
 }
 
 void createText(sf::Font
-                 #if !defined(IS_ENGINE_HTML_5)
+                 #if defined(IS_ENGINE_SFML)
                  const
                  #endif
                  &fnt, sf::Text &txt, std::string const &text, float x, float y, bool centerText, int txtSize)
@@ -250,7 +280,7 @@ void createText(sf::Font
 }
 
 void createText(sf::Font
-                 #if !defined(IS_ENGINE_HTML_5)
+                 #if defined(IS_ENGINE_SFML)
                  const
                  #endif
                  &fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, int txtSize)
@@ -260,7 +290,7 @@ void createText(sf::Font
 }
 
 void createText(sf::Font
-                 #if !defined(IS_ENGINE_HTML_5)
+                 #if defined(IS_ENGINE_SFML)
                  const
                  #endif
                  &fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, bool centerText, int txtSize)
@@ -271,13 +301,13 @@ void createText(sf::Font
 
 /*
 void createText(sf::Font
-                 #if !defined(IS_ENGINE_HTML_5)
+                 #if defined(IS_ENGINE_SFML)
                  const
                  #endif
                  &fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, sf::Color outlineColor, int txtSize)
 {
     createText(fnt, txt, text, x, y, txtSize, underLined, boldText, italicText);
-    #if !defined(IS_ENGINE_HTML_5)
+    #if defined(IS_ENGINE_SFML)
     txt.setOutlineColor(outlineColor);
     txt.setOutlineThickness(1.f);
     #endif
@@ -286,7 +316,7 @@ void createText(sf::Font
 
 void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::Vector2f position, sf::Vector2f origin, bool smooth)
 {
-    #if !defined(IS_ENGINE_HTML_5)
+    #if defined(IS_ENGINE_SFML)
     tex.setSmooth(smooth);
     #endif
     spr.setTexture(tex);
@@ -298,7 +328,7 @@ void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::IntRect rec, sf::Vector
 {
     createSprite(tex, spr, position, origin, smooth);
     is::setSFMLObjTexRec(spr, rec.left, rec.top, rec.width, rec.height);
-    #if !defined(IS_ENGINE_HTML_5)
+    #if defined(IS_ENGINE_SFML)
     if (repeatTexture) tex.setRepeated(true);
     #endif
 }
@@ -335,19 +365,21 @@ sf::Vector2f getCursor(sf::RenderWindow &window
 
     if (worldPos.x < window.getView().getCenter().x) dx *= -1;
     if (worldPos.y < window.getView().getCenter().y) dy *= -1;
-
+    #if defined(IS_ENGINE_HTML_5)
+    dx += window.getView().getCenter().x - window.getView().getSize().x / 2.f;
+    dy += window.getView().getCenter().y - window.getView().getSize().y / 2.f;
+    #endif
     return sf::Vector2f(window.getView().getCenter().x + dx, window.getView().getCenter().y + dy);
 }
 
 short vibrate(short duration)
 {
     #if defined(__ANDROID__)
-    // First we'll need the native activity handle
-    ANativeActivity *activity = sf::getNativeActivity();
-
-    // Retrieve the JVM and JNI environment
-    JavaVM* vm = activity->vm;
-    JNIEnv* env = activity->env;
+    JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+    jobject activity = (jobject)SDL_AndroidGetActivity();
+    jclass clazz(env->GetObjectClass(activity));
+    JavaVM* vm;
+    env->GetJavaVM(&vm);
 
     // First, attach this thread to the main thread
     JavaVMAttachArgs attachargs;
@@ -368,7 +400,7 @@ short vibrate(short duration)
 
     // Get the method 'getSystemService' and call it
     jmethodID getss = env->GetMethodID(natact, "getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;");
-    jobject vib_obj = env->CallObjectMethod(activity->clazz, getss, svcstr);
+    jobject vib_obj = env->CallObjectMethod(activity, getss, svcstr);
 
     // Get the object's class and retrieve the member name
     jclass vib_cls = env->GetObjectClass(vib_obj);
@@ -386,6 +418,7 @@ short vibrate(short duration)
     env->DeleteLocalRef(svcstr);
     env->DeleteLocalRef(context);
     env->DeleteLocalRef(natact);
+    env->DeleteLocalRef(clazz);
 
     // Detach thread again
     // this line is comment because it cause a bug
@@ -396,17 +429,19 @@ short vibrate(short duration)
     is::showLog("Vibrate Called ! Time : " + is::numToStr(duration) + " ms");
     #endif // defined
 
-    return EXIT_SUCCESS;
+    return 1;//EXIT_SUCCESS;
 }
 
-void openURL(std::string urlStr)
+void openURL(const std::string& url)
 {
-    urlStr = "http://" + urlStr;
 
-    #if defined(__ANDROID__)
-    ANativeActivity *activity = sf::getNativeActivity();
-    JNIEnv *env = activity->env;
-    JavaVM* vm = activity->vm;
+    std::string urlStr = "http://" + url;
+
+#if defined(__ANDROID__)
+    JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+    jobject activity = (jobject)SDL_AndroidGetActivity();
+    JavaVM* vm;
+    env->GetJavaVM(&vm);
 
     vm->AttachCurrentThread(&env, NULL);
 
@@ -437,15 +472,22 @@ void openURL(std::string urlStr)
     env->CallVoidMethod(intent, newIntent, actionString, uri);
 
     jmethodID startActivity = env->GetMethodID(activityClass, "startActivity", "(Landroid/content/Intent;)V");
-    env->CallVoidMethod(activity->clazz, startActivity, intent);
+    env->CallVoidMethod(activity, startActivity, intent);
 
     env->DeleteLocalRef(activityClass);
     env->DeleteLocalRef(intentClass);
     env->DeleteLocalRef(uriClass);
     env->DeleteLocalRef(intent);
-
-    vm->DetachCurrentThread();
-    #else
+    env->DeleteLocalRef(activity);
+    //vm->DetachCurrentThread();
+#elif defined(IS_ENGINE_HTML_5)
+    std::vector<std::string> vectorArray;
+    vectorArray.push_back(urlStr);
+    EM_ASM_ARGS({
+      var vectorArray = new Module.VectorString($0);
+      window.open(vectorArray.get(0));
+    }, &vectorArray);
+#else
     std::string op =
     #if !defined(SFML_SYSTEM_LINUX)
                      std::string("start ")
@@ -454,54 +496,10 @@ void openURL(std::string urlStr)
     #endif // defined
         .append(urlStr);
     system(op.c_str());
-    #endif // defined
+#endif // defined
 }
 
 #if defined(__ANDROID__)
-void setScreenLock(bool disableLock)
-{
-    // First we'll need the native activity handle
-    ANativeActivity *activity = sf::getNativeActivity();
-
-    // Retrieve the JVM and JNI environment
-    JavaVM* vm = activity->vm;
-    JNIEnv* env = activity->env;
-
-    // First, attach this thread to the main thread
-    JavaVMAttachArgs attachargs;
-    attachargs.version = JNI_VERSION_1_6;
-    attachargs.name = "NativeThread";
-    attachargs.group = NULL;
-    vm->AttachCurrentThread(&env, &attachargs);
-
-    // Retrieve class information
-    jclass classActivity = env->FindClass("android/app/NativeActivity");
-    jclass context = env->FindClass("android/content/Context");
-    jclass classKeyMg = env->FindClass("android/app/KeyguardManager");
-    jclass classKeyLock = env->FindClass("android/app/KeyguardManager$KeyguardLock");
-
-    jfieldID fieldKeyGuard = env->GetStaticFieldID(context, "KEYGUARD_SERVICE", "Ljava/lang/String;");
-    jobject staticField = env->GetStaticObjectField(context, fieldKeyGuard);
-
-    jmethodID getSS = env->GetMethodID(classActivity, "getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;");
-    jobject keyguardManager = env->AllocObject(classKeyMg);
-    jobject objKeyguardManager = env->CallObjectMethod(activity->clazz, getSS, staticField);
-    keyguardManager = objKeyguardManager;
-
-    jmethodID newKeyguardLockId = env->GetMethodID(classKeyMg, "newKeyguardLock", "(Ljava/lang/String;)Landroid/app/KeyguardManager$KeyguardLock;");
-    jobject lock = env->AllocObject(classKeyLock);
-    jobject objKeyguardLock = env->CallObjectMethod(keyguardManager, newKeyguardLockId, staticField);
-    lock = objKeyguardLock;
-
-    std::string actionString = "disableKeyguard";
-    if (!disableLock) actionString = "reenableKeyguard";
-    jmethodID functKeyguardID = env->GetMethodID(classKeyLock, actionString.c_str(), "()V");
-    env->CallVoidMethod(lock, functKeyguardID);
-
-    // Detach thread again
-    vm->DetachCurrentThread();
-}
-
 std::string jstring2string(JNIEnv *env, jstring jStr)
 {
     if (!jStr) return "";

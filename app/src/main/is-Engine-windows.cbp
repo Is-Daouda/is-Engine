@@ -42,6 +42,8 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-std=gnu++17" />
+			<Add option="-std=c17" />
 			<Add directory="C:/SFML_CB_MinGW/include" />
 		</Compiler>
 		<Linker>
@@ -60,7 +62,6 @@
 			<Option compilerVar="WINDRES" />
 		</Unit>
 		<Unit filename="cpp/app_src/activity/GameActivity.h" />
-		<Unit filename="cpp/app_src/activity/SwooshFiles.h" />
 		<Unit filename="cpp/app_src/config/ExtraConfig.h" />
 		<Unit filename="cpp/app_src/config/GameConfig.h" />
 		<Unit filename="cpp/app_src/gamesystem_ext/GameSystemExtended.cpp" />
@@ -168,46 +169,6 @@
 		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/b2WorldCallbacks.h" />
 		<Unit filename="cpp/isEngine/ext_lib/Box2D/Rope/b2Rope.cpp" />
 		<Unit filename="cpp/isEngine/ext_lib/Box2D/Rope/b2Rope.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/BlackWashFade.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/BlendFadeIn.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/BlurFadeIn.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/Checkerboard.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/CircleClose.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/CircleOpen.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/CrossZoom.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/Cube3D.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/DiamondTileCircle.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/DiamondTileSwipe.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/HorizontalOpen.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/HorizontalSlice.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/Morph.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/PageTurn.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/PixelateBlackWashFade.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/PushIn.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/RadialCCW.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/RetroBlit.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/SlideIn.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/SwipeIn.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/VerticalOpen.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/VerticalSlice.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/WhiteWashFade.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/ZoomFadeIn.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/ZoomFadeInBounce.cpp" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/ZoomFadeInBounce.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/ZoomIn.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Segues/ZoomOut.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Swoosh/ActionList.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Swoosh/Activity.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Swoosh/ActivityController.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Swoosh/Ease.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Swoosh/EmbedGLSL.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Swoosh/Game.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Swoosh/Segue.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Swoosh/Shaders.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/Swoosh/Timer.h" />
-		<Unit filename="cpp/isEngine/ext_lib/Swoosh/do_not_copy/data/checkerboard.png.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Config.hpp" />
 		<Unit filename="cpp/isEngine/ext_lib/TMXLite/FreeFuncs.cpp" />
 		<Unit filename="cpp/isEngine/ext_lib/TMXLite/FreeFuncs.hpp" />
@@ -276,9 +237,13 @@
 		<Unit filename="cpp/isEngine/system/graphic/GameTexture.h" />
 		<Unit filename="cpp/isEngine/system/graphic/TransitionEffect.cpp" />
 		<Unit filename="cpp/isEngine/system/graphic/TransitionEffect.h" />
-		<Unit filename="cpp/isEngine/system/isEngineVector2Wrapper.inl" />
-		<Unit filename="cpp/isEngine/system/isEngineWrapper.cpp" />
-		<Unit filename="cpp/isEngine/system/isEngineWrapper.h" />
+		<Unit filename="cpp/isEngine/system/islibconnect/isEngineSDLWrapper.cpp" />
+		<Unit filename="cpp/isEngine/system/islibconnect/isEngineSDLWrapper.h" />
+		<Unit filename="cpp/isEngine/system/islibconnect/isEngineSMKWrapper.cpp" />
+		<Unit filename="cpp/isEngine/system/islibconnect/isEngineSMKWrapper.h" />
+		<Unit filename="cpp/isEngine/system/islibconnect/isEngineWrapper.cpp" />
+		<Unit filename="cpp/isEngine/system/islibconnect/isEngineWrapper.h" />
+		<Unit filename="cpp/isEngine/system/islibconnect/isLibConnect.h" />
 		<Unit filename="cpp/isEngine/system/sound/GSM.h" />
 		<Unit filename="cpp/isEngine/system/sound/GameMusic.h" />
 		<Unit filename="cpp/isEngine/system/sound/GameSound.h" />

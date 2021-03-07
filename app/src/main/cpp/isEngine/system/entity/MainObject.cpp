@@ -1,3 +1,24 @@
+/*
+  is::Engine (Infinity Solution Engine)
+  Copyright (C) 2018-2021 Is Daouda <isdaouda.n@gmail.com>
+
+  This software is provided 'as-is', without any express or implied
+  warranty.  In no event will the authors be held liable for any damages
+  arising from the use of this software.
+
+  Permission is granted to anyone to use this software for any purpose,
+  including commercial applications, and to alter it and redistribute it
+  freely, subject to the following restrictions:
+
+  1. The origin of this software must not be misrepresented; you must not
+     claim that you wrote the original software. If you use this software
+     in a product, an acknowledgment in the product documentation would be
+     appreciated but is not required.
+  2. Altered source versions must be plainly marked as such, and must not be
+     misrepresented as being the original software.
+  3. This notice may not be removed or altered from any source distribution.
+*/
+
 #include "MainObject.h"
 
 namespace is
@@ -430,7 +451,7 @@ void MainObject::drawMask(is::Render &surface, sf::Color color)
     if (m_w > 0 && m_h > 0)
     {
         sf::RectangleShape rec(sf::Vector2f(static_cast<float>(m_w), static_cast<float>(m_h)));
-        #if !defined(IS_ENGINE_HTML_5)
+        #if defined(IS_ENGINE_SFML)
         rec.setOutlineThickness(1.f);
         rec.setFillColor(sf::Color::Transparent);
         rec.setOutlineColor(color);
@@ -443,7 +464,7 @@ void MainObject::drawMask(is::Render &surface, sf::Color color)
     else if (m_circle.m_raduis > 0.f) // We draw the circle mask only if it has dimensions
     {
         sf::CircleShape circle(m_circle.m_raduis);
-        #if !defined(IS_ENGINE_HTML_5)
+        #if defined(IS_ENGINE_SFML)
         circle.setOutlineThickness(1.f);
         circle.setFillColor(sf::Color::Transparent);
         circle.setOutlineColor(color);
@@ -748,10 +769,10 @@ bool MainObject::inViewRec(sf::View const &view, bool useTexRec)
     else testRec = this->getMask();
 
     is::Rectangle viewRec;
-    viewRec.m_left   = view.getCenter().x - view.getSize().x / 2.f;
-    viewRec.m_right  = view.getCenter().x + view.getSize().x / 2.f;
-    viewRec.m_top    = view.getCenter().y - view.getSize().y / 2.f;
-    viewRec.m_bottom = view.getCenter().y + view.getSize().y / 2.f;
+    viewRec.m_left   = view.getCenter().x - (view.getSize().x / 2.f);
+    viewRec.m_right  = view.getCenter().x + (view.getSize().x / 2.f);
+    viewRec.m_top    = view.getCenter().y - (view.getSize().y / 2.f);
+    viewRec.m_bottom = view.getCenter().y + (view.getSize().y / 2.f);
 
     if (is::collisionTest(testRec, viewRec)) return true;
     return false;

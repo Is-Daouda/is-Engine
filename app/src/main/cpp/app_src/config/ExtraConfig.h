@@ -2,7 +2,7 @@
 #define EXTRACONFIG_H_INCLUDED
 
 // Uncomment to enable this function
-#define IS_ENGINE_RENDER ///< Allows engine to run on old machine
+// #define IS_ENGINE_USE_RENDER_TEXTURE ///< This feature coming soon !
 
 /*
  * 1) Uncomment this line (definition of the Preporcessor which is below) to use the engine's main render loop.

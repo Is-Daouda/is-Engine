@@ -1,3 +1,24 @@
+/*
+  is::Engine (Infinity Solution Engine)
+  Copyright (C) 2018-2021 Is Daouda <isdaouda.n@gmail.com>
+
+  This software is provided 'as-is', without any express or implied
+  warranty.  In no event will the authors be held liable for any damages
+  arising from the use of this software.
+
+  Permission is granted to anyone to use this software for any purpose,
+  including commercial applications, and to alter it and redistribute it
+  freely, subject to the following restrictions:
+
+  1. The origin of this software must not be misrepresented; you must not
+     claim that you wrote the original software. If you use this software
+     in a product, an acknowledgment in the product documentation would be
+     appreciated but is not required.
+  2. Altered source versions must be plainly marked as such, and must not be
+     misrepresented as being the original software.
+  3. This notice may not be removed or altered from any source distribution.
+*/
+
 #ifndef GSM_H_INCLUDED
 #define GSM_H_INCLUDED
 
@@ -27,7 +48,7 @@ public:
     /// it in the container in order to be able to access it
     /// \param filePath path of the sound file to add
     //////////////////////////////////////////////////////
-    virtual void GSMaddSound(std::string name, std::string filePath)
+    virtual void GSMaddSound(const std::string& name, const std::string& filePath)
     {
         auto obj = std::make_shared<GameSound>(name, filePath);
         m_GSMsound.push_back(obj);
@@ -40,14 +61,14 @@ public:
     /// it in the container in order to be able to access it
     /// \param filePath path of the music file to add
     //////////////////////////////////////////////////////
-    virtual void GSMaddMusic(std::string name, std::string filePath)
+    virtual void GSMaddMusic(const std::string& name, const std::string& filePath)
     {
         auto obj = std::make_shared<GameMusic>(name, filePath);
         m_GSMmusic.push_back(obj);
     }
 
     /// Allows to set sound loop
-    virtual void GSMsetSoundLoop(std::string name, bool loop)
+    virtual void GSMsetSoundLoop(const std::string& name, bool loop)
     {
         WITH (m_GSMsound.size())
         {
@@ -61,7 +82,7 @@ public:
     }
 
     /// Allows to set music loop
-    virtual void GSMsetMusicLoop(std::string name, bool loop)
+    virtual void GSMsetMusicLoop(const std::string& name, bool loop)
     {
         WITH (m_GSMmusic.size())
         {
@@ -75,7 +96,7 @@ public:
     }
 
     /// Allows to get sound in container by his name
-    virtual sf::Sound* GSMgetSound(std::string name)
+    virtual sf::Sound* GSMgetSound(const std::string& name)
     {
         WITH (m_GSMsound.size())
         {
@@ -89,7 +110,7 @@ public:
     }
 
     /// Allows to get music in container by his name
-    virtual sf::Music* GSMgetMusic(std::string name)
+    virtual sf::Music* GSMgetMusic(const std::string& name)
     {
         WITH (m_GSMmusic.size())
         {

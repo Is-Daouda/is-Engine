@@ -1,3 +1,24 @@
+/*
+  is::Engine (Infinity Solution Engine)
+  Copyright (C) 2018-2021 Is Daouda <isdaouda.n@gmail.com>
+
+  This software is provided 'as-is', without any express or implied
+  warranty.  In no event will the authors be held liable for any damages
+  arising from the use of this software.
+
+  Permission is granted to anyone to use this software for any purpose,
+  including commercial applications, and to alter it and redistribute it
+  freely, subject to the following restrictions:
+
+  1. The origin of this software must not be misrepresented; you must not
+     claim that you wrote the original software. If you use this software
+     in a product, an acknowledgment in the product documentation would be
+     appreciated but is not required.
+  2. Altered source versions must be plainly marked as such, and must not be
+     misrepresented as being the original software.
+  3. This notice may not be removed or altered from any source distribution.
+*/
+
 #ifndef TINYDIALOGBOX_H_INCLUDED
 #define TINYDIALOGBOX_H_INCLUDED
 
@@ -127,8 +148,8 @@ namespace is
         /// \return @a 1 when user click on @a OK button and @a 0 when @a CANCEL or @a NO button is clicked
         ///
         ////////////////////////////////////////////////////////////
-        static int showDialogBox(std::string title,
-                                 std::string msg,
+        static int showDialogBox(const std::string& title,
+                                 const std::string& msg,
                                  DialogType dialogType,
                                  IconType iconType
                                  )
@@ -153,11 +174,11 @@ namespace is
         ///
         ////////////////////////////////////////////////////////////
         static std::string showFileDialogBox(FileDialogType type,
-                                             std::string title,
+                                             const std::string& title,
                                              tinyString filterPatterns[],
-                                             std::string fileName = "file",
-                                             std::string msgError = "Unable to access file!",
-                                             std::string errTitle = "Error"
+                                             const std::string& fileName = "file",
+                                             const std::string& msgError = "Unable to access file!",
+                                             const std::string& errTitle = "Error"
                                              )
         {
             if (type == FileDialogType::SAVE_FILE)
@@ -201,15 +222,15 @@ namespace is
         /// \return directory path if the function succeeded and @a "" (empty string) is faliled
         ///
         ////////////////////////////////////////////////////////////
-        static std::string showFolderDialogBox(std::string title,
-                                               std::string defaultPath
+        static std::string showFolderDialogBox(const std::string& title,
+                                               const std::string& defaultPath
                                                #if !defined(SFML_SYSTEM_LINUX)
                                                 = "C:\\",
                                                #else
                                                 = "/usr/local",
                                                #endif
-                                               std::string msgError = "Unable to access folder!",
-                                               std::string errTitle = "Error"
+                                               const std::string& msgError = "Unable to access folder!",
+                                               const std::string& errTitle = "Error"
                                                )
         {
             TINY_FILE_DIALOGBOX_PATH =

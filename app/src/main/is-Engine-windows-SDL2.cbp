@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="is-Engine-windows" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin-codeblocks/Debug/is-Engine-windows" prefix_auto="1" extension_auto="1" />
+				<Option object_output="bin-codeblocks/obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin-codeblocks/Release/is-Engine-windows" prefix_auto="1" extension_auto="1" />
+				<Option object_output="bin-codeblocks/obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-DIS_ENGINE_SDL_2" />
+			<Add directory="C:/SDL2/x86_64-w64-mingw32/include/SDL2" />
+		</Compiler>
+		<Linker>
+			<Add library="mingw32" />
+			<Add library="user32" />
+			<Add library="gdi32" />
+			<Add library="winmm" />
+			<Add library="dxguid" />
+			<Add library="kernel32" />
+			<Add library="comctl32" />
+			<Add library="Ole32" />
+			<Add library="comdlg32" />
+			<Add library="SDL2main" />
+			<Add library="SDL2.dll" />
+			<Add library="SDL2_image.dll" />
+			<Add library="SDL2_image" />
+			<Add library="SDL2_mixer.dll" />
+			<Add library="SDL2_mixer" />
+			<Add library="SDL2_ttf.dll" />
+			<Add library="SDL2_ttf" />
+			<Add directory="C:/SDL2/x86_64-w64-mingw32/lib" />
+		</Linker>
+		<ExtraCommands>
+			<Add after="XCOPY $(#sdl2)\bin\*.dll $(TARGET_OUTPUT_DIR) /D /Y" />
+		</ExtraCommands>
+		<Unit filename="codeblocks/resource.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="cpp/app_src/activity/GameActivity.h" />
+		<Unit filename="cpp/app_src/config/ExtraConfig.h" />
+		<Unit filename="cpp/app_src/config/GameConfig.h" />
+		<Unit filename="cpp/app_src/gamesystem_ext/GameSystemExtended.cpp" />
+		<Unit filename="cpp/app_src/gamesystem_ext/GameSystemExtended.h" />
+		<Unit filename="cpp/app_src/language/GameLanguage.h" />
+		<Unit filename="cpp/app_src/levels/Level.h" />
+		<Unit filename="cpp/app_src/objects/HelloWorld.h" />
+		<Unit filename="cpp/app_src/objects/widgets/GameDialog.cpp" />
+		<Unit filename="cpp/app_src/objects/widgets/GameDialog.h" />
+		<Unit filename="cpp/app_src/scenes/HelloScene/HelloScene.h" />
+		<Unit filename="cpp/basicSFMLmain.cpp" />
+		<Unit filename="cpp/isEngine/core/ActivityController.h" />
+		<Unit filename="cpp/isEngine/core/GameEngine.cpp" />
+		<Unit filename="cpp/isEngine/core/GameEngine.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Box2D.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/Shapes/b2ChainShape.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/Shapes/b2ChainShape.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/Shapes/b2CircleShape.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/Shapes/b2CircleShape.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/Shapes/b2EdgeShape.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/Shapes/b2EdgeShape.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/Shapes/b2PolygonShape.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/Shapes/b2PolygonShape.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/Shapes/b2Shape.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/b2BroadPhase.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/b2BroadPhase.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/b2CollideCircle.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/b2CollideEdge.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/b2CollidePolygon.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/b2Collision.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/b2Collision.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/b2Distance.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/b2Distance.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/b2DynamicTree.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/b2DynamicTree.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/b2TimeOfImpact.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Collision/b2TimeOfImpact.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Common/b2BlockAllocator.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Common/b2BlockAllocator.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Common/b2Draw.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Common/b2Draw.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Common/b2GrowableStack.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Common/b2Math.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Common/b2Math.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Common/b2Settings.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Common/b2Settings.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Common/b2StackAllocator.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Common/b2StackAllocator.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Common/b2Timer.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Common/b2Timer.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2ChainAndCircleContact.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2ChainAndCircleContact.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2CircleContact.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2CircleContact.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2Contact.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2Contact.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2ContactSolver.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2ContactSolver.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2PolygonContact.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Contacts/b2PolygonContact.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2DistanceJoint.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2DistanceJoint.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2FrictionJoint.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2FrictionJoint.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2GearJoint.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2GearJoint.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2Joint.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2Joint.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2MotorJoint.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2MotorJoint.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2MouseJoint.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2MouseJoint.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2PrismaticJoint.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2PrismaticJoint.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2PulleyJoint.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2PulleyJoint.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2RevoluteJoint.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2RevoluteJoint.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2RopeJoint.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2RopeJoint.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2WeldJoint.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2WeldJoint.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2WheelJoint.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/Joints/b2WheelJoint.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/b2Body.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/b2Body.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/b2ContactManager.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/b2ContactManager.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/b2Fixture.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/b2Fixture.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/b2Island.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/b2Island.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/b2TimeStep.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/b2World.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/b2World.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/b2WorldCallbacks.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/b2WorldCallbacks.h" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Rope/b2Rope.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/Box2D/Rope/b2Rope.h" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Config.hpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/FreeFuncs.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/FreeFuncs.hpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/ImageLayer.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/ImageLayer.hpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Layer.hpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/LayerGroup.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/LayerGroup.hpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Map.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Map.hpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Object.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Object.hpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/ObjectGroup.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/ObjectGroup.hpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Property.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Property.hpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/TileLayer.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/TileLayer.hpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Tileset.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Tileset.hpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Types.hpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/detail/Android.hpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/detail/Log.hpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/detail/pugiconfig.hpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/detail/pugixml.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/detail/pugixml.hpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/miniz.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="cpp/isEngine/ext_lib/TMXLite/miniz.h" />
+		<Unit filename="cpp/isEngine/ext_lib/TinyFileDialogs/TinyDialogBox.h" />
+		<Unit filename="cpp/isEngine/ext_lib/TinyFileDialogs/tinyfiledialogs.cpp" />
+		<Unit filename="cpp/isEngine/ext_lib/TinyFileDialogs/tinyfiledialogs.h" />
+		<Unit filename="cpp/isEngine/system/android/AdmobManager.h" />
+		<Unit filename="cpp/isEngine/system/display/GameDisplay.cpp" />
+		<Unit filename="cpp/isEngine/system/display/GameDisplay.h" />
+		<Unit filename="cpp/isEngine/system/display/SDM.h" />
+		<Unit filename="cpp/isEngine/system/entity/Background.h" />
+		<Unit filename="cpp/isEngine/system/entity/Button.h" />
+		<Unit filename="cpp/isEngine/system/entity/Form.h" />
+		<Unit filename="cpp/isEngine/system/entity/MainObject.cpp" />
+		<Unit filename="cpp/isEngine/system/entity/MainObject.h" />
+		<Unit filename="cpp/isEngine/system/entity/parents/DepthObject.h" />
+		<Unit filename="cpp/isEngine/system/entity/parents/Destructible.h" />
+		<Unit filename="cpp/isEngine/system/entity/parents/FilePath.h" />
+		<Unit filename="cpp/isEngine/system/entity/parents/Health.h" />
+		<Unit filename="cpp/isEngine/system/entity/parents/HurtEffect.h" />
+		<Unit filename="cpp/isEngine/system/entity/parents/Name.h" />
+		<Unit filename="cpp/isEngine/system/entity/parents/ScorePoint.h" />
+		<Unit filename="cpp/isEngine/system/entity/parents/Step.h" />
+		<Unit filename="cpp/isEngine/system/entity/parents/Type.h" />
+		<Unit filename="cpp/isEngine/system/entity/parents/Visibilty.h" />
+		<Unit filename="cpp/isEngine/system/function/GameFunction.cpp" />
+		<Unit filename="cpp/isEngine/system/function/GameFunction.h" />
+		<Unit filename="cpp/isEngine/system/function/GameKeyData.cpp" />
+		<Unit filename="cpp/isEngine/system/function/GameKeyData.h" />
+		<Unit filename="cpp/isEngine/system/function/GameKeyName.h" />
+		<Unit filename="cpp/isEngine/system/function/GameSlider.cpp" />
+		<Unit filename="cpp/isEngine/system/function/GameSlider.h" />
+		<Unit filename="cpp/isEngine/system/function/GameSystem.cpp" />
+		<Unit filename="cpp/isEngine/system/function/GameSystem.h" />
+		<Unit filename="cpp/isEngine/system/function/GameTime.cpp" />
+		<Unit filename="cpp/isEngine/system/function/GameTime.h" />
+		<Unit filename="cpp/isEngine/system/graphic/GRM.h" />
+		<Unit filename="cpp/isEngine/system/graphic/GameFont.h" />
+		<Unit filename="cpp/isEngine/system/graphic/GameTexture.h" />
+		<Unit filename="cpp/isEngine/system/graphic/TransitionEffect.cpp" />
+		<Unit filename="cpp/isEngine/system/graphic/TransitionEffect.h" />
+		<Unit filename="cpp/isEngine/system/islibconnect/isEngineSDLWrapper.cpp" />
+		<Unit filename="cpp/isEngine/system/islibconnect/isEngineSDLWrapper.h" />
+		<Unit filename="cpp/isEngine/system/islibconnect/isEngineSMKWrapper.cpp" />
+		<Unit filename="cpp/isEngine/system/islibconnect/isEngineSMKWrapper.h" />
+		<Unit filename="cpp/isEngine/system/islibconnect/isEngineWrapper.cpp" />
+		<Unit filename="cpp/isEngine/system/islibconnect/isEngineWrapper.h" />
+		<Unit filename="cpp/isEngine/system/islibconnect/isLibConnect.h" />
+		<Unit filename="cpp/isEngine/system/sound/GSM.h" />
+		<Unit filename="cpp/isEngine/system/sound/GameMusic.h" />
+		<Unit filename="cpp/isEngine/system/sound/GameSound.h" />
+		<Unit filename="cpp/main.cpp" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

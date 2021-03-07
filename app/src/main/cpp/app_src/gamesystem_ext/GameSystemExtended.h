@@ -43,6 +43,7 @@ public:
     int   m_currentLives;
     int   m_currentBonus;
     int   m_currentScore;
+    int   m_currentHiScore;
     int   m_levelTime;
 };
 }

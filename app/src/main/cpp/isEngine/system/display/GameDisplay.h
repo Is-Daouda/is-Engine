@@ -1,3 +1,24 @@
+/*
+  is::Engine (Infinity Solution Engine)
+  Copyright (C) 2018-2021 Is Daouda <isdaouda.n@gmail.com>
+
+  This software is provided 'as-is', without any express or implied
+  warranty.  In no event will the authors be held liable for any damages
+  arising from the use of this software.
+
+  Permission is granted to anyone to use this software for any purpose,
+  including commercial applications, and to alter it and redistribute it
+  freely, subject to the following restrictions:
+
+  1. The origin of this software must not be misrepresented; you must not
+     claim that you wrote the original software. If you use this software
+     in a product, an acknowledgment in the product documentation would be
+     appreciated but is not required.
+  2. Altered source versions must be plainly marked as such, and must not be
+     misrepresented as being the original software.
+  3. This notice may not be removed or altered from any source distribution.
+*/
+
 #ifndef GAMEDISPLAY_H_INCLUDED
 #define GAMEDISPLAY_H_INCLUDED
 
@@ -34,7 +55,12 @@ class GameDisplay
 public:
     bool m_isClose;
 
-    GameDisplay(sf::RenderWindow &window, sf::View &view, is::Render &surface, GameSystemExtended &gameSysExt, sf::Color bgColor);
+    /*  					/!\ WARNING! /!\
+     * This constructor is no longer supported in this version of the engine. Use the one below.
+     *
+     * GameDisplay(sf::RenderWindow &window, sf::View &view, is::Render &surface, GameSystemExtended &gameSysExt, sf::Color bgColor);
+     */
+    GameDisplay(GameSystemExtended &gameSysExt, sf::Color bgColor);
     virtual ~GameDisplay();
 
     ////////////////////////////////////////////////////////////
@@ -119,7 +145,7 @@ public:
     virtual void setWindowSize(sf::Vector2u v, bool updateViewSize = false);
 
     /// Set window title
-    virtual void setWindowTitle(const sf::String &title);
+    virtual void setWindowTitle(const std::string &title);
 
     /// Set background color
     virtual void setWindowBgColor(sf::Color color);
@@ -167,7 +193,7 @@ public:
     virtual bool getKeyBackPressed() const {return m_keyBackPressed;}
 
     /// Return scene view
-    virtual sf::View& getView() const {return m_view;}
+    virtual const sf::View& getView() const noexcept {return m_view;}
 
     /// Return render window
     virtual sf::RenderWindow& getRenderWindow() const {return m_window;}
@@ -345,22 +371,22 @@ public:
     #endif // defined
 
     /// Allows to play sound in container by his name
-    virtual void GSMplaySound(std::string name);
+    virtual void GSMplaySound(const std::string& name);
 
     /// Allows to pause sound in container by his name
-    virtual void GSMpauseSound(std::string name);
+    virtual void GSMpauseSound(const std::string& name);
 
     /// Allows to stop sound in container by his name
-    virtual void GSMstopSound(std::string name);
+    virtual void GSMstopSound(const std::string& name);
 
     /// Allows to play music in container by his name
-    virtual void GSMplayMusic(std::string name);
+    virtual void GSMplayMusic(const std::string& name);
 
     /// Allows to pause music in container by his name
-    virtual void GSMpauseMusic(std::string name);
+    virtual void GSMpauseMusic(const std::string& name);
 
     /// Allows to stop music in container by his name
-    virtual void GSMstopMusic(std::string name);
+    virtual void GSMstopMusic(const std::string& name);
 
     /// Show message box according to type
     template<class T1>
@@ -430,7 +456,7 @@ protected:
     };
 
     /// Update message box components
-    void updateMsgBox(int sliderDirection, bool rightSideValidation,
+    void updateMsgBox(int sliderDirection = 0, bool rightSideValidation = false,
                       sf::Color textDefaultColor = is::GameConfig::DEFAULT_MSG_BOX_TEXT_COLOR,
                       sf::Color selectedTextColor = is::GameConfig::DEFAULT_MSG_BOX_SELECTED_TEXT_COLOR);
 
@@ -441,7 +467,7 @@ protected:
     void drawMsgBox();
 
     sf::RenderWindow &m_window;
-    sf::View &m_view;
+    sf::View m_view;
 
     is::Render &m_surface;
     GameSystemExtended &m_gameSysExt;
@@ -466,6 +492,7 @@ protected:
     bool m_showMsg, m_mbYesNo, m_msgBoxMouseInCollison;
 
     sf::Sprite m_sprMsgBox, m_sprMsgBoxButton1, m_sprMsgBoxButton2, m_sprMsgBoxButton3;
+    sf::Sprite m_sprLoading;
     sf::Text m_txtMsgBox, m_txtMsgBoxYes, m_txtMsgBoxNo, m_txtMsgBoxOK;
     sf::RectangleShape m_recMsgBox;
 };

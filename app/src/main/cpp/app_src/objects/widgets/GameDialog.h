@@ -40,11 +40,11 @@ public:
     ////////////////////////////////////////////////////////////
     void linkArrayToEnum()
     {
-        auto setMsg = [this](std::wstring txt)
+        auto setMsg = [this](std::string txt)
         {
             m_strDialog = txt;
         };
-        auto checkMsg =[this, &setMsg](std::wstring txt[])
+        auto checkMsg =[this, &setMsg](std::string txt[])
         {
             if (m_msgIndex < m_msgIndexMax) setMsg(txt[m_msgIndex + m_scene->getGameSystem().m_gameLanguage]);
         };
@@ -93,7 +93,7 @@ public:
 private:
     is::GameDisplay *m_scene;
     sf::Text m_txtDialog, m_txtSkip;
-    std::wstring m_strDialog;
+    std::string m_strDialog;
     sf::Sprite m_sprNext, m_sprSkip;
 
     bool m_showDialog, m_mouseInCollison, m_dialogEnd, m_newLine;

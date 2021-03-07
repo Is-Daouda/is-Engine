@@ -29,6 +29,7 @@ void GameSystemExtended::initProgress()
     m_currentBonus = 0;
     m_currentLevel = 0;
     m_currentScore = 0;
+    m_currentHiScore = 0;
 }
 
 void GameSystemExtended::initSystemData()
@@ -40,11 +41,14 @@ void GameSystemExtended::initSystemData()
     // Determine the number of levels
     // LEVEL_MAX - 1 because we count the number of levels from zero (0) as for the array)
     m_levelNumber = is::level::LevelId::LEVEL_MAX - 1;
+
+    initProgress();
 }
 
 void GameSystemExtended::initData(bool clearCurrentLevel)
 {
     if (clearCurrentLevel) m_currentLevel = 0; // LEVEL 1
+    m_currentLives = 3;
     m_currentBonus = 0;
     m_currentScore = 0;
 }
@@ -59,6 +63,7 @@ void GameSystemExtended::saveData(std::string const &fileName)
         fwrite(&m_gameProgression, sizeof(int), 1, file);
         fwrite(&m_currentLives, sizeof(int), 1, file);
         fwrite(&m_currentBonus, sizeof(int), 1, file);
+        fwrite(&m_currentHiScore, sizeof(int), 1, file);
         fclose(file);
     }
 }
@@ -73,6 +78,7 @@ void GameSystemExtended::loadData(std::string const &fileName)
         fread(&m_gameProgression, sizeof(int), 1, file);
         fread(&m_currentLives, sizeof(int), 1, file);
         fread(&m_currentBonus, sizeof(int), 1, file);
+        fread(&m_currentHiScore, sizeof(int), 1, file);
         fclose(file);
     }
 }

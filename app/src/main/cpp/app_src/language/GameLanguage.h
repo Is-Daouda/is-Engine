@@ -48,10 +48,10 @@ static std::string msg_quit_game[] = {"Quit Game", "Quitter le Jeu"};
 // ------------------------ RPG dialog ------------------------
 static std::string pad_dialog_skip[] = {"Skip", "Passer"};
 
-static std::wstring dialog_hello[] = {L"Hello !",
-                                          L"Salut !",
-                                      L"Ready to make the future best game in the world!",
-                                          L"Prêt à créer le futur meilleur jeu du monde !"};
+static std::string dialog_hello[] = {"Hello !",
+                                          "Salut !",
+                                      "Ready to make the future best game in the world!",
+                                          "En route pour invinter le futur meilleur jeu du monde !"};
 
 // example
 // static std::wstring dialog_your_dialog[] = {L"Represents the first message of the dialog in English",

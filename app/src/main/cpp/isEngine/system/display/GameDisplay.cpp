@@ -1,3 +1,24 @@
+/*
+  is::Engine (Infinity Solution Engine)
+  Copyright (C) 2018-2021 Is Daouda <isdaouda.n@gmail.com>
+
+  This software is provided 'as-is', without any express or implied
+  warranty.  In no event will the authors be held liable for any damages
+  arising from the use of this software.
+
+  Permission is granted to anyone to use this software for any purpose,
+  including commercial applications, and to alter it and redistribute it
+  freely, subject to the following restrictions:
+
+  1. The origin of this software must not be misrepresented; you must not
+     claim that you wrote the original software. If you use this software
+     in a product, an acknowledgment in the product documentation would be
+     appreciated but is not required.
+  2. Altered source versions must be plainly marked as such, and must not be
+     misrepresented as being the original software.
+  3. This notice may not be removed or altered from any source distribution.
+*/
+
 #include "GameDisplay.h"
 
 namespace is
@@ -9,15 +30,11 @@ sf::Vector2f getMapPixelToCoords(GameDisplay const *scene, sf::Vector2i pixelPos
 }
 #endif
 
-GameDisplay::GameDisplay(sf::RenderWindow &window, sf::View &view, is::Render &surface, GameSystemExtended &gameSysExt, sf::Color bgColor):
+GameDisplay::GameDisplay(GameSystemExtended &gameSysExt, sf::Color bgColor):
     m_isClose(false),
-    m_window(window),
-    m_view(view),
-    #if defined(IS_ENGINE_HTML_5)
-    m_surface(window),
-    #else
-    m_surface(surface),
-    #endif
+    m_window(gameSysExt.m_window),
+    m_view(sf::Vector2f(is::GameConfig::VIEW_WIDTH / 2.f, is::GameConfig::VIEW_HEIGHT / 2.f), sf::Vector2f(is::GameConfig::VIEW_WIDTH, is::GameConfig::VIEW_HEIGHT)),
+    m_surface(gameSysExt.m_window),
     m_gameSysExt(gameSysExt),
     m_timeVibrateDuration(40),
     m_optionIndex(0),
@@ -152,7 +169,7 @@ void GameDisplay::setWindowSize(sf::Vector2u v, bool updateViewSize)
     #endif // defined
 }
 
-void GameDisplay::setWindowTitle(const sf::String &title)
+void GameDisplay::setWindowTitle(const std::string &title)
 {
     #if !defined(IS_ENGINE_HTML_5)
     m_window.setTitle(title);
@@ -375,6 +392,7 @@ void GameDisplay::drawScreen()
     #if defined(__ANDROID__)
     }
     #endif // defined
+    is::display(m_window);
 }
 
 void GameDisplay::showTempLoading(float time)
@@ -405,9 +423,9 @@ void GameDisplay::showTempLoading(float time)
 void GameDisplay::loadParentResources()
 {
     // Load sound
-    GSMaddSound("change_option", is::GameConfig::SFX_DIR + "change_option.ogg");
-    GSMaddSound("cancel", is::GameConfig::SFX_DIR + "cancel.ogg");
-    GSMaddSound("select_option", is::GameConfig::SFX_DIR + "select_option.ogg");
+    GSMaddSound("change_option", is::GameConfig::SFX_DIR + "change_option.wav");
+    GSMaddSound("cancel", is::GameConfig::SFX_DIR + "cancel.wav");
+    GSMaddSound("select_option", is::GameConfig::SFX_DIR + "select_option.wav");
 
     // Load message box sprite
     auto &texMsgBox    = GRMaddTexture("confirm_box", is::GameConfig::GUI_DIR + "confirm_box.png");
@@ -440,6 +458,9 @@ void GameDisplay::loadParentResources()
                    0.f, 0.f, true, 18);
     is::createText(fontSystem, m_txtMsgBoxOK, is::lang::pad_answer_ok[m_gameSysExt.m_gameLanguage],
                    0.f, 0.f, true, 18);
+
+   createSprite(GRMaddTexture("temp_loading", is::GameConfig::GUI_DIR + "temp_loading.png"),
+            m_sprLoading, sf::Vector2f(m_viewX, m_viewY), sf::Vector2f(320.f, 240.f));
 }
 
 void GameDisplay::setIsRunning(bool val)
@@ -638,7 +659,7 @@ void GameDisplay::SDMdraw()
 }
 #endif // defined
 
-void GameDisplay::GSMplaySound(std::string name)
+void GameDisplay::GSMplaySound(const std::string& name)
 {
     bool soundExist(false);
     WITH (m_GSMsound.size())
@@ -647,14 +668,14 @@ void GameDisplay::GSMplaySound(std::string name)
         {
             soundExist = true;
             if (m_GSMsound[_I]->getFileIsLoaded()) m_gameSysExt.playSound(m_GSMsound[_I]->getSound());
-            else is::showLog("ERROR: Sound exists but can't play <" + name + "> sound!");
+            else is::showLog("ERROR: Can't play <" + name + "> sound!");
             break;
         }
     }
     if (!soundExist) is::showLog("ERROR: Can't play <" + name + "> sound because sound not exists!");
 }
 
-void GameDisplay::GSMpauseSound(std::string name)
+void GameDisplay::GSMpauseSound(const std::string& name)
 {
     bool soundExist(false);
     WITH (m_GSMsound.size())
@@ -666,14 +687,14 @@ void GameDisplay::GSMpauseSound(std::string name)
             {
                 if (is::checkSFMLSndState(m_GSMsound[_I]->getSound(), is::SFMLSndStatus::Playing)) m_GSMsound[_I]->getSound().pause();
             }
-            else is::showLog("ERROR: Sound exists but can't stop <" + name + "> sound!");
+            else is::showLog("ERROR: Can't pause <" + name + "> sound!");
             break;
         }
     }
     if (!soundExist) is::showLog("ERROR: Can't pause <" + name + "> sound because sound not exists!");
 }
 
-void GameDisplay::GSMstopSound(std::string name)
+void GameDisplay::GSMstopSound(const std::string& name)
 {
     bool soundExist(false);
     WITH (m_GSMsound.size())
@@ -685,14 +706,14 @@ void GameDisplay::GSMstopSound(std::string name)
             {
                 if (is::checkSFMLSndState(m_GSMsound[_I]->getSound(), is::SFMLSndStatus::Playing)) m_GSMsound[_I]->getSound().stop();
             }
-            else is::showLog("ERROR: Sound exists but can't stop <" + name + "> sound!");
+            else is::showLog("ERROR: Can't stop <" + name + "> sound!");
             break;
         }
     }
     if (!soundExist) is::showLog("ERROR: Can't stop <" + name + "> sound because sound not exists!");
 }
 
-void GameDisplay::GSMplayMusic(std::string name)
+void GameDisplay::GSMplayMusic(const std::string& name)
 {
     bool musicExist(false);
     WITH (m_GSMmusic.size())
@@ -701,14 +722,14 @@ void GameDisplay::GSMplayMusic(std::string name)
         {
             musicExist = true;
             if (m_GSMmusic[_I]->getFileIsLoaded()) m_gameSysExt.playMusic(m_GSMmusic[_I]->getMusic());
-            else is::showLog("ERROR: Music exists but can't play <" + name + "> music!");
+            else is::showLog("ERROR: Can't play <" + name + "> music!");
             break;
         }
     }
     if (!musicExist) is::showLog("ERROR: Can't play <" + name + "> music because music not exists!");
 }
 
-void GameDisplay::GSMpauseMusic(std::string name)
+void GameDisplay::GSMpauseMusic(const std::string& name)
 {
     bool musicExist(false);
     WITH (m_GSMmusic.size())
@@ -720,14 +741,14 @@ void GameDisplay::GSMpauseMusic(std::string name)
             {
                 if (is::checkSFMLSndState(m_GSMmusic[_I]->getMusic(), is::SFMLSndStatus::Playing)) m_GSMmusic[_I]->getMusic().pause();
             }
-            else is::showLog("ERROR: Music exists but can't stop <" + name + "> music!");
+            else is::showLog("ERROR: Can't pause <" + name + "> music!");
             break;
         }
     }
     if (!musicExist) is::showLog("ERROR: Can't pause <" + name + "> music because music not exists!");
 }
 
-void GameDisplay::GSMstopMusic(std::string name)
+void GameDisplay::GSMstopMusic(const std::string& name)
 {
     bool musicExist(false);
     WITH (m_GSMmusic.size())
@@ -739,7 +760,7 @@ void GameDisplay::GSMstopMusic(std::string name)
             {
                 if (is::checkSFMLSndState(m_GSMmusic[_I]->getMusic(), is::SFMLSndStatus::Playing)) m_GSMmusic[_I]->getMusic().stop();
             }
-            else is::showLog("ERROR: Music exists but can't stop <" + name + "> music!");
+            else is::showLog("ERROR: Can't stop <" + name + "> music!");
             break;
         }
     }
