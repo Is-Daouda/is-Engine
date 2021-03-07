@@ -75,7 +75,7 @@ Which means that you can now publish your C++ games on Google Play! (Yeaaah !!!)
 ```cpp
 std::vector<std::string> vectorArray;
 vectorArray.push_back("is::Engine is really great!");
-vectorArray.push_back("With it everything is possible!");
+vectorArray.push_back("With this tool everything is possible!");
 vectorArray.push_back("I'm sure you'll love it!");
 
 // The javascripts part
@@ -89,7 +89,7 @@ EM_ASM_ARGS({
 *Output in the browser console:*
 ```
 is::Engine is really great!
-With it everything is possible!
+With this tool everything is possible!
 I'm sure you'll love it!
 ```
 ## Extras
