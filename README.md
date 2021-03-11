@@ -279,7 +279,7 @@ If all goes well you will have a **Hello World Screen** on your **Web Browser**.
 ## ![Web Push Notification](https://i48.servimg.com/u/f48/20/16/75/27/notif_10.png) Web Push Notification
 - If you want to make your SFML project compatible with the Web (Be able to run it in a web browser), please watch this **[video tutorial](https://youtu.be/x_YQLHoPMbc)**.
 
-- ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png)
+- ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png)<br>
 By default the web push notification has been disabled. Because to make it work you must have an internet connection. In case there is no internet access and it is not well launched, it can prevent the execution of the web program.<br>
 To enable it, please modify these lines: **[9](./app/src/main/web/index.html#L9), [25](./app/src/main/web/index.html#L25), [68](./app/src/main/web/index.html#L68)**
 
