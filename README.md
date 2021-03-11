@@ -281,7 +281,7 @@ If all goes well you will have a **Hello World Screen** on your **Web Browser**.
 
 - ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png)<br>
 By default the web push notification has been disabled. Because to make it work you must have an internet connection. In case there is no internet access and it is not well launched, it can prevent the execution of the web program.<br>
-To enable it, please modify these lines in **[index.html](./app/src/main/web/index.html)**: **[9](./app/src/main/web/index.html#L9), [25](./app/src/main/web/index.html#L25), [68](./app/src/main/web/index.html#L68)**
+To enable it, please modify these lines in **[index.html](./app/src/main/web/index.html)** : **[9](./app/src/main/web/index.html#L9), [25](./app/src/main/web/index.html#L25), [68](./app/src/main/web/index.html#L68)**
 
 #### Installation
 - This shows how to test the push notification. Note that normally to use it, you have to associate it with a database (backend). But here we will use it with the **Push Companion** site **(It will serve as a backend for us!)**.
