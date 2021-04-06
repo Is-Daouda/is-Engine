@@ -1,7 +1,7 @@
 ![header](./images/is_Engine_logo.png)
 ----------------------------
 
-# is::Engine (Infinity Solutions::Engine) 3.3
+# is::Engine (Infinity Solutions::Engine) 3.3.1
 Open source C++ framework which uses the mechanisms of **SFML 2** and which also allows to develop with several libraries at the same time **(SDL 2, SMK-Emscripten)** in order to easily export your games / applications on the **Web (HTML 5), Android** and **PC (Windows, Linux)**.
 
 ## Contents
@@ -34,7 +34,7 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 [Emscripten](#-web-html-5---css-3), 
 [Visual Studio Code](#-visual-studio-code), 
 [Code::Block](#-codeblocks))
-- is::LibConnect
+- [is::LibConnect](#islibconnect)
 - [Web Push Notification](#-web-push-notification)
 - SDM (Step and Draw Manager)
 - GSM (Game Sound Manager)
@@ -61,7 +61,13 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
-### 3.3
+### 3.3.1
+1. Correction du bug qui déformait les images lors de la rotation.
+2. Optimisation de la partie rendu du moteur qui utilise SDL. Les jeux sont maintenant plus fluides !
+3. Intégration d'un système de sauvegarde de fichier pour le Web (HTML 5). Plus besoin de ré-implémenter le vôtre !
+4. La fonction OpenURL permet maintenant de lancer des appels téléphoniques (sur Android) et de contacter par email.
+
+### previous version
 1. **[The is::LibConnect function](#islibconnect)**: Allows you to develop with several game libraries at the same time (SFML, SDL 2, SMK (Emscripten)) in one and the same project!
 2. **[Possibility to develop C++ SFML games with SDL 2](#-develop-sfml-games-with-sdl-2)** (Your SFML games will run on the SDL 2 library! Yes, yes it is possible!). Book for Code::Block users for the moment!
 3. **Support for Android x64 architectures**: Now you can export your C++ games to several Android architectures (armeabi-v7a, arm64-v8a, x86, x64, ...).
@@ -183,7 +189,6 @@ This project uses the template of **Georgik**. For more information on this temp
 ## ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) Very important
 - On Android SFML games run with SDL library. If you want to use SDL functions in your source code, use the **IS_ENGINE_SDL_2 macro**.
 - The audio format supported at the moment is **.WAV**
-- When you use the image rotation function, it may happen that some images are distorted, this is caused by the screen resizing. Note that you can work around this bug by using your own rotating image (a sprite sheet for example).
 - Some SFML functions like: **Vertex Array, Render Texture** are not yet supported. These additions will be made soon!
 - **std::wstring** text is not yet well supported (special characters are not displayed well)
 - **Your help to improve the engine will be welcome!**

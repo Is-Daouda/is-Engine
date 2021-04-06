@@ -40,14 +40,32 @@ EMSCRIPTEN_BINDINGS(Wrappers) {
 ////////////////////////////////////////////////////////////
 int main(int argc, char * argv[])
 {
+#if defined(IS_ENGINE_HTML_5)
+    std::vector<std::string> vectorArray;
+    char saveDir[is::GameConfig::DATA_PARENT_DIR.size() - 1];
+    for (unsigned int i(0); i < is::GameConfig::DATA_PARENT_DIR.size() - 1; i++)
+        saveDir[i] = is::GameConfig::DATA_PARENT_DIR[i];
+    vectorArray.push_back(saveDir);
+    EM_ASM(
+        var vectorArray = new Module.VectorString($0);
+        console.log(vectorArray.get(0));
+        FS.mkdir(vectorArray.get(0));
+        FS.mount(IDBFS, {}, vectorArray.get(0));
+        Module.print("Start file sync...");
+        Module.syncdone = 0;
+        FS.syncfs(true, function(err){
+                Module.print("End file sync../");
+                Module.syncdone = 1;
+                });
+      , &vectorArray);
+#endif
+
+    is::GameEngine game;
 #if defined(IS_ENGINE_VS_CODE)
 #if defined(_DEBUG)
 	// Display a text in the console to inform that we are in Debug mode on Visual Studio Code
 	is::showLog("Debug Mode Start!");
 #endif
-#endif
-    is::GameEngine game;
-#if defined(IS_ENGINE_VS_CODE)
 #ifdef SFML_SYSTEM_WINDOWS
 	// Allows to create the icon for the application when developing with Visual Studio Code
 	windowsHelper.setIcon(game.getRenderWindow().getSystemHandle());
@@ -58,11 +76,11 @@ int main(int argc, char * argv[])
     game.play();
 #else
     game.basicSFMLmain();
-#endif // defined
+#endif
 
-    #if defined (__ANDROID__)
+#if defined (__ANDROID__)
     std::terminate(); // close application
-    #else
+#else
     return 0;
-    #endif // defined
+#endif // defined
 }

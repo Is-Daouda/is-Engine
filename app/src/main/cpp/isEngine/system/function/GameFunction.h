@@ -61,10 +61,10 @@ namespace is
 {
 ////////////////////////////////////////////////////////////
 // Do not touch these variables unless you know what you are doing
-static float const MAX_CLOCK_TIME(0.018f); ///< game execution timing variables
-static float const VALUE_CONVERSION(65.f); ///< game execution timing variables
-static float const SECOND(59.f);           ///< represent third value in second
-static float const VALUE_TIME(1.538f);     ///< game execution timing variables
+extern float const MAX_CLOCK_TIME; ///< game execution timing variables
+extern float const VALUE_CONVERSION; ///< game execution timing variables
+extern float const SECOND;           ///< represent third value in second
+extern float const VALUE_TIME;     ///< game execution timing variables
 ////////////////////////////////////////////////////////////
 
 static float const PI(3.14159f);
@@ -75,8 +75,8 @@ static float const PI(3.14159f);
 ////////////////////////////////////////////////////////////
 enum SFMLSndStatus
 {
-    Playing,
     Stopped,
+    Playing,
     Paused
 };
 
@@ -837,21 +837,39 @@ void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::IntRect rec, sf::Vector
 template <class T>
 void centerSFMLObj(T &obj)
 {
-    obj.setOrigin(obj.getGlobalBounds().width / 2, obj.getGlobalBounds().height / 2);
+    obj.setOrigin(
+#if !defined(IS_ENGINE_SFML)
+    obj.getTextureRect().width / 2, obj.getTextureRect().height / 2
+#else
+    obj.getGlobalBounds().width / 2, obj.getGlobalBounds().height / 2
+#endif
+    );
 }
 
 /// Center SFML object X
 template <class T>
 void centerSFMLObjX(T &obj)
 {
-    obj.setOrigin(obj.getGlobalBounds().width / 2, obj.getOrigin().y);
+    obj.setOrigin(
+#if !defined(IS_ENGINE_SFML)
+                  obj.getTextureRect().width / 2
+#else
+                  obj.getGlobalBounds().width / 2
+#endif
+                  , obj.getOrigin().y);
 }
 
 /// Center SFML object Y
 template <class T>
 void centerSFMLObjY(T &obj)
 {
-    obj.setOrigin(obj.getOrigin().x, obj.getGlobalBounds().height / 2);
+    obj.setOrigin(obj.getOrigin().x,
+#if !defined(IS_ENGINE_SFML)
+                  obj.getTextureRect().height / 2
+#else
+                  obj.getGlobalBounds().height / 2
+#endif
+                  );
 }
 
 //////////////////////////////////////////////////////
@@ -948,9 +966,20 @@ void setFPS(T &render, float fps)
 /// Allows to use Android vibrate
 short vibrate(short duration);
 
+////////////////////////////////////////////////////////////
+/// \brief Type of action to perform for the openURL function
+///
+////////////////////////////////////////////////////////////
+enum OpenURLAction
+{
+    Http,
+    Email,
+    Tel
+};
+
 /// Open URL in default navigator
 /// \param urlStr represent the web url (e.g www.website.com)
-void openURL(const std::string& url);
+void openURL(const std::string& url, OpenURLAction action);
 
 #if defined(__ANDROID__)
 /// Convert JNI String to std::string

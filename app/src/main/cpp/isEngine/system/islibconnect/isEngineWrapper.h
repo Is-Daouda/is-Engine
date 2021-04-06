@@ -258,11 +258,6 @@ public:
     };
     SoundSource() : m_status(Stopped) {}
 
-    Status getStatus()
-    {
-        return m_status;
-    }
-
 protected:
     Status m_status = Stopped;
 };

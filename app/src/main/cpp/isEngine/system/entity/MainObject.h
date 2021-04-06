@@ -378,6 +378,13 @@ bool instanceExist(std::shared_ptr<T> const &obj)
 
 /// Check if instance exists
 template<class T>
+bool instanceExist(std::unique_ptr<T> const &obj)
+{
+    return (obj.get() != nullptr);
+}
+
+/// Check if instance exists
+template<class T>
 bool instanceExist(T const *obj)
 {
     return (obj != nullptr);

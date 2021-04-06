@@ -59,10 +59,12 @@ Rect functionGetGlobalBounds(const Vector2f &position, const Vector2f &origin, c
 }
 
 Clock::Clock() : m_startTime(seconds(0.018f)) {}
+
 const Time Clock::getElapsedTime()
 {
     return m_startTime;
 }
+
 Time Clock::restart()
 {
     return m_startTime;

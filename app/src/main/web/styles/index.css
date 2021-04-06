@@ -29,6 +29,11 @@ canvas {
 	100% {-webkit-transform: rotate(360deg); transform:rotate(360deg);}
 }
 
+body
+{
+	background-image: url("../background.png");
+}
+
 html {
   height: 100%;
 }

@@ -42,7 +42,6 @@ public:
         m_snd(m_sb)
         {
             m_fileIsLoaded = true;
-            // is::showLog("sound loaded name: " << soundName << "\n";
         }
 #else
     {

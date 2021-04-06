@@ -22,7 +22,7 @@ add_executable(isengine
 )
 
 target_include_directories(isengine PRIVATE cpp)
-target_link_libraries(isengine PRIVATE smk)
+target_link_libraries(isengine PRIVATE smk -lidbfs.js)
 
 set_target_properties(isengine PROPERTIES CXX_STANDARD 17)
 
@@ -30,8 +30,7 @@ set_target_properties(isengine PROPERTIES CXX_STANDARD 17)
 target_compile_options(isengine PRIVATE -Wall)
 
 # Detect emscripten is used.
-if(EMSCRIPTEN) 
-
+if(EMSCRIPTEN) 	
 	set_property(TARGET isengine APPEND_STRING PROPERTY LINK_FLAGS " -s DEMANGLE_SUPPORT=1")
 	set_property(TARGET isengine APPEND_STRING PROPERTY LINK_FLAGS " -s DISABLE_EXCEPTION_CATCHING=2")
 	set_property(TARGET isengine APPEND_STRING PROPERTY LINK_FLAGS " -s WASM=1")
@@ -63,6 +62,11 @@ if(EMSCRIPTEN)
 	COPYONLY
 	)
 	configure_file(
+	${CMAKE_CURRENT_SOURCE_DIR}/web/background.png
+	${CMAKE_CURRENT_BINARY_DIR}/background.png
+	COPYONLY
+	)
+	configure_file(
 	${CMAKE_CURRENT_SOURCE_DIR}/web/sw.js
 	${CMAKE_CURRENT_BINARY_DIR}/sw.js
 	COPYONLY
@@ -77,6 +81,4 @@ if(EMSCRIPTEN)
 		file(RELATIVE_PATH relative_file ${CMAKE_SOURCE_DIR} ${file})
 		set_property(TARGET isengine APPEND_STRING PROPERTY LINK_FLAGS  " --preload-file ${file}@/${relative_file}")
 	endforeach()
-else()
-	install(TARGETS isengine RUNTIME DESTINATION "bin")
 endif()

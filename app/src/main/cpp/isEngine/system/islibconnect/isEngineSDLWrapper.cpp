@@ -22,6 +22,8 @@
 #include "isEngineSDLWrapper.h"
 
 #if defined(IS_ENGINE_SDL_2)
+namespace is
+{
 SDL_Window *IS_ENGINE_SDL_window = NULL;
 SDL_Renderer *IS_ENGINE_SDL_renderer = NULL;
 SDL_DisplayMode IS_ENGINE_SDL_displayMode;
@@ -29,8 +31,13 @@ SDL_DisplayMode IS_ENGINE_SDL_displayMode;
 float IS_ENGINE_SDL_screenXScale(1.f);
 float IS_ENGINE_SDL_screenYScale(1.f);
 
-namespace is
-{
+short IS_ENGINE_SDL_channel[IS_ENGINE_SDL_CHANNEL_MAX] = {-1};
+
+TouchData IS_ENGINE_SDL_touchData[IS_ENGINE_SDL_TOUCH_ID_COUNT_MAX];
+short IS_ENGINE_SDL_touchIdCount = 0;
+
+std::vector<sf::Font*> IS_ENGINE_SDL_AUTO_GENERATE_FONT;
+
 bool SDL2initLib()
 {
     if (IS_ENGINE_SDL_window == NULL || IS_ENGINE_SDL_renderer == NULL)
@@ -59,7 +66,7 @@ bool SDL2initLib()
         return false;
     }
 
-    // On Android, the use of .ogg type music files is not yet supported
+    // On Android, the use of .wav type music files is not yet supported
 #if !defined(__ANDROID__)
     int audioFlags = MIX_INIT_OGG;
     if ((Mix_Init(audioFlags) & audioFlags) != audioFlags)
@@ -68,30 +75,33 @@ bool SDL2initLib()
         return false;
     }
 #endif
-    if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+    if (
+        //Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1
+        Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1
+        )
     {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,"Error: init OpenAudio : %s\n", Mix_GetError());
         return false;
     }
 
-    Mix_AllocateChannels(32);
+    Mix_AllocateChannels(IS_ENGINE_SDL_CHANNEL_MAX);
     return true;
 }
 
 void SDL2freeLib()
 {
-    for (unsigned int _I(0); _I < sf::IS_ENGINE_SDL_AUTO_GENERATE_FONT.size(); _I++)
+    for (unsigned int _I(0); _I < IS_ENGINE_SDL_AUTO_GENERATE_FONT.size(); _I++)
     {
-        delete sf::IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I];
-        sf::IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I] = 0;
+        delete IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I];
+        IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I] = 0;
     }
     Mix_CloseAudio();
     Mix_Quit();
 
     SDL_DestroyWindow(IS_ENGINE_SDL_window);
-    IS_ENGINE_SDL_window = NULL;
+    is::IS_ENGINE_SDL_window = NULL;
     SDL_DestroyRenderer(IS_ENGINE_SDL_renderer);
-    IS_ENGINE_SDL_renderer = NULL;
+    is::IS_ENGINE_SDL_renderer = NULL;
 
     TTF_Quit();
     IMG_Quit();
@@ -101,10 +111,6 @@ void SDL2freeLib()
 namespace sf
 {
 int SoundBuffer::SDL_sndChannel = 0; // Represents the channel of each sound
-std::vector<Font*> IS_ENGINE_SDL_AUTO_GENERATE_FONT;
-TouchData IS_ENGINE_SDL_touchData[2];
-short IS_ENGINE_SDL_touchIdCount = 0;
-const short IS_ENGINE_SDL_touchIdCountMax = 2;
 
 sf::Color Color::White       = sf::Color(255, 255, 255, 255);
 sf::Color Color::Black       = sf::Color(0, 0, 0, 255);
@@ -191,7 +197,7 @@ void Transformable::setColor(int r, int g, int b, int a)
     m_color.r = r;
     m_color.g = g;
     m_color.b = b;
-    m_color.a = a;
+    if (a >= 0 && a <= 255) m_color.a = a;
 
 }
 
@@ -237,7 +243,7 @@ void Sprite::setSDLTexture()
             SDL_DestroyTexture(m_SDLtexture);
             m_SDLtexture = NULL;
         }
-        m_SDLtexture = SDL_CreateTextureFromSurface(IS_ENGINE_SDL_renderer, m_texture->getSDLSurface());
+        m_SDLtexture = SDL_CreateTextureFromSurface(is::IS_ENGINE_SDL_renderer, m_texture->getSDLSurface());
         setTextureRect({0, 0, (int)m_texture->getSize().x, (int)m_texture->getSize().y});
     }
 }
@@ -262,7 +268,7 @@ bool Image::loadFromFile(const std::string& filename)
     if (m_texture == nullptr) return false;
     if (m_texture->getSDLSurface() != NULL)
     {
-        m_SDLtexture = SDL_CreateTextureFromSurface(IS_ENGINE_SDL_renderer, m_texture->getSDLSurface());
+        m_SDLtexture = SDL_CreateTextureFromSurface(is::IS_ENGINE_SDL_renderer, m_texture->getSDLSurface());
         setSize(m_texture->getSize().x, m_texture->getSize().y);
     }
     return true;
@@ -353,7 +359,7 @@ void Text::setString(const char& text)
 
 void Text::setColor(int r, int g, int b, int a)
 {
-    m_color.a = a;
+    if (a >= 0 && a <= 255) m_color.a = a;
     if (m_color.r != r || m_color.g != g || m_color.b != b)
     {
         m_color.r = r;
@@ -386,6 +392,7 @@ void Text::setObjectText(const std::string& text, int textSize)
         m_currentCharSize = text.length() + 1;
         m_SDLtext = new char[m_currentCharSize];
         strcpy(m_SDLtext, text.c_str());
+        m_SDLtext[m_currentCharSize - 1] = '\0';
         setSDLText(textSize);
     }
 }
@@ -403,6 +410,7 @@ void Text::setObjectText(const std::wstring& text, int textSize)
         m_currentCharSize = text.length() + 1;
         m_SDLtext = new char[m_currentCharSize];
         std::wcstombs(m_SDLtext, text.c_str(), text.size());
+        m_SDLtext[m_currentCharSize - 1] = '\0';
         setSDLText(textSize);
     }
 }
@@ -417,10 +425,10 @@ bool Text::setSDLText(int textSize)
         {
             bool fontExists(false);
             unsigned int fontIndex(0);
-            for (unsigned int _I(0); _I < IS_ENGINE_SDL_AUTO_GENERATE_FONT.size(); _I++)
+            for (unsigned int _I(0); _I < is::IS_ENGINE_SDL_AUTO_GENERATE_FONT.size(); _I++)
             {
-                if (IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I]->getFileName() == m_font->getFileName() &&
-                    IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I]->getSize() == m_characterSize)
+                if (is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I]->getFileName() == m_font->getFileName() &&
+                    is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I]->getSize() == m_characterSize)
                 {
                     fontIndex = _I;
                     fontExists = true;
@@ -429,26 +437,62 @@ bool Text::setSDLText(int textSize)
             }
             if (!fontExists)
             {
-                IS_ENGINE_SDL_AUTO_GENERATE_FONT.push_back(new Font(m_font->getFileName(), m_characterSize));
-                fontIndex = (IS_ENGINE_SDL_AUTO_GENERATE_FONT.size() - 1);
+                is::IS_ENGINE_SDL_AUTO_GENERATE_FONT.push_back(new Font(m_font->getFileName(), m_characterSize));
+                fontIndex = (is::IS_ENGINE_SDL_AUTO_GENERATE_FONT.size() - 1);
             }
-            m_SDLfont = IS_ENGINE_SDL_AUTO_GENERATE_FONT[fontIndex]->getSDLFont();
+            m_SDLfont = is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[fontIndex]->getSDLFont();
         }
     }
 
     if (m_SDLtext == nullptr) return false;
+    m_multiLines = false;
+    short line(0), maxCaracter(0), caracter(0);
+    char currentStr[100];
+    char finalStr[100];
+    for (size_t i(0); i < strlen(m_SDLtext); i++)
+    {
+        if (m_SDLtext[i] != '\n')
+        {
+            if (m_SDLtext[i] == '.') currentStr[caracter] = '-';
+            else if (m_SDLtext[i] == ' ' && m_SDLcontainMultiSpaces) currentStr[caracter] = '_';
+            else currentStr[caracter] = m_SDLtext[i];
+        }
+        caracter++;
+        if (m_SDLtext[i] == '\n' || (i == strlen(m_SDLtext) - 1 && m_multiLines))
+        {
+            currentStr[caracter - 1] = '\0';
+            if (caracter > maxCaracter)
+            {
+                strcpy(finalStr, currentStr);
+                maxCaracter = caracter;
+                m_multiLines = true;
+            }
+            caracter = 0;
+            line++;
+        }
+    }
 
+    int w(0);
+    if (line > 0)
+    {
+        if (TTF_SizeText(m_SDLfont, finalStr, &w, 0)) {/* error */}
+        w += ((m_characterSize > 30) ? 6 : 0) + m_SDLaddTextRecWSize;
+    }
     m_SDLsurface = NULL;
-    m_SDLsurface = TTF_RenderText_Blended_Wrapped(m_SDLfont, m_SDLtext, getSDLColor(false), 640);
+    m_SDLsurface = TTF_RenderText_Blended_Wrapped(m_SDLfont, m_SDLtext, getSDLColor(false), ((line == 0) ? 1280 : w));
 
     if (m_SDLsurface != NULL)
     {
-        m_SDLtexture = SDL_CreateTextureFromSurface(IS_ENGINE_SDL_renderer, m_SDLsurface);
+        m_SDLtexture = SDL_CreateTextureFromSurface(is::IS_ENGINE_SDL_renderer, m_SDLsurface);
         if (m_SDLtexture != NULL)
         {
-            m_size.x = m_SDLsurface->w;
-            m_size.y = m_SDLsurface->h;
-            setTextureRect({0, 0, (int)m_size.x, (int)m_size.y});
+            setSize(m_SDLsurface->w, m_SDLsurface->h);
+            /*if (m_multiLines)
+            {
+                SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+                    "Text: w: %f h: %f \n<%s> line: %d char: %d\n",
+                    m_size.x, m_size.y, finalStr, line, maxCaracter);
+            }*/
             SDL_FreeSurface(m_SDLsurface);
             m_SDLsurface = NULL;
         }
@@ -495,18 +539,18 @@ const Vector2f& View::getCenter() const noexcept
 
 void RectangleShape::draw(View const &view) const
 {
-    SDL_SetRenderDrawColor(IS_ENGINE_SDL_renderer, m_color.r, m_color.g, m_color.b, m_color.a);
+    SDL_SetRenderDrawColor(is::IS_ENGINE_SDL_renderer, m_color.r, m_color.g, m_color.b, m_color.a);
     SDL_Rect rec;
-    rec.x = ((m_position.x - m_origin.x) - (view.getCenter().x - (view.getSize().x / 2.f))) * IS_ENGINE_SDL_screenXScale;
-    rec.y = ((m_position.y - m_origin.y) - (view.getCenter().y - (view.getSize().y / 2.f))) * IS_ENGINE_SDL_screenYScale;
-    rec.w = (m_size.x * std::abs(m_scale.x)) * IS_ENGINE_SDL_screenXScale;
-    rec.h = (m_size.y * std::abs(m_scale.y)) * IS_ENGINE_SDL_screenYScale;
-    SDL_RenderFillRect(IS_ENGINE_SDL_renderer, &rec);
+    rec.x = ((m_position.x - m_origin.x) - (view.getCenter().x - (view.getSize().x / 2.f))) * is::IS_ENGINE_SDL_screenXScale;
+    rec.y = ((m_position.y - m_origin.y) - (view.getCenter().y - (view.getSize().y / 2.f))) * is::IS_ENGINE_SDL_screenYScale;
+    rec.w = (m_size.x * std::abs(m_scale.x)) * is::IS_ENGINE_SDL_screenXScale;
+    rec.h = (m_size.y * std::abs(m_scale.y)) * is::IS_ENGINE_SDL_screenYScale;
+    SDL_RenderFillRect(is::IS_ENGINE_SDL_renderer, &rec);
 }
 
 void CircleShape::draw(View const &view) const
 {
-   const int32_t diameter = (m_size.x * 2) * IS_ENGINE_SDL_screenXScale;
+   const int32_t diameter = (m_size.x * 2) * is::IS_ENGINE_SDL_screenXScale;
 
    int32_t x = (m_size.x - 1);
    int32_t y = 0;
@@ -516,23 +560,23 @@ void CircleShape::draw(View const &view) const
 
    while (x >= y)
    {
-        SDL_SetRenderDrawColor(IS_ENGINE_SDL_renderer, m_color.r, m_color.g, m_color.b, m_color.a);
-        SDL_RenderDrawPoint(IS_ENGINE_SDL_renderer, (((m_position.x + x) + (m_size.x - m_origin.x)) - view.getCenter().x) * IS_ENGINE_SDL_screenXScale,
-                            (((m_position.y - y) + (m_size.x - m_origin.y)) - view.getCenter().y) * IS_ENGINE_SDL_screenYScale);
-        SDL_RenderDrawPoint(IS_ENGINE_SDL_renderer, (((m_position.x + x) + (m_size.x - m_origin.x)) - view.getCenter().x) * IS_ENGINE_SDL_screenXScale,
-                            (((m_position.y + y) + (m_size.x - m_origin.y)) - view.getCenter().y) * IS_ENGINE_SDL_screenYScale);
-        SDL_RenderDrawPoint(IS_ENGINE_SDL_renderer, (((m_position.x - x) + (m_size.x - m_origin.x)) - view.getCenter().x) * IS_ENGINE_SDL_screenXScale,
-                            (((m_position.y - y) + (m_size.x - m_origin.y)) - view.getCenter().y) * IS_ENGINE_SDL_screenYScale);
-        SDL_RenderDrawPoint(IS_ENGINE_SDL_renderer, (((m_position.x - x) + (m_size.x - m_origin.x)) - view.getCenter().x) * IS_ENGINE_SDL_screenXScale,
-                            (((m_position.y + y) + (m_size.x - m_origin.y)) - view.getCenter().y) * IS_ENGINE_SDL_screenYScale);
-        SDL_RenderDrawPoint(IS_ENGINE_SDL_renderer, (((m_position.x + y) + (m_size.x - m_origin.x)) - view.getCenter().x) * IS_ENGINE_SDL_screenXScale,
-                            (((m_position.y - x) + (m_size.x - m_origin.y)) - view.getCenter().y) * IS_ENGINE_SDL_screenYScale);
-        SDL_RenderDrawPoint(IS_ENGINE_SDL_renderer, (((m_position.x + y) + (m_size.x - m_origin.x)) - view.getCenter().x) * IS_ENGINE_SDL_screenXScale,
-                            (((m_position.y + x) + (m_size.x - m_origin.y)) - view.getCenter().y) * IS_ENGINE_SDL_screenYScale);
-        SDL_RenderDrawPoint(IS_ENGINE_SDL_renderer, (((m_position.x - y) + (m_size.x - m_origin.x)) - view.getCenter().x) * IS_ENGINE_SDL_screenXScale,
-                            (((m_position.y - x) + (m_size.x - m_origin.y)) - view.getCenter().y) * IS_ENGINE_SDL_screenYScale);
-        SDL_RenderDrawPoint(IS_ENGINE_SDL_renderer, (((m_position.x - y) + (m_size.x - m_origin.x)) - view.getCenter().x) * IS_ENGINE_SDL_screenXScale,
-                            (((m_position.y + x) + (m_size.x - m_origin.y)) - view.getCenter().y) * IS_ENGINE_SDL_screenYScale);
+        SDL_SetRenderDrawColor(is::IS_ENGINE_SDL_renderer, m_color.r, m_color.g, m_color.b, m_color.a);
+        SDL_RenderDrawPoint(is::IS_ENGINE_SDL_renderer, (((m_position.x + x) + (m_size.x - m_origin.x)) - view.getCenter().x) * is::IS_ENGINE_SDL_screenXScale,
+                            (((m_position.y - y) + (m_size.x - m_origin.y)) - view.getCenter().y) * is::IS_ENGINE_SDL_screenYScale);
+        SDL_RenderDrawPoint(is::IS_ENGINE_SDL_renderer, (((m_position.x + x) + (m_size.x - m_origin.x)) - view.getCenter().x) * is::IS_ENGINE_SDL_screenXScale,
+                            (((m_position.y + y) + (m_size.x - m_origin.y)) - view.getCenter().y) * is::IS_ENGINE_SDL_screenYScale);
+        SDL_RenderDrawPoint(is::IS_ENGINE_SDL_renderer, (((m_position.x - x) + (m_size.x - m_origin.x)) - view.getCenter().x) * is::IS_ENGINE_SDL_screenXScale,
+                            (((m_position.y - y) + (m_size.x - m_origin.y)) - view.getCenter().y) * is::IS_ENGINE_SDL_screenYScale);
+        SDL_RenderDrawPoint(is::IS_ENGINE_SDL_renderer, (((m_position.x - x) + (m_size.x - m_origin.x)) - view.getCenter().x) * is::IS_ENGINE_SDL_screenXScale,
+                            (((m_position.y + y) + (m_size.x - m_origin.y)) - view.getCenter().y) * is::IS_ENGINE_SDL_screenYScale);
+        SDL_RenderDrawPoint(is::IS_ENGINE_SDL_renderer, (((m_position.x + y) + (m_size.x - m_origin.x)) - view.getCenter().x) * is::IS_ENGINE_SDL_screenXScale,
+                            (((m_position.y - x) + (m_size.x - m_origin.y)) - view.getCenter().y) * is::IS_ENGINE_SDL_screenYScale);
+        SDL_RenderDrawPoint(is::IS_ENGINE_SDL_renderer, (((m_position.x + y) + (m_size.x - m_origin.x)) - view.getCenter().x) * is::IS_ENGINE_SDL_screenXScale,
+                            (((m_position.y + x) + (m_size.x - m_origin.y)) - view.getCenter().y) * is::IS_ENGINE_SDL_screenYScale);
+        SDL_RenderDrawPoint(is::IS_ENGINE_SDL_renderer, (((m_position.x - y) + (m_size.x - m_origin.x)) - view.getCenter().x) * is::IS_ENGINE_SDL_screenXScale,
+                            (((m_position.y - x) + (m_size.x - m_origin.y)) - view.getCenter().y) * is::IS_ENGINE_SDL_screenYScale);
+        SDL_RenderDrawPoint(is::IS_ENGINE_SDL_renderer, (((m_position.x - y) + (m_size.x - m_origin.x)) - view.getCenter().x) * is::IS_ENGINE_SDL_screenXScale,
+                            (((m_position.y + x) + (m_size.x - m_origin.y)) - view.getCenter().y) * is::IS_ENGINE_SDL_screenYScale);
 
         if (error <= 0)
         {
@@ -688,8 +732,8 @@ bool Keyboard::isKeyPressed(Key key)
 VideoMode VideoMode::getDesktopMode()
 {
     VideoMode videoMode;
-    videoMode.width = IS_ENGINE_SDL_displayMode.w;
-    videoMode.height = IS_ENGINE_SDL_displayMode.h;
+    videoMode.width = is::IS_ENGINE_SDL_displayMode.w;
+    videoMode.height = is::IS_ENGINE_SDL_displayMode.h;
     return videoMode;
 }
 
@@ -709,19 +753,26 @@ void RenderWindow::create(VideoMode videoMode, const std::string& title, int sty
     m_title = title;
     m_style = style;
 
+    int w, h;
 #if defined(__ANDROID__)
-    // Allows to calculate the scale of the screen
-    IS_ENGINE_SDL_screenXScale = IS_ENGINE_SDL_displayMode.w / m_view.getSize().x;
-    IS_ENGINE_SDL_screenYScale = IS_ENGINE_SDL_displayMode.h / m_view.getSize().y;
+    w = is::IS_ENGINE_SDL_displayMode.w;
+    h = is::IS_ENGINE_SDL_displayMode.h;
+#else
+    SDL_GetWindowSize(is::IS_ENGINE_SDL_window, &w, &h);
 #endif
-    IS_ENGINE_SDL_window = SDL_CreateWindow(m_title.c_str(),
+
+    // Allows to calculate the scale of the screen
+    is::IS_ENGINE_SDL_screenXScale = w / m_view.getSize().x;
+    is::IS_ENGINE_SDL_screenYScale = h / m_view.getSize().y;
+
+    is::IS_ENGINE_SDL_window = SDL_CreateWindow(m_title.c_str(),
 #if !defined(__ANDROID__)
             SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_size.x, m_size.y, SDL_WINDOW_SHOWN
 #else
              SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_size.x, m_size.y, SDL_WINDOW_OPENGL
 #endif
             );
-    IS_ENGINE_SDL_renderer = SDL_CreateRenderer(IS_ENGINE_SDL_window, -1,
+    is::IS_ENGINE_SDL_renderer = SDL_CreateRenderer(is::IS_ENGINE_SDL_window, -1,
 #if !defined(__ANDROID__)
             SDL_RENDERER_PRESENTVSYNC
 #else
@@ -732,36 +783,48 @@ void RenderWindow::create(VideoMode videoMode, const std::string& title, int sty
     if (!is::SDL2initLib()) is::closeApplication();
 }
 
+void RenderWindow::setFramerateLimit(int fps)
+{
+    // m_windowFrameLimit = 1000 / fps;
+    m_windowFrameLimit = (fps * 50) / 60;
+}
+
 void RenderWindow::setSize(const Vector2u& size)
 {
     is::setVector2(m_size, size.x, size.y);
-    SDL_SetWindowSize(IS_ENGINE_SDL_window, size.x, size.y);
+    SDL_SetWindowSize(is::IS_ENGINE_SDL_window, size.x, size.y);
 }
 
 void RenderWindow::setTitle(const std::string& text)
 {
     m_title = text;
-    SDL_SetWindowTitle(IS_ENGINE_SDL_window, m_title.c_str());
+    SDL_SetWindowTitle(is::IS_ENGINE_SDL_window, m_title.c_str());
 }
 
 void RenderWindow::setView(const View& view)
 {
     m_view = view;
-#if defined(__ANDROID__)
+
     // When we change the size of the view we recalculate the scale of the screen
-    IS_ENGINE_SDL_screenXScale = IS_ENGINE_SDL_displayMode.w / m_view.getSize().x;
-    IS_ENGINE_SDL_screenYScale = IS_ENGINE_SDL_displayMode.h / m_view.getSize().y;
+    int w, h;
+#if defined(__ANDROID__)
+    w = is::IS_ENGINE_SDL_displayMode.w;
+    h = is::IS_ENGINE_SDL_displayMode.h;
+#else
+    SDL_GetWindowSize(is::IS_ENGINE_SDL_window, &w, &h);
 #endif
+    is::IS_ENGINE_SDL_screenXScale = w / m_view.getSize().x;
+    is::IS_ENGINE_SDL_screenYScale = h / m_view.getSize().y;
 }
 
 void RenderWindow::setPosition(Vector2i position)
 {
-    SDL_SetWindowPosition(IS_ENGINE_SDL_window, position.x, position.y);
+    SDL_SetWindowPosition(is::IS_ENGINE_SDL_window, position.x, position.y);
 }
 
 void RenderWindow::setPosition(int x, int y)
 {
-    SDL_SetWindowPosition(IS_ENGINE_SDL_window, x, y);
+    SDL_SetWindowPosition(is::IS_ENGINE_SDL_window, x, y);
 }
 
 void RenderWindow::setVerticalSyncEnabled(bool vsync)
@@ -776,22 +839,25 @@ void RenderWindow::setIcon(Uint32 width, Uint32 height, const Uint8* pixels)
 
 void RenderWindow::clear(sf::Color const &color)
 {
-    SDL_SetRenderDrawColor(IS_ENGINE_SDL_renderer, color.r, color.g, color.b, color.a);
-    SDL_RenderClear(IS_ENGINE_SDL_renderer);
+    SDL_SetRenderDrawColor(is::IS_ENGINE_SDL_renderer, color.r, color.g, color.b, color.a);
+    SDL_RenderClear(is::IS_ENGINE_SDL_renderer);
 }
 
 void RenderWindow::draw(SDLTexture &obj)
 {
+    if (obj.getSDLTexture() == NULL) return;
+
     SDL_Rect rec;
     SDL_Rect recSrc;
     SDL_Point point;
 
     // We keep the value of the origin x and y of the object to be drawn.
     // This allows to keep the value of the original variables intact during recalculations.
+    float objOriginX((obj.getScale().x < 0.f && static_cast<int>(obj.getOrigin().y) == 0 &&
+                      static_cast<int>(obj.getOrigin().x) == 0) ? obj.getTextureRect().width : obj.getOrigin().x);
     float objOriginY((obj.getScale().y < 0.f && static_cast<int>(obj.getOrigin().x) == 0 &&
                       static_cast<int>(obj.getOrigin().y) == 0) ? obj.getTextureRect().height : obj.getOrigin().y);
-
-    float xOrigin(obj.getOrigin().x);
+    float xOrigin(objOriginX);
     float yOrigin(objOriginY);
 
     // Use to stretch the image of the object to make a scale effect
@@ -804,49 +870,62 @@ void RenderWindow::draw(SDLTexture &obj)
 
     if (obj.m_SDLTextureType == SDLTexture::SDLTextureType::IS_ENGINE_SDL_SPRITE)
     {
+        SDL_SetTextureColorMod(obj.getSDLTexture(), obj.getColor().r, obj.getColor().g, obj.getColor().b);
+
         // Move the object according to the position of the camera
         rec.x = (obj.getPosition().x - xOrigin) - (m_view.getCenter().x - (m_view.getSize().x / 2.f));
         rec.y = (obj.getPosition().y - yOrigin) - (m_view.getCenter().y - (m_view.getSize().y / 2.f));
     }
     else // This is used to adjust the position of text type objects.
     {
-        float yFitted(static_cast<float>(obj.getTextureRect().height / 3.f));
-        float xFitted(0.f);
-        if (static_cast<int>(obj.getOrigin().x) == obj.getTextureRect().width / 2 &&
-            static_cast<int>(obj.getOrigin().y) == obj.getTextureRect().height / 2)
-        {
-            if (obj.getTextureRect().width >= 640 && obj.getTextureRect().height >= 60)
-            {
-                if (obj.getTextureRect().height > 200)
-                {
-                    xFitted = obj.getTextureRect().width / 8;
-                    yFitted = 0.f;
-                }
-                else
-                {
-                    xFitted = xOrigin / 1.35f;
-                }
-            }
-        }
+        float yFitted = static_cast<float>(obj.getTextureRect().height / 3);
 
-        rec.x = ((obj.getPosition().x + xFitted) - xOrigin) - (m_view.getCenter().x - (m_view.getSize().x / 2.f));
+        if (obj.m_multiLines)
+        {
+            if (static_cast<int>(obj.getOrigin().x) == obj.getTextureRect().width / 2 &&
+                static_cast<int>(obj.getOrigin().y) == obj.getTextureRect().height / 2)
+            {
+                if (obj.getTextureRect().height > 290) yFitted = 0;
+                else if (obj.getTextureRect().height > 240) yFitted = static_cast<float>(obj.getTextureRect().height / 14);
+                else if (obj.getTextureRect().height >= 192) yFitted = static_cast<float>(obj.getTextureRect().height / 10);
+                else if (obj.getTextureRect().height > 70) yFitted = static_cast<float>(obj.getTextureRect().height / 6);
+            }
+            else yFitted = static_cast<float>(obj.getTextureRect().height / 8);
+        }
+        rec.x = (obj.getPosition().x - xOrigin) - (m_view.getCenter().x - (m_view.getSize().x / 2.f));
         rec.y = ((obj.getPosition().y + yFitted) - yOrigin) - (m_view.getCenter().y - (m_view.getSize().y / 2.f));
     }
 
     // We apply the scale of the screen to the object in order to resize it in relation to the screen
-    // Only for Android
-    rec.x *= IS_ENGINE_SDL_screenXScale;
-    rec.y *= IS_ENGINE_SDL_screenYScale;
-    rec.w *= IS_ENGINE_SDL_screenXScale;
-    rec.h *= IS_ENGINE_SDL_screenYScale;
-
+    rec.x *= is::IS_ENGINE_SDL_screenXScale;
+    rec.y *= is::IS_ENGINE_SDL_screenYScale;
+    rec.w *= is::IS_ENGINE_SDL_screenXScale;
+    rec.h *= is::IS_ENGINE_SDL_screenYScale;
     recSrc.x = obj.getTextureRect().left;
     recSrc.y = obj.getTextureRect().top;
     recSrc.w = obj.getTextureRect().width;
     recSrc.h = obj.getTextureRect().height;
+    point.x = xOrigin * is::IS_ENGINE_SDL_screenXScale;
+    point.y = yOrigin * is::IS_ENGINE_SDL_screenYScale;
 
-    point.x = xOrigin * IS_ENGINE_SDL_screenXScale;
-    point.y = yOrigin * IS_ENGINE_SDL_screenYScale;
+    if (obj.getTextureRect().width == obj.getTextureRect().height && rec.w != rec.h &&
+        std::abs(obj.getRotation()) > 0.f &&
+        std::abs(obj.getScale().x) == std::abs(obj.getScale().y))
+    {
+        auto redimImg = [this](int &destSize, int &destPos, int &destOrigin, float &origin,
+                               int const &srcSize, int const &size, float const &objOrigin)
+        {
+            destPos += (destSize - srcSize) / 2;
+            destSize = srcSize;
+            if (std::abs(objOrigin) > 0.f) origin = destSize / (size / objOrigin);
+            origin = origin;
+            destOrigin = origin;
+        };
+        if (rec.w > rec.h) redimImg(rec.w, rec.x, point.x, xOrigin,
+                                    rec.h, obj.getTextureRect().width, objOriginX);
+        else redimImg(rec.h, rec.y, point.y, yOrigin,
+                      rec.w, obj.getTextureRect().height, objOriginY);
+    }
 
     SDL_SetTextureBlendMode(obj.getSDLTexture(), SDL_BLENDMODE_BLEND);
     SDL_SetTextureAlphaMod(obj.getSDLTexture(), obj.getColor().a);
@@ -857,18 +936,23 @@ void RenderWindow::draw(SDLTexture &obj)
     else if (obj.getScale().y < 0.f) obj.m_SDLFlip = SDL_FLIP_VERTICAL;
     else obj.m_SDLFlip = SDL_FLIP_NONE;
 
-    SDL_RenderCopyEx(IS_ENGINE_SDL_renderer, obj.getSDLTexture(), &recSrc, &rec, obj.getRotation(), &point, obj.m_SDLFlip);
+    SDL_RenderCopyEx(is::IS_ENGINE_SDL_renderer, obj.getSDLTexture(), &recSrc, &rec, obj.getRotation(), &point, obj.m_SDLFlip);
 }
 
 void RenderWindow::display()
 {
-    SDL_RenderPresent(IS_ENGINE_SDL_renderer);
-    SDL_Delay(1);
-    unsigned int frameLimit = SDL_GetTicks() + m_windowFrameLimit;
-    unsigned int ticks = SDL_GetTicks();
-    if (frameLimit < ticks) return;
-    if (frameLimit > ticks + m_windowFrameLimit) SDL_Delay(m_windowFrameLimit);
-    else SDL_Delay(frameLimit - ticks);
+    SDL_RenderPresent(is::IS_ENGINE_SDL_renderer);
+    if (m_windowFrameLimit != 0)
+    {
+        Uint64 diff = std::chrono::duration_cast<std::chrono::milliseconds>(
+                std::chrono::steady_clock::now() - m_timeSinceLastDisplay).count();
+
+        if (diff < 1000 / m_windowFrameLimit)
+        {
+            SDL_Delay(static_cast<Uint32>(1000 / m_windowFrameLimit - diff));
+        }
+    }
+    m_timeSinceLastDisplay = std::chrono::steady_clock::now();
 }
 
 bool RenderWindow::pollEvent(Event &event)
@@ -887,7 +971,6 @@ bool RenderWindow::pollEvent(Event &event)
         case SDL_BUTTON_X2: event.key.code = sf::Mouse::XButton2; break;
         }
     }
-
 #if defined(__ANDROID__)
     if (pollEvenValue == 1)
     {
@@ -895,48 +978,48 @@ bool RenderWindow::pollEvent(Event &event)
         {
             case SDL_FINGERDOWN:
             {
-                if (IS_ENGINE_SDL_touchIdCount < IS_ENGINE_SDL_touchIdCountMax)
+                if (is::IS_ENGINE_SDL_touchIdCount < is::IS_ENGINE_SDL_TOUCH_ID_COUNT_MAX)
                 {
-                    int tempTouchId = IS_ENGINE_SDL_touchIdCount;
-                    if (IS_ENGINE_SDL_touchData[1].m_SDLtouchDown && !IS_ENGINE_SDL_touchData[0].m_SDLtouchDown) tempTouchId = 0;
-                    IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchX = (event.m_event.tfinger.x * IS_ENGINE_SDL_displayMode.w) / IS_ENGINE_SDL_screenXScale;
-                    IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchY = (event.m_event.tfinger.y * IS_ENGINE_SDL_displayMode.h) / IS_ENGINE_SDL_screenYScale;
-                    IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchDown = true;
-                    IS_ENGINE_SDL_touchIdCount++;
+                    int tempTouchId = is::IS_ENGINE_SDL_touchIdCount;
+                    if (is::IS_ENGINE_SDL_touchData[1].m_SDLtouchDown && !is::IS_ENGINE_SDL_touchData[0].m_SDLtouchDown) tempTouchId = 0;
+                    is::IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchX = (event.m_event.tfinger.x * is::IS_ENGINE_SDL_displayMode.w) / is::IS_ENGINE_SDL_screenXScale;
+                    is::IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / is::IS_ENGINE_SDL_screenYScale;
+                    is::IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchDown = true;
+                    is::IS_ENGINE_SDL_touchIdCount++;
                 }
             }
             break;
             case SDL_FINGERUP:
             {
-                if (IS_ENGINE_SDL_touchIdCount > 0)
+                if (is::IS_ENGINE_SDL_touchIdCount > 0)
                 {
-                    IS_ENGINE_SDL_touchIdCount--;
-                    int releaseTouchX = (event.m_event.tfinger.x * IS_ENGINE_SDL_displayMode.w) / IS_ENGINE_SDL_screenXScale;
-                    int releaseTouchY = (event.m_event.tfinger.y * IS_ENGINE_SDL_displayMode.h) / IS_ENGINE_SDL_screenYScale;
+                    is::IS_ENGINE_SDL_touchIdCount--;
+                    int releaseTouchX = (event.m_event.tfinger.x * is::IS_ENGINE_SDL_displayMode.w) / is::IS_ENGINE_SDL_screenXScale;
+                    int releaseTouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / is::IS_ENGINE_SDL_screenYScale;
 
                     int nearTouchId = -1;
-                    for (int i(0); i < IS_ENGINE_SDL_touchIdCountMax; i++)
+                    for (int i(0); i < is::IS_ENGINE_SDL_TOUCH_ID_COUNT_MAX; i++)
                     {
-                        if (IS_ENGINE_SDL_touchData[i].m_SDLtouchDown)
+                        if (is::IS_ENGINE_SDL_touchData[i].m_SDLtouchDown)
                         {
                             if (is::pointDistance(releaseTouchX, releaseTouchY,
-                                                  IS_ENGINE_SDL_touchData[i].m_SDLtouchX, IS_ENGINE_SDL_touchData[i].m_SDLtouchY) < 16) nearTouchId = i;
+                                                  is::IS_ENGINE_SDL_touchData[i].m_SDLtouchX, is::IS_ENGINE_SDL_touchData[i].m_SDLtouchY) < 16) nearTouchId = i;
                         }
                     }
                     if (nearTouchId == -1)
                     {
-                        if (IS_ENGINE_SDL_touchData[0].m_SDLtouchDown && IS_ENGINE_SDL_touchData[1].m_SDLtouchDown)
+                        if (is::IS_ENGINE_SDL_touchData[0].m_SDLtouchDown && is::IS_ENGINE_SDL_touchData[1].m_SDLtouchDown)
                         {
-                            float disTouch0 = is::pointDistance(releaseTouchX, releaseTouchY, IS_ENGINE_SDL_touchData[0].m_SDLtouchX, IS_ENGINE_SDL_touchData[0].m_SDLtouchY);
-                            float disTouch1 = is::pointDistance(releaseTouchX, releaseTouchY, IS_ENGINE_SDL_touchData[1].m_SDLtouchX, IS_ENGINE_SDL_touchData[1].m_SDLtouchY);
+                            float disTouch0 = is::pointDistance(releaseTouchX, releaseTouchY, is::IS_ENGINE_SDL_touchData[0].m_SDLtouchX, is::IS_ENGINE_SDL_touchData[0].m_SDLtouchY);
+                            float disTouch1 = is::pointDistance(releaseTouchX, releaseTouchY, is::IS_ENGINE_SDL_touchData[1].m_SDLtouchX, is::IS_ENGINE_SDL_touchData[1].m_SDLtouchY);
                             nearTouchId = ((disTouch0 > disTouch1) ? 1 : 0);
                         }
-                        else if (IS_ENGINE_SDL_touchData[0].m_SDLtouchDown && !IS_ENGINE_SDL_touchData[1].m_SDLtouchDown) nearTouchId = 0;
+                        else if (is::IS_ENGINE_SDL_touchData[0].m_SDLtouchDown && !is::IS_ENGINE_SDL_touchData[1].m_SDLtouchDown) nearTouchId = 0;
                         else nearTouchId = 1;
                     }
-                    IS_ENGINE_SDL_touchData[nearTouchId].m_SDLtouchX = 0;
-                    IS_ENGINE_SDL_touchData[nearTouchId].m_SDLtouchY = 0;
-                    IS_ENGINE_SDL_touchData[nearTouchId].m_SDLtouchDown = false;
+                    is::IS_ENGINE_SDL_touchData[nearTouchId].m_SDLtouchX = 0;
+                    is::IS_ENGINE_SDL_touchData[nearTouchId].m_SDLtouchY = 0;
+                    is::IS_ENGINE_SDL_touchData[nearTouchId].m_SDLtouchDown = false;
                 }
             }
             break;
@@ -947,6 +1030,8 @@ bool RenderWindow::pollEvent(Event &event)
         }
     }
 #endif
+    if (event.type == 0 || event.type == 512 || event.type == 1024)
+        event.type = ((SDL_GetWindowFlags(is::IS_ENGINE_SDL_window) & SDL_WINDOW_INPUT_FOCUS) ? -1 : -2);
     return ((pollEvenValue == 1) ? true : false);
 }
 
@@ -959,27 +1044,59 @@ bool RenderWindow::waitEvent(Event &event)
 Vector2i RenderWindow::getPosition() const
 {
     int x = 0, y = 0;
-    SDL_GetWindowPosition(IS_ENGINE_SDL_window, &x, &y);
+    SDL_GetWindowPosition(is::IS_ENGINE_SDL_window, &x, &y);
     return Vector2i(x, y);
 }
 
 Vector2f RenderWindow::mapPixelToCoords(const Vector2i& point, const View& view) const
 {
-    Vector2f pos{static_cast<float>(point.x + (view.getCenter().x - (view.getSize().x / 2.f))),
-            static_cast<float>(point.y+ (view.getCenter().y - (view.getSize().y / 2.f)))};
+    Vector2f pos{static_cast<float>((point.x
+#if !defined(__ANDROID__)
+            / is::IS_ENGINE_SDL_screenXScale
+#endif
+            ) + (view.getCenter().x - (view.getSize().x / 2.f))),
+            static_cast<float>((point.y
+#if !defined(__ANDROID__)
+            / is::IS_ENGINE_SDL_screenYScale
+#endif
+            ) + (view.getCenter().y - (view.getSize().y / 2.f)))};
     return pos;
+}
+
+void SoundBuffer::setChannelId()
+{
+    m_channel = SDL_sndChannel++;
+    for (int i(0); i < is::IS_ENGINE_SDL_CHANNEL_MAX; i++)
+    {
+        if (is::IS_ENGINE_SDL_channel[i] == m_channel)
+        {
+            m_channel = 0;
+            break;
+        }
+    }
+    for (int i(0); i < is::IS_ENGINE_SDL_CHANNEL_MAX; i++)
+    {
+        if (is::IS_ENGINE_SDL_channel[i] == m_channel) m_channel++; else break;
+    }
+    is::IS_ENGINE_SDL_channel[m_channel] = m_channel;
+}
+
+SoundBuffer::SoundBuffer()
+{
+    setChannelId();
 }
 
 SoundBuffer::SoundBuffer(const std::string filename):
     m_filename(filename)
 {
-    SDL_sndChannel++;
+    setChannelId();
     loadSound(m_filename);
 }
 
 SoundBuffer::~SoundBuffer()
 {
     SDL_sndChannel--;
+    is::IS_ENGINE_SDL_channel[m_channel] = -1;
     Mix_FreeChunk(m_SDLsound);
     m_SDLsound = NULL;
 }
@@ -995,9 +1112,18 @@ bool SoundBuffer::loadSound(const std::string& filePath)
     return true;
 }
 
+Sound::Status Sound::getStatus()
+{
+    if (m_status != Status::Paused)
+    {
+        if (Mix_Playing(m_SDLsoundBuffer->getSDLChannel()) == 0) m_status = Stopped;
+    }
+    return m_status;
+}
+
 void Sound::play()
 {
-    if (Mix_Paused(m_SDLsoundBuffer->getSDLChannel()) == 0)
+    if (m_status != Status::Paused)
     {
         Mix_PlayChannel(m_SDLsoundBuffer->getSDLChannel(), m_SDLsoundBuffer->getSDLChunk(), ((m_loop) ? -1 : 0));
     }
@@ -1024,15 +1150,24 @@ Music::~Music()
     m_music = NULL;
 }
 
+Music::Status Music::getStatus()
+{
+    if (m_status != Status::Paused)
+    {
+        if (Mix_PlayingMusic() == 0) m_status = Stopped;
+    }
+    return m_status;
+}
+
 void Music::play()
 {
-    if (Mix_PlayingMusic() == 0)
+    if (m_status != Status::Paused)
     {
         Mix_PlayMusic(m_music, ((m_loop) ? -1 : 0));
     }
     else
     {
-        if (Mix_PausedMusic() == 1) Mix_ResumeMusic();
+        Mix_ResumeMusic();
     }
     m_status = Status::Playing;
 }
@@ -1077,7 +1212,7 @@ void Mouse::setPosition(const Vector2i& position)
 
 void Mouse::setPosition(const Vector2i& position, const RenderWindow& relativeTo)
 {
-    SDL_WarpMouseInWindow(IS_ENGINE_SDL_window, position.x, position.y);
+    SDL_WarpMouseInWindow(is::IS_ENGINE_SDL_window, position.x, position.y);
 }
 
 Uint32 Mouse::getSDLButtonState()
@@ -1087,9 +1222,9 @@ Uint32 Mouse::getSDLButtonState()
 
 bool Touch::isDown(unsigned int finger)
 {
-    if (finger <= IS_ENGINE_SDL_touchIdCountMax)
+    if (finger <= is::IS_ENGINE_SDL_TOUCH_ID_COUNT_MAX)
     {
-        return IS_ENGINE_SDL_touchData[finger].m_SDLtouchDown;
+        return is::IS_ENGINE_SDL_touchData[finger].m_SDLtouchDown;
     }
     return false;
 }
@@ -1097,10 +1232,10 @@ bool Touch::isDown(unsigned int finger)
 Vector2i Touch::getPosition(unsigned int finger)
 {
     Vector2i pos{0, 0};
-    if (finger <= IS_ENGINE_SDL_touchIdCountMax)
+    if (finger <= is::IS_ENGINE_SDL_TOUCH_ID_COUNT_MAX)
     {
-        pos.x = IS_ENGINE_SDL_touchData[finger].m_SDLtouchX;
-        pos.y = IS_ENGINE_SDL_touchData[finger].m_SDLtouchY;
+        pos.x = is::IS_ENGINE_SDL_touchData[finger].m_SDLtouchX;
+        pos.y = is::IS_ENGINE_SDL_touchData[finger].m_SDLtouchY;
     }
     return pos;
 }

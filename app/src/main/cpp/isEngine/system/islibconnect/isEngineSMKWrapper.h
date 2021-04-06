@@ -277,43 +277,46 @@ template <class T>
 class ObjectWrapper : public T
 {
 public:
-    ObjectWrapper()
+    void initData()
     {
         is::setVector2(m_size, 0.f, 0.f);
         is::setVector2(m_scale, 1.f, 1.f);
+        is::setVector2(m_origin, 0.f, 0.f);
+        is::setVector2(m_position, 0.f, 0.f);
     }
 
-    explicit ObjectWrapper(smk::Transformable shape) : T(shape) {is::setVector2(m_scale, 1.f, 1.f);}
+    ObjectWrapper() {initData();}
+
+    explicit ObjectWrapper(smk::Transformable shape) : T(shape) {initData();}
 
     ObjectWrapper(Texture &texture) :
         T(texture),
         m_texture(&(texture))
     {
+        initData();
         is::setVector2(m_size, texture.width(), texture.height());
-        is::setVector2(m_scale, 1.f, 1.f);
     }
     ObjectWrapper(RenderTexture &renderTexture) :
         T(renderTexture),
         m_renderTexture(&(renderTexture))
     {
+        initData();
         is::setVector2(m_size, renderTexture.getSize().x, renderTexture.getSize().y);
-        is::setVector2(m_scale, 1.f, 1.f);
     }
-
     ObjectWrapper(smk::Font& font) : T(font)
     {
+        initData();
         is::setVector2(ObjectWrapper::m_size, T::ComputeDimensions().x, T::ComputeDimensions().y);
-        is::setVector2(m_scale, 1.f, 1.f);
     }
     ObjectWrapper(smk::Font& font, const std::string& text): T(font, text)
     {
+        initData();
         is::setVector2(m_size, T::ComputeDimensions().x, T::ComputeDimensions().y);
-        is::setVector2(m_scale, 1.f, 1.f);
     }
     ObjectWrapper(smk::Font& font, const std::wstring& text): T(font, text)
     {
+        initData();
         is::setVector2(m_size, T::ComputeDimensions().x, T::ComputeDimensions().y);
-        is::setVector2(m_scale, 1.f, 1.f);
     }
     void setPosition(float x, float y)
     {
@@ -429,15 +432,19 @@ public:
     {
         setSize(size.x, size.y);
     }
-    void setOrigin(float x, float y) {;}
-    void setOrigin(const Vector2f &v) {;}
+    void setOrigin(float x, float y);
+    void setPosition(float x, float y);
 };
 
 class CircleShape : public Shape
 {
 public:
     CircleShape();
-    CircleShape(float raduis) : Shape(smk::Shape::Circle(raduis)) {is::setVector2(m_size, raduis, raduis);}
+    CircleShape(float raduis) : Shape(smk::Shape::Circle(raduis))
+    {
+        is::setVector2(m_size, raduis, raduis);
+        setPosition(0.f, 0.f);
+    }
     void setRadius(float raduis);
     float getRadius() {return m_size.x;}
 };
@@ -450,11 +457,13 @@ public:
     RectangleShape(float width, float height, float raduis = 0.f) : Shape(RoundedRectangle(width, height, raduis))
     {
         is::setVector2(ObjectWrapper::m_size, width, height);
+        setPosition(0.f, 0.f);
     }
     RectangleShape(const Vector2f &size) : Shape(RoundedRectangle(size.x, size.y, 0.f))
     {
         ObjectWrapper::m_size = size;
         is::setVector2(ObjectWrapper::m_size, size.x, size.y);
+        setPosition(0.f, 0.f);
     }
 };
 
@@ -489,7 +498,7 @@ private:
 class Text : public ObjectWrapper<smk::Text>
 {
 public:
-    Text() {}
+    Text() : ObjectWrapper() {}
     Text(sf::Font& font) :
         ObjectWrapper(font)
     {
@@ -597,6 +606,7 @@ public:
         SetLoop(loop);
     }
     void setVolume(float volume);
+    Status getStatus();
 };
 
 class Music : public Sound

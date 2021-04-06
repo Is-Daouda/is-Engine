@@ -23,6 +23,11 @@
 
 namespace is
 {
+float const MAX_CLOCK_TIME = 0.018f;
+float const VALUE_CONVERSION = 65.f;
+float const SECOND = 59.f;
+float const VALUE_TIME = 1.538f;
+
 std::string w_chart_tToStr(wchar_t const *val)
 {
     std::wstring ws(val);
@@ -200,20 +205,14 @@ void createRenderTexture(sf::RenderTexture &renderTexture, unsigned int width, u
 
 void createRectangle(sf::RectangleShape &rec, sf::Vector2f recSize, sf::Color color, float x, float y, bool center)
 {
-    float SMKxOrigin(0.f), SMKyOrigin(0.f);
 #if !defined(IS_ENGINE_HTML_5)
     rec.setSize(recSize);
-    if (center) is::centerSFMLObj(rec);
 #else
     rec = sf::RectangleShape(recSize.x, recSize.y);
-    if (!center)
-    {
-        SMKxOrigin = recSize.x / 2.f;
-        SMKyOrigin = recSize.y / 2.f;
-    }
 #endif
+    if (center) is::centerSFMLObj(rec);
     setSFMLObjFillColor(rec, color);
-    is::setSFMLObjX_Y(rec, x + SMKxOrigin, y + SMKyOrigin);
+    is::setSFMLObjX_Y(rec, x, y);
 }
 
 #if defined(IS_ENGINE_SFML)
@@ -432,10 +431,15 @@ short vibrate(short duration)
     return 1;//EXIT_SUCCESS;
 }
 
-void openURL(const std::string& url)
+void openURL(const std::string& url, OpenURLAction action)
 {
-
-    std::string urlStr = "http://" + url;
+    std::string urlStr;
+    switch(action)
+    {
+        case OpenURLAction::Http: urlStr = "http://" + url; break;
+        case OpenURLAction::Tel: urlStr = "tel:" + url; break;
+        default: urlStr = "mailto:" + url; break;
+    }
 
 #if defined(__ANDROID__)
     JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
@@ -460,7 +464,8 @@ void openURL(const std::string& url)
     jobject uri = env->CallStaticObjectMethod(uriClass, uriParse, uriString);
 
     // intent action
-    jstring actionString = env->NewStringUTF("android.intent.action.VIEW");
+    jstring actionString =
+        env->NewStringUTF((action != OpenURLAction::Tel) ? "android.intent.action.VIEW" : "android.intent.action.DIAL");
 
     // call the intent object constructor
     jmethodID newIntent = env->GetMethodID(intentClass, "<init>", "(Ljava/lang/String;Landroid/net/Uri;)V");
@@ -483,9 +488,11 @@ void openURL(const std::string& url)
 #elif defined(IS_ENGINE_HTML_5)
     std::vector<std::string> vectorArray;
     vectorArray.push_back(urlStr);
-    EM_ASM_ARGS({
-      var vectorArray = new Module.VectorString($0);
-      window.open(vectorArray.get(0));
+
+    EM_ASM_ARGS
+    ({
+        var vectorArray = new Module.VectorString($0);
+        window.open(vectorArray.get(0));
     }, &vectorArray);
 #else
     std::string op =

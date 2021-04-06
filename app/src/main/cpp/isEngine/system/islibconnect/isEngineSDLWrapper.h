@@ -35,13 +35,15 @@
 #include <string>
 #include <iostream>
 #include <vector>
-//#include <comdef.h>
+#include <chrono>
 
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
+namespace is
+{
 extern SDL_Window *IS_ENGINE_SDL_window;
 extern SDL_Renderer *IS_ENGINE_SDL_renderer;
 extern SDL_DisplayMode IS_ENGINE_SDL_displayMode; // Used to determine the size of a window
@@ -50,8 +52,30 @@ extern SDL_DisplayMode IS_ENGINE_SDL_displayMode; // Used to determine the size 
 /// resize the images on Android (Sprite, Text, ...)
 extern float IS_ENGINE_SDL_screenXScale, IS_ENGINE_SDL_screenYScale;
 
-namespace is
+/// Max SDL Sound Channel
+static const short IS_ENGINE_SDL_CHANNEL_MAX = 60;
+
+/// Allow to avoid duplicates
+extern short IS_ENGINE_SDL_channel[IS_ENGINE_SDL_CHANNEL_MAX];
+
+/// Class that allows to manage touchdowns
+class TouchData
 {
+public:
+    bool m_SDLtouchDown;
+    int m_SDLtouchX;
+    int m_SDLtouchY;
+};
+
+/// Maximum number of fingers to have on the screen
+static const short IS_ENGINE_SDL_TOUCH_ID_COUNT_MAX = 2;
+
+/// Stores the different fingers used on the screen
+extern TouchData IS_ENGINE_SDL_touchData[IS_ENGINE_SDL_TOUCH_ID_COUNT_MAX];
+
+/// Count the number of fingers on the screen
+extern short IS_ENGINE_SDL_touchIdCount;
+
 /// Allows to initialize the resources of the SDL library
 bool SDL2initLib();
 
@@ -154,12 +178,18 @@ private:
 
     bool loadFont(const std::string& filename);
 };
+}
 
+namespace is
+{
 /// auto generate font container
 /// Allows to store fonts that will be used to manipulate the
 /// size of texts
-extern std::vector<Font*> IS_ENGINE_SDL_AUTO_GENERATE_FONT;
+extern std::vector<sf::Font*> IS_ENGINE_SDL_AUTO_GENERATE_FONT;
+}
 
+namespace sf
+{
 class Transformable
 {
 public:
@@ -210,6 +240,8 @@ public:
     virtual void setSize(float x, float y)
     {
         is::setVector2(m_size, x, y);
+        m_textureRec.width = x;
+        m_textureRec.height = y;
     }
 
     virtual void setSize(const Vector2f &size)
@@ -287,7 +319,7 @@ class SDLTexture : public Transformable
 {
 public:
     SDL_RendererFlip m_SDLFlip = SDL_FLIP_NONE;
-
+    bool m_multiLines = false;
     enum SDLTextureType
     {
         IS_ENGINE_SDL_SPRITE,
@@ -340,6 +372,8 @@ public:
 class Text : public SDLTexture
 {
 public:
+    bool m_SDLcontainMultiSpaces = false;
+    short m_SDLaddTextRecWSize = 3;
     Text(): SDLTexture() {m_SDLTextureType = IS_ENGINE_SDL_TEXT;}
 
     Text(sf::Font& font);
@@ -453,9 +487,9 @@ class RectangleShape : public Shape
 public:
     RectangleShape() : Shape() {}
 
-    RectangleShape(float width, float height) : Shape() {is::setVector2(m_size, width, height);}
+    RectangleShape(float width, float height) : Shape() {setSize(width, height);}
 
-    RectangleShape(const Vector2f &size) : Shape() {is::setVector2(m_size, size.x, size.y);}
+    RectangleShape(const Vector2f &size) : Shape() {setSize(size.x, size.y);}
 
     void draw(View const &view) const;
 };
@@ -467,7 +501,7 @@ public:
 
     CircleShape(float raduis) : Shape() {setRadius(raduis);}
 
-    void setRadius(float raduis) {is::setVector2(m_size, raduis, raduis);}
+    void setRadius(float raduis) {setSize(raduis, raduis);}
 
     float getRadius() {return m_size.x;}
 
@@ -635,8 +669,8 @@ public:
     {
         Closed = SDL_QUIT,
         Resized = SDL_WINDOWEVENT_RESIZED,
-        LostFocus = SDL_WINDOWEVENT_FOCUS_GAINED,
-        GainedFocus = SDL_WINDOWEVENT_FOCUS_LOST,
+        LostFocus = -2,
+        GainedFocus = -1,
         MouseButtonPressed = SDL_MOUSEBUTTONDOWN,
         MouseButtonReleased = SDL_MOUSEBUTTONUP,
         KeyPressed = SDL_KEYDOWN,
@@ -673,24 +707,6 @@ public:
     unsigned int bitsPerPixel;
 };
 
-/// Class that allows to manage touchdowns
-class TouchData
-{
-public:
-    bool m_SDLtouchDown;
-    int m_SDLtouchX;
-    int m_SDLtouchY;
-};
-
-/// Stores the different fingers used on the screen
-extern TouchData IS_ENGINE_SDL_touchData[2];
-
-/// Count the number of fingers on the screen
-extern short IS_ENGINE_SDL_touchIdCount;
-
-/// Maximum number of fingers to have on the screen
-extern const short IS_ENGINE_SDL_touchIdCountMax;
-
 class RenderWindow : public ViewManager
 {
 public:
@@ -703,7 +719,7 @@ public:
 
     void create(VideoMode videoMode, const std::string& title, int style = Style::Default);
 
-    void setFramerateLimit(int fps) {m_windowFrameLimit = 1000 / fps;}
+    void setFramerateLimit(int fps);
 
     void setSize(const Vector2u& size);
 
@@ -747,6 +763,7 @@ private:
     unsigned int m_windowFrameLimit;
     int m_style;
     bool m_isOpen = true;
+    std::chrono::steady_clock::time_point m_timeSinceLastDisplay; ///< The timepoint at which Display() was last called
 };
 
 typedef sf::RenderWindow Render;
@@ -756,7 +773,7 @@ class SoundBuffer
 public:
     static int SDL_sndChannel;
 
-    SoundBuffer() {m_channel = SDL_sndChannel++;}
+    SoundBuffer();
 
     SoundBuffer(const std::string filename);
 
@@ -783,6 +800,7 @@ private:
     int m_channel;
     std::string m_filename = "";
     bool loadSound(const std::string& filePath);
+    void setChannelId();
 };
 
 class Sound : public SoundSource
@@ -794,6 +812,8 @@ public:
         SoundSource(),
         m_SDLsoundBuffer(&buffer)
         {}
+
+    Status getStatus();
 
     void play();
 
@@ -834,6 +854,8 @@ public:
     ~Music();
 
     void play();
+
+    Status getStatus();
 
     void pause()
     {

@@ -65,7 +65,6 @@ void GameEngine::initEngine()
                 , S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH
                 #endif
               );
-
         m_gameSysExt.saveConfig(is::GameConfig::CONFIG_FILE);
     }
 #endif
@@ -97,19 +96,24 @@ bool GameEngine::play()
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                         GAME STARTUP
 //////////////////////////////////////////////////////////////////////////////////////////////////////
+    std::unique_ptr<ActivityController> app = nullptr;
 #if !defined(IS_ENGINE_HTML_5)
-    ActivityController app(m_gameSysExt);
     while (m_window.isOpen())
 #else
-    ActivityController app(m_gameSysExt);
     m_window.ExecuteMainLoop([&]
 #endif
     {
-        #if defined(IS_ENGINE_HTML_5)
+#if defined(IS_ENGINE_HTML_5)
         m_window.PoolEvents();
-        #endif
-        app.update();
-        app.draw();
+        if (emscripten_run_script_int("Module.syncdone") == 1)
+        {
+#endif
+        if (app == nullptr) app = std::make_unique<ActivityController>(m_gameSysExt);
+        app->update();
+        app->draw();
+#if defined(IS_ENGINE_HTML_5)
+        }
+#endif
     }
     #if defined(IS_ENGINE_HTML_5)
     );

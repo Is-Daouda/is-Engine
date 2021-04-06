@@ -38,9 +38,10 @@ public:
     /// Game Sound container
     std::vector<std::shared_ptr<GameSound>> m_GSMsound;
 
+#if !defined(__ANDROID__)
     /// Game Music container
     std::vector<std::shared_ptr<GameMusic>> m_GSMmusic;
-
+#endif
     //////////////////////////////////////////////////////
     /// \brief Allows to add SFML Sound in GSM container
     ///
@@ -63,8 +64,12 @@ public:
     //////////////////////////////////////////////////////
     virtual void GSMaddMusic(const std::string& name, const std::string& filePath)
     {
+#if defined(__ANDROID__)
+        GSMaddSound(name, filePath);
+#else
         auto obj = std::make_shared<GameMusic>(name, filePath);
         m_GSMmusic.push_back(obj);
+#endif
     }
 
     /// Allows to set sound loop
@@ -84,6 +89,9 @@ public:
     /// Allows to set music loop
     virtual void GSMsetMusicLoop(const std::string& name, bool loop)
     {
+#if defined(__ANDROID__)
+        GSMsetSoundLoop(name, loop);
+#else
         WITH (m_GSMmusic.size())
         {
             if (m_GSMmusic[_I]->getName() == name)
@@ -92,11 +100,12 @@ public:
                 return;
             }
         }
-        is::showLog("ERROR: <" + name + "> sound does not exist!");
+        is::showLog("ERROR: <" + name + "> music does not exist!");
+#endif
     }
 
     /// Allows to get sound in container by his name
-    virtual sf::Sound* GSMgetSound(const std::string& name)
+    virtual sf::Sound* GSMgetSound(const std::string& name, bool showError = true)
     {
         WITH (m_GSMsound.size())
         {
@@ -105,21 +114,44 @@ public:
                 return &m_GSMsound[_I]->getSound();
             }
         }
-        is::showLog("ERROR: <" + name + "> sound does not exist!");
+        if (showError) is::showLog("ERROR: <" + name + "> sound does not exist!");
         return nullptr;
     }
 
     /// Allows to get music in container by his name
-    virtual sf::Music* GSMgetMusic(const std::string& name)
+    virtual
+#if defined(__ANDROID__)
+    sf::Sound*
+#else
+    sf::Music*
+#endif
+    GSMgetMusic(const std::string& name, bool showError = true)
     {
-        WITH (m_GSMmusic.size())
+        WITH (
+#if defined(__ANDROID__)
+                m_GSMsound.size()
+#else
+                m_GSMmusic.size()
+#endif
+                )
         {
-            if (m_GSMmusic[_I]->getName() == name)
+            if (
+#if defined(__ANDROID__)
+                    m_GSMsound[_I]->
+#else
+                    m_GSMmusic[_I]->
+#endif
+            getName() == name)
             {
-                return &m_GSMmusic[_I]->getMusic();
+                return
+#if defined(__ANDROID__)
+                        &m_GSMsound[_I]->getSound();
+#else
+                        &m_GSMmusic[_I]->getMusic();
+#endif
             }
         }
-        is::showLog("ERROR: <" + name + "> music does not exist!");
+        if (showError) is::showLog("ERROR: <" + name + "> music does not exist!");
         return nullptr;
     }
 };

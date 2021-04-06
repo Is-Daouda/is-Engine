@@ -17,6 +17,8 @@
 // Uncomment to enable SDM function
 #define IS_ENGINE_USE_SDM ///< Allows to use Step and Draw Manager
 
+#define SND_FILE_EXTENSION ".wav"
+
 // Uncomment to enable this function
 #define IS_ENGINE_OPTIMIZE_PERF ///< Allows to activate the optimization in certain parts of the engine
 

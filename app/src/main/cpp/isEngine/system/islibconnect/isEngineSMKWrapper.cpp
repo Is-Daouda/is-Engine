@@ -94,9 +94,29 @@ void Shape::setSize(float x, float y)
     setScale(xScale, yScale);
 }
 
-RectangleShape::RectangleShape() : Shape(RoundedRectangle(32.f, 32.f, 0.f)) {is::setVector2(ObjectWrapper::m_size, 32.f, 32.f);}
+void Shape::setPosition(float x, float y)
+{
+    is::setVector2(m_position, x, y);
+    SetPosition((m_position.x + m_size.x / 2.f) - m_origin.x,
+                (m_position.y + m_size.y / 2.f) - m_origin.y);
+}
 
-CircleShape::CircleShape() : Shape(smk::Shape::Circle(32.f)) {is::setVector2(m_size, 32.f, 32.f);}
+void Shape::setOrigin(float x, float y)
+{
+    is::setVector2(m_origin, x, y);
+}
+
+RectangleShape::RectangleShape() : Shape(RoundedRectangle(32.f, 32.f, 0.f))
+{
+    is::setVector2(ObjectWrapper::m_size, 32.f, 32.f);
+    setPosition(0.f, 0.f);
+}
+
+CircleShape::CircleShape() : Shape(smk::Shape::Circle(32.f))
+{
+    is::setVector2(m_size, 32.f, 32.f);
+    setPosition(0.f, 0.f);
+}
 
 void CircleShape::setRadius(float raduis)
 {
@@ -158,6 +178,15 @@ Font::Font(const std::string& filename, float line_height) : smk::Font(filename,
 void Sound::setVolume(float volume)
 {
     if (static_cast<int>(volume) >= 0 && static_cast<int>(volume) <= 100) SetVolume(volume / 100.f);
+}
+
+Sound::Status Sound::getStatus()
+{
+    if (m_status != Status::Paused)
+    {
+        if (!IsPlaying()) m_status = Stopped;
+    }
+    return m_status;
 }
 
 View::View(const Vector2f& center, const Vector2f& size)

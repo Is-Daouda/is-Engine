@@ -392,6 +392,10 @@ void GameDisplay::drawScreen()
     #if defined(__ANDROID__)
     }
     #endif // defined
+
+#if defined(IS_ENGINE_HTML_5)
+    m_window.LimitFrameRate(is::GameConfig::FPS);
+#endif
     is::display(m_window);
 }
 
@@ -423,9 +427,9 @@ void GameDisplay::showTempLoading(float time)
 void GameDisplay::loadParentResources()
 {
     // Load sound
-    GSMaddSound("change_option", is::GameConfig::SFX_DIR + "change_option.wav");
-    GSMaddSound("cancel", is::GameConfig::SFX_DIR + "cancel.wav");
-    GSMaddSound("select_option", is::GameConfig::SFX_DIR + "select_option.wav");
+    GSMaddSound("change_option", is::GameConfig::SFX_DIR + "change_option" + SND_FILE_EXTENSION);
+    GSMaddSound("cancel", is::GameConfig::SFX_DIR + "cancel" + SND_FILE_EXTENSION);
+    GSMaddSound("select_option", is::GameConfig::SFX_DIR + "select_option" + SND_FILE_EXTENSION);
 
     // Load message box sprite
     auto &texMsgBox    = GRMaddTexture("confirm_box", is::GameConfig::GUI_DIR + "confirm_box.png");
@@ -458,9 +462,6 @@ void GameDisplay::loadParentResources()
                    0.f, 0.f, true, 18);
     is::createText(fontSystem, m_txtMsgBoxOK, is::lang::pad_answer_ok[m_gameSysExt.m_gameLanguage],
                    0.f, 0.f, true, 18);
-
-   createSprite(GRMaddTexture("temp_loading", is::GameConfig::GUI_DIR + "temp_loading.png"),
-            m_sprLoading, sf::Vector2f(m_viewX, m_viewY), sf::Vector2f(320.f, 240.f));
 }
 
 void GameDisplay::setIsRunning(bool val)
@@ -715,6 +716,9 @@ void GameDisplay::GSMstopSound(const std::string& name)
 
 void GameDisplay::GSMplayMusic(const std::string& name)
 {
+#if defined(__ANDROID__)
+    GSMplaySound(name);
+#else
     bool musicExist(false);
     WITH (m_GSMmusic.size())
     {
@@ -727,10 +731,14 @@ void GameDisplay::GSMplayMusic(const std::string& name)
         }
     }
     if (!musicExist) is::showLog("ERROR: Can't play <" + name + "> music because music not exists!");
+#endif
 }
 
 void GameDisplay::GSMpauseMusic(const std::string& name)
 {
+#if defined(__ANDROID__)
+    GSMpauseSound(name);
+#else
     bool musicExist(false);
     WITH (m_GSMmusic.size())
     {
@@ -746,10 +754,14 @@ void GameDisplay::GSMpauseMusic(const std::string& name)
         }
     }
     if (!musicExist) is::showLog("ERROR: Can't pause <" + name + "> music because music not exists!");
+#endif
 }
 
 void GameDisplay::GSMstopMusic(const std::string& name)
 {
+#if defined(__ANDROID__)
+    GSMstopSound(name);
+#else
     bool musicExist(false);
     WITH (m_GSMmusic.size())
     {
@@ -765,5 +777,6 @@ void GameDisplay::GSMstopMusic(const std::string& name)
         }
     }
     if (!musicExist) is::showLog("ERROR: Can't stop <" + name + "> music because music not exists!");
+#endif
 }
 }

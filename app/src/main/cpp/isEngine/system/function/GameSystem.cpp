@@ -136,9 +136,7 @@ bool GameSystem::fileExist(std::string const &fileName)
 
 void GameSystem::removeFile(std::string const &fileName)
 {
-#if defined(GAME_FULL_VERSION)
     remove(fileName.c_str());
-#endif // defined
 }
 
 void GameSystem::useVibrate(short ms)
@@ -159,6 +157,9 @@ void GameSystem::saveConfig(std::string const &fileName)
         fwrite(&m_gameLanguage, sizeof(int), 1, file);
         fwrite(&m_firstLaunch, sizeof(bool), 1, file);
         fclose(file);
+#if defined(IS_ENGINE_HTML_5)
+        EM_ASM(FS.syncfs(false, function(err){console.log(err)});, 0);
+#endif
     }
 }
 
@@ -192,6 +193,9 @@ void GameSystem::savePadConfig(std::string const &fileName)
         fwrite(&m_padAlpha, sizeof(int), 1, file);
         fwrite(&m_permutePadAB, sizeof(bool), 1, file);
         fclose(file);
+#if defined(IS_ENGINE_HTML_5)
+        EM_ASM(FS.syncfs(false, function(err){console.log(err)});, 0);
+#endif
     }
 }
 

@@ -47,7 +47,7 @@ bool GameEngine::basicSFMLmain()
     // Are variables that return the path of resources located in the "assets" folder
 
     // Load music buffer
-    sf::SoundBuffer musicBuffer; // Music is played in the render loop. See line 170
+    sf::SoundBuffer musicBuffer; // Music is played in the render loop. See line 172
     is::loadSFMLSoundBuffer(musicBuffer, is::GameConfig::MUSIC_DIR + "game_music.wav");
     sf::Sound music(musicBuffer);
 
@@ -82,6 +82,8 @@ bool GameEngine::basicSFMLmain()
     while (m_window.isOpen())                             //
     #else                                                 //
     m_window.ExecuteMainLoop([&]                          //
+    {                                                     //
+    if (emscripten_run_script_int("Module.syncdone") == 1)//
     #endif                                                //
     {                                                     //
 ////////////////////////////////////////////////////////////
@@ -194,6 +196,7 @@ bool GameEngine::basicSFMLmain()
 ////////////////////////////////////////////////////////////
 // Don't touch unless you know what you're doing.         //
     #if defined(IS_ENGINE_HTML_5)                         //
+    }                                                     //
     );                                                    //
     #endif                                                //
 ////////////////////////////////////////////////////////////
