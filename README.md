@@ -62,10 +62,15 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 
 ## What's new in this version
 ### 3.3.1
-1. Correction du bug qui déformait les images lors de la rotation.
-2. Optimisation de la partie rendu du moteur qui utilise SDL. Les jeux sont maintenant plus fluides !
-3. Intégration d'un système de sauvegarde de fichier pour le Web (HTML 5). Plus besoin de ré-implémenter le vôtre !
-4. La fonction OpenURL permet maintenant de lancer des appels téléphoniques (sur Android) et de contacter par email.
+1. Fixed the bug that distorted images when using rotation.
+2. Optimization of the rendering part of the engine that uses SDL. Games are now smoother!
+3. Integration of a file saving system for the Web (HTML 5). No need to re-implement yours anymore!
+4. The [OpenURL function](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L982) now allows making phone calls (on Android) and contacting by email.
+```cpp
+is::openURL("www.yoursiteweb.com", is::OpenURLAction::Http); // open link
+is::openURL("youremail@gmail.com", is::OpenURLAction::Email); // open email
+is::openURL("+2280011223344", is::OpenURLAction::Tel); // Make a call
+```
 
 ### previous version
 1. **[The is::LibConnect function](#islibconnect)**: Allows you to develop with several game libraries at the same time (SFML, SDL 2, SMK (Emscripten)) in one and the same project!
@@ -73,7 +78,7 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 3. **Support for Android x64 architectures**: Now you can export your C++ games to several Android architectures (armeabi-v7a, arm64-v8a, x86, x64, ...).
 Which means that you can now publish your C++ games on Google Play! (Yeaaah !!!)
 - [You must read this very important](#-very-important)
-4. **[The OpenURL function](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L932) now allows you to open web links on many system**: PC (Windows / Linux), Web (HTML 5), Android.
+4. **[The OpenURL function](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L982) now allows you to open web links on many system**: PC (Windows / Linux), Web (HTML 5), Android.
 5. **[A new function to manipulate dates](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L111)**
 - Very practical data sending system for sending C++ data to Javascript.
 
@@ -190,7 +195,6 @@ This project uses the template of **Georgik**. For more information on this temp
 - On Android SFML games run with SDL library. If you want to use SDL functions in your source code, use the **IS_ENGINE_SDL_2 macro**.
 - The audio format supported at the moment is **.WAV**
 - Some SFML functions like: **Vertex Array, Render Texture** are not yet supported. These additions will be made soon!
-- **std::wstring** text is not yet well supported (special characters are not displayed well)
 - **Your help to improve the engine will be welcome!**
 - [Please read this](#Contribute).
 
@@ -446,7 +450,6 @@ codeblocks "./app/src/main/is-Engine-linux.cbp"
 ## ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) Very important
 - If you want to use SDL functions in your source code, use the **IS_ENGINE_SDL_2 macro**.
 - Note that some SFML functions like: **Vertex Array, Render Texture** are not yet supported. These additions will be made soon!
-- **std::wstring** text is not yet well supported (special characters are not displayed well).
 
 ---
 
