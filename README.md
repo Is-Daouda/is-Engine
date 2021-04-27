@@ -185,7 +185,7 @@ public:
 
 ## How to use is::Engine with the different development tools:
 ## ![android](https://i48.servimg.com/u/f48/20/16/75/27/icon_a10.png) Android Studio
-This project uses the template of **Georgik**. For more information on this template [click here](https://github.com/georgik/sdl2-android-example)
+This project uses the template of **[Georgik](https://github.com/georgik/sdl2-android-example)** and **[Lauchmelder23](https://github.com/Lauchmelder23/SDLU)**.
 
 **1. Prerequisites**
 - Android Studio (4.0.1 +)
