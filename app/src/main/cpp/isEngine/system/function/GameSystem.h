@@ -23,6 +23,8 @@
 #define GAMESYSTEM_H_INCLUDED
 
 #include "GameFunction.h"
+#include "../graphic/GRM.h"
+#include "../sound/GSM.h"
 #if defined(__ANDROID__)
 #if defined(IS_ENGINE_USE_ADMOB)
 #include "../android/AdmobManager.h"
@@ -34,7 +36,7 @@
 //////////////////////////////////////////////////////
 #define IS_ENGINE_VERSION_MAJOR 3
 #define IS_ENGINE_VERSION_MINOR 3
-#define IS_ENGINE_VERSION_PATCH 1
+#define IS_ENGINE_VERSION_PATCH 2
 
 namespace is
 {
@@ -42,7 +44,7 @@ namespace is
 /// \brief Class for manage game system
 ///
 //////////////////////////////////////////////////////
-class GameSystem
+class GameSystem : public GSM, public GRM
 {
 public:
     //////////////////////////////////////////////////////
@@ -178,6 +180,7 @@ public:
     bool  m_enableVibrate; ///< Used to find out if vibrate is enabled in option
     bool  m_keyIsPressed;  ///< Used to find out if a key / button has been pressed
     bool  m_firstLaunch;   ///< Lets check if the game has been launched once
+    bool  m_loadParentResources; ///< Allows to load parents resources once
 
     /// Represent the variable that stores the option validation key with the Mouse
     sf::Mouse::Button m_validationMouseKey;

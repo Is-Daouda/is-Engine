@@ -320,6 +320,7 @@ class SDLTexture : public Transformable
 public:
     SDL_RendererFlip m_SDLFlip = SDL_FLIP_NONE;
     bool m_multiLines = false;
+    bool m_circleShape = true;
     enum SDLTextureType
     {
         IS_ENGINE_SDL_SPRITE,
@@ -346,7 +347,7 @@ class Sprite : public SDLTexture
 {
 public:
     Sprite() : SDLTexture() {}
-
+    virtual ~Sprite() {}
     Sprite(Texture &texture) : SDLTexture(texture) {setSDLTexture();}
 
     //-->Sprite(RenderTexture &renderTexture) : Transformable(renderTexture) {setSDLTexture();}

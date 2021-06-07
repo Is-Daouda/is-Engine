@@ -426,20 +426,37 @@ void GameDisplay::showTempLoading(float time)
 
 void GameDisplay::loadParentResources()
 {
-    // Load sound
-    GSMaddSound("change_option", is::GameConfig::SFX_DIR + "change_option" + SND_FILE_EXTENSION);
-    GSMaddSound("cancel", is::GameConfig::SFX_DIR + "cancel" + SND_FILE_EXTENSION);
-    GSMaddSound("select_option", is::GameConfig::SFX_DIR + "select_option" + SND_FILE_EXTENSION);
+    if (!m_gameSysExt.m_loadParentResources)
+    {
+        // Load sound
+        m_gameSysExt.GSMaddSound("change_option", is::GameConfig::SFX_DIR + "change_option" + SND_FILE_EXTENSION);
+        m_gameSysExt.GSMaddSound("cancel", is::GameConfig::SFX_DIR + "cancel" + SND_FILE_EXTENSION);
+        m_gameSysExt.GSMaddSound("select_option", is::GameConfig::SFX_DIR + "select_option" + SND_FILE_EXTENSION);
 
-    // Load message box sprite
-    auto &texMsgBox    = GRMaddTexture("confirm_box", is::GameConfig::GUI_DIR + "confirm_box.png");
-    auto &texMsgButton = GRMaddTexture("confirm_box_button", is::GameConfig::GUI_DIR + "confirm_box_button.png");
+        // Load message box sprite
+        m_gameSysExt.GRMaddTexture("confirm_box", is::GameConfig::GUI_DIR + "confirm_box.png");
+        m_gameSysExt.GRMaddTexture("confirm_box_button", is::GameConfig::GUI_DIR + "confirm_box_button.png");
 
-    // Temporal loading texture
-    GRMaddTexture("temp_loading", is::GameConfig::GUI_DIR + "temp_loading.png");
-    GRMaddTexture("loading_icon", is::GameConfig::GUI_DIR + "loading_icon.png");
+        // Temporal loading texture
+        m_gameSysExt.GRMaddTexture("temp_loading", is::GameConfig::GUI_DIR + "temp_loading.png");
+        m_gameSysExt.GRMaddTexture("loading_icon", is::GameConfig::GUI_DIR + "loading_icon.png");
 
-    is::createSprite(texMsgBox, m_sprMsgBox, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
+        // Load font
+        m_gameSysExt.GRMaddFont("font_system", GameConfig::FONT_DIR + "font_system.ttf", 18);
+        m_gameSysExt.GRMaddFont("font_msg", GameConfig::FONT_DIR + "font_msg.ttf", 18);
+
+        m_gameSysExt.m_loadParentResources = true;
+    }
+
+    if (m_gameSysExt.m_loadParentResources)
+    {
+        WITH(m_gameSysExt.m_GSMsound.size()) GSMaddSoundObject(m_gameSysExt.m_GSMsound[_I]);
+        WITH(m_gameSysExt.m_GRMtexture.size()) GRMaddTextureObject(m_gameSysExt.m_GRMtexture[_I]);
+        WITH(m_gameSysExt.m_GRMfont.size()) GRMaddFontObject(m_gameSysExt.m_GRMfont[_I]);
+    }
+
+    auto &texMsgButton = GRMgetTexture("confirm_box_button");
+    is::createSprite(GRMgetTexture("confirm_box"), m_sprMsgBox, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
     is::createSprite(texMsgButton, m_sprMsgBoxButton1, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
     is::createSprite(texMsgButton, m_sprMsgBoxButton2, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
     is::createSprite(texMsgButton, m_sprMsgBoxButton3, sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
@@ -452,8 +469,7 @@ void GameDisplay::loadParentResources()
     is::centerSFMLObj(m_sprMsgBoxButton3);
 
     // Load font
-    auto &fontSystem = GRMaddFont("font_system", GameConfig::FONT_DIR + "font_system.ttf", 18);
-    GRMaddFont("font_msg", GameConfig::FONT_DIR + "font_msg.ttf", 18);
+    auto &fontSystem = GRMgetFont("font_system");
 
     is::createText(fontSystem, m_txtMsgBox, "", 0.f, 0.f, 20);
     is::createText(fontSystem, m_txtMsgBoxYes, is::lang::pad_answer_yes[m_gameSysExt.m_gameLanguage],
@@ -462,6 +478,8 @@ void GameDisplay::loadParentResources()
                    0.f, 0.f, true, 18);
     is::createText(fontSystem, m_txtMsgBoxOK, is::lang::pad_answer_ok[m_gameSysExt.m_gameLanguage],
                    0.f, 0.f, true, 18);
+
+   createSprite(GRMgetTexture("temp_loading"), m_sprLoading, sf::Vector2f(m_viewX, m_viewY), sf::Vector2f(320.f, 240.f));
 }
 
 void GameDisplay::setIsRunning(bool val)

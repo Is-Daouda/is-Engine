@@ -410,7 +410,7 @@ void Text::setObjectText(const std::wstring& text, int textSize)
         m_currentCharSize = text.length() + 1;
         m_SDLtext = new char[m_currentCharSize];
         std::wcstombs(m_SDLtext, text.c_str(), text.size());
-        m_SDLtext[m_currentCharSize - 1] = '\0';
+        m_SDLtext[m_currentCharSize - 1] = L'\0';
         setSDLText(textSize);
     }
 }
@@ -909,7 +909,7 @@ void RenderWindow::draw(SDLTexture &obj)
     point.y = yOrigin * is::IS_ENGINE_SDL_screenYScale;
 
     if (obj.getTextureRect().width == obj.getTextureRect().height && rec.w != rec.h &&
-        std::abs(obj.getRotation()) > 0.f &&
+        std::abs(obj.getRotation()) > 0.f && obj.m_circleShape &&
         std::abs(obj.getScale().x) == std::abs(obj.getScale().y))
     {
         auto redimImg = [this](int &destSize, int &destPos, int &destOrigin, float &origin,

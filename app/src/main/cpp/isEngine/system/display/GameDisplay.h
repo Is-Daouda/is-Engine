@@ -492,6 +492,7 @@ protected:
     bool m_showMsg, m_mbYesNo, m_msgBoxMouseInCollison;
 
     sf::Sprite m_sprMsgBox, m_sprMsgBoxButton1, m_sprMsgBoxButton2, m_sprMsgBoxButton3;
+    sf::Sprite m_sprLoading;
     sf::Text m_txtMsgBox, m_txtMsgBoxYes, m_txtMsgBoxNo, m_txtMsgBoxOK;
     sf::RectangleShape m_recMsgBox;
 };

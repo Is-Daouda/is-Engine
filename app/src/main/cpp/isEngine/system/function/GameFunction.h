@@ -563,6 +563,45 @@ inline void setSFMLObjProperties(sf::CircleShape &obj, float x, float y, float a
     is::setSFMLObjX_Y(obj, x, y);
 }
 
+/// Center SFML object
+template <class T>
+void centerSFMLObj(T &obj)
+{
+    obj.setOrigin(
+#if !defined(IS_ENGINE_SFML)
+    obj.getTextureRect().width / 2, obj.getTextureRect().height / 2
+#else
+    obj.getGlobalBounds().width / 2, obj.getGlobalBounds().height / 2
+#endif
+    );
+}
+
+/// Center SFML object X
+template <class T>
+void centerSFMLObjX(T &obj)
+{
+    obj.setOrigin(
+#if !defined(IS_ENGINE_SFML)
+                  obj.getTextureRect().width / 2
+#else
+                  obj.getGlobalBounds().width / 2
+#endif
+                  , obj.getOrigin().y);
+}
+
+/// Center SFML object Y
+template <class T>
+void centerSFMLObjY(T &obj)
+{
+    obj.setOrigin(obj.getOrigin().x,
+#if !defined(IS_ENGINE_SFML)
+                  obj.getTextureRect().height / 2
+#else
+                  obj.getGlobalBounds().height / 2
+#endif
+                  );
+}
+
 /// Load SFML Texture Resource
 inline void loadSFMLTexture(sf::Texture &obj, const std::string& filePath)
 {
@@ -780,48 +819,83 @@ inline void setTextFont(sf::Font &fnt, sf::Text &txt, int txtSize)
 }
 #endif
 
-/// Create SFML wtext with color
-void createWText(sf::Font
-                 #if defined(IS_ENGINE_SFML)
-                 const
-                 #endif
-                 &fnt, sf::Text &txt, std::wstring const &text, float x, float y, sf::Color color, bool centerText, int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
-
 /// Create SFML text
+template<class T>
 void createText(sf::Font
                  #if defined(IS_ENGINE_SFML)
                  const
                  #endif
-                 &fnt, sf::Text &txt, std::string const &text, float x, float y, int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
+                 &fnt, sf::Text &txt, T const &text, float x, float y,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE)
+{
+    #if defined(IS_ENGINE_HTML_5)
+    setTextFont(fnt, txt, txtSize);
+    #else
+    txt.setFont(fnt);
+    if (txtSize > 0) txt.setCharacterSize(txtSize);
+    else txt.setCharacterSize(is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
+    //textStyleConfig(txt, underLined, boldText, italicText);
+    #endif
+    txt.setString(text);
+    is::setSFMLObjX_Y(txt, x, y);
+    is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_TEXT_COLOR);
+}
 
 /// Create SFML text with center parameter
+template<class T>
 void createText(sf::Font
                  #if defined(IS_ENGINE_SFML)
                  const
                  #endif
-                 &fnt, sf::Text &txt, std::string const &text, float x, float y, bool centerText, int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
+                 &fnt, sf::Text &txt, T const &text, float x, float y, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE)
+{
+    createText(fnt, txt, text, x, y, txtSize);
+    if (centerText) is::centerSFMLObj(txt);
+    is::setSFMLObjX_Y(txt, x, y);
+}
 
 /// Create SFML text with color and size
+template<class T>
 void createText(sf::Font
                  #if defined(IS_ENGINE_SFML)
                  const
                  #endif
-                 &fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
+                 &fnt, sf::Text &txt, T const &text, float x, float y, sf::Color color,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE)
+{
+    createText(fnt, txt, text, x, y, txtSize);
+    is::setSFMLObjFillColor(txt, color);
+}
 
 /// Create SFML text with color, size and center
+template<class T>
 void createText(sf::Font
                  #if defined(IS_ENGINE_SFML)
                  const
                  #endif
-                 &fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, bool centerText, int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
+                 &fnt, sf::Text &txt, T const &text, float x, float y, sf::Color color, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE)
+{
+    createText(fnt, txt, text, x, y, centerText, txtSize);
+    is::setSFMLObjFillColor(txt, color);
+}
 
-/// Create SFML text outline with color and size
 /*
+/// Create SFML text outline with color and size
+template<class T>
 void createText(sf::Font
                  #if defined(IS_ENGINE_SFML)
                  const
                  #endif
-                 &fnt, sf::Text &txt, std::string const &text, float x, float y, sf::Color color, sf::Color outlineColor, int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
+                 &fnt, sf::Text &txt, T const &text, float x, float y, sf::Color color, sf::Color outlineColor, int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
+{
+    createText(fnt, txt, text, x, y, txtSize, underLined, boldText, italicText);
+    #if defined(IS_ENGINE_SFML)
+    txt.setOutlineColor(outlineColor);
+    txt.setOutlineThickness(1.f);
+    #endif
+}
 */
 
 /// Create SFML sprites without IntRec
@@ -832,45 +906,6 @@ void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::IntRect rec, sf::Vector
 
 /// Create SFML sprites advanced
 void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::IntRect rec, sf::Vector2f position, sf::Vector2f origin, sf::Vector2f scale, unsigned int alpha = 255, bool repeatTexture = false, bool smooth = true);
-
-/// Center SFML object
-template <class T>
-void centerSFMLObj(T &obj)
-{
-    obj.setOrigin(
-#if !defined(IS_ENGINE_SFML)
-    obj.getTextureRect().width / 2, obj.getTextureRect().height / 2
-#else
-    obj.getGlobalBounds().width / 2, obj.getGlobalBounds().height / 2
-#endif
-    );
-}
-
-/// Center SFML object X
-template <class T>
-void centerSFMLObjX(T &obj)
-{
-    obj.setOrigin(
-#if !defined(IS_ENGINE_SFML)
-                  obj.getTextureRect().width / 2
-#else
-                  obj.getGlobalBounds().width / 2
-#endif
-                  , obj.getOrigin().y);
-}
-
-/// Center SFML object Y
-template <class T>
-void centerSFMLObjY(T &obj)
-{
-    obj.setOrigin(obj.getOrigin().x,
-#if !defined(IS_ENGINE_SFML)
-                  obj.getTextureRect().height / 2
-#else
-                  obj.getGlobalBounds().height / 2
-#endif
-                  );
-}
 
 //////////////////////////////////////////////////////
 /// \brief Return Cursor Position

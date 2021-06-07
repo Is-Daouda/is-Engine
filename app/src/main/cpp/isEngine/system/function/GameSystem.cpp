@@ -33,6 +33,7 @@ GameSystem::GameSystem(sf::RenderWindow &window):
     m_enableSound = true;
     m_enableMusic = true;
     m_enableVibrate = true;
+    m_loadParentResources = false;
     m_keyIsPressed = false;
 }
 

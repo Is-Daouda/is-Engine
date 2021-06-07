@@ -53,9 +53,29 @@ public:
                                    #endif
                                    )
     {
-        auto obj = std::make_shared<GameFont>(name, filePath, fontSize);
-        m_GRMfont.push_back(obj);
+        auto obj = fontFileExists(filePath);
+        if (obj == nullptr)
+        {
+            auto newObj = std::make_shared<GameFont>(name, filePath, fontSize);
+            m_GRMfont.push_back(newObj);
+            return newObj->getFont();
+        }
+        else is::showLog("ERROR: <" + name + "> font has already been added!");
         return obj->getFont();
+    }
+
+    //////////////////////////////////////////////////////
+    /// \brief Allows to add existing font in GRM container
+    ///
+    /// \param font object
+    //////////////////////////////////////////////////////
+    void GRMaddFontObject(std::shared_ptr<GameFont> font, bool showError = true)
+    {
+        if (!fontFileExists(font->getFilePath())) m_GRMfont.push_back(font);
+        else
+        {
+            if (showError) is::showLog("ERROR: <" + font->getName() + "> font has already been added!");
+        }
     }
 
     //////////////////////////////////////////////////////
@@ -67,9 +87,29 @@ public:
     //////////////////////////////////////////////////////
     virtual sf::Texture& GRMaddTexture(const std::string& name, const std::string& filePath)
     {
-        auto obj = std::make_shared<GameTexture>(name, filePath);
-        m_GRMtexture.push_back(obj);
+        auto obj = textureFileExists(filePath);
+        if (obj == nullptr)
+        {
+            auto newObj = std::make_shared<GameTexture>(name, filePath);
+            m_GRMtexture.push_back(newObj);
+            return newObj->getTexture();
+        }
+        else is::showLog("ERROR: <" + name + "> texture has already been added!");
         return obj->getTexture();
+    }
+
+    //////////////////////////////////////////////////////
+    /// \brief Allows to add existing texture in GRM container
+    ///
+    /// \param texture object
+    //////////////////////////////////////////////////////
+    void GRMaddTextureObject(std::shared_ptr<GameTexture> texture, bool showError = true)
+    {
+        if (textureFileExists(texture->getFilePath()) == nullptr) m_GRMtexture.push_back(texture);
+        else
+        {
+            if (showError) is::showLog("ERROR: <" + texture->getName() + "> texture has already been added!");
+        }
     }
 
     /// Allows to get font as a reference in container by his name
@@ -103,6 +143,25 @@ public:
             }
         }
         is::showLog("ERROR: <" + name + "> texture does not exist!");
+        return nullptr;
+    }
+
+private:
+    GameTexture* textureFileExists(const std::string& filePath) const
+    {
+        WITH(m_GRMtexture.size())
+        {
+            if (m_GRMtexture[_I]->getFilePath() == filePath) return m_GRMtexture[_I].get();
+        }
+        return nullptr;
+    }
+
+    GameFont* fontFileExists(const std::string& filePath) const
+    {
+        WITH(m_GRMfont.size())
+        {
+            if (m_GRMfont[_I]->getFilePath() == filePath) return m_GRMfont[_I].get();
+        }
         return nullptr;
     }
 };

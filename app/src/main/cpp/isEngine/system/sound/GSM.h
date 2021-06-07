@@ -51,8 +51,26 @@ public:
     //////////////////////////////////////////////////////
     virtual void GSMaddSound(const std::string& name, const std::string& filePath)
     {
-        auto obj = std::make_shared<GameSound>(name, filePath);
-        m_GSMsound.push_back(obj);
+        if (!soundFileExists(filePath))
+        {
+            auto obj = std::make_shared<GameSound>(name, filePath);
+            m_GSMsound.push_back(obj);
+        }
+        else is::showLog("ERROR: <" + name + "> sound has already been added!");
+    }
+
+    //////////////////////////////////////////////////////
+    /// \brief Allows to add existing sound in GSM container
+    ///
+    /// \param sound object
+    //////////////////////////////////////////////////////
+    void GSMaddSoundObject(std::shared_ptr<GameSound> sound, bool showError = true)
+    {
+        if (!soundFileExists(sound->getFilePath())) m_GSMsound.push_back(sound);
+        else
+        {
+            if (showError) is::showLog("ERROR: <" + sound->getName() + "> sound has already been added!");
+        }
     }
 
     //////////////////////////////////////////////////////
@@ -67,8 +85,36 @@ public:
 #if defined(__ANDROID__)
         GSMaddSound(name, filePath);
 #else
-        auto obj = std::make_shared<GameMusic>(name, filePath);
-        m_GSMmusic.push_back(obj);
+        if (!musicFileExists(filePath))
+        {
+            auto obj = std::make_shared<GameMusic>(name, filePath);
+            m_GSMmusic.push_back(obj);
+        }
+        else is::showLog("ERROR: <" + name + "> music has already been added!");
+#endif
+    }
+
+    //////////////////////////////////////////////////////
+    /// \brief Allows to add existing music in GSM container
+    ///
+    /// \param music object
+    //////////////////////////////////////////////////////
+    void GSMaddMusicObject(std::shared_ptr<
+#if defined(__ANDROID__)
+                           GameSound
+#else
+                           GameMusic
+#endif
+                           >music, bool showError = true)
+    {
+#if defined(__ANDROID__)
+        GSMaddSoundObject(music);
+#else
+        if (!musicFileExists(music->getFilePath())) m_GSMmusic.push_back(music);
+        else
+        {
+            if (showError) is::showLog("ERROR: <" + music->getName() + "> music has already been added!");
+        }
 #endif
     }
 
@@ -154,6 +200,27 @@ public:
         if (showError) is::showLog("ERROR: <" + name + "> music does not exist!");
         return nullptr;
     }
+
+private:
+    bool soundFileExists(const std::string& filePath) const
+    {
+        WITH(m_GSMsound.size())
+        {
+            if (m_GSMsound[_I]->getFilePath() == filePath) return true;
+        }
+        return false;
+    }
+
+#if !defined(__ANDROID__)
+    bool musicFileExists(const std::string& filePath) const
+    {
+        WITH(m_GSMmusic.size())
+        {
+            if (m_GSMmusic[_I]->getFilePath() == filePath) return true;
+        }
+        return false;
+    }
+#endif
 };
 }
 #endif // GSM_H_INCLUDED
