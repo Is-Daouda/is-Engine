@@ -1,7 +1,7 @@
 ![header](./images/is_Engine_logo.png)
 ----------------------------
 
-# is::Engine (Infinity Solutions::Engine) 3.3.1
+# is::Engine (Infinity Solutions::Engine) 3.3.2
 Open source C++ framework which uses the mechanisms of **SFML 2** and which also allows to develop with several libraries at the same time **(SDL 2, SMK-Emscripten)** in order to easily export your games / applications on the **Web (HTML 5), Android** and **PC (Windows, Linux)**.
 
 ## Contents
@@ -61,6 +61,13 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
+This release focuses more on improving engine resource management:
+1. Fixed the bug which prevented the permanent deletion of files on the Web (HTML 5) (see the [removeFile](./app/src/main/cpp/isEngine/system/function/GameSystem.h#L115) function.
+2. Delete unused resources and permissions on Android.
+3. Optimizing the part of the engine that loads resources.<br>
+You can notice it with this new version of [I Can Transform Web](https://is-daouda.github.io/). Now the levels load faster than before!
+
+## Previous version
 ### 3.3.1
 1. Fixed the bug that distorted images when using rotation.
 2. Optimization of the rendering part of the engine that uses SDL. Games are now smoother!
@@ -72,7 +79,7 @@ is::openURL("youremail@gmail.com", is::OpenURLAction::Email); // open email
 is::openURL("+2280011223344", is::OpenURLAction::Tel); // Make a call
 ```
 
-### previous version
+### 3.3
 1. **[The is::LibConnect function](#islibconnect)**: Allows you to develop with several game libraries at the same time (SFML, SDL 2, SMK (Emscripten)) in one and the same project!
 2. **[Possibility to develop C++ SFML games with SDL 2](#-develop-sfml-games-with-sdl-2)** (Your SFML games will run on the SDL 2 library! Yes, yes it is possible!). Book for Code::Block users for the moment!
 3. **Support for Android x64 architectures**: Now you can export your C++ games to several Android architectures (armeabi-v7a, arm64-v8a, x86, x64, ...).
