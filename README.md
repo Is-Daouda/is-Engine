@@ -62,7 +62,7 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 
 ## What's new in this version
 This release focuses more on improving engine resource management:
-1. Fixed the bug which prevented the permanent deletion of files on the Web (HTML 5) (see the [removeFile](./app/src/main/cpp/isEngine/system/function/GameSystem.h#L115) function.
+1. Fixed the bug which prevented the permanent deletion of files on the Web (HTML 5) (see the [removeFile](./app/src/main/cpp/isEngine/system/function/GameSystem.cpp#L138) function).
 2. Delete unused resources and permissions on Android.
 3. Optimizing the part of the engine that loads resources.<br>
 You can notice it with this new version of [I Can Transform Web](https://is-daouda.github.io/). Now the levels load faster than before!
