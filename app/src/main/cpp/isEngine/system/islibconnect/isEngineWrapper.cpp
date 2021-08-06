@@ -21,7 +21,7 @@
 
 #include "isEngineWrapper.h"
 
-#if defined(IS_ENGINE_HTML_5) || defined(IS_ENGINE_SDL_2)
+#if defined(IS_ENGINE_SDL_2)
 namespace sf
 {
 bool Rect::intersects(Rect const &rec) const

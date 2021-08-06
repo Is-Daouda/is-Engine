@@ -65,6 +65,9 @@ void GameSystemExtended::saveData(std::string const &fileName)
         fwrite(&m_currentBonus, sizeof(int), 1, file);
         fwrite(&m_currentHiScore, sizeof(int), 1, file);
         fclose(file);
+#if defined(IS_ENGINE_HTML_5)
+        EM_ASM(FS.syncfs(false, function(err){console.log(err)});, 0);
+#endif
     }
 }
 

@@ -36,10 +36,8 @@
 
 namespace is
 {
-#if !defined(IS_ENGINE_HTML_5)
 class GameDisplay;
 sf::Vector2f getMapPixelToCoords(GameDisplay const *scene, sf::Vector2i pixelPos);
-#endif
 
 //////////////////////////////////////////////////////
 /// \brief Class for manage game scene
@@ -314,35 +312,19 @@ public:
     virtual void SDMmanageSceneEvents()
     {
         sf::Event event;
-        #if !defined(IS_ENGINE_HTML_5)
         while (m_window.pollEvent(event)) // even loop
         {
-        #endif
             controlEventFocusClosing(event);
-            if (
-                #if !defined(IS_ENGINE_HTML_5)
-                event.type == sf::Event::KeyReleased
-                #else
-                m_window.input().IsKeyReleased(is::GameConfig::KEY_CANCEL)
-                #endif
-                )
+            if (event.type == sf::Event::KeyReleased)
             {
-                if (
-                    #if !defined(IS_ENGINE_HTML_5)
-                    event.key.code == is::GameConfig::KEY_CANCEL
-                    #else
-                    m_gameSysExt.keyIsPressed(is::GameConfig::KEY_CANCEL)
-                    #endif
-                    )
+                if (m_gameSysExt.keyIsPressed(is::GameConfig::KEY_CANCEL))
                 {
                     if (!m_showMsg) showMessageBox(is::lang::msg_quit_game[m_gameSysExt.m_gameLanguage]);
                     else m_keyBackPressed = true;
                 }
             }
-        #if !defined(IS_ENGINE_HTML_5)
             SDMcallObjectsEvents(event);
         }
-        #endif
     }
 
     /// Allows to define how the answers of the dialog box will be handled
@@ -368,6 +350,10 @@ public:
 
     /// Method to draw scene objects
     virtual void SDMdraw();
+
+    /// Allows to create a sprite by associating a texture to it.
+    /// It is also used to blit sprites but only works with SDL.
+    virtual void createSprite(std::string const &spriteName, is::MainObject &obj, sf::IntRect rec, sf::Vector2f position, sf::Vector2f origin, sf::Vector2f scale = sf::Vector2f(1.f, 1.f), unsigned int alpha = 255);
     #endif // defined
 
     /// Allows to play sound in container by his name

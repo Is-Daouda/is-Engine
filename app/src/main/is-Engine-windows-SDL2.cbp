@@ -237,8 +237,6 @@
 		<Unit filename="cpp/isEngine/system/graphic/TransitionEffect.h" />
 		<Unit filename="cpp/isEngine/system/islibconnect/isEngineSDLWrapper.cpp" />
 		<Unit filename="cpp/isEngine/system/islibconnect/isEngineSDLWrapper.h" />
-		<Unit filename="cpp/isEngine/system/islibconnect/isEngineSMKWrapper.cpp" />
-		<Unit filename="cpp/isEngine/system/islibconnect/isEngineSMKWrapper.h" />
 		<Unit filename="cpp/isEngine/system/islibconnect/isEngineWrapper.cpp" />
 		<Unit filename="cpp/isEngine/system/islibconnect/isEngineWrapper.h" />
 		<Unit filename="cpp/isEngine/system/islibconnect/isLibConnect.h" />

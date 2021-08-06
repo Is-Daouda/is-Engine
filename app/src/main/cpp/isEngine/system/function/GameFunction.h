@@ -32,14 +32,6 @@
 #include "../entity/Form.h"
 #include "../../../app_src/config/GameConfig.h"
 
-#if defined(IS_ENGINE_HTML_5)
-/// auto generate font container
-static std::vector<std::shared_ptr<sf::Font>> AUTO_GENERATE_FONT;
-
-/// auto generate music container
-static std::vector<std::shared_ptr<sf::SoundBuffer>> AUTO_GENERATE_SOUND_BUFFER;
-#endif // defined
-
 /// Allows to browse object container (std::vector, ...)
 #define WITH(_SIZE) for(unsigned int _I = 0; _I < _SIZE; ++_I)
 
@@ -87,7 +79,7 @@ std::string w_chart_tToStr(wchar_t const *str);
 std::wstring strToWStr(const std::string &str);
 
 /// Convert number to string
-template <class T>
+template <typename T>
 std::string numToStr(T val)
 {
     std::ostringstream s;
@@ -106,7 +98,7 @@ T strToNum(const std::string &str)
 }
 
 /// Convert number to wstring
-template <class T>
+template <typename T>
 std::wstring numToWStr(T val)
 {
     std::wostringstream ws;
@@ -116,7 +108,7 @@ std::wstring numToWStr(T val)
 }
 
 /// Draw zero behind a number
-template <class T>
+template <typename T>
 std::string writeZero(T val, int zeroNumber = 1)
 {
     std::string str;
@@ -503,22 +495,24 @@ void setFrame(sf::Sprite &sprite, float frame, int subFrame, int frameWidth, int
 /// Set the sprite frame with the same size (e.g 64x64)
 void setFrame(sf::Sprite &sprite, float frame, int subFrame, int frameSize);
 
-#if !defined(IS_ENGINE_HTML_5)
 /// Set the outline color of SFML object
 template <class T>
 void setSFMLObjOutlineColor(T &obj, sf::Color color)
 {
+#if !defined(IS_ENGINE_SDL_2)
     obj.setOutlineColor(color);
+#endif
 }
 
 /// Set the outline thickness and color of SFML object
 template <class T>
 void setSFMLObjOutlineColor(T &obj, float thickness, sf::Color color)
 {
+#if !defined(IS_ENGINE_SDL_2)
     obj.setOutlineThickness(thickness);
     obj.setOutlineColor(color);
-}
 #endif
+}
 
 /// Set Texture Rec of SFML object
 template <class T>
@@ -605,70 +599,35 @@ void centerSFMLObjY(T &obj)
 /// Load SFML Texture Resource
 inline void loadSFMLTexture(sf::Texture &obj, const std::string& filePath)
 {
-    #if !defined(IS_ENGINE_HTML_5)
     obj.loadFromFile(filePath);
-    #else
-    obj = sf::Texture(filePath);
-    #endif
 }
 
 /// Load SFML Font Resource
-/// When you develop for the Web you must define the size that the texts will have with this font
-inline void loadSFMLFont(sf::Font &obj, const std::string& filePath, float fontSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE)
+inline void loadSFMLFont(sf::Font &obj, const std::string& filePath, int fontDefaultSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE)
 {
-    #if !defined(IS_ENGINE_HTML_5)
+#if !defined(IS_ENGINE_SFML)
+    obj.setSDLFontSize(fontDefaultSize);
+#endif
     obj.loadFromFile(filePath);
-    #else
-    obj = sf::Font(filePath, fontSize);
-    #endif
 }
 
 /// Load SFML Sound Buffer Resource
 inline void loadSFMLSoundBuffer(sf::SoundBuffer &obj, const std::string& filePath)
 {
-    #if !defined(IS_ENGINE_HTML_5)
     obj.loadFromFile(filePath);
-    #else
-    obj = sf::SoundBuffer(filePath);
-    #endif
 }
 
 /// Load SFML Sound Buffer Resource and define it with the Sound
 inline void loadSFMLSoundBufferWithSnd(sf::SoundBuffer &sb, sf::Sound &snd, const std::string& filePath)
 {
-    #if !defined(IS_ENGINE_HTML_5)
     if (sb.loadFromFile(filePath)) snd.setBuffer(sb);
     else showLog("ERROR: Can't load Sound Buffer : " + filePath + " with sound");
-    #else
-    sb = sf::SoundBuffer(filePath);
-    snd = sf::Sound(sb);
-    #endif
 }
 
 /// Load SFML Music Resource
 inline void loadSFMLMusic(sf::Music &obj, const std::string& filePath)
 {
-    #if !defined(IS_ENGINE_HTML_5)
     obj.openFromFile(filePath);
-    #else
-    bool musicExists(false);
-    unsigned int musicIndex(0);
-    WITH (AUTO_GENERATE_SOUND_BUFFER.size())
-    {
-        if (AUTO_GENERATE_SOUND_BUFFER[_I]->getFileName() == filePath)
-        {
-            musicIndex = _I;
-            musicExists = true;
-            break;
-        }
-    }
-    if (!musicExists)
-    {
-        AUTO_GENERATE_SOUND_BUFFER.push_back(std::make_shared<sf::SoundBuffer>(filePath));
-        musicIndex = (AUTO_GENERATE_SOUND_BUFFER.size() - 1);
-    }
-    obj = sf::Music(*AUTO_GENERATE_SOUND_BUFFER[musicIndex]);
-    #endif
 }
 
 /// Check SFML Sound state
@@ -792,33 +751,6 @@ void createRectangle(sf::RectangleShape &rec, sf::Vector2f recSize, sf::Color co
 /// Set SFML Text style
 void textStyleConfig(sf::Text &txt, bool underLined, bool boldText, bool italicText);
 
-#if defined(IS_ENGINE_HTML_5)
-inline void setTextFont(sf::Font &fnt, sf::Text &txt, int txtSize)
-{
-    if (static_cast<int>(fnt.getSize()) != txtSize)
-    {
-        bool fontExists(false);
-        unsigned int fontIndex(0);
-        WITH (AUTO_GENERATE_FONT.size())
-        {
-            if (AUTO_GENERATE_FONT[_I]->getFileName() == fnt.getFileName() && AUTO_GENERATE_FONT[_I]->getSize() == fnt.getSize())
-            {
-                fontIndex = _I;
-                fontExists = true;
-                break;
-            }
-        }
-        if (!fontExists)
-        {
-            AUTO_GENERATE_FONT.push_back(std::make_shared<sf::Font>(fnt.getFileName(), txtSize));
-            fontIndex = (AUTO_GENERATE_FONT.size() - 1);
-        }
-        txt.setFont(*AUTO_GENERATE_FONT[fontIndex]);
-    }
-    else txt.setFont(fnt);
-}
-#endif
-
 /// Create SFML text
 template<class T>
 void createText(sf::Font
@@ -828,14 +760,10 @@ void createText(sf::Font
                  &fnt, sf::Text &txt, T const &text, float x, float y,
                  int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE)
 {
-    #if defined(IS_ENGINE_HTML_5)
-    setTextFont(fnt, txt, txtSize);
-    #else
     txt.setFont(fnt);
     if (txtSize > 0) txt.setCharacterSize(txtSize);
     else txt.setCharacterSize(is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
     //textStyleConfig(txt, underLined, boldText, italicText);
-    #endif
     txt.setString(text);
     is::setSFMLObjX_Y(txt, x, y);
     is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_TEXT_COLOR);
@@ -975,7 +903,6 @@ bool mouseCollision(sf::RenderWindow &window, T const &obj, sf::Vector2f &positi
     return false;
 }
 
-#if !defined(IS_ENGINE_HTML_5)
 /// Do not touch this function it allows to manage the style of the window
 inline int getWindowStyle()
 {
@@ -989,7 +916,6 @@ inline int getWindowStyle()
         default: return sf::Style::Default; break;
     }
 }
-#endif
 
 /// Allows to set frame per second
 template <class T>

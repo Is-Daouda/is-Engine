@@ -64,7 +64,6 @@ set(
 	# islibconnect
 	${ISENGINE_SRC_DIR}/isEngine/system/islibconnect/isEngineWrapper.cpp
 	${ISENGINE_SRC_DIR}/isEngine/system/islibconnect/isEngineSDLWrapper.cpp
-	${ISENGINE_SRC_DIR}/isEngine/system/islibconnect/isEngineSMKWrapper.cpp
 	
 	# display
 	${ISENGINE_SRC_DIR}/isEngine/system/display/GameDisplay.cpp

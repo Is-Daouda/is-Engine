@@ -22,13 +22,7 @@
 #ifndef ISLIBCONNECT_H_INCLUDED
 #define ISLIBCONNECT_H_INCLUDED
 
-#if defined(__ANDROID__)
-#define IS_ENGINE_SDL_2
-#endif
-
-#if defined(IS_ENGINE_HTML_5)
-    #include "isEngineSMKWrapper.h"
-#elif defined(IS_ENGINE_SDL_2)
+#if (defined(IS_ENGINE_SDL_2) || defined(IS_ENGINE_HTML_5) || defined(__ANDROID__))
     #include "isEngineSDLWrapper.h"
 #else
     #include <SFML/Audio.hpp>
@@ -39,12 +33,24 @@
     #include "isEngineWrapper.h"
 #endif
 
-#if !defined(IS_ENGINE_HTML_5) && !defined(IS_ENGINE_SDL_2)
+#if !defined(IS_ENGINE_SDL_2)
 #define IS_ENGINE_SFML
 #endif
 
 namespace is
 {
+#if defined(IS_ENGINE_SDL_2)
+/// Draw on render
+inline void draw(sf::RenderWindow &render, sf::SDLTexture &obj) {render.draw(obj);}
+//inline void draw(sf::RenderWindow &render, sf::SDLTexture *obj) {render.draw(&(obj));}
+inline void draw(sf::RenderWindow &render, sf::Shape &obj) {render.draw(obj);}
+//inline void draw(sf::RenderWindow &render, sf::Shape *obj) {render.draw(&obj);}
+#else
+template <class T1, class T2>
+void draw(T1 &render, T2 &obj) {render.draw(obj);}
+template <class T1, class T2>
+void draw(T1 &render, T2 *obj) {render.draw(&obj);}
+#endif
 typedef sf::RenderWindow Render;
 }
 

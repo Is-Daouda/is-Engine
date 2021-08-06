@@ -196,20 +196,12 @@ void setFrame(sf::Sprite &sprite, float frame, int subFrame, int frameSize)
 /*
 void createRenderTexture(sf::RenderTexture &renderTexture, unsigned int width, unsigned int height)
 {
-    #if !defined(IS_ENGINE_HTML_5)
     renderTexture.create(width, height);
-    #else
-    renderTexture = sf::RenderTexture(width, height);
-    #endif
 }*/
 
 void createRectangle(sf::RectangleShape &rec, sf::Vector2f recSize, sf::Color color, float x, float y, bool center)
 {
-#if !defined(IS_ENGINE_HTML_5)
     rec.setSize(recSize);
-#else
-    rec = sf::RectangleShape(recSize.x, recSize.y);
-#endif
     if (center) is::centerSFMLObj(rec);
     setSFMLObjFillColor(rec, color);
     is::setSFMLObjX_Y(rec, x, y);
@@ -267,11 +259,8 @@ sf::Vector2f getCursor(sf::RenderWindow &window
                             sf::Mouse::getPosition(window);
     #endif // defined
 
-    #if !defined(IS_ENGINE_HTML_5)
     sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos, window.getView());
-    #else
-    sf::Vector2i worldPos = pixelPos;
-    #endif
+
     float dx = pointDistance(window.getView().getCenter().x, window.getView().getCenter().y,
                              worldPos.x, window.getView().getCenter().y);
     float dy = pointDistance(window.getView().getCenter().x, window.getView().getCenter().y,
@@ -279,10 +268,7 @@ sf::Vector2f getCursor(sf::RenderWindow &window
 
     if (worldPos.x < window.getView().getCenter().x) dx *= -1;
     if (worldPos.y < window.getView().getCenter().y) dy *= -1;
-    #if defined(IS_ENGINE_HTML_5)
-    dx += window.getView().getCenter().x - window.getView().getSize().x / 2.f;
-    dy += window.getView().getCenter().y - window.getView().getSize().y / 2.f;
-    #endif
+
     return sf::Vector2f(window.getView().getCenter().x + dx, window.getView().getCenter().y + dy);
 }
 
@@ -338,12 +324,14 @@ short vibrate(short duration)
     // this line is comment because it cause a bug
     // vm->DetachCurrentThread();
     #elif defined(IS_ENGINE_HTML_5)
-    smk::Vibrate(duration);
+    EM_ASM_ARGS({
+                navigator.vibrate($0);
+                }, duration);
     #else
     is::showLog("Vibrate Called ! Time : " + is::numToStr(duration) + " ms");
-    #endif // defined
+    #endif
 
-    return 1;//EXIT_SUCCESS;
+    return 1; // EXIT_SUCCESS;
 }
 
 void openURL(const std::string& url, OpenURLAction action)

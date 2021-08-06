@@ -31,6 +31,10 @@
 #include <android/native_activity.h>
 #endif
 
+#if defined(IS_ENGINE_HTML_5)
+#include <emscripten.h>
+#endif
+
 #include <exception>
 #include <string>
 #include <iostream>
@@ -159,6 +163,8 @@ public:
     Font(const std::string& filename, int size): m_size(size) {loadFont(filename);}
 
     ~Font();
+
+    void setSDLFontSize(int size) {m_size = size;}
 
     const std::string& getFileName() const noexcept {return m_filename;}
 
@@ -654,6 +660,11 @@ public:
         unsigned int height;
     };
 
+    struct MouseWheelEvent
+    {
+        int delta; ///< Number of ticks the wheel has moved (positive is up, negative is down)
+    };
+
     struct KeyEvent
     {
         int code;
@@ -674,6 +685,7 @@ public:
         GainedFocus = -1,
         MouseButtonPressed = SDL_MOUSEBUTTONDOWN,
         MouseButtonReleased = SDL_MOUSEBUTTONUP,
+        MouseWheelMoved = SDL_MOUSEWHEEL,
         KeyPressed = SDL_KEYDOWN,
         KeyReleased = SDL_KEYUP,
         TouchBegan = SDL_FINGERDOWN,
@@ -688,6 +700,7 @@ public:
         SizeEvent size;
         KeyEvent key;
         TouchEvent touch;
+        MouseWheelEvent mouseWheel;
     };
 };
 
@@ -818,6 +831,8 @@ public:
 
     void play();
 
+    void setPitch(float speed);
+
     void pause()
     {
         Mix_Pause(m_SDLsoundBuffer->getSDLChannel());
@@ -855,6 +870,8 @@ public:
     ~Music();
 
     void play();
+
+    void setPitch(float speed);
 
     Status getStatus();
 
@@ -923,15 +940,6 @@ public:
 
     static Vector2i getPosition(unsigned int finger, const RenderWindow& relativeTo);
 };
-}
-
-namespace is
-{
-/// Draw on render
-inline void draw(sf::RenderWindow &render, sf::SDLTexture &obj) {render.draw(obj);}
-//inline void draw(sf::RenderWindow &render, sf::SDLTexture *obj) {render.draw(&(obj));}
-inline void draw(sf::RenderWindow &render, sf::Shape &obj) {render.draw(obj);}
-//inline void draw(sf::RenderWindow &render, sf::Shape *obj) {render.draw(&obj);}
 }
 #endif
 

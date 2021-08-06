@@ -48,13 +48,12 @@ int main(int argc, char * argv[])
     vectorArray.push_back(saveDir);
     EM_ASM(
         var vectorArray = new Module.VectorString($0);
-        console.log(vectorArray.get(0));
         FS.mkdir(vectorArray.get(0));
         FS.mount(IDBFS, {}, vectorArray.get(0));
         Module.print("Start file sync...");
         Module.syncdone = 0;
         FS.syncfs(true, function(err){
-                Module.print("End file sync../");
+                Module.print("End file sync..");
                 Module.syncdone = 1;
                 });
       , &vectorArray);
@@ -71,13 +70,13 @@ int main(int argc, char * argv[])
 	windowsHelper.setIcon(game.getRenderWindow().getSystemHandle());
 #endif
 #endif
-
+    game.
 #if defined(IS_ENGINE_USE_MAIN_LOOP)
-    game.play();
+        play
 #else
-    game.basicSFMLmain();
+        basicSFMLmain
 #endif
-
+        ();
 #if defined (__ANDROID__)
     std::terminate(); // close application
 #else

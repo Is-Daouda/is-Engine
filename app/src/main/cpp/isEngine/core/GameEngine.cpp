@@ -21,6 +21,12 @@
 
 #include "GameEngine.h"
 
+std::function<void(void)> main_loop;
+void MainLoop()
+{
+    return main_loop();
+}
+
 namespace is
 {
 GameEngine::GameEngine():
@@ -31,21 +37,17 @@ GameEngine::GameEngine():
 
 GameEngine::~GameEngine()
 {
-    #if defined(IS_ENGINE_SDL_2)
+#if defined(IS_ENGINE_SDL_2)
     is::SDL2freeLib();
-    #endif
-}
+#endif
+};
 
 void GameEngine::initEngine()
 {
     m_gameSysExt.initSystemData();
-    #if !defined(IS_ENGINE_HTML_5)
     m_window.create(sf::VideoMode(is::GameConfig::WINDOW_WIDTH, is::GameConfig::WINDOW_HEIGHT),
                     is::GameConfig::GAME_NAME,
                     is::getWindowStyle());
-    #else
-    m_window = sf::RenderWindow(is::GameConfig::WINDOW_WIDTH, is::GameConfig::WINDOW_HEIGHT, is::GameConfig::GAME_NAME);
-    #endif
 
     #if !defined(__ANDROID__)
     #if defined(IS_ENGINE_SFML)
@@ -73,6 +75,20 @@ void GameEngine::initEngine()
     setFPS(m_window, is::GameConfig::FPS);
 }
 
+#if defined(IS_ENGINE_HTML_5)
+void GameEngine::execMainLoop(std::function<bool(void)> loop)
+{
+    main_loop = [my_loop = loop] { (void)my_loop(); };
+    emscripten_set_main_loop(&MainLoop, -1, 1);
+}
+
+void GameEngine::execMainLoop(std::function<void(void)> loop)
+{
+    main_loop = loop;
+    emscripten_set_main_loop(&MainLoop, -1, 1);
+}
+#endif
+
 bool GameEngine::play()
 {
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,28 +112,22 @@ bool GameEngine::play()
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                         GAME STARTUP
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-    std::unique_ptr<ActivityController> app = nullptr;
+    std::unique_ptr<ActivityController> app = std::make_unique<ActivityController>(m_gameSysExt);
 #if !defined(IS_ENGINE_HTML_5)
     while (m_window.isOpen())
 #else
-    m_window.ExecuteMainLoop([&]
+    EM_ASM(console.log("Start successfully!"); , 0);
+    execMainLoop([&]
+    {
+    if (emscripten_run_script_int("Module.syncdone") == 1)
 #endif
     {
-#if defined(IS_ENGINE_HTML_5)
-        m_window.PoolEvents();
-        if (emscripten_run_script_int("Module.syncdone") == 1)
-        {
-#endif
-        if (app == nullptr) app = std::make_unique<ActivityController>(m_gameSysExt);
         app->update();
         app->draw();
-#if defined(IS_ENGINE_HTML_5)
-        }
-#endif
     }
-    #if defined(IS_ENGINE_HTML_5)
-    );
-    #endif // defined
+#if defined(IS_ENGINE_HTML_5)
+    });
+#endif
     return true;
 }
 }

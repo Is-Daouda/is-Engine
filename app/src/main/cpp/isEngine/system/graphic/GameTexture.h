@@ -37,19 +37,15 @@ public:
     GameTexture(const std::string& textureName, const std::string& filePath):
         Name(textureName),
         FilePath(filePath)
-#if defined(IS_ENGINE_HTML_5)
-        , m_tex(filePath) {}
-#else
     {
         if (m_tex.loadFromFile(m_strFilePath)) m_fileIsLoaded = true;
         else showLog("ERROR: Can't load texture : " + filePath);
     }
-#endif
+
     virtual ~GameTexture() {}
 
     void loadResources(const std::string& filePath)
     {
-        #if !defined(IS_ENGINE_HTML_5)
         if (m_tex.loadFromFile(filePath))
         {
             m_strFilePath = filePath;
@@ -60,7 +56,6 @@ public:
             m_fileIsLoaded = false;
             showLog("ERROR: Can't load texture : " + filePath);
         }
-        #endif
     }
 
     /// Return texture

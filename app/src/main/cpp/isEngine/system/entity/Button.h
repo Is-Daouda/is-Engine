@@ -89,11 +89,7 @@ public:
         // is::showLog("WARNING: Button::onMouseOver() method must be overloaded!");
     }
 
-    virtual void mouseAction(
-                             #if !defined(IS_ENGINE_HTML_5)
-                             sf::Event &event
-                             #endif // defined
-                             )
+    virtual void mouseAction(sf::Event &event)
     {
         if (m_isInCollision)
         {
@@ -107,22 +103,9 @@ public:
                                1.f;
                                #endif
             };
-            if (
-                #if !defined(IS_ENGINE_HTML_5)
-                event.type == sf::Event::MouseButtonPressed
-                #else
-                m_scene->getRenderWindow().input().IsCursorReleased()
-                #endif
-                )
+            if (event.type == sf::Event::MouseButtonPressed)
             {
-                #if !defined(IS_ENGINE_HTML_5)
-                if (event.key.code == is::GameConfig::KEY_VALIDATION_MOUSE)
-                {
-                #endif
-                    functionClick();
-                #if !defined(IS_ENGINE_HTML_5)
-                }
-                #endif
+                if (event.key.code == is::GameConfig::KEY_VALIDATION_MOUSE) functionClick();
             }
             #if defined(__ANDROID__)
             if (event.type == sf::Event::TouchEnded)
@@ -136,12 +119,10 @@ public:
         }
     }
 
-#if !defined(IS_ENGINE_HTML_5)
     virtual void event(sf::Event &event)
     {
         mouseAction(event);
     }
-#endif
 
     virtual void step(float const &DELTA_TIME)
     {
@@ -157,9 +138,6 @@ public:
                             #endif // defined
             m_isInCollision = true;
         }
-        #if defined(IS_ENGINE_HTML_5)
-        mouseAction();
-        #endif // defined
         is::setSFMLObjTexRec(m_sprParent, ((m_isInCollision) ? 1 : 0) * m_w, 0, m_w, m_h);
         if (!tempCollision)
         {

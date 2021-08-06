@@ -30,6 +30,7 @@ MainObject::MainObject():
     #if defined(IS_ENGINE_USE_SDM)
     Destructible(),
     DepthObject(DepthObject::NORMAL_DEPTH),
+    Visibility(),
     #endif // defined
     m_x(0.f),
     m_y(0.f),
@@ -68,6 +69,7 @@ MainObject::MainObject(float x, float y):
     #if defined(IS_ENGINE_USE_SDM)
     Destructible(),
     DepthObject(DepthObject::NORMAL_DEPTH),
+    Visibility(),
     #endif // defined
     m_x(x),
     m_y(y),
@@ -106,6 +108,7 @@ MainObject::MainObject(sf::Sprite &spr, float x, float y):
     #if defined(IS_ENGINE_USE_SDM)
     Destructible(),
     DepthObject(DepthObject::NORMAL_DEPTH),
+    Visibility(),
     #endif // defined
     m_x((static_cast<int>(x) == 0) ? x : spr.getPosition().x),
     m_y((static_cast<int>(y) == 0) ? y : spr.getPosition().y),

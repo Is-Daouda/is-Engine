@@ -31,7 +31,6 @@ namespace is
 ////////////////////////////////////////////////////////////
 inline const char *getKeyName(const sf::Keyboard::Key key)
 {
-    /**
     switch(key)
     {
         default:
@@ -117,16 +116,12 @@ inline const char *getKeyName(const sf::Keyboard::Key key)
                 return "LShift";
         case sf::Keyboard::LAlt:
                 return "LAlt";
-        case sf::Keyboard::LSystem:
-                return "LSystem";
         case sf::Keyboard::RControl:
                 return "RControl";
         case sf::Keyboard::RShift:
                 return "RShift";
         case sf::Keyboard::RAlt:
                 return "RAlt";
-        case sf::Keyboard::RSystem:
-                return "RSystem";
         case sf::Keyboard::Menu:
                 return "Menu";
         case sf::Keyboard::LBracket:
@@ -139,24 +134,12 @@ inline const char *getKeyName(const sf::Keyboard::Key key)
                 return "Comma";
         case sf::Keyboard::Period:
                 return "Period";
-#if !defined(IS_ENGINE_HTML_5)
-        case sf::Keyboard::Quote:
-                return "Quote";
-#endif
         case sf::Keyboard::Slash:
                 return "Slash";
         case sf::Keyboard::BackSlash:
                 return "BackSlash";
-#if !defined(IS_ENGINE_HTML_5)
-        case sf::Keyboard::Tilde:
-                return "Tilde";
-#endif
         case sf::Keyboard::Equal:
                 return "Equal";
-#if !defined(IS_ENGINE_HTML_5)
-        case sf::Keyboard::Dash:
-                return "Dash";
-#endif
         case sf::Keyboard::Space:
                 return "Space";
         case sf::Keyboard::Return:
@@ -177,10 +160,6 @@ inline const char *getKeyName(const sf::Keyboard::Key key)
                 return "Insert";
         case sf::Keyboard::Delete:
                 return "Delete";
-        case sf::Keyboard::Add:
-                return "Add";
-        case sf::Keyboard::Subtract:
-                return "Subtract";
         case sf::Keyboard::Multiply:
                 return "Multiply";
         case sf::Keyboard::Divide:
@@ -193,26 +172,6 @@ inline const char *getKeyName(const sf::Keyboard::Key key)
                 return "Up";
         case sf::Keyboard::Down:
                 return "Down";
-        case sf::Keyboard::Numpad0:
-                return "Numpad0";
-        case sf::Keyboard::Numpad1:
-                return "Numpad1";
-        case sf::Keyboard::Numpad2:
-                return "Numpad2";
-        case sf::Keyboard::Numpad3:
-                return "Numpad3";
-        case sf::Keyboard::Numpad4:
-                return "Numpad4";
-        case sf::Keyboard::Numpad5:
-                return "Numpad5";
-        case sf::Keyboard::Numpad6:
-                return "Numpad6";
-        case sf::Keyboard::Numpad7:
-                return "Numpad7";
-        case sf::Keyboard::Numpad8:
-                return "Numpad8";
-        case sf::Keyboard::Numpad9:
-                return "Numpad9";
         case sf::Keyboard::F1:
                 return "F1";
         case sf::Keyboard::F2:
@@ -245,7 +204,44 @@ inline const char *getKeyName(const sf::Keyboard::Key key)
                 return "F15";
         case sf::Keyboard::Pause:
                 return "Pause";
-    }*/
+
+#if defined(IS_ENGINE_SFML)
+        case sf::Keyboard::LSystem:
+                return "LSystem";
+        case sf::Keyboard::RSystem:
+                return "RSystem";
+        case sf::Keyboard::Quote:
+                return "Quote";
+        case sf::Keyboard::Tilde:
+                return "Tilde";
+        case sf::Keyboard::Dash:
+                return "Dash";
+        case sf::Keyboard::Add:
+                return "Add";
+        case sf::Keyboard::Subtract:
+                return "Subtract";
+        case sf::Keyboard::Numpad0:
+                return "Numpad0";
+        case sf::Keyboard::Numpad1:
+                return "Numpad1";
+        case sf::Keyboard::Numpad2:
+                return "Numpad2";
+        case sf::Keyboard::Numpad3:
+                return "Numpad3";
+        case sf::Keyboard::Numpad4:
+                return "Numpad4";
+        case sf::Keyboard::Numpad5:
+                return "Numpad5";
+        case sf::Keyboard::Numpad6:
+                return "Numpad6";
+        case sf::Keyboard::Numpad7:
+                return "Numpad7";
+        case sf::Keyboard::Numpad8:
+                return "Numpad8";
+        case sf::Keyboard::Numpad9:
+                return "Numpad9";
+#endif
+    }
     return "";
 }
 
@@ -256,7 +252,6 @@ inline const char *getKeyName(const sf::Keyboard::Key key)
 ////////////////////////////////////////////////////////////
 inline std::wstring getKeyWName(const sf::Keyboard::Key key)
 {
-    /**
     switch(key)
     {
         default:
@@ -342,16 +337,12 @@ inline std::wstring getKeyWName(const sf::Keyboard::Key key)
                 return L"LShift";
         case sf::Keyboard::LAlt:
                 return L"LAlt";
-        case sf::Keyboard::LSystem:
-                return L"LSystem";
         case sf::Keyboard::RControl:
                 return L"RControl";
         case sf::Keyboard::RShift:
                 return L"RShift";
         case sf::Keyboard::RAlt:
                 return L"RAlt";
-        case sf::Keyboard::RSystem:
-                return L"RSystem";
         case sf::Keyboard::Menu:
                 return L"Menu";
         case sf::Keyboard::LBracket:
@@ -364,24 +355,12 @@ inline std::wstring getKeyWName(const sf::Keyboard::Key key)
                 return L"Comma";
         case sf::Keyboard::Period:
                 return L"Period";
-#if !defined(IS_ENGINE_HTML_5)
-        case sf::Keyboard::Quote:
-                return L"Quote";
-#endif
         case sf::Keyboard::Slash:
                 return L"Slash";
         case sf::Keyboard::BackSlash:
                 return L"BackSlash";
-#if !defined(IS_ENGINE_HTML_5)
-        case sf::Keyboard::Tilde:
-                return L"Tilde";
-#endif
         case sf::Keyboard::Equal:
                 return L"Equal";
-#if !defined(IS_ENGINE_HTML_5)
-        case sf::Keyboard::Dash:
-                return L"Dash";
-#endif
         case sf::Keyboard::Space:
                 return L"Space";
         case sf::Keyboard::Return:
@@ -402,10 +381,6 @@ inline std::wstring getKeyWName(const sf::Keyboard::Key key)
                 return L"Insert";
         case sf::Keyboard::Delete:
                 return L"Delete";
-        case sf::Keyboard::Add:
-                return L"Add";
-        case sf::Keyboard::Subtract:
-                return L"Subtract";
         case sf::Keyboard::Multiply:
                 return L"Multiply";
         case sf::Keyboard::Divide:
@@ -418,26 +393,6 @@ inline std::wstring getKeyWName(const sf::Keyboard::Key key)
                 return L"Up";
         case sf::Keyboard::Down:
                 return L"Down";
-        case sf::Keyboard::Numpad0:
-                return L"Numpad0";
-        case sf::Keyboard::Numpad1:
-                return L"Numpad1";
-        case sf::Keyboard::Numpad2:
-                return L"Numpad2";
-        case sf::Keyboard::Numpad3:
-                return L"Numpad3";
-        case sf::Keyboard::Numpad4:
-                return L"Numpad4";
-        case sf::Keyboard::Numpad5:
-                return L"Numpad5";
-        case sf::Keyboard::Numpad6:
-                return L"Numpad6";
-        case sf::Keyboard::Numpad7:
-                return L"Numpad7";
-        case sf::Keyboard::Numpad8:
-                return L"Numpad8";
-        case sf::Keyboard::Numpad9:
-                return L"Numpad9";
         case sf::Keyboard::F1:
                 return L"F1";
         case sf::Keyboard::F2:
@@ -470,8 +425,44 @@ inline std::wstring getKeyWName(const sf::Keyboard::Key key)
                 return L"F15";
         case sf::Keyboard::Pause:
                 return L"Pause";
+
+#if defined(IS_ENGINE_SFML)
+        case sf::Keyboard::LSystem:
+                return L"LSystem";
+        case sf::Keyboard::RSystem:
+                return L"RSystem";
+        case sf::Keyboard::Quote:
+                return L"Quote";
+        case sf::Keyboard::Tilde:
+                return L"Tilde";
+        case sf::Keyboard::Dash:
+                return L"Dash";
+        case sf::Keyboard::Add:
+                return L"Add";
+        case sf::Keyboard::Subtract:
+                return L"Subtract";
+        case sf::Keyboard::Numpad0:
+                return L"Numpad0";
+        case sf::Keyboard::Numpad1:
+                return L"Numpad1";
+        case sf::Keyboard::Numpad2:
+                return L"Numpad2";
+        case sf::Keyboard::Numpad3:
+                return L"Numpad3";
+        case sf::Keyboard::Numpad4:
+                return L"Numpad4";
+        case sf::Keyboard::Numpad5:
+                return L"Numpad5";
+        case sf::Keyboard::Numpad6:
+                return L"Numpad6";
+        case sf::Keyboard::Numpad7:
+                return L"Numpad7";
+        case sf::Keyboard::Numpad8:
+                return L"Numpad8";
+        case sf::Keyboard::Numpad9:
+                return L"Numpad9";
+#endif
     }
-    */
     return L"";
 }
 }

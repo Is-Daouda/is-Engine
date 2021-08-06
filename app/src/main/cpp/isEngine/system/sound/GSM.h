@@ -56,7 +56,7 @@ public:
             auto obj = std::make_shared<GameSound>(name, filePath);
             m_GSMsound.push_back(obj);
         }
-        else is::showLog("ERROR: <" + name + "> sound has already been added!");
+        else is::showLog("WARNING: <" + name + "> sound has already been added!");
     }
 
     //////////////////////////////////////////////////////
@@ -69,7 +69,7 @@ public:
         if (!soundFileExists(sound->getFilePath())) m_GSMsound.push_back(sound);
         else
         {
-            if (showError) is::showLog("ERROR: <" + sound->getName() + "> sound has already been added!");
+            if (showError) is::showLog("WARNING: <" + sound->getName() + "> sound has already been added!");
         }
     }
 
@@ -90,7 +90,7 @@ public:
             auto obj = std::make_shared<GameMusic>(name, filePath);
             m_GSMmusic.push_back(obj);
         }
-        else is::showLog("ERROR: <" + name + "> music has already been added!");
+        else is::showLog("WARNING: <" + name + "> music has already been added!");
 #endif
     }
 
@@ -113,7 +113,7 @@ public:
         if (!musicFileExists(music->getFilePath())) m_GSMmusic.push_back(music);
         else
         {
-            if (showError) is::showLog("ERROR: <" + music->getName() + "> music has already been added!");
+            if (showError) is::showLog("WARNING: <" + music->getName() + "> music has already been added!");
         }
 #endif
     }
@@ -123,7 +123,7 @@ public:
     {
         WITH (m_GSMsound.size())
         {
-            if (m_GSMsound[_I]->getName() == name)
+            if (m_GSMsound[_I]->getName() == name && m_GSMsound[_I]->getFileIsLoaded())
             {
                 m_GSMsound[_I]->getSound().setLoop(loop);
                 return;
@@ -140,7 +140,7 @@ public:
 #else
         WITH (m_GSMmusic.size())
         {
-            if (m_GSMmusic[_I]->getName() == name)
+            if (m_GSMmusic[_I]->getName() == name && m_GSMmusic[_I]->getFileIsLoaded())
             {
                 m_GSMmusic[_I]->getMusic().setLoop(loop);
                 return;
@@ -155,7 +155,7 @@ public:
     {
         WITH (m_GSMsound.size())
         {
-            if (m_GSMsound[_I]->getName() == name)
+            if (m_GSMsound[_I]->getName() == name && m_GSMsound[_I]->getFileIsLoaded())
             {
                 return &m_GSMsound[_I]->getSound();
             }
@@ -183,11 +183,11 @@ public:
         {
             if (
 #if defined(__ANDROID__)
-                    m_GSMsound[_I]->
+                m_GSMsound[_I]->getName() == name && m_GSMsound[_I]->getFileIsLoaded()
 #else
-                    m_GSMmusic[_I]->
+                m_GSMmusic[_I]->getName() == name && m_GSMmusic[_I]->getFileIsLoaded()
 #endif
-            getName() == name)
+                )
             {
                 return
 #if defined(__ANDROID__)

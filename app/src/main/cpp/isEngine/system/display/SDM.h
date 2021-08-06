@@ -23,12 +23,15 @@
 #define SDM_H_INCLUDED
 
 #include "../entity/MainObject.h"
+#if defined(IS_ENGINE_SDL_2)
+#include "SDMBlitSDLSprite.h"
+#endif
 #include <list>
 
 namespace is
 {
 ////////////////////////////////////////////////////////////
-/// class that automatically updates and displays objects in
+/// Class that automatically updates and displays objects in
 /// a scene. It also allows you to manage the display depth
 /// of objects in a scene.
 ////////////////////////////////////////////////////////////
@@ -37,6 +40,10 @@ class SDM
 public:
     /// Scene objects container
     std::list<std::shared_ptr<MainObject>> m_SDMsceneObjects;
+#if defined(IS_ENGINE_SDL_2)
+    /// Blit sprite container
+    std::vector<std::shared_ptr<is::SDMBlitSDLSprite>> m_SDMblitSDLSprite;
+#endif
 
     /// Allows to get object in container by his name
     MainObject* SDMgetObject(const std::string& name)

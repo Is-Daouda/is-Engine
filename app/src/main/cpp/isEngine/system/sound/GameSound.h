@@ -37,13 +37,6 @@ public:
     GameSound(const std::string& soundName, const std::string& filePath):
         Name(soundName),
         FilePath(filePath)
-#if defined(IS_ENGINE_HTML_5)
-        , m_sb(filePath),
-        m_snd(m_sb)
-        {
-            m_fileIsLoaded = true;
-        }
-#else
     {
         if (m_sb.loadFromFile(m_strFilePath))
         {
@@ -52,12 +45,11 @@ public:
         }
         else showLog("ERROR: Can't load sound : " + filePath);
     }
-#endif
+
     virtual ~GameSound() {}
 
     void loadResources(const std::string& filePath)
     {
-        #if !defined(IS_ENGINE_HTML_5)
         if (m_sb.loadFromFile(filePath))
         {
             m_strFilePath = filePath;
@@ -69,7 +61,6 @@ public:
             m_fileIsLoaded = false;
             showLog("ERROR: Can't load sound : " + filePath);
         }
-        #endif
     }
 
     /// Return sound buffer

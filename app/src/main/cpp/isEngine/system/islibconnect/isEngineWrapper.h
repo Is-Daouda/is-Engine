@@ -26,12 +26,7 @@
 #include <algorithm>
 #include <cmath>
 
-#if defined(IS_ENGINE_HTML_5)
-#include <smk/Color.hpp>
-#include <exception>
-#endif
-
-#if defined(__ANDROID__)
+#if (defined(__ANDROID__) || defined(IS_ENGINE_HTML_5))
 #define IS_ENGINE_SDL_2
 #endif
 
@@ -62,69 +57,24 @@ void setVector2(T1 &v, T2 x, T2 y)
 template <class T1, class T2>
 void clear(T1 &render, T2 const &color)
 {
-    #if !defined(IS_ENGINE_HTML_5)
     render.clear(color);
-    #else
-    glm::vec4 smkColor;
-    smkColor[0] = color.r;
-    smkColor[1] = color.g;
-    smkColor[2] = color.b;
-    smkColor[3] = color.a;
-    render.Clear(smkColor);
-    #endif
 }
 
 template <class T1>
 void clear(T1 &render)
 {
-    render.
-    #if !defined(IS_ENGINE_HTML_5)
-            clear();
-    #else
-            Clear(smk::Color::Black);
-    #endif
+    render.clear();
 }
-
-#if !defined(IS_ENGINE_SDL_2)
-/// Draw on render
-template <class T1, class T2>
-void draw(T1 &render, T2 &obj)
-{
-    render.
-        #if !defined(IS_ENGINE_HTML_5)
-        draw(obj);
-        #else
-        Draw(obj);
-        #endif
-}
-
-template <class T1, class T2>
-void draw(T1 &render, T2 *obj)
-{
-    render.
-        #if !defined(IS_ENGINE_HTML_5)
-        draw(&obj);
-        #else
-        Draw(&obj);
-        #endif
-}
-#endif
 
 /// Display Render
 template <class T>
 void display(T &render)
 {
-    render.
-        #if !defined(IS_ENGINE_HTML_5)
-        display
-        #else
-        Display
-        #endif
-        ();
+    render.display();
 }
 }
 
-#if defined(IS_ENGINE_HTML_5) || defined(IS_ENGINE_SDL_2)
+#if defined(IS_ENGINE_SDL_2)
 namespace sf
 {
 /*

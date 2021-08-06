@@ -23,6 +23,7 @@
 #define GAMEENGINE_H_INCLUDED
 
 #include "ActivityController.h"
+#include <functional>
 
 ////////////////////////////////////////////////////////////
 // PC version code
@@ -48,12 +49,23 @@ namespace is
 ////////////////////////////////////////////////////////////
 class GameEngine
 {
+private:
+    sf::RenderWindow m_window;
+    is::GameSystemExtended m_gameSysExt;
+
 public:
     GameEngine();
+
     ~GameEngine();
 
     /// Initialize game engine
     void initEngine();
+
+#if defined(IS_ENGINE_HTML_5)
+    /// Allow to launch main loop
+    void execMainLoop(std::function<bool(void)> loop);
+    void execMainLoop(std::function<void(void)> loop);
+#endif
 
     /// Starts the engine rendering loop
     bool play();
@@ -68,10 +80,6 @@ public:
 
     /// return Render Window
     sf::RenderWindow& getRenderWindow() {return m_window;}
-
-private:
-    sf::RenderWindow m_window;
-    is::GameSystemExtended m_gameSysExt;
 };
 }
 

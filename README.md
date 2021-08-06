@@ -1,8 +1,8 @@
 ![header](./images/is_Engine_logo.png)
 ----------------------------
 
-# is::Engine (Infinity Solutions::Engine) 3.3.2
-Open source C++ framework which uses the mechanisms of **SFML 2** and which also allows to develop with several libraries at the same time **(SDL 2, SMK-Emscripten)** in order to easily export your games / applications on the **Web (HTML 5), Android** and **PC (Windows, Linux)**.
+# is::Engine (Infinity Solutions::Engine) 3.3.3
+Open source C++ framework which uses the mechanisms of **SFML 2** and which also allows to develop with several libraries at the same time **(SDL 2, Emscripten)** in order to easily export your games / applications on the **Web (HTML 5), Android** and **PC (Windows, Linux)**.
 
 ## Contents
 - [Features](#features)
@@ -21,13 +21,13 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 
 ## 
 
-[![SFML logo](https://www.sfml-dev.org/images/logo.png)](https://www.sfml-dev.org) [![SDL](https://i48.servimg.com/u/f48/20/16/75/27/sdl_li10.png)](https://www.libsdl.org/) ![Web](https://i48.servimg.com/u/f48/20/16/75/27/web_lo10.png) [![Box2D Logo](https://box2d.org/images/logo.svg)](https://github.com/erincatto/box2d) [![Tiled Logo](https://i.servimg.com/u/f48/20/16/75/27/tiled_10.png)](https://www.mapeditor.org) [![SMK](https://i48.servimg.com/u/f48/20/16/75/27/smk10.png)](https://github.com/ArthurSonzogni/smk) [![Admob Logo](https://i48.servimg.com/u/f48/20/16/75/27/admob_10.png)](https://admob.google.com/) [![Tiny File Dialog](https://a.fsdn.com/allura/p/tinyfiledialogs/icon?1582196333?&w=90)](https://github.com/native-toolkit/tinyfiledialogs)
+[![SFML logo](https://www.sfml-dev.org/images/logo.png)](https://www.sfml-dev.org) [![SDL](https://i48.servimg.com/u/f48/20/16/75/27/sdl_li10.png)](https://www.libsdl.org/) ![Web](https://i48.servimg.com/u/f48/20/16/75/27/web_lo10.png) [![Box2D Logo](https://box2d.org/images/logo.svg)](https://github.com/erincatto/box2d) [![Tiled Logo](https://i.servimg.com/u/f48/20/16/75/27/tiled_10.png)](https://www.mapeditor.org) [![Admob Logo](https://i48.servimg.com/u/f48/20/16/75/27/admob_10.png)](https://admob.google.com/) [![Tiny File Dialog](https://a.fsdn.com/allura/p/tinyfiledialogs/icon?1582196333?&w=90)](https://github.com/native-toolkit/tinyfiledialogs)
 
 ## Features
+- Run SFML game with SDL 2
 - Language manager (English and French language support by default)
 - Scene System
 - Automatic management of a window
-- Run SFML game with SDL 2
 - Multi support for development tools ([Android Studio](#-android-studio), 
 [Qt](#-qt), 
 [CMake](#-cmake), 
@@ -61,13 +61,19 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
+1. Now your **SFML** games will run on the **Web (HTML 5)** with **SDL 2**!
+- The advantage is that most of the engine functions will be able to run on the web, your games will be compatible with several web browsers and more fluid!
+- You can see for yourself the improvements that are made to the engine with this new version of the game **[I Can Transform Web (HTML 5)](https://is-daouda.github.io/)**.
+2. **[Engine demo (Super Mario Bros NES)](https://github.com/Is-Daouda/is-Engine-Demo)** is now web compatible!
+
+## Previous version
+### 3.3.2
 This release focuses more on improving engine resource management:
 1. Fixed the bug which prevented the permanent deletion of files on the Web (HTML 5) (see the [removeFile](./app/src/main/cpp/isEngine/system/function/GameSystem.cpp#L138) function).
 2. Delete unused resources and permissions on Android.
 3. Optimizing the part of the engine that loads resources.<br>
 You can notice it with this new version of [I Can Transform Web](https://is-daouda.github.io/). Now the levels load faster than before!
 
-## Previous version
 ### 3.3.1
 1. Fixed the bug that distorted images when using rotation.
 2. Optimization of the rendering part of the engine that uses SDL. Games are now smoother!
@@ -80,7 +86,7 @@ is::openURL("+2280011223344", is::OpenURLAction::Tel); // Make a call
 ```
 
 ### 3.3
-1. **[The is::LibConnect function](#islibconnect)**: Allows you to develop with several game libraries at the same time (SFML, SDL 2, SMK (Emscripten)) in one and the same project!
+1. **[The is::LibConnect function](#islibconnect)**: Allows you to develop with several game libraries at the same time (SFML, SDL 2, Emscripten) in one and the same project!
 2. **[Possibility to develop C++ SFML games with SDL 2](#-develop-sfml-games-with-sdl-2)** (Your SFML games will run on the SDL 2 library! Yes, yes it is possible!). Book for Code::Block users for the moment!
 3. **Support for Android x64 architectures**: Now you can export your C++ games to several Android architectures (armeabi-v7a, arm64-v8a, x86, x64, ...).
 Which means that you can now publish your C++ games on Google Play! (Yeaaah !!!)
@@ -248,7 +254,7 @@ If all goes well you will have a **Hello World Screen** on your **Android emulat
 - Python (3.8.1 +)
 - CMake (3.1 +)
 - Java
-- SMK SDK **(It is downloaded with the internet connection when executing commands)**
+- SDL 2 **(It is downloaded with the internet connection when executing commands)**
 
 **2. Installation**
 ##### Windows
@@ -264,7 +270,7 @@ mkdir bin-web
 cd bin-web
 emsdk activate latest
 emcmake cmake ..
-make -j3
+make
 python -m http.server
 ```
 7. Visit this url **localhost:8000** in your **Web Browser**.
@@ -279,16 +285,10 @@ If all goes well you will have a **Hello World Screen** on your **Web Browser**.
 - In order for CMake to detect your source files (.cpp) you must include them in the **[app_src.cmake](./app/src/main/cmake/app_src.cmake) or [isengine.cmake](./app/src/main/cmake/isengine.cmake)** file which is located in the **[is-Engine/app/src/main/cmake](./app/src/main/cmake/)** location.
 
 ## ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) Very important
-- **is::Engine** works on the Web thanks to **[SMK](https://github.com/ArthurSonzogni/smk)** a C++ library which uses **[Emscripten](https://emscripten.org)**.
-- **SMK** is a **library** which is a **little different** from **SFML**, but the **Graphic, Audio, System** part looks a bit like that of **SFML**.
-- It does not currently support some SFML features such as: Events, loadFromFile / openFromFile (they are replaced by functions of the engine which performs the same role), etc. The way objects initialize is a little different too. Even the names spaces and functions are different.
-- **is::Engine** allows to **interconnect the SMK and SFML library**, so that they can use the same **namespace (sf), Classes and functions names** in order to facilitate development (avoid preprocessors, compatibility with several platforms).
-- When using SMK with with is::Engine, the Music class works the same as sf::Sound.
-- These libraries: **SWOOSH, TMXLite, TMXLoader, TinyFileDialog** are not supported in the web version of is::Engine.
-- But don't worry, **AS LONG AS YOU USE THE FEATURES OF is::Engine you won't notice the difference between these two (2) libraries when you create your games**.
-- Believe me, there is everything you need to create a great game!
-- To see the differences I advise you to see the **[basicSFMLmain.cpp](./app/src/main/cpp/basicSFMLmain.cpp) file** (this file allows you to create your games without using the main rendering loop of the engine, i.e. avoids using the main features of the engine).
-- If you want more information on the SMK library I advise you to see [the documentation](https://arthursonzogni.com/SMK/doc/).
+- **is::Engine** works on the Web thanks to **SDL 2**.
+- These libraries: **TMXLite, TMXLoader, TinyFileDialog** are not supported in the web version of is::Engine.
+- If you want to use SDL functions in your source code, use the **IS_ENGINE_SDL_2 macro**.
+- Note that some SFML functions like: **Vertex Array, Render Texture** are not yet supported. These additions will be made soon!
 
 ---
 

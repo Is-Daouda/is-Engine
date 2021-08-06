@@ -36,7 +36,7 @@
 //////////////////////////////////////////////////////
 #define IS_ENGINE_VERSION_MAJOR 3
 #define IS_ENGINE_VERSION_MINOR 3
-#define IS_ENGINE_VERSION_PATCH 2
+#define IS_ENGINE_VERSION_PATCH 3
 
 namespace is
 {
@@ -82,27 +82,19 @@ public:
     ///
     /// \return true if key is pressed false if not
     //////////////////////////////////////////////////////
-    virtual bool keyIsPressed(
-                              #if !defined(IS_ENGINE_HTML_5)
-                              sf::Keyboard::Key
-                              #else
-                              short
-                              #endif
-                              key) const;
+    virtual bool keyIsPressed(sf::Keyboard::Key key) const;
 
     /*
      * When using is::Engine to develop on HTML 5 the keyboard and mouse keys are represented
      * by integers. They are no longer differentiated by an enum, so this function is no longer
      * useful when using the SDK which allows to develop on the web.
      */
-    #if !defined(IS_ENGINE_HTML_5)
     //////////////////////////////////////////////////////
     /// \brief Check if mouse button is pressed
     ///
     /// \return true if button is pressed false if not
     //////////////////////////////////////////////////////
     virtual bool keyIsPressed(sf::Mouse::Button button) const;
-    #endif
 
     //////////////////////////////////////////////////////
     /// \brief Check if file exist

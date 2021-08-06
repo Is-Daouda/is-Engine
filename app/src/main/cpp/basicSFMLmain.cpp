@@ -21,7 +21,6 @@ bool GameEngine::basicSFMLmain()
     m_gameSysExt.m_admobManager->checkAdObjInit();
 #endif // definded
 #else
-    #if !defined(IS_ENGINE_HTML_5)
     m_window.create(sf::VideoMode(is::GameConfig::WINDOW_WIDTH,
                                   is::GameConfig::WINDOW_HEIGHT),
                                   is::GameConfig::GAME_NAME,
@@ -31,9 +30,6 @@ bool GameEngine::basicSFMLmain()
     sf::Image iconTex;
     if (!iconTex.loadFromFile(is::GameConfig::GUI_DIR + "icon.png")) return false;
     m_window.setIcon(32, 32, iconTex.getPixelsPtr());
-    #else // using the SFML library (Web development)
-    m_window = sf::RenderWindow(is::GameConfig::WINDOW_WIDTH, is::GameConfig::WINDOW_HEIGHT, is::GameConfig::GAME_NAME);
-    #endif // defined
 #endif // defined
     setFPS(m_window, is::GameConfig::FPS); // set frames per second (FPS)
     sf::View m_view(sf::Vector2f(is::GameConfig::VIEW_WIDTH / 2.f, is::GameConfig::VIEW_HEIGHT / 2.f), sf::Vector2f(is::GameConfig::VIEW_WIDTH, is::GameConfig::VIEW_HEIGHT));
@@ -78,13 +74,14 @@ bool GameEngine::basicSFMLmain()
 ////////////////////////////////////////////////////////////
 // This starts the render loop.                           //
 // Don't touch unless you know what you're doing.         //
-    #if !defined(IS_ENGINE_HTML_5)                        //
+#if !defined(IS_ENGINE_HTML_5)                            //
     while (m_window.isOpen())                             //
-    #else                                                 //
-    m_window.ExecuteMainLoop([&]                          //
+#else                                                     //
+    EM_ASM(console.log("Start successfully!");, 0);       //
+    execMainLoop([&]                                      //
     {                                                     //
     if (emscripten_run_script_int("Module.syncdone") == 1)//
-    #endif                                                //
+#endif                                                    //
     {                                                     //
 ////////////////////////////////////////////////////////////
 
@@ -93,11 +90,6 @@ bool GameEngine::basicSFMLmain()
 ////////////////////////////////////////////////////////////
         sf::Vector2i mousePosition(-1, -1); // Allows to get mouse or touch position
                                             // A negative value means that no position has been recorded
-
-        ////////////////////////////////////////////////////////////
-        //                       SFML
-        ////////////////////////////////////////////////////////////
-        #if !defined(IS_ENGINE_HTML_5) // using the SFML library
         sf::Event event;
         while (m_window.pollEvent(event))
         {
@@ -147,23 +139,6 @@ bool GameEngine::basicSFMLmain()
             }
         }
 
-        ////////////////////////////////////////////////////////////
-        //                 SMK (Web Development)
-        ////////////////////////////////////////////////////////////
-        #else
-        m_window.PoolEvents(); // Allows to update events
-
-        // Get position on cursor released.
-        if (m_window.input().IsCursorReleased())
-        {
-            mousePosition = sf::Mouse::getPosition(m_window);
-
-            // Vibrate on cursor released
-            // Works if and only if the platform supports the vibrator (Smart phone)
-            is::vibrate(100);
-        }
-        #endif // defined
-
 ////////////////////////////////////////////////////////////
 //                    UPDATE OBJECTS
 ////////////////////////////////////////////////////////////
@@ -196,8 +171,7 @@ bool GameEngine::basicSFMLmain()
 ////////////////////////////////////////////////////////////
 // Don't touch unless you know what you're doing.         //
     #if defined(IS_ENGINE_HTML_5)                         //
-    }                                                     //
-    );                                                    //
+    });                                                   //
     #endif                                                //
 ////////////////////////////////////////////////////////////
     return true;

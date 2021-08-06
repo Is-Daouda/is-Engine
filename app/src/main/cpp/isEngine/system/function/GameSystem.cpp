@@ -55,80 +55,38 @@ bool GameSystem::isPressed(
     // When testing the two validation buttons on PC then consider it as a touch
     if (finger == -2) finger = 0;
     if (sf::Touch::isDown(finger)) return true;
-    //#elif defined(IS_ENGINE_HTML_5)
-    //if (m_window.input().IsCursorHold()) return true;
     #else
     //////////////////////////////////////////////////////////
     switch (validationButton)
     {
         case ValidationButton::MOUSE :
-            if (
-                #if !defined(IS_ENGINE_HTML_5)
-                sf::Mouse::isButtonPressed(m_validationMouseKey)
-                #else
-                //m_window.input().IsMousePressed
-                m_window.input().IsCursorHold()
-                #endif
-                ) return true;
+            if (sf::Mouse::isButtonPressed(m_validationMouseKey)) return true;
         break;
         case ValidationButton::KEYBOARD :
-            if (
-                #if !defined(IS_ENGINE_HTML_5)
-                sf::Keyboard::isKeyPressed
-                #else
-                m_window.input().IsKeyHold
-                #endif
-                (m_validationKeyboardKey)) return true;
+            if (sf::Keyboard::isKeyPressed(m_validationKeyboardKey)) return true;
         break;
         case ValidationButton::ALL_BUTTONS :
-            if (
-                #if !defined(IS_ENGINE_HTML_5)
-                sf::Mouse::isButtonPressed(m_validationMouseKey)
-                #else
-                //m_window.input().IsMousePressed
-                m_window.input().IsCursorHold()
-                #endif
-                ) return true;
-            else if (
-                     #if !defined(IS_ENGINE_HTML_5)
-                     sf::Keyboard::isKeyPressed
-                     #else
-                     m_window.input().IsKeyHold
-                     #endif
-                     (m_validationKeyboardKey)) return true;
+            if (sf::Mouse::isButtonPressed(m_validationMouseKey)) return true;
+            else if (sf::Keyboard::isKeyPressed(m_validationKeyboardKey)) return true;
         break;
     }
     #endif
     return false;
 }
 
-bool GameSystem::keyIsPressed(
-                              #if !defined(IS_ENGINE_HTML_5)
-                              sf::Keyboard::Key
-                              #else
-                              short
-                              #endif
-                              key
-                              ) const
+bool GameSystem::keyIsPressed(sf::Keyboard::Key key) const
 {
     if (m_disableKey) return false;
-    #if !defined(IS_ENGINE_HTML_5)
     if (sf::Keyboard::isKeyPressed(key)) return true;
-    #else
-    if ((key >= 0 && key <= 7) && m_window.input().IsMousePressed(key)) return true;
-    if ((key > 7 || key == -1) && m_window.input().IsKeyHold(key)) return true;
-    #endif
     return false;
 }
 
-#if !defined(IS_ENGINE_HTML_5)
 bool GameSystem::keyIsPressed(sf::Mouse::Button button) const
 {
     if (m_disableKey) return false;
     if (sf::Mouse::isButtonPressed(button)) return true;
     return false;
 }
-#endif
 
 bool GameSystem::fileExist(std::string const &fileName)
 {

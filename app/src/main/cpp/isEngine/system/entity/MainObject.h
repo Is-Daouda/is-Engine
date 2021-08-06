@@ -30,8 +30,9 @@
 #include "../function/GameFunction.h"
 
 #if defined(IS_ENGINE_USE_SDM)
-#include "../entity/parents/Destructible.h"
-#include "../entity/parents/DepthObject.h"
+#include "parents/Destructible.h"
+#include "parents/DepthObject.h"
+#include "parents/Visibilty.h"
 #endif // defined
 
 namespace is
@@ -41,7 +42,7 @@ namespace is
 ////////////////////////////////////////////////////////////
 class MainObject : public Name
 #if defined(IS_ENGINE_USE_SDM)
-                 , public Destructible, public DepthObject
+                 , public Destructible, public DepthObject, public is::Visibility
 #endif // defined
 {
 public:
@@ -55,6 +56,10 @@ public:
     static int instanceNumber;
 
     #if defined(IS_ENGINE_USE_SDM)
+    /// on SDL it allows to blit sprites.
+    /// Also prevents the object's sprite from being drawn outside the view (works on SDL and SFML).
+    std::string m_SDMblitSprTextureName = "";
+
     /// lets SDM know if it can call its Step method (update function)
     bool m_SDMcallStep = true;
 
@@ -73,12 +78,9 @@ public:
     /// Allows to use object event
     virtual void event(sf::Event &ev)
     {
-        #if !defined(IS_ENGINE_HTML_5)
         is::showLog("WARNING: MainObject event called in object <" + m_strName + ">! This method must be overloaded!");
-        #endif // defined
     }
-
-    #endif // defined
+    #endif
 
     /// Set x initial position
     virtual void setXStart(float x);

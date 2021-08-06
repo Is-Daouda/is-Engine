@@ -47,20 +47,16 @@ public:
     /// it in the container in order to be able to access it
     /// \param filePath path of the font file to add
     //////////////////////////////////////////////////////
-    virtual sf::Font& GRMaddFont(const std::string& name, const std::string& filePath, float fontSize
-                                   #if !defined(IS_ENGINE_HTML_5)
-                                   = is::GameConfig::DEFAULT_SFML_TEXT_SIZE
-                                   #endif
-                                   )
+    virtual sf::Font& GRMaddFont(const std::string& name, const std::string& filePath)
     {
         auto obj = fontFileExists(filePath);
         if (obj == nullptr)
         {
-            auto newObj = std::make_shared<GameFont>(name, filePath, fontSize);
+            auto newObj = std::make_shared<GameFont>(name, filePath);
             m_GRMfont.push_back(newObj);
             return newObj->getFont();
         }
-        else is::showLog("ERROR: <" + name + "> font has already been added!");
+        else is::showLog("WARNING: <" + name + "> font has already been added!");
         return obj->getFont();
     }
 
@@ -74,7 +70,7 @@ public:
         if (!fontFileExists(font->getFilePath())) m_GRMfont.push_back(font);
         else
         {
-            if (showError) is::showLog("ERROR: <" + font->getName() + "> font has already been added!");
+            if (showError) is::showLog("WARNING: <" + font->getName() + "> font has already been added!");
         }
     }
 
@@ -94,7 +90,7 @@ public:
             m_GRMtexture.push_back(newObj);
             return newObj->getTexture();
         }
-        else is::showLog("ERROR: <" + name + "> texture has already been added!");
+        else is::showLog("WARNING: <" + name + "> texture has already been added!");
         return obj->getTexture();
     }
 
@@ -108,7 +104,7 @@ public:
         if (textureFileExists(texture->getFilePath()) == nullptr) m_GRMtexture.push_back(texture);
         else
         {
-            if (showError) is::showLog("ERROR: <" + texture->getName() + "> texture has already been added!");
+            if (showError) is::showLog("WARNING: <" + texture->getName() + "> texture has already been added!");
         }
     }
 
@@ -123,7 +119,7 @@ public:
     {
         WITH (m_GRMfont.size())
         {
-            if (m_GRMfont[_I]->getName() == name)
+            if (m_GRMfont[_I]->getName() == name && m_GRMfont[_I]->getFileIsLoaded())
             {
                 return &m_GRMfont[_I]->getFont();
             }
@@ -137,7 +133,7 @@ public:
     {
         WITH (m_GRMtexture.size())
         {
-            if (m_GRMtexture[_I]->getName() == name)
+            if (m_GRMtexture[_I]->getName() == name && m_GRMtexture[_I]->getFileIsLoaded())
             {
                 return &m_GRMtexture[_I]->getTexture();
             }
