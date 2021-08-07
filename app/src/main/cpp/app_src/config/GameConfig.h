@@ -1,7 +1,6 @@
 #ifndef GAMECONFIG_H_INCLUDED
 #define GAMECONFIG_H_INCLUDED
 
-#include <string>
 #include "ExtraConfig.h"
 
 namespace is
