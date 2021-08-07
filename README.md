@@ -65,6 +65,7 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - The advantage is that most of the engine functions will be able to run on the web, your games will be compatible with several web browsers and more fluid!
 - You can see for yourself the improvements that are made to the engine with this new version of the game **[I Can Transform Web (HTML 5)](https://is-daouda.github.io/)**.
 2. **[Engine demo (Super Mario Bros NES)](https://github.com/Is-Daouda/is-Engine-Demo)** is now web compatible!
+[![Image](https://i48.servimg.com/u/f48/20/16/75/27/demo_s14.png)](https://github.com/Is-Daouda/is-Engine-Demo)
 
 ## Previous version
 ### 3.3.2
@@ -124,7 +125,7 @@ I'm sure you'll love it!
 
 - The engine comes with a **[Demo (2D Platform Game)](https://github.com/Is-Daouda/is-Engine-Demo)** that uses only the functions of the engine, in order to show you its power and how to use it. Now imagine what you can do when you use Box 2D and the other tools!
 
-[![Image](https://i48.servimg.com/u/f48/20/16/75/27/is_eng20.png)](https://github.com/Is-Daouda/is-Engine-Demo)
+[![Image](https://i48.servimg.com/u/f48/20/16/75/27/demo_s14.png)](https://github.com/Is-Daouda/is-Engine-Demo)
 
 - [Example Pack](https://github.com/Is-Daouda/is-Engine-Example-Pack) that show how to use the various features of the game engine.
 
