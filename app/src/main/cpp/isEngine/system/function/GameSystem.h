@@ -36,10 +36,24 @@
 //////////////////////////////////////////////////////
 #define IS_ENGINE_VERSION_MAJOR 3
 #define IS_ENGINE_VERSION_MINOR 3
-#define IS_ENGINE_VERSION_PATCH 3
+#define IS_ENGINE_VERSION_PATCH 4
 
 namespace is
 {
+class GameSystem;
+
+/// Allows to play sound in container by his name if the option is activated
+void GSMplaySound(const std::string& name, std::vector<std::shared_ptr<GameSound>>&GSMsound, GameSystem &gameSystem);
+
+/// Allows to play music in container by his name if the option is activated
+void GSMplayMusic(const std::string& name, std::vector<std::shared_ptr<
+#if !defined(__ANDROID__)
+                  GameMusic
+#else
+                  GameSound
+#endif
+                  >> &GSMmusic, GameSystem &gameSystem);
+
 //////////////////////////////////////////////////////
 /// \brief Class for manage game system
 ///
@@ -118,6 +132,12 @@ public:
         if (m_enableSound) is::playSFMLSnd(obj);
     }
 
+    /// Allows to play sound in container by his name if the option is activated
+    virtual void GSMplaySound(const std::string& name)
+    {
+        is::GSMplaySound(name, m_GSMsound, *this);
+    }
+
     /// Allows to play a music if the option is activated
     virtual void playMusic(sf::Music &obj)
     {
@@ -128,6 +148,18 @@ public:
     virtual void playMusic(sf::Music *obj)
     {
         if (m_enableMusic) is::playSFMLSnd(obj);
+    }
+
+    /// Allows to play music in container by his name if the option is activated
+    virtual void GSMplayMusic(const std::string& name)
+    {
+        is::GSMplayMusic(name,
+#if !defined(__ANDROID__)
+                         m_GSMmusic
+#else
+                         m_GSMsound
+#endif
+                         , *this);
     }
 
     /// Allows to stop a sound

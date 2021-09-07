@@ -432,6 +432,27 @@ void sortObjArrayByX(std::list<std::shared_ptr<T>> &v)
     std::sort(v.begin(), v.end(), is::CompareX());
 }
 
+/// Sort object array by x position
+template<class T>
+void sortObjArrayByX(std::list<T*> &v)
+{
+    std::sort(v.begin(), v.end(), is::CompareX());
+}
+
+/// Sort object array by x position
+template<class T>
+void sortObjArrayByX(std::vector<std::shared_ptr<T>> &v)
+{
+    std::sort(v.begin(), v.end(), is::CompareX());
+}
+
+/// Sort object array by x position
+template<class T>
+void sortObjArrayByX(std::vector<T*> &v)
+{
+    std::sort(v.begin(), v.end(), is::CompareX());
+}
+
 #if defined(IS_ENGINE_USE_SDM)
 /// Functor for compare the depth of objects
 class CompareDepth

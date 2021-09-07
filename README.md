@@ -1,7 +1,7 @@
 ![header](./images/is_Engine_logo.png)
 ----------------------------
 
-# is::Engine (Infinity Solutions::Engine) 3.3.3
+# is::Engine (Infinity Solutions::Engine) 3.3.4
 Open source C++ framework which uses the mechanisms of **SFML 2** and which also allows to develop with several libraries at the same time **(SDL 2, Emscripten)** in order to easily export your games / applications on the **Web (HTML 5), Android** and **PC (Windows, Linux)**.
 
 ## Contents
@@ -61,6 +61,46 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
+1. Now you can put texts and geometric forms (Rectangle, Circle) in Outline (Support of SFML functions **setOutlineColor** and **setOutlineThickness**) on Web and Android.
+2. Use text styles (Underline, Bold, Italic, ..) on Web et Android.
+3. Correction of bugs that was well hidden!
+4. Improved engine resource management (possibility of making permanent et global resources).
+<br>Sample code :
+
+```cpp
+class HelloScene : public is::GameDisplay
+{
+public:
+    HelloScene(is::GameSystemExtended &gameSysExt):
+        GameDisplay(gameSysExt, sf::Color::Black /* => scene color*/) {}
+
+    void loadResources()
+    {
+        // Load font and texture of the engine
+        // Allows to load system resource (very important never forgot to call him)
+        // Also allows the scene to use permanent resources (loaded before this line)
+        GameDisplay::loadParentResources(); 
+        
+        // We load a sound that will be global and permanent in all scenes (Throughout the engine)
+        m_gameSysExt.GRMaddSound("is_engine_is_cool", is::GameConfig::SFX_DIR + "is_engine_is_cool.wav");
+        
+        // We load these textures (that will only be used in this scene)
+        GRMaddTexture("sfml", is::GameConfig::SPRITES_DIR + "sfml.png");
+        GRMaddTexture("sdl_2", is::GameConfig::SPRITES_DIR + "sdl_2.png");
+        
+        // We load this font (that will only be used in this scene)
+        GRMaddFont("yeah", is::GameConfig::FONT_DIR + "yeah.ttf");
+        
+        // Allows the scene to use sound permanent resources ("is_engine_is_cool.wav" and others)
+        GRMuseGameSystemSound();
+        
+        GRMdeleteFont("yeah"); // Manually delete a font
+    }
+};
+```
+
+## Previous version
+### 3.3.3
 1. Now your **SFML** games will run on the **Web (HTML 5)** with **SDL 2**!
 - The advantage is that most of the engine functions will be able to run on the web, your games will be compatible with several web browsers and more fluid!
 - You can see for yourself the improvements that are made to the engine with this new version of the game **[I Can Transform Web (HTML 5)](https://is-daouda.github.io/)**.<br>
@@ -70,7 +110,6 @@ Game Trailer : **[Youtube](https://youtu.be/2GGiBC8TMLg)**
 
 [![Image](https://i48.servimg.com/u/f48/20/16/75/27/demo_s14.png)](https://github.com/Is-Daouda/is-Engine-Demo)
 
-## Previous version
 ### 3.3.2
 This release focuses more on improving engine resource management:
 1. Fixed the bug which prevented the permanent deletion of files on the Web (HTML 5) (see the [removeFile](./app/src/main/cpp/isEngine/system/function/GameSystem.cpp#L138) function).
@@ -251,7 +290,7 @@ If all goes well you will have a **Hello World Screen** on your **Android emulat
 ---
 
 ## ![web](https://i48.servimg.com/u/f48/20/16/75/27/icon_w10.png) Web (HTML 5 - CSS 3)
-- If you want to make your SFML project compatible with the Web (Be able to run it in a web browser), please watch this **[video tutorial](https://youtu.be/x_YQLHoPMbc)**.
+- If you want to make your SFML project compatible with the Web (Be able to run it in a web browser), please watch this **[video tutorial](https://youtu.be/x_YQLHoPMbc)**. ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) Now you can put texts and geometric forms (Rectangle, Circle) in Outline.
 
 **1. Prerequisites**
 - Emscripen (1.39.7 +)

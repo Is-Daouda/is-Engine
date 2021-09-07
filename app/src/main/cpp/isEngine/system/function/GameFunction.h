@@ -337,14 +337,14 @@ float getSFMLObjY(T &obj)
 template <class T>
 float getSFMLObjX(T *obj)
 {
-    return getSFMLObjX(&obj);
+    return obj->getPosition().x;
 }
 
 /// Return the y position of SFML object (pointer object)
 template <class T>
 float getSFMLObjY(T *obj)
 {
-    return getSFMLObjY(&obj);
+    return obj->getPosition().y;
 }
 
 /// Set the angle of SFML object
@@ -372,7 +372,7 @@ void setSFMLObjScaleX_Y(T &obj, float x, float y)
 template <class T>
 void setSFMLObjScale(T &obj, float scale)
 {
-    setSFMLObjScaleX_Y(obj, scale, scale);
+    obj.setScale(scale, scale);
 }
 
 /// Set origin of SFML object
@@ -407,7 +407,7 @@ void setSFMLObjX_Y(T &obj, float x, float y)
 template <class T>
 void setSFMLObjX_Y(T &obj, sf::Vector2f position)
 {
-    setSFMLObjX_Y(obj, position.x, position.y);
+    obj.setPosition(position.x, position.y);
 }
 
 /// Move SFML object on x axis
@@ -495,23 +495,12 @@ void setFrame(sf::Sprite &sprite, float frame, int subFrame, int frameWidth, int
 /// Set the sprite frame with the same size (e.g 64x64)
 void setFrame(sf::Sprite &sprite, float frame, int subFrame, int frameSize);
 
-/// Set the outline color of SFML object
-template <class T>
-void setSFMLObjOutlineColor(T &obj, sf::Color color)
-{
-#if !defined(IS_ENGINE_SDL_2)
-    obj.setOutlineColor(color);
-#endif
-}
-
 /// Set the outline thickness and color of SFML object
 template <class T>
-void setSFMLObjOutlineColor(T &obj, float thickness, sf::Color color)
+void setSFMLObjOutlineColor(T &obj, sf::Color color, float thickness = 1.f)
 {
-#if !defined(IS_ENGINE_SDL_2)
     obj.setOutlineThickness(thickness);
     obj.setOutlineColor(color);
-#endif
 }
 
 /// Set Texture Rec of SFML object
@@ -751,6 +740,9 @@ void createRectangle(sf::RectangleShape &rec, sf::Vector2f recSize, sf::Color co
 /// Set SFML Text style
 void textStyleConfig(sf::Text &txt, bool underLined, bool boldText, bool italicText);
 
+/// Set SFML Text outline color
+void setSFMLTextOutlineColor(sf::Text &txt, float thickness, sf::Color color);
+
 /// Create SFML text
 template<class T>
 void createText(sf::Font
@@ -758,12 +750,13 @@ void createText(sf::Font
                  const
                  #endif
                  &fnt, sf::Text &txt, T const &text, float x, float y,
-                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE)
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
 {
     txt.setFont(fnt);
     if (txtSize > 0) txt.setCharacterSize(txtSize);
     else txt.setCharacterSize(is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
-    //textStyleConfig(txt, underLined, boldText, italicText);
+    textStyleConfig(txt, underLined, boldText, italicText);
     txt.setString(text);
     is::setSFMLObjX_Y(txt, x, y);
     is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_TEXT_COLOR);
@@ -776,9 +769,10 @@ void createText(sf::Font
                  const
                  #endif
                  &fnt, sf::Text &txt, T const &text, float x, float y, bool centerText,
-                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE)
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
 {
-    createText(fnt, txt, text, x, y, txtSize);
+    createText(fnt, txt, text, x, y, txtSize, underLined, boldText, italicText);
     if (centerText) is::centerSFMLObj(txt);
     is::setSFMLObjX_Y(txt, x, y);
 }
@@ -790,9 +784,10 @@ void createText(sf::Font
                  const
                  #endif
                  &fnt, sf::Text &txt, T const &text, float x, float y, sf::Color color,
-                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE)
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
 {
-    createText(fnt, txt, text, x, y, txtSize);
+    createText(fnt, txt, text, x, y, txtSize, underLined, boldText, italicText);
     is::setSFMLObjFillColor(txt, color);
 }
 
@@ -803,28 +798,28 @@ void createText(sf::Font
                  const
                  #endif
                  &fnt, sf::Text &txt, T const &text, float x, float y, sf::Color color, bool centerText,
-                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE)
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
 {
-    createText(fnt, txt, text, x, y, centerText, txtSize);
+    createText(fnt, txt, text, x, y, centerText, txtSize, underLined, boldText, italicText);
     is::setSFMLObjFillColor(txt, color);
 }
 
-/*
 /// Create SFML text outline with color and size
 template<class T>
 void createText(sf::Font
                  #if defined(IS_ENGINE_SFML)
                  const
                  #endif
-                 &fnt, sf::Text &txt, T const &text, float x, float y, sf::Color color, sf::Color outlineColor, int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE);
+                 &fnt, sf::Text &txt, T const &text, float x, float y,
+                 sf::Color color, sf::Color outlineColor, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE, float outlineThickness = 1.f,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
 {
-    createText(fnt, txt, text, x, y, txtSize, underLined, boldText, italicText);
-    #if defined(IS_ENGINE_SFML)
+    createText(fnt, txt, text, x, y, color, centerText, txtSize, underLined, boldText, italicText);
     txt.setOutlineColor(outlineColor);
-    txt.setOutlineThickness(1.f);
-    #endif
+    txt.setOutlineThickness(outlineThickness);
 }
-*/
 
 /// Create SFML sprites without IntRec
 void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::Vector2f position, sf::Vector2f origin, bool smooth = true);

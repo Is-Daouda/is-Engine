@@ -454,26 +454,18 @@ void MainObject::drawMask(is::Render &surface, sf::Color color)
     if (m_w > 0 && m_h > 0)
     {
         sf::RectangleShape rec(sf::Vector2f(static_cast<float>(m_w), static_cast<float>(m_h)));
-        #if defined(IS_ENGINE_SFML)
         rec.setOutlineThickness(1.f);
         rec.setFillColor(sf::Color::Transparent);
         rec.setOutlineColor(color);
-        #else
-        rec.setColor(sf::Color::Red);
-        #endif
         is::setSFMLObjX_Y(rec, static_cast<float>(m_aabb.m_left), static_cast<float>(m_aabb.m_top));
         is::draw(surface, rec);
     }
     else if (m_circle.m_raduis > 0.f) // We draw the circle mask only if it has dimensions
     {
         sf::CircleShape circle(m_circle.m_raduis);
-        #if defined(IS_ENGINE_SFML)
         circle.setOutlineThickness(1.f);
         circle.setFillColor(sf::Color::Transparent);
         circle.setOutlineColor(color);
-        #else
-        circle.setColor(sf::Color::Red);
-        #endif
         is::centerSFMLObj(circle);
         is::setSFMLObjX_Y(circle, m_circle.m_x, m_circle.m_y);
         is::draw(surface, circle);

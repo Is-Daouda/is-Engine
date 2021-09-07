@@ -232,6 +232,11 @@ SDLTexture::~SDLTexture()
         SDL_DestroyTexture(m_SDLtexture);
         m_SDLtexture = NULL;
     }
+    if (m_SDLoutlineTexture != NULL)
+    {
+        SDL_DestroyTexture(m_SDLoutlineTexture);
+        m_SDLoutlineTexture = NULL;
+    }
 }
 
 void SDLTexture::setTextureRect(IntRect rec)
@@ -305,8 +310,9 @@ Text::Text(sf::Font& font) :
 {
     m_SDLTextureType = IS_ENGINE_SDL_TEXT;
     m_font = &font;
-    m_SDLfont = m_font->getSDLFont();
     m_characterSize = m_font->getSize();
+    m_style = m_font->m_SDLFontStyle;
+    m_outlineFont = m_font;
 }
 
 Text::Text(sf::Font& font, const std::string& text) :
@@ -314,9 +320,10 @@ Text::Text(sf::Font& font, const std::string& text) :
 {
     m_SDLTextureType = IS_ENGINE_SDL_TEXT;
     m_font = &font;
-    m_SDLfont = m_font->getSDLFont();
     m_characterSize = m_font->getSize();
-    setObjectText(text, m_characterSize);
+    m_style = m_font->m_SDLFontStyle;
+    m_outlineFont = m_font;
+    setObjectText(text);
 }
 
 Text::Text(sf::Font& font, const std::wstring& text):
@@ -324,9 +331,10 @@ Text::Text(sf::Font& font, const std::wstring& text):
 {
     m_SDLTextureType = IS_ENGINE_SDL_TEXT;
     m_font = &font;
-    m_SDLfont = m_font->getSDLFont();
     m_characterSize = m_font->getSize();
-    setObjectText(text, m_characterSize);
+    m_style = m_font->m_SDLFontStyle;
+    m_outlineFont = m_font;
+    setObjectText(text);
 }
 
 Text::~Text()
@@ -346,30 +354,32 @@ Text::~Text()
 void Text::setFont(sf::Font &font)
 {
     m_font = &font;
-    m_SDLfont = m_font->getSDLFont();
-    setSDLText(m_font->getSize());
+    m_characterSize = m_font->getSize();
+    m_style = m_font->m_SDLFontStyle;
+    if (m_outlineFont == nullptr) m_outlineFont = m_font;
+    setSDLText();
 }
 
 void Text::setString(const std::wstring& text)
 {
-    setObjectText(text, m_characterSize);
+    setObjectText(text);
 }
 
 void Text::setString(const wchar_t& text)
 {
     m_tempWstring = text;
-    setObjectText(m_tempWstring, m_characterSize);
+    setObjectText(m_tempWstring);
 }
 
 void Text::setString(const std::string& text)
 {
-    setObjectText(text, m_characterSize);
+    setObjectText(text);
 }
 
 void Text::setString(const char& text)
 {
     m_tempString = text;
-    setObjectText(m_tempString, m_characterSize);
+    setObjectText(m_tempString);
 }
 
 void Text::setColor(int r, int g, int b, int a)
@@ -380,7 +390,7 @@ void Text::setColor(int r, int g, int b, int a)
         m_color.r = r;
         m_color.g = g;
         m_color.b = b;
-        setSDLText(m_characterSize);
+        setSDLText();
     }
 }
 
@@ -391,10 +401,42 @@ void Text::setOrigin(float x, float y)
 
 void Text::setCharacterSize(int size)
 {
-    if (m_characterSize != size) setSDLText(size);
+    if (m_characterSize != size)
+    {
+        m_characterSize = size;
+        setSDLText();
+    }
 }
 
-void Text::setObjectText(const std::string& text, int textSize)
+void Text::setStyle(Uint32 style)
+{
+    if (m_style != style)
+    {
+        m_style = style;
+        setSDLText();
+    }
+}
+
+void Text::setOutlineColor(const Color& color)
+{
+    if (m_outlineColor.r != color.r || m_outlineColor.g != color.g || m_outlineColor.b != color.b ||
+        m_outlineColor.a != color.a)
+    {
+        m_outlineColor = color;
+        setSDLText();
+    }
+}
+
+void Text::setOutlineThickness(float thickness)
+{
+    if (m_outlineThickness != thickness)
+    {
+        m_outlineThickness = thickness;
+        setSDLText();
+    }
+}
+
+void Text::setObjectText(const std::string& text)
 {
     if (text != m_string)
     {
@@ -408,11 +450,11 @@ void Text::setObjectText(const std::string& text, int textSize)
         m_SDLtext = new char[m_currentCharSize];
         strcpy(m_SDLtext, text.c_str());
         m_SDLtext[m_currentCharSize - 1] = '\0';
-        setSDLText(textSize);
+        setSDLText();
     }
 }
 
-void Text::setObjectText(const std::wstring& text, int textSize)
+void Text::setObjectText(const std::wstring& text)
 {
     if (text != m_wstring)
     {
@@ -426,38 +468,51 @@ void Text::setObjectText(const std::wstring& text, int textSize)
         m_SDLtext = new char[m_currentCharSize];
         std::wcstombs(m_SDLtext, text.c_str(), text.size());
         m_SDLtext[m_currentCharSize - 1] = L'\0';
-        setSDLText(textSize);
+        setSDLText();
     }
 }
 
-bool Text::setSDLText(int textSize)
+bool Text::setSDLText()
 {
-    if (m_characterSize != textSize)
+    if (m_string == "" && m_wstring == L"") return false;
+
+    auto checkFontParam = [this](sf::Font *font, bool normalText)
     {
-        m_characterSize = textSize;
-        if (m_characterSize == m_font->getSize()) {m_SDLfont = m_font->getSDLFont();}
-        else
+        if (m_characterSize != font->getSize() ||
+            m_style != font->m_SDLFontStyle ||
+            (!normalText && m_outlineThickness != font->m_SDLoutlineFontSize))
         {
             bool fontExists(false);
-            unsigned int fontIndex(0);
             for (unsigned int _I(0); _I < is::IS_ENGINE_SDL_AUTO_GENERATE_FONT.size(); _I++)
             {
-                if (is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I]->getFileName() == m_font->getFileName() &&
-                    is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I]->getSize() == m_characterSize)
+                if (is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I]->getFileName() == font->getFileName() &&
+                    is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I]->getSize() == m_characterSize &&
+                    is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I]->m_SDLFontStyle == m_style &&
+                    is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I]->m_SDLoutlineFontSize == m_outlineThickness)
                 {
-                    fontIndex = _I;
+                    if (normalText) m_font = is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I];
+                    else m_outlineFont = is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I];
                     fontExists = true;
                     break;
                 }
             }
             if (!fontExists)
             {
-                is::IS_ENGINE_SDL_AUTO_GENERATE_FONT.push_back(new Font(m_font->getFileName(), m_characterSize));
-                fontIndex = (is::IS_ENGINE_SDL_AUTO_GENERATE_FONT.size() - 1);
+                is::IS_ENGINE_SDL_AUTO_GENERATE_FONT.push_back(new Font(font->getFileName(), m_characterSize));
+                is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[is::IS_ENGINE_SDL_AUTO_GENERATE_FONT.size() - 1]->m_SDLFontStyle = m_style;
+                TTF_SetFontStyle(is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[is::IS_ENGINE_SDL_AUTO_GENERATE_FONT.size() - 1]->getSDLFont(), m_style);
+                if (!normalText)
+                {
+                    is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[is::IS_ENGINE_SDL_AUTO_GENERATE_FONT.size() - 1]->m_SDLoutlineFontSize = m_outlineThickness;
+                    TTF_SetFontOutline(is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[is::IS_ENGINE_SDL_AUTO_GENERATE_FONT.size() - 1]->getSDLFont(), m_outlineThickness);
+                    m_outlineFont = is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[is::IS_ENGINE_SDL_AUTO_GENERATE_FONT.size() - 1];
+                }
+                else m_font = is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[is::IS_ENGINE_SDL_AUTO_GENERATE_FONT.size() - 1];
             }
-            m_SDLfont = is::IS_ENGINE_SDL_AUTO_GENERATE_FONT[fontIndex]->getSDLFont();
         }
-    }
+    };
+    checkFontParam(m_font, true);
+    if (m_outlineThickness > 0.f) checkFontParam(m_outlineFont, false);
 
     if (m_SDLtext == nullptr) return false;
     m_multiLines = false;
@@ -487,42 +542,76 @@ bool Text::setSDLText(int textSize)
         }
     }
 
-    int w(0);
+    int w(0), h(0);
     if (line > 0)
     {
-        if (TTF_SizeText(m_SDLfont, finalStr, &w, 0)) {/* error */}
+        if (TTF_SizeText((m_outlineThickness == 0) ? m_font->getSDLFont() : m_outlineFont->getSDLFont(), finalStr, &w, &h)) {/* allow to show error */}
         w += ((m_characterSize > 30) ? 6 : 0) + m_SDLaddTextRecWSize;
     }
-    m_SDLsurface = NULL;
-    m_SDLsurface = TTF_RenderText_Blended_Wrapped(m_SDLfont, m_SDLtext, getSDLColor(false), ((line == 0) ? 1280 : w));
 
-    if (m_SDLsurface != NULL)
+    auto createTexture = [this, &line, &w, &h](SDL_Surface *surface, bool normalText)
     {
-        m_SDLtexture = SDL_CreateTextureFromSurface(is::IS_ENGINE_SDL_renderer, m_SDLsurface);
-        if (m_SDLtexture != NULL)
+        surface = NULL;
+        surface = TTF_RenderText_Blended_Wrapped((normalText) ? m_font->getSDLFont() : m_outlineFont->getSDLFont(),
+                                                      m_SDLtext,
+                                                      (normalText) ? getSDLColor(false) : getSDLOutlineColor(),
+                                                      ((line == 0) ? 1280 : w));
+        if (surface != NULL)
         {
-            setSize(m_SDLsurface->w, m_SDLsurface->h);
-            /*if (m_multiLines)
+            SDL_Texture *texture = NULL;
+            if (normalText)
             {
-                SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-                    "Text: w: %f h: %f \n<%s> line: %d char: %d\n",
-                    m_size.x, m_size.y, finalStr, line, maxCaracter);
-            }*/
-            SDL_FreeSurface(m_SDLsurface);
-            m_SDLsurface = NULL;
+                if (m_SDLtexture != NULL)
+                {
+                    SDL_DestroyTexture(m_SDLtexture);
+                    m_SDLtexture = NULL;
+                }
+                m_SDLtexture = SDL_CreateTextureFromSurface(is::IS_ENGINE_SDL_renderer, surface);
+                texture = m_SDLtexture;
+            }
+            else
+            {
+                if (m_SDLoutlineTexture != NULL)
+                {
+                    SDL_DestroyTexture(m_SDLoutlineTexture);
+                    m_SDLoutlineTexture = NULL;
+                }
+                m_SDLoutlineTexture = SDL_CreateTextureFromSurface(is::IS_ENGINE_SDL_renderer, surface);
+                texture = m_SDLoutlineTexture;
+            }
+            if (texture != NULL)
+            {
+                if (normalText) setSize(surface->w, surface->h);
+                {
+                    m_SDLoutlineTextureRec.width = surface->w;
+                    m_SDLoutlineTextureRec.height = surface->h;
+                }
+                /*if (m_multiLines)
+                {
+                    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+                        "Text: w: %f h: %f \n<%s> line: %d char: %d\n",
+                        m_size.x, m_size.y, finalStr, line, maxCaracter);
+                }*/
+                SDL_FreeSurface(surface);
+                surface = NULL;
+            }
+            else
+            {
+                SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,"Error Texture Text (\"%s\") : %s\n", m_SDLtext, SDL_GetError());
+                return false;
+            }
         }
         else
         {
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,"Error Texture Text (\"%s\") : %s\n", m_SDLtext, SDL_GetError());
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,"Error Surface Text (\"%s\") : %s\n", m_SDLtext, TTF_GetError());
             return false;
         }
-    }
-    else
-    {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,"Error Surface Text (\"%s\") : %s\n", m_SDLtext, TTF_GetError());
-        return false;
-    }
-    return true;
+        return true;
+    };
+
+    bool createdSuccessfully = createTexture(m_SDLsurface, true);
+    if (m_outlineThickness > 0) createdSuccessfully = createTexture(m_SDLsurface, false);
+    return createdSuccessfully;
 }
 
 View::View()
@@ -552,34 +641,53 @@ const Vector2f& View::getCenter() const noexcept
     return m_center;
 }
 
-void RectangleShape::draw(View const &view) const
+void RectangleShape::draw(View const &view)
 {
-    SDL_SetRenderDrawColor(is::IS_ENGINE_SDL_renderer, m_color.r, m_color.g, m_color.b, m_color.a);
     SDL_Rect rec;
+    SDL_SetRenderDrawColor(is::IS_ENGINE_SDL_renderer, m_color.r, m_color.g, m_color.b, m_color.a);
     rec.x = ((m_position.x - m_origin.x) - (view.getCenter().x - (view.getSize().x / 2.f))) * is::IS_ENGINE_SDL_screenXScale;
     rec.y = ((m_position.y - m_origin.y) - (view.getCenter().y - (view.getSize().y / 2.f))) * is::IS_ENGINE_SDL_screenYScale;
     rec.w = (m_size.x * std::abs(m_scale.x)) * is::IS_ENGINE_SDL_screenXScale;
     rec.h = (m_size.y * std::abs(m_scale.y)) * is::IS_ENGINE_SDL_screenYScale;
     SDL_RenderFillRect(is::IS_ENGINE_SDL_renderer, &rec);
-}
 
-void CircleShape::draw(View const &view) const
-{
-    SDL_SetRenderDrawColor(is::IS_ENGINE_SDL_renderer, m_color.r, m_color.g, m_color.b, m_color.a);
-    for (int w = 0; w < m_size.x * 2; w++)
+    if (m_outlineThickness > 0.f)
     {
-        for (int h = 0; h < m_size.x * 2; h++)
+        for (int i(0); i < static_cast<int>(m_outlineThickness); i++)
         {
-            int dx = m_size.x - w; // horizontal offset
-            int dy = m_size.x - h; // vertical offset
-            if ((dx * dx + dy * dy) <= (m_size.x * m_size.x))
-            {
-                SDL_RenderDrawPoint(is::IS_ENGINE_SDL_renderer,
-                                    ((m_position.x - m_origin.x) - (view.getCenter().x - (view.getSize().x / 2.f))) * is::IS_ENGINE_SDL_screenXScale + dx,
-                                    ((m_position.y - m_origin.y) - (view.getCenter().y - (view.getSize().y / 2.f))) * is::IS_ENGINE_SDL_screenYScale + dy);
-            }
+            SDL_Rect recOutline;
+            SDL_SetRenderDrawColor(is::IS_ENGINE_SDL_renderer, m_outlineColor.r, m_outlineColor.g, m_outlineColor.b, m_outlineColor.a);
+            recOutline.x = rec.x + i;
+            recOutline.y = rec.y + i;
+            recOutline.w = rec.w - i * 2;
+            recOutline.h = rec.h - i * 2;
+            SDL_RenderDrawRect(is::IS_ENGINE_SDL_renderer, &recOutline);
         }
     }
+}
+
+void CircleShape::draw(View const &view)
+{
+    auto drawCircle = [this, &view](sf::Color const &color, int size)
+    {
+        SDL_SetRenderDrawColor(is::IS_ENGINE_SDL_renderer, color.r, color.g, color.b, color.a);
+        for (int w = 0; w < size * 2; w++)
+        {
+            for (int h = 0; h < size * 2; h++)
+            {
+                int dx = size - w; // horizontal offset
+                int dy = size - h; // vertical offset
+                if ((dx * dx + dy * dy) <= (size * size))
+                {
+                    SDL_RenderDrawPoint(is::IS_ENGINE_SDL_renderer,
+                                        ((m_position.x - m_origin.x) - (view.getCenter().x - (view.getSize().x / 2.f))) * is::IS_ENGINE_SDL_screenXScale + dx,
+                                        ((m_position.y - m_origin.y) - (view.getCenter().y - (view.getSize().y / 2.f))) * is::IS_ENGINE_SDL_screenYScale + dy);
+                }
+            }
+        }
+    };
+    if (m_outlineThickness > 0.f) drawCircle(m_outlineColor, m_size.x);
+    drawCircle(m_color, m_size.x - static_cast<int>(m_outlineThickness));
 }
 
 bool Keyboard::isKeyPressed(Key key)
@@ -850,41 +958,35 @@ void RenderWindow::draw(SDLTexture &obj)
     float xOrigin(objOriginX);
     float yOrigin(objOriginY);
 
+    // Image angle
+    float rotation(obj.getRotation());
+
     // Use to stretch the image of the object to make a scale effect
     rec.w = obj.getTextureRect().width * std::abs(obj.getScale().x);
     rec.h = obj.getTextureRect().height * std::abs(obj.getScale().y);
 
     // Each time the image is scale, the origin of the object is recalculated
-    if (obj.getScale().x > 1.001f || obj.getScale().x < 0.999f) xOrigin = rec.w / (obj.getTextureRect().width / xOrigin);
-    if (obj.getScale().y > 1.001f || obj.getScale().y < 0.999f) yOrigin = rec.h / (obj.getTextureRect().height / objOriginY);
+    if (std::abs(obj.getScale().x) > 1.001f || std::abs(obj.getScale().x) < 0.999f)
+        xOrigin = rec.w / (obj.getTextureRect().width / objOriginX);
+    if (std::abs(obj.getScale().y) > 1.001f || std::abs(obj.getScale().y) < 0.999f)
+        yOrigin = rec.h / (obj.getTextureRect().height / objOriginY);
 
-    if (obj.m_SDLTextureType == SDLTexture::SDLTextureType::IS_ENGINE_SDL_SPRITE)
+    // We do a corresponding flip according to the sign of the variables x scale and y scale
+    if (obj.getScale().x < 0.f && obj.getScale().y < 0.f) obj.m_SDLFlip = (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
+    else if (obj.getScale().x < 0.f)
     {
-        SDL_SetTextureColorMod(obj.getSDLTexture(), obj.getColor().r, obj.getColor().g, obj.getColor().b);
-
-        // Move the object according to the position of the camera
-        rec.x = (obj.getPosition().x - xOrigin) - (m_view.getCenter().x - (m_view.getSize().x / 2.f));
-        rec.y = (obj.getPosition().y - yOrigin) - (m_view.getCenter().y - (m_view.getSize().y / 2.f));
+        obj.m_SDLFlip = SDL_FLIP_HORIZONTAL;
+        //xOrigin *= 1.65f;
+        //rotation *= -1.f;
     }
-    else // This is used to adjust the position of text type objects.
-    {
-        float yFitted = static_cast<float>(obj.getTextureRect().height / 3);
+    else if (obj.getScale().y < 0.f) obj.m_SDLFlip = SDL_FLIP_VERTICAL;
+    else obj.m_SDLFlip = SDL_FLIP_NONE;
 
-        if (obj.m_multiLines)
-        {
-            if (static_cast<int>(obj.getOrigin().x) == obj.getTextureRect().width / 2 &&
-                static_cast<int>(obj.getOrigin().y) == obj.getTextureRect().height / 2)
-            {
-                if (obj.getTextureRect().height > 290) yFitted = 0;
-                else if (obj.getTextureRect().height > 240) yFitted = static_cast<float>(obj.getTextureRect().height / 14);
-                else if (obj.getTextureRect().height >= 192) yFitted = static_cast<float>(obj.getTextureRect().height / 10);
-                else if (obj.getTextureRect().height > 70) yFitted = static_cast<float>(obj.getTextureRect().height / 6);
-            }
-            else yFitted = static_cast<float>(obj.getTextureRect().height / 8);
-        }
-        rec.x = (obj.getPosition().x - xOrigin) - (m_view.getCenter().x - (m_view.getSize().x / 2.f));
-        rec.y = ((obj.getPosition().y + yFitted) - yOrigin) - (m_view.getCenter().y - (m_view.getSize().y / 2.f));
-    }
+    SDL_SetTextureColorMod(obj.getSDLTexture(), obj.getColor().r, obj.getColor().g, obj.getColor().b);
+
+    // Move the object according to the position of the camera
+    rec.x = (obj.getPosition().x - xOrigin) - (m_view.getCenter().x - (m_view.getSize().x / 2.f));
+    rec.y = (obj.getPosition().y - yOrigin) - (m_view.getCenter().y - (m_view.getSize().y / 2.f));
 
     // We apply the scale of the screen to the object in order to resize it in relation to the screen
     rec.x *= is::IS_ENGINE_SDL_screenXScale;
@@ -919,13 +1021,31 @@ void RenderWindow::draw(SDLTexture &obj)
     SDL_SetTextureBlendMode(obj.getSDLTexture(), SDL_BLENDMODE_BLEND);
     SDL_SetTextureAlphaMod(obj.getSDLTexture(), obj.getColor().a);
 
-    // We do a corresponding flip according to the sign of the variables x scale and y scale
-    if (obj.getScale().x < 0.f && obj.getScale().y < 0.f) obj.m_SDLFlip = (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
-    else if (obj.getScale().x < 0.f) obj.m_SDLFlip = SDL_FLIP_HORIZONTAL;
-    else if (obj.getScale().y < 0.f) obj.m_SDLFlip = SDL_FLIP_VERTICAL;
-    else obj.m_SDLFlip = SDL_FLIP_NONE;
+    if (obj.m_SDLTextureType == SDLTexture::SDLTextureType::IS_ENGINE_SDL_TEXT)
+    {
+        if (obj.getSDLOutlineTexture() != NULL)
+        {
+            SDL_SetTextureBlendMode(obj.getSDLOutlineTexture(), SDL_BLENDMODE_BLEND);
+            //SDL_SetTextureAlphaMod(obj.getSDLOutlineTexture(), obj.getColor().a);
 
-    SDL_RenderCopyEx(is::IS_ENGINE_SDL_renderer, obj.getSDLTexture(), &recSrc, &rec, obj.getRotation(), &point, obj.m_SDLFlip);
+            SDL_Rect SDLoutlineTextureRec, outlineTextureRecSrc;
+            SDLoutlineTextureRec.x = rec.x;
+            SDLoutlineTextureRec.y = rec.y;
+            SDLoutlineTextureRec.w = obj.m_SDLoutlineTextureRec.width * std::abs(obj.getScale().x);
+            SDLoutlineTextureRec.h = obj.m_SDLoutlineTextureRec.height * std::abs(obj.getScale().y);
+            SDLoutlineTextureRec.w *= is::IS_ENGINE_SDL_screenXScale;
+            SDLoutlineTextureRec.h *= is::IS_ENGINE_SDL_screenYScale;
+
+            outlineTextureRecSrc.x = obj.getTextureRect().left;
+            outlineTextureRecSrc.y = obj.getTextureRect().top;
+            outlineTextureRecSrc.w = obj.m_SDLoutlineTextureRec.width;
+            outlineTextureRecSrc.h = obj.m_SDLoutlineTextureRec.height;
+
+            SDL_RenderCopyEx(is::IS_ENGINE_SDL_renderer, obj.getSDLOutlineTexture(),
+                             &outlineTextureRecSrc, &SDLoutlineTextureRec, rotation, &point, obj.m_SDLFlip);
+        }
+    }
+    SDL_RenderCopyEx(is::IS_ENGINE_SDL_renderer, obj.getSDLTexture(), &recSrc, &rec, rotation, &point, obj.m_SDLFlip);
 }
 
 void RenderWindow::display()

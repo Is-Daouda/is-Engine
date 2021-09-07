@@ -21,11 +21,13 @@
 
 #include "GameEngine.h"
 
-std::function<void(void)> main_loop;
+#if defined(IS_ENGINE_HTML_5)
+std::function<void(void)> mainLoop;
 void MainLoop()
 {
-    return main_loop();
+    return mainLoop();
 }
+#endif
 
 namespace is
 {
@@ -78,13 +80,13 @@ void GameEngine::initEngine()
 #if defined(IS_ENGINE_HTML_5)
 void GameEngine::execMainLoop(std::function<bool(void)> loop)
 {
-    main_loop = [my_loop = loop] { (void)my_loop(); };
+    mainLoop = [myLoop = loop] {(void)myLoop();};
     emscripten_set_main_loop(&MainLoop, -1, 1);
 }
 
 void GameEngine::execMainLoop(std::function<void(void)> loop)
 {
-    main_loop = loop;
+    mainLoop = loop;
     emscripten_set_main_loop(&MainLoop, -1, 1);
 }
 #endif
@@ -112,18 +114,22 @@ bool GameEngine::play()
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                         GAME STARTUP
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-    std::unique_ptr<ActivityController> app = std::make_unique<ActivityController>(m_gameSysExt);
+    std::unique_ptr<ActivityController> app = nullptr;
 #if !defined(IS_ENGINE_HTML_5)
     while (m_window.isOpen())
 #else
-    EM_ASM(console.log("Start successfully!"); , 0);
+    EM_ASM(console.log("Start successfully!");, 0);
     execMainLoop([&]
     {
     if (emscripten_run_script_int("Module.syncdone") == 1)
 #endif
     {
-        app->update();
-        app->draw();
+        if (app == nullptr) app = std::make_unique<ActivityController>(m_gameSysExt);
+        else
+        {
+            app->update();
+            app->draw();
+        }
     }
 #if defined(IS_ENGINE_HTML_5)
     });

@@ -22,7 +22,6 @@
 #ifndef GSM_H_INCLUDED
 #define GSM_H_INCLUDED
 
-#include <memory>
 #include "../sound/GameSound.h"
 #include "../sound/GameMusic.h"
 
@@ -121,7 +120,7 @@ public:
     /// Allows to set sound loop
     virtual void GSMsetSoundLoop(const std::string& name, bool loop)
     {
-        WITH (m_GSMsound.size())
+        WITH(m_GSMsound.size())
         {
             if (m_GSMsound[_I]->getName() == name && m_GSMsound[_I]->getFileIsLoaded())
             {
@@ -138,7 +137,7 @@ public:
 #if defined(__ANDROID__)
         GSMsetSoundLoop(name, loop);
 #else
-        WITH (m_GSMmusic.size())
+        WITH(m_GSMmusic.size())
         {
             if (m_GSMmusic[_I]->getName() == name && m_GSMmusic[_I]->getFileIsLoaded())
             {
@@ -153,7 +152,7 @@ public:
     /// Allows to get sound in container by his name
     virtual sf::Sound* GSMgetSound(const std::string& name, bool showError = true)
     {
-        WITH (m_GSMsound.size())
+        WITH(m_GSMsound.size())
         {
             if (m_GSMsound[_I]->getName() == name && m_GSMsound[_I]->getFileIsLoaded())
             {
@@ -173,7 +172,7 @@ public:
 #endif
     GSMgetMusic(const std::string& name, bool showError = true)
     {
-        WITH (
+        WITH(
 #if defined(__ANDROID__)
                 m_GSMsound.size()
 #else
@@ -199,6 +198,130 @@ public:
         }
         if (showError) is::showLog("ERROR: <" + name + "> music does not exist!");
         return nullptr;
+    }
+
+    /// Allows to pause sound in container by his name
+    virtual void GSMpauseSound(const std::string& name)
+    {
+        bool soundExist(false);
+        WITH(m_GSMsound.size())
+        {
+            if (m_GSMsound[_I]->getName() == name)
+            {
+                soundExist = true;
+                if (m_GSMsound[_I]->getFileIsLoaded())
+                {
+                    if (is::checkSFMLSndState(m_GSMsound[_I]->getSound(), is::SFMLSndStatus::Playing)) m_GSMsound[_I]->getSound().pause();
+                }
+                else is::showLog("ERROR: Can't pause <" + name + "> sound!");
+                break;
+            }
+        }
+        if (!soundExist) is::showLog("ERROR: Can't pause <" + name + "> sound because sound not exists!");
+    }
+
+    /// Allows to stop sound in container by his name
+    virtual void GSMstopSound(const std::string& name)
+    {
+        bool soundExist(false);
+        WITH(m_GSMsound.size())
+        {
+            if (m_GSMsound[_I]->getName() == name)
+            {
+                soundExist = true;
+                if (m_GSMsound[_I]->getFileIsLoaded())
+                {
+                    if (is::checkSFMLSndState(m_GSMsound[_I]->getSound(), is::SFMLSndStatus::Playing)) m_GSMsound[_I]->getSound().stop();
+                }
+                else is::showLog("ERROR: Can't stop <" + name + "> sound!");
+                break;
+            }
+        }
+        if (!soundExist) is::showLog("ERROR: Can't stop <" + name + "> sound because sound not exists!");
+    }
+
+    /// Allows to pause music in container by his name
+    virtual void GSMpauseMusic(const std::string& name)
+    {
+    #if defined(__ANDROID__)
+        GSMpauseSound(name);
+    #else
+        bool musicExist(false);
+        WITH(m_GSMmusic.size())
+        {
+            if (m_GSMmusic[_I]->getName() == name)
+            {
+                musicExist = true;
+                if (m_GSMmusic[_I]->getFileIsLoaded())
+                {
+                    if (is::checkSFMLSndState(m_GSMmusic[_I]->getMusic(), is::SFMLSndStatus::Playing)) m_GSMmusic[_I]->getMusic().pause();
+                }
+                else is::showLog("ERROR: Can't pause <" + name + "> music!");
+                break;
+            }
+        }
+        if (!musicExist) is::showLog("ERROR: Can't pause <" + name + "> music because music not exists!");
+    #endif
+    }
+
+    /// Allows to stop music in container by his name
+    virtual void GSMstopMusic(const std::string& name)
+    {
+    #if defined(__ANDROID__)
+        GSMstopSound(name);
+    #else
+        bool musicExist(false);
+        WITH(m_GSMmusic.size())
+        {
+            if (m_GSMmusic[_I]->getName() == name)
+            {
+                musicExist = true;
+                if (m_GSMmusic[_I]->getFileIsLoaded())
+                {
+                    if (is::checkSFMLSndState(m_GSMmusic[_I]->getMusic(), is::SFMLSndStatus::Playing)) m_GSMmusic[_I]->getMusic().stop();
+                }
+                else is::showLog("ERROR: Can't stop <" + name + "> music!");
+                break;
+            }
+        }
+        if (!musicExist) is::showLog("ERROR: Can't stop <" + name + "> music because music not exists!");
+    #endif
+    }
+
+    /// Allows to delete sound in container by his name
+    virtual void GSMdeleteSound(const std::string& name)
+    {
+        int soundId(-1);
+        WITH(m_GSMsound.size())
+        {
+            if (m_GSMsound[_I]->getName() == name)
+            {
+                soundId = _I;
+                break;
+            }
+        }
+        if (soundId == -1) is::showLog("ERROR: Can't delete <" + name + "> sound because sound not exists!");
+        else m_GSMsound[soundId].reset();
+    }
+
+    /// Allows to delete music in container by his name
+    virtual void GSMdeleteMusic(const std::string& name)
+    {
+    #if defined(__ANDROID__)
+        GSMdeleteSound(name);
+    #else
+        int musicId(-1);
+        WITH(m_GSMmusic.size())
+        {
+            if (m_GSMmusic[_I]->getName() == name)
+            {
+                musicId = _I;
+                break;
+            }
+        }
+        if (musicId == -1) is::showLog("ERROR: Can't delete <" + name + "> music because music not exists!");
+        else m_GSMmusic[musicId].reset();
+    #endif
     }
 
 private:

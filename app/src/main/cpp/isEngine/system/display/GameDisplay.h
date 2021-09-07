@@ -51,7 +51,7 @@ class GameDisplay
 #endif // defined
 {
 public:
-    bool m_isClose;
+    bool m_isClosed;
 
     /*  					/!\ WARNING! /!\
      * This constructor is no longer supported in this version of the engine. Use the one below.
@@ -203,10 +203,10 @@ public:
     virtual GameSystemExtended& getGameSystem() {return m_gameSysExt;}
 
     /// Return font system
-    virtual sf::Font& getFontSystem() {return GRMgetFont("font_system");}
+    virtual sf::Font& getFontSystem() {return m_gameSysExt.GRMgetFont("font_system");}
 
     /// Return font msg
-    virtual sf::Font& getFontMsg() {return GRMgetFont("font_msg");}
+    virtual sf::Font& getFontMsg() {return m_gameSysExt.GRMgetFont("font_msg");}
 
     /// Return Button Select sprite
     virtual sf::Sprite& getSprButtonSelect() {return m_sprButtonSelect;}
@@ -259,6 +259,9 @@ public:
 
     /// Check if the scene object is in view surface
     virtual bool inViewRec(is::MainObject *obj, bool useTexRec = true);
+
+    /// Check if the scene object is in view surface
+    virtual bool inViewRec(is::MainObject &obj, bool useTexRec = true);
 
     //////////////////////////////////////////////////////
     /// \brief Test the collision of the SFML objects which are in the
@@ -356,23 +359,51 @@ public:
     virtual void createSprite(std::string const &spriteName, is::MainObject &obj, sf::IntRect rec, sf::Vector2f position, sf::Vector2f origin, sf::Vector2f scale = sf::Vector2f(1.f, 1.f), unsigned int alpha = 255);
     #endif // defined
 
-    /// Allows to play sound in container by his name
-    virtual void GSMplaySound(const std::string& name);
+    /// Allows to play sound in container by his name if the option is activated
+    virtual void GSMplaySound(const std::string& name)
+    {
+        is::GSMplaySound(name, m_GSMsound, m_gameSysExt);
+    }
 
-    /// Allows to pause sound in container by his name
-    virtual void GSMpauseSound(const std::string& name);
+    /// Allows to play music in container by his name if the option is activated
+    virtual void GSMplayMusic(const std::string& name)
+    {
+        is::GSMplayMusic(name,
+#if !defined(__ANDROID__)
+                         m_GSMmusic
+#else
+                      m_GSMsound
+#endif
+                         , m_gameSysExt);
+    }
 
-    /// Allows to stop sound in container by his name
-    virtual void GSMstopSound(const std::string& name);
+    /// Allows to use Game System font in scene
+    virtual void GRMuseGameSystemFont()
+    {
+        WITH(m_gameSysExt.m_GRMfont.size()) GRMaddFontObject(m_gameSysExt.m_GRMfont[_I]);
+    }
 
-    /// Allows to play music in container by his name
-    virtual void GSMplayMusic(const std::string& name);
+    /// Allows to use Game System texture in scene
+    virtual void GRMuseGameSystemTexture()
+    {
+        WITH(m_gameSysExt.m_GRMtexture.size()) GRMaddTextureObject(m_gameSysExt.m_GRMtexture[_I]);
+    }
 
-    /// Allows to pause music in container by his name
-    virtual void GSMpauseMusic(const std::string& name);
+    /// Allows to use Game System sound in scene
+    virtual void GSMuseGameSystemSound()
+    {
+        WITH(m_gameSysExt.m_GSMsound.size()) GSMaddSoundObject(m_gameSysExt.m_GSMsound[_I]);
+    }
 
-    /// Allows to stop music in container by his name
-    virtual void GSMstopMusic(const std::string& name);
+    /// Allows to use Game System music in scene
+    virtual void GSMuseGameSystemMusic()
+    {
+#if !defined(__ANDROID__)
+        WITH(m_gameSysExt.m_GSMmusic.size()) GSMaddMusicObject(m_gameSysExt.m_GSMmusic[_I]);
+#else
+        GSMuseGameSystemSound();
+#endif
+    }
 
     /// Show message box according to type
     template<class T1>
@@ -411,13 +442,9 @@ public:
         m_txtMsgBox.setString(msgBody);
 
         // Adjust the text on button
-        float const adjustVal(8.f);
-        setSFMLObjX_Y(m_txtMsgBoxYes, is::getSFMLObjX(m_sprMsgBoxButton1),
-                          is::getSFMLObjY(m_sprMsgBoxButton1) - adjustVal);
-        setSFMLObjX_Y(m_txtMsgBoxNo, is::getSFMLObjX(m_sprMsgBoxButton2),
-                          is::getSFMLObjY(m_sprMsgBoxButton2) - adjustVal);
-        setSFMLObjX_Y(m_txtMsgBoxOK, is::getSFMLObjX(m_sprMsgBoxButton3),
-                          is::getSFMLObjY(m_sprMsgBoxButton3) - adjustVal);
+        setSFMLObjX_Y(m_txtMsgBoxYes, is::getSFMLObjX(m_sprMsgBoxButton1), is::getSFMLObjY(m_sprMsgBoxButton1));
+        setSFMLObjX_Y(m_txtMsgBoxNo, is::getSFMLObjX(m_sprMsgBoxButton2), is::getSFMLObjY(m_sprMsgBoxButton2));
+        setSFMLObjX_Y(m_txtMsgBoxOK, is::getSFMLObjX(m_sprMsgBoxButton3), is::getSFMLObjY(m_sprMsgBoxButton3));
 
         is::setSFMLObjAlpha(m_sprMsgBoxButton1, m_msgWaitTime);
         is::setSFMLObjAlpha(m_sprMsgBoxButton2, m_msgWaitTime);

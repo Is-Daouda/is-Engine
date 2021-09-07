@@ -207,7 +207,6 @@ void createRectangle(sf::RectangleShape &rec, sf::Vector2f recSize, sf::Color co
     is::setSFMLObjX_Y(rec, x, y);
 }
 
-#if defined(IS_ENGINE_SFML)
 void textStyleConfig(sf::Text &txt, bool underLined, bool boldText, bool italicText)
 {
     if (underLined && boldText && italicText) txt.setStyle(sf::Text::Underlined | sf::Text::Bold | sf::Text::Italic);
@@ -218,7 +217,12 @@ void textStyleConfig(sf::Text &txt, bool underLined, bool boldText, bool italicT
     else if (boldText)                        txt.setStyle(sf::Text::Bold);
     else if (italicText)                      txt.setStyle(sf::Text::Italic);
 }
-#endif
+
+void setSFMLTextOutlineColor(sf::Text &txt, float thickness, sf::Color color)
+{
+    txt.setOutlineColor(color);
+    txt.setOutlineThickness(thickness);
+}
 
 void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::Vector2f position, sf::Vector2f origin, bool smooth)
 {

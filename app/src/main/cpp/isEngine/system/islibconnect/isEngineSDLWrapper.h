@@ -52,6 +52,9 @@ extern SDL_Window *IS_ENGINE_SDL_window;
 extern SDL_Renderer *IS_ENGINE_SDL_renderer;
 extern SDL_DisplayMode IS_ENGINE_SDL_displayMode; // Used to determine the size of a window
 
+/// Allow to avoid bug
+static bool IS_ENGINE_SDL_closeWindow = false;
+
 /// These variables are used to store the scale of the screen in order to
 /// resize the images on Android (Sprite, Text, ...)
 extern float IS_ENGINE_SDL_screenXScale, IS_ENGINE_SDL_screenYScale;
@@ -164,6 +167,9 @@ public:
 
     ~Font();
 
+    int m_SDLoutlineFontSize = 0;
+    Uint32 m_SDLFontStyle = TTF_STYLE_NORMAL;
+
     void setSDLFontSize(int size) {m_size = size;}
 
     const std::string& getFileName() const noexcept {return m_filename;}
@@ -179,7 +185,7 @@ public:
 */
 private:
     TTF_Font *m_SDLfont = NULL;
-    int m_size = 30;
+    int m_size = 20;
     std::string m_filename = "";
 
     bool loadFont(const std::string& filename);
@@ -327,6 +333,8 @@ public:
     SDL_RendererFlip m_SDLFlip = SDL_FLIP_NONE;
     bool m_multiLines = false;
     bool m_circleShape = true;
+    Rect m_SDLoutlineTextureRec;
+
     enum SDLTextureType
     {
         IS_ENGINE_SDL_SPRITE,
@@ -345,8 +353,11 @@ public:
 
     SDL_Texture* getSDLTexture() const {return m_SDLtexture;}
 
+    SDL_Texture* getSDLOutlineTexture() const {return m_SDLoutlineTexture;}
+
 protected:
     SDL_Texture *m_SDLtexture = NULL;
+    SDL_Texture *m_SDLoutlineTexture = NULL;
 };
 
 class Sprite : public SDLTexture
@@ -379,6 +390,15 @@ public:
 class Text : public SDLTexture
 {
 public:
+    enum Style
+    {
+        Regular       = TTF_STYLE_NORMAL, ///< Regular characters, no style
+        Bold          = TTF_STYLE_BOLD, ///< Bold characters
+        Italic        = TTF_STYLE_ITALIC, ///< Italic characters
+        Underlined    = TTF_STYLE_UNDERLINE, ///< Underlined characters
+        StrikeThrough = TTF_STYLE_STRIKETHROUGH ///< Strike through characters
+    };
+
     bool m_SDLcontainMultiSpaces = false;
     short m_SDLaddTextRecWSize = 3;
     Text(): SDLTexture() {m_SDLTextureType = IS_ENGINE_SDL_TEXT;}
@@ -417,6 +437,12 @@ public:
 
     void setCharacterSize(int size);
 
+    void setStyle(Uint32 style);
+
+    void setOutlineColor(const Color& color);
+
+    void setOutlineThickness(float thickness);
+
     Font *getFont() const {return m_font;}
 
     const std::string &getString() const noexcept
@@ -431,10 +457,29 @@ public:
 
     int getCharacterSize() {return m_characterSize;}
 
+    Uint32 getStyle() const {return m_style;}
+
+    const Color& getOutlineColor() const {return m_outlineColor;}
+
+    float getOutlineThickness() const {return m_outlineThickness;}
+
 private:
     SDL_Surface *m_SDLsurface = NULL;
-    TTF_Font *m_SDLfont = NULL;
     Font *m_font = nullptr;
+
+    SDL_Surface *m_SDLoutlineSurface = NULL;
+    Font *m_outlineFont = nullptr;
+    SDL_Color m_SDLoutlineColor;
+
+    const SDL_Color& getSDLOutlineColor()
+    {
+        m_SDLoutlineColor.r = m_outlineColor.r;
+        m_SDLoutlineColor.g = m_outlineColor.g;
+        m_SDLoutlineColor.b = m_outlineColor.b;
+        m_SDLoutlineColor.a = m_outlineColor.a;
+        return m_SDLoutlineColor;
+    }
+
     std::string m_string = "";
     std::string m_tempString = "";
     std::wstring m_wstring = L"";
@@ -443,12 +488,15 @@ private:
     int m_currentCharSize = 0;
     char *m_SDLtext = nullptr;
 
-    void setObjectText(const std::string& text, int textSize);
+    Uint32 m_style;
+    Color m_outlineColor;
+    int m_outlineThickness = 0;
 
-    void setObjectText(const std::wstring& text, int textSize);
+    void setObjectText(const std::string& text);
+    void setObjectText(const std::wstring& text);
 
     /// Used to create a text with a Texture, Surface and a font.
-    bool setSDLText(int textSize);
+    bool setSDLText();
 };
 
 class View
@@ -486,7 +534,19 @@ class Shape : public Transformable
 public:
     Shape() : Transformable() {}
 
-    virtual void draw(View const &view) const = 0;
+    void setOutlineColor(const Color& color) {m_outlineColor = color;}
+
+    void setOutlineThickness(float thickness) {m_outlineThickness = thickness;}
+
+    virtual void draw(View const &view) = 0;
+
+    const Color& getOutlineColor() const {return m_outlineColor;}
+
+    float getOutlineThickness() const {return m_outlineThickness;}
+
+protected:
+    Color m_outlineColor;
+    float m_outlineThickness = 0.f;
 };
 
 class RectangleShape : public Shape
@@ -498,7 +558,7 @@ public:
 
     RectangleShape(const Vector2f &size) : Shape() {setSize(size.x, size.y);}
 
-    void draw(View const &view) const;
+    void draw(View const &view);
 };
 
 class CircleShape : public Shape
@@ -512,7 +572,7 @@ public:
 
     float getRadius() {return m_size.x;}
 
-    void draw(View const &view) const;
+    void draw(View const &view);
 };
 
 class ViewManager
@@ -751,7 +811,7 @@ public:
 
     void clear(sf::Color const &color);
 
-    void clear() {is::clear(*this);}
+    void clear() {clear(sf::Color::Black);}
 
     void draw(SDLTexture &obj);
 
@@ -759,7 +819,11 @@ public:
 
     void display();
 
-    void close() {m_isOpen = false;}
+    void close()
+    {
+        is::IS_ENGINE_SDL_closeWindow = true;
+        m_isOpen = false;
+    }
 
     bool pollEvent(Event &event);
 

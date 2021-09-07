@@ -177,4 +177,46 @@ void GameSystem::loadPadConfig(std::string const &fileName)
         fclose(file);
     }
 }
+
+void GSMplaySound(const std::string& name, std::vector<std::shared_ptr<GameSound>> &GSMsound, GameSystem &gameSystem)
+{
+    bool soundExist(false);
+    WITH(GSMsound.size())
+    {
+        if (GSMsound[_I]->getName() == name)
+        {
+            soundExist = true;
+            if (GSMsound[_I]->getFileIsLoaded()) gameSystem.playSound(GSMsound[_I]->getSound());
+            else is::showLog("ERROR: Can't play <" + name + "> sound!");
+            break;
+        }
+    }
+    if (!soundExist) is::showLog("ERROR: Can't play <" + name + "> sound because sound not exists!");
+}
+
+void GSMplayMusic(const std::string& name, std::vector<std::shared_ptr<
+#if !defined(__ANDROID__)
+                  GameMusic
+#else
+                  GameSound
+#endif
+                  >> &GSMmusic, GameSystem &gameSystem)
+{
+#if defined(__ANDROID__)
+    GSMplaySound(name, GSMmusic, gameSystem);
+#else
+    bool musicExist(false);
+    WITH(GSMmusic.size())
+    {
+        if (GSMmusic[_I]->getName() == name)
+        {
+            musicExist = true;
+            if (GSMmusic[_I]->getFileIsLoaded()) gameSystem.playMusic(GSMmusic[_I]->getMusic());
+            else is::showLog("ERROR: Can't play <" + name + "> music!");
+            break;
+        }
+    }
+    if (!musicExist) is::showLog("ERROR: Can't play <" + name + "> music because music not exists!");
+#endif
+}
 }

@@ -117,7 +117,7 @@ public:
     /// Allows to get font as a pointer in container by his name
     virtual sf::Font* GRMgetFontPtr(const std::string& name)
     {
-        WITH (m_GRMfont.size())
+        WITH(m_GRMfont.size())
         {
             if (m_GRMfont[_I]->getName() == name && m_GRMfont[_I]->getFileIsLoaded())
             {
@@ -131,7 +131,7 @@ public:
     /// Allows to get texture as a pointer in container by his name
     virtual sf::Texture* GRMgetTexturePtr(const std::string& name)
     {
-        WITH (m_GRMtexture.size())
+        WITH(m_GRMtexture.size())
         {
             if (m_GRMtexture[_I]->getName() == name && m_GRMtexture[_I]->getFileIsLoaded())
             {
@@ -140,6 +140,38 @@ public:
         }
         is::showLog("ERROR: <" + name + "> texture does not exist!");
         return nullptr;
+    }
+
+    /// Allows to delete font in container by his name
+    void GRMdeleteFont(const std::string& name)
+    {
+        int fontId(-1);
+        WITH(m_GRMfont.size())
+        {
+            if (m_GRMfont[_I]->getName() == name)
+            {
+                fontId = _I;
+                break;
+            }
+        }
+        if (fontId == -1) is::showLog("ERROR: <" + name + "> font because font does not exist!");
+        else m_GRMfont[fontId].reset();
+    }
+
+    /// Allows to delete texture in container by his name
+    void GRMdeleteTexture(const std::string& name)
+    {
+        int textureId(-1);
+        WITH(m_GRMtexture.size())
+        {
+            if (m_GRMtexture[_I]->getName() == name)
+            {
+                textureId = _I;
+                break;
+            }
+        }
+        if (textureId == -1) is::showLog("ERROR: <" + name + "> texture because texture does not exist!");
+        else m_GRMtexture[textureId].reset();
     }
 
 private:
