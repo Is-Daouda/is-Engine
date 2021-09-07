@@ -64,7 +64,7 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 1. Now you can put texts and geometric forms (Rectangle, Circle) in Outline (Support of SFML functions **setOutlineColor** and **setOutlineThickness**) on Web and Android.
 2. Use text styles (Underline, Bold, Italic, ...) on Web et Android.
 3. Correction of bugs. (That was well hidden!)
-4. Improved engine resource management (possibility of making permanent et global resources).
+4. Improved engine resource management (possibility of making your resources permanent and global).
 <br>Sample code :
 
 ```cpp
