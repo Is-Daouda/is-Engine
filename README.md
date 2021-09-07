@@ -290,7 +290,8 @@ If all goes well you will have a **Hello World Screen** on your **Android emulat
 ---
 
 ## ![web](https://i48.servimg.com/u/f48/20/16/75/27/icon_w10.png) Web (HTML 5 - CSS 3)
-- If you want to make your SFML project compatible with the Web (Be able to run it in a web browser), please watch this **[video tutorial](https://youtu.be/x_YQLHoPMbc)**. ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) Now you can put texts and geometric forms (Rectangle, Circle) in Outline **(This was not available in previous engine versions)**.
+- If you want to make your SFML project compatible with the Web (Be able to run it in a web browser), please watch this **[video tutorial](https://youtu.be/x_YQLHoPMbc)**.<br>
+![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) Now you can put texts and geometric shapes (Rectangle, Circle) in Outline on the Web **(It was not available in the old versions)**!
 
 **1. Prerequisites**
 - Emscripen (1.39.7 +)
