@@ -140,7 +140,7 @@ void GameDialog::step(const float &DELTA_TIME)
                           is::getSFMLObjY(m_sprParent) + 29.f);
 
         is::setSFMLObjX_Y(m_sprSkip, m_x, m_y + 145.f);
-        is::setSFMLObjX_Y(m_txtSkip, m_x, is::getSFMLObjY(m_sprSkip) - ((m_scene->getGameSystem().m_gameLanguage == 1) ? 4.f : 1.4f));
+        is::setSFMLObjX_Y(m_txtSkip, m_x, is::getSFMLObjY(m_sprSkip));
     }
 
     is::setSFMLObjScale(m_txtDialog, m_imageScale);
