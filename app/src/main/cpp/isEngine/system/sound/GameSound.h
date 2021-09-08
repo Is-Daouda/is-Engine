@@ -43,7 +43,7 @@ public:
             m_snd.setBuffer(m_sb);
             m_fileIsLoaded = true;
         }
-        else showLog("ERROR: Can't load sound : " + filePath);
+        //else showLog("ERROR: Can't load sound : " + filePath);
     }
 
     virtual ~GameSound() {}
@@ -59,7 +59,7 @@ public:
         else
         {
             m_fileIsLoaded = false;
-            showLog("ERROR: Can't load sound : " + filePath);
+            //showLog("ERROR: Can't load sound : " + filePath);
         }
     }
 

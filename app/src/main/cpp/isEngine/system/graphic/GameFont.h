@@ -39,7 +39,7 @@ public:
         FilePath(filePath)
     {
         if (m_font.loadFromFile(m_strFilePath)) m_fileIsLoaded = true;
-        else showLog("ERROR: Can't load font : " + filePath);
+        //else showLog("ERROR: Can't load font : " + filePath);
     }
 
     virtual ~GameFont() {}
@@ -54,7 +54,7 @@ public:
         else
         {
             m_fileIsLoaded = false;
-            showLog("ERROR: Can't load font : " + filePath);
+            //showLog("ERROR: Can't load font : " + filePath);
         }
     }
 

@@ -183,15 +183,18 @@ void GSMplaySound(const std::string& name, std::vector<std::shared_ptr<GameSound
     bool soundExist(false);
     WITH(GSMsound.size())
     {
-        if (GSMsound[_I]->getName() == name)
+        if (GSMsound[_I].get() != nullptr)
         {
-            soundExist = true;
-            if (GSMsound[_I]->getFileIsLoaded()) gameSystem.playSound(GSMsound[_I]->getSound());
-            else is::showLog("ERROR: Can't play <" + name + "> sound!");
-            break;
+            if (GSMsound[_I]->getName() == name)
+            {
+                soundExist = true;
+                if (GSMsound[_I]->getFileIsLoaded()) gameSystem.playSound(GSMsound[_I]->getSound());
+                else is::showLog("ERROR: Can't play <" + name + "> sound!");
+                break;
+            }
         }
     }
-    if (!soundExist) is::showLog("ERROR: Can't play <" + name + "> sound because sound not exists!");
+    if (!soundExist) is::showLog("ERROR: Can't play <" + name + "> sound because sound does not exist!");
 }
 
 void GSMplayMusic(const std::string& name, std::vector<std::shared_ptr<
@@ -208,15 +211,18 @@ void GSMplayMusic(const std::string& name, std::vector<std::shared_ptr<
     bool musicExist(false);
     WITH(GSMmusic.size())
     {
-        if (GSMmusic[_I]->getName() == name)
+        if (GSMmusic[_I].get() != nullptr)
         {
-            musicExist = true;
-            if (GSMmusic[_I]->getFileIsLoaded()) gameSystem.playMusic(GSMmusic[_I]->getMusic());
-            else is::showLog("ERROR: Can't play <" + name + "> music!");
-            break;
+            if (GSMmusic[_I]->getName() == name)
+            {
+                musicExist = true;
+                if (GSMmusic[_I]->getFileIsLoaded()) gameSystem.playMusic(GSMmusic[_I]->getMusic());
+                else is::showLog("ERROR: Can't play <" + name + "> music!");
+                break;
+            }
         }
     }
-    if (!musicExist) is::showLog("ERROR: Can't play <" + name + "> music because music not exists!");
+    if (!musicExist) is::showLog("ERROR: Can't play <" + name + "> music because music does not exist!");
 #endif
 }
 }

@@ -399,7 +399,7 @@ void instanceDestroy(T *obj)
     if (is::instanceExist(obj))
     {
         delete obj;
-        obj = 0;
+        obj = nullptr;
     }
 }
 

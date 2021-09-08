@@ -43,13 +43,13 @@ bool SDL2initLib()
 {
     if (IS_ENGINE_SDL_window == NULL || IS_ENGINE_SDL_renderer == NULL)
     {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error init Windows / Renderer : %s\n", SDL_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "init Windows / Renderer : %s\n", SDL_GetError());
         return false;
     }
 
     if (SDL_GetCurrentDisplayMode( 0, &IS_ENGINE_SDL_displayMode) != 0)
     {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error Display Mode : %s\n", SDL_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Display Mode : %s\n", SDL_GetError());
     }
 
     SDL_SetRenderDrawBlendMode(IS_ENGINE_SDL_renderer, SDL_BLENDMODE_BLEND);
@@ -57,13 +57,13 @@ bool SDL2initLib()
     int imgFlags = IMG_INIT_PNG;
     if (!(IMG_Init(imgFlags) & imgFlags))
     {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error: init Image : %s\n", IMG_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "init Image : %s\n", IMG_GetError());
         return false;
     }
 
     if (TTF_Init() < 0)
     {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error: init Font : %s\n", TTF_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "init Font : %s\n", TTF_GetError());
         return false;
     }
 
@@ -72,7 +72,7 @@ bool SDL2initLib()
     int audioFlags = MIX_INIT_OGG;
     if ((Mix_Init(audioFlags) & audioFlags) != audioFlags)
     {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error: init Mix : %s\n", Mix_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "init Mix : %s\n", Mix_GetError());
         return false;
     }
 #endif
@@ -96,7 +96,7 @@ bool SDL2initLib()
 #endif
     if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
     {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error: init OpenAudio : %s\n", Mix_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "init OpenAudio : %s\n", Mix_GetError());
         return false;
     }
     Mix_AllocateChannels(IS_ENGINE_SDL_CHANNEL_MAX);
@@ -158,7 +158,7 @@ bool Texture::loadSurface(const std::string& filePath)
     }
     else
     {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,"Error Texture : %s\n", SDL_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Texture : %s\n", SDL_GetError());
         return false;
     }
     return true;
@@ -179,7 +179,7 @@ bool Font::loadFont(const std::string& filename)
     m_SDLfont = TTF_OpenFont(m_filename.c_str(), m_size);
     if (m_SDLfont == NULL)
     {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,"Error Font : %s\n", TTF_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Font : %s\n", TTF_GetError());
         return false;
     }
     return true;
@@ -597,13 +597,13 @@ bool Text::setSDLText()
             }
             else
             {
-                SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,"Error Texture Text (\"%s\") : %s\n", m_SDLtext, SDL_GetError());
+                SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Texture Text (\"%s\") : %s\n", m_SDLtext, SDL_GetError());
                 return false;
             }
         }
         else
         {
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,"Error Surface Text (\"%s\") : %s\n", m_SDLtext, TTF_GetError());
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Surface Text (\"%s\") : %s\n", m_SDLtext, TTF_GetError());
             return false;
         }
         return true;
@@ -1226,7 +1226,7 @@ bool SoundBuffer::loadSound(const std::string& filePath)
     m_SDLsound = Mix_LoadWAV(filePath.c_str());
     if (m_SDLsound == NULL)
     {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,"Error: Can't load SoundBuffer : %s\n", Mix_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Can't load SoundBuffer : %s\n", Mix_GetError());
         return false;
     }
     return true;
@@ -1256,7 +1256,7 @@ void Sound::play()
 
 void Sound::setPitch(float speed)
 {
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "ERROR: This function is not yet implemented!");
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "This function is not yet implemented!");
 }
 
 void Sound::setVolume(float volume)
@@ -1299,7 +1299,7 @@ void Music::play()
 
 void Music::setPitch(float speed)
 {
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "ERROR: This function is not yet implemented!");
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "This function is not yet implemented!");
 }
 
 void Music::setVolume(float volume)
@@ -1312,7 +1312,7 @@ bool Music::openFromFile(const std::string& filePath)
     m_music = Mix_LoadMUS(filePath.c_str());
     if (m_music == NULL)
     {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,"Error: Can't load Music : %s\n", Mix_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Can't load Music : %s\n", Mix_GetError());
         return false;
     }
     return true;

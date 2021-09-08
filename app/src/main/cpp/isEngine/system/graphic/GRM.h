@@ -119,9 +119,12 @@ public:
     {
         WITH(m_GRMfont.size())
         {
-            if (m_GRMfont[_I]->getName() == name && m_GRMfont[_I]->getFileIsLoaded())
+            if (m_GRMfont[_I].get() != nullptr)
             {
-                return &m_GRMfont[_I]->getFont();
+                if (m_GRMfont[_I]->getName() == name && m_GRMfont[_I]->getFileIsLoaded())
+                {
+                    return &m_GRMfont[_I]->getFont();
+                }
             }
         }
         is::showLog("ERROR: <" + name + "> font does not exist!");
@@ -133,9 +136,12 @@ public:
     {
         WITH(m_GRMtexture.size())
         {
-            if (m_GRMtexture[_I]->getName() == name && m_GRMtexture[_I]->getFileIsLoaded())
+            if (m_GRMtexture[_I].get() != nullptr)
             {
-                return &m_GRMtexture[_I]->getTexture();
+                if (m_GRMtexture[_I]->getName() == name && m_GRMtexture[_I]->getFileIsLoaded())
+                {
+                    return &m_GRMtexture[_I]->getTexture();
+                }
             }
         }
         is::showLog("ERROR: <" + name + "> texture does not exist!");
@@ -148,14 +154,21 @@ public:
         int fontId(-1);
         WITH(m_GRMfont.size())
         {
-            if (m_GRMfont[_I]->getName() == name)
+            if (m_GRMfont[_I].get() != nullptr)
             {
-                fontId = _I;
-                break;
+                if (m_GRMfont[_I]->getName() == name)
+                {
+                    fontId = _I;
+                    break;
+                }
             }
         }
-        if (fontId == -1) is::showLog("ERROR: <" + name + "> font because font does not exist!");
-        else m_GRMfont[fontId].reset();
+        if (fontId == -1) is::showLog("ERROR: Can't delete <" + name + "> font because font does not exist!");
+        else
+        {
+            m_GRMfont[fontId].reset();
+            m_GRMfont[fontId] = nullptr;
+        }
     }
 
     /// Allows to delete texture in container by his name
@@ -164,14 +177,21 @@ public:
         int textureId(-1);
         WITH(m_GRMtexture.size())
         {
-            if (m_GRMtexture[_I]->getName() == name)
+            if (m_GRMtexture[_I].get() != nullptr)
             {
-                textureId = _I;
-                break;
+                if (m_GRMtexture[_I]->getName() == name)
+                {
+                    textureId = _I;
+                    break;
+                }
             }
         }
-        if (textureId == -1) is::showLog("ERROR: <" + name + "> texture because texture does not exist!");
-        else m_GRMtexture[textureId].reset();
+        if (textureId == -1) is::showLog("ERROR: Can't delete <" + name + "> texture because texture does not exist!");
+        else
+        {
+            m_GRMtexture[textureId].reset();
+            m_GRMtexture[textureId] = nullptr;
+        }
     }
 
 private:
@@ -179,7 +199,10 @@ private:
     {
         WITH(m_GRMtexture.size())
         {
-            if (m_GRMtexture[_I]->getFilePath() == filePath) return m_GRMtexture[_I].get();
+            if (m_GRMtexture[_I].get() != nullptr)
+            {
+                if (m_GRMtexture[_I]->getFilePath() == filePath) return m_GRMtexture[_I].get();
+            }
         }
         return nullptr;
     }
@@ -188,7 +211,10 @@ private:
     {
         WITH(m_GRMfont.size())
         {
-            if (m_GRMfont[_I]->getFilePath() == filePath) return m_GRMfont[_I].get();
+            if (m_GRMfont[_I].get() != nullptr)
+            {
+                if (m_GRMfont[_I]->getFilePath() == filePath) return m_GRMfont[_I].get();
+            }
         }
         return nullptr;
     }

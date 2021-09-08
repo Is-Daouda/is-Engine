@@ -39,7 +39,7 @@ public:
         FilePath(filePath)
     {
         if (m_music.openFromFile(m_strFilePath)) m_fileIsLoaded = true;
-        else showLog("ERROR: Can't load music : " + filePath);
+        //else showLog("ERROR: Can't load music : " + filePath);
     }
 
     virtual ~GameMusic() {}
@@ -54,7 +54,7 @@ public:
         else
         {
             m_fileIsLoaded = false;
-            showLog("ERROR: Can't load music : " + filePath);
+            //showLog("ERROR: Can't load music : " + filePath);
         }
     }
 

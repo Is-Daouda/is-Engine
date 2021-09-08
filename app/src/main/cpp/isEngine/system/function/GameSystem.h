@@ -180,6 +180,28 @@ public:
         }
     }
 
+////////////////////////////////////////////////////////////
+/// These methods below have the same role as those above.
+/// The difference here is that their name starting with GSM
+/// is replaced by GRM (Game Resource Manager).
+////////////////////////////////////////////////////////////
+
+    /// Allows to play sound in container by his name if the option is activated
+    virtual void GRMplaySound(const std::string& name)
+    {
+        GSMplaySound(name);
+    }
+
+    /// Allows to play music in container by his name if the option is activated
+    virtual void GRMplayMusic(const std::string& name)
+    {
+        GSMplayMusic(name);
+    }
+
+////////////////////////////////////////////////////////////
+///
+////////////////////////////////////////////////////////////
+
     /// Allows to use vibrate if the option is activated (only for Android)
     /// \param ms representing the duration of the vibrator in millisecond
     virtual void useVibrate(short ms);

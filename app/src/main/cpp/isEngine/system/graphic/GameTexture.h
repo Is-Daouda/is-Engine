@@ -39,7 +39,7 @@ public:
         FilePath(filePath)
     {
         if (m_tex.loadFromFile(m_strFilePath)) m_fileIsLoaded = true;
-        else showLog("ERROR: Can't load texture : " + filePath);
+        //else showLog("ERROR: Can't load texture : " + filePath);
     }
 
     virtual ~GameTexture() {}
@@ -54,7 +54,7 @@ public:
         else
         {
             m_fileIsLoaded = false;
-            showLog("ERROR: Can't load texture : " + filePath);
+            //showLog("ERROR: Can't load texture : " + filePath);
         }
     }
 
