@@ -64,8 +64,7 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 1. Now you can put texts and geometric forms (Rectangle, Circle) in Outline (Support of SFML functions **setOutlineColor** and **setOutlineThickness**) on Web and Android.
 2. Use text styles (Underline, Bold, Italic, ...) on Web et Android.
 3. Correction of bugs. (That was well hidden!)
-4. Added new resource management functions that allow easy development with the engine (
-**[GSM.h](https://github.com/Is-Daouda/is-Engine/blob/master/app/src/main/cpp/isEngine/system/sound/GSM.h#L384), [GameDisplay.h](https://github.com/Is-Daouda/is-Engine/blob/master/app/src/main/cpp/isEngine/system/display/GameDisplay.h#L415), [GameSystem.h](https://github.com/Is-Daouda/is-Engine/blob/master/app/src/main/cpp/isEngine/system/function/GameSystem.h#L190)**).
+4. Added new resource management functions that allow easy development with the engine (**[GSM.h](https://github.com/Is-Daouda/is-Engine/blob/master/app/src/main/cpp/isEngine/system/sound/GSM.h#L384), [GameDisplay.h](https://github.com/Is-Daouda/is-Engine/blob/master/app/src/main/cpp/isEngine/system/display/GameDisplay.h#L415), [GameSystem.h](https://github.com/Is-Daouda/is-Engine/blob/master/app/src/main/cpp/isEngine/system/function/GameSystem.h#L190)**).
 5. Improved engine resource management (possibility of making your resources permanent and global).
 <br>Sample code :
 
