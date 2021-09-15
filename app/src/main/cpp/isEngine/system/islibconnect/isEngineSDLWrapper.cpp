@@ -951,9 +951,9 @@ void RenderWindow::draw(SDLTexture &obj)
 
     // We keep the value of the origin x and y of the object to be drawn.
     // This allows to keep the value of the original variables intact during recalculations.
-    float objOriginX((obj.getScale().x < 0.f && static_cast<int>(obj.getOrigin().y) == 0 &&
+    float objOriginX((obj.getScale().x < 0.f /*&& static_cast<int>(obj.getOrigin().y) == 0*/ &&
                       static_cast<int>(obj.getOrigin().x) == 0) ? obj.getTextureRect().width : obj.getOrigin().x);
-    float objOriginY((obj.getScale().y < 0.f && static_cast<int>(obj.getOrigin().x) == 0 &&
+    float objOriginY((obj.getScale().y < 0.f /*&& static_cast<int>(obj.getOrigin().x) == 0*/ &&
                       static_cast<int>(obj.getOrigin().y) == 0) ? obj.getTextureRect().height : obj.getOrigin().y);
     float xOrigin(objOriginX);
     float yOrigin(objOriginY);
@@ -972,17 +972,30 @@ void RenderWindow::draw(SDLTexture &obj)
         yOrigin = rec.h / (obj.getTextureRect().height / objOriginY);
 
     // We do a corresponding flip according to the sign of the variables x scale and y scale
-    if (obj.getScale().x < 0.f && obj.getScale().y < 0.f) obj.m_SDLFlip = (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
+    if (obj.getScale().x < 0.f && obj.getScale().y < 0.f)
+    {
+        obj.m_SDLFlip = (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
+        if (static_cast<int>(obj.getOrigin().x) != static_cast<int>(obj.getTextureRect().width / 2) &&
+            static_cast<int>(obj.getOrigin().x) != 0)
+            xOrigin += obj.getTextureRect().width;
+        if (static_cast<int>(obj.getOrigin().y) != static_cast<int>(obj.getTextureRect().height / 2) &&
+            static_cast<int>(obj.getOrigin().y) != 0)
+            yOrigin -= obj.getTextureRect().height;
+    }
     else if (obj.getScale().x < 0.f)
     {
         obj.m_SDLFlip = SDL_FLIP_HORIZONTAL;
-        //xOrigin *= 1.65f;
-        //rotation *= -1.f;
+        if (static_cast<int>(obj.getOrigin().x) != static_cast<int>(obj.getTextureRect().width / 2) &&
+            static_cast<int>(obj.getOrigin().x) != 0) xOrigin += obj.getTextureRect().width;
     }
-    else if (obj.getScale().y < 0.f) obj.m_SDLFlip = SDL_FLIP_VERTICAL;
+    else if (obj.getScale().y < 0.f)
+    {
+        obj.m_SDLFlip = SDL_FLIP_VERTICAL;
+        if (static_cast<int>(obj.getOrigin().y) != static_cast<int>(obj.getTextureRect().height / 2) &&
+            static_cast<int>(obj.getOrigin().y) != 0)
+            yOrigin -= obj.getTextureRect().height;
+    }
     else obj.m_SDLFlip = SDL_FLIP_NONE;
-
-    SDL_SetTextureColorMod(obj.getSDLTexture(), obj.getColor().r, obj.getColor().g, obj.getColor().b);
 
     // Move the object according to the position of the camera
     rec.x = (obj.getPosition().x - xOrigin) - (m_view.getCenter().x - (m_view.getSize().x / 2.f));
@@ -1018,15 +1031,12 @@ void RenderWindow::draw(SDLTexture &obj)
                       rec.w, obj.getTextureRect().height, objOriginY);
     }
 
-    SDL_SetTextureBlendMode(obj.getSDLTexture(), SDL_BLENDMODE_BLEND);
-    SDL_SetTextureAlphaMod(obj.getSDLTexture(), obj.getColor().a);
-
     if (obj.m_SDLTextureType == SDLTexture::SDLTextureType::IS_ENGINE_SDL_TEXT)
     {
         if (obj.getSDLOutlineTexture() != NULL)
         {
             SDL_SetTextureBlendMode(obj.getSDLOutlineTexture(), SDL_BLENDMODE_BLEND);
-            //SDL_SetTextureAlphaMod(obj.getSDLOutlineTexture(), obj.getColor().a);
+            SDL_SetTextureAlphaMod(obj.getSDLOutlineTexture(), obj.getColor().a);
 
             SDL_Rect SDLoutlineTextureRec, outlineTextureRecSrc;
             SDLoutlineTextureRec.x = rec.x;
@@ -1045,6 +1055,9 @@ void RenderWindow::draw(SDLTexture &obj)
                              &outlineTextureRecSrc, &SDLoutlineTextureRec, rotation, &point, obj.m_SDLFlip);
         }
     }
+    SDL_SetTextureBlendMode(obj.getSDLTexture(), SDL_BLENDMODE_BLEND);
+    SDL_SetTextureAlphaMod(obj.getSDLTexture(), obj.getColor().a);
+    SDL_SetTextureColorMod(obj.getSDLTexture(), obj.getColor().r, obj.getColor().g, obj.getColor().b);
     SDL_RenderCopyEx(is::IS_ENGINE_SDL_renderer, obj.getSDLTexture(), &recSrc, &rec, rotation, &point, obj.m_SDLFlip);
 }
 
