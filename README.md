@@ -24,7 +24,7 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 [![SFML logo](https://www.sfml-dev.org/images/logo.png)](https://www.sfml-dev.org) [![SDL](https://i48.servimg.com/u/f48/20/16/75/27/sdl_li10.png)](https://www.libsdl.org/) ![Web](https://i48.servimg.com/u/f48/20/16/75/27/web_lo10.png) [![Box2D Logo](https://box2d.org/images/logo.svg)](https://github.com/erincatto/box2d) [![Tiled Logo](https://i.servimg.com/u/f48/20/16/75/27/tiled_10.png)](https://www.mapeditor.org) [![Admob Logo](https://i48.servimg.com/u/f48/20/16/75/27/admob_10.png)](https://admob.google.com/) [![Tiny File Dialog](https://a.fsdn.com/allura/p/tinyfiledialogs/icon?1582196333?&w=90)](https://github.com/native-toolkit/tinyfiledialogs)
 
 ## Features
-- Run SFML game with SDL 2
+- Run SFML game / application with SDL 2
 - Language manager (English and French language support by default)
 - Scene System
 - Automatic management of a window
@@ -61,6 +61,11 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
+- Run SFML Games / Applications with SDL 2 on Linux thanks to the Code::Blocks project **[is-Engine-linux-SDL2.cbp](./app/src/main/)**.
+- Bugs fixed
+
+## Previous version
+### 3.3.4
 1. Now you can put texts and geometric forms (Rectangle, Circle) in Outline (Support of SFML functions **setOutlineColor** and **setOutlineThickness**) on Web and Android.
 2. Use text styles (Underline, Bold, Italic, ...) on Web et Android.
 3. Correction of bugs. (That was well hidden!)
@@ -100,7 +105,6 @@ public:
 };
 ```
 
-## Previous version
 ### 3.3.3
 1. Now your **SFML** games will run on the **Web (HTML 5)** with **SDL 2**!
 - The advantage is that most of the engine functions will be able to run on the web, your games will be compatible with several web browsers and more fluid!
@@ -467,7 +471,6 @@ code -n "./app/src/main"
 3. Run **sudo apt install libsfml-dev**. The SFML version you got will vary depending on the distro. 2.5.1 is included in [Ubuntu 19.04 Disco Dingo](http://cdimage.ubuntu.com/daily-live/current/HEADER.html) for example.
 
 **2. Opening the project with the IDE:**
-
 #### Windows
 1. Run the file **open_codeblocks.bat** in the main directory *(Make sure you have included the path to the Code::Blocks executable in your PATH environment variable)*.
 2. Or open the file **is-Engine-windows.cbp** in the location **[is-Engine/app/src/main](./app/src/main/)**
@@ -492,9 +495,22 @@ codeblocks "./app/src/main/is-Engine-linux.cbp"
 2. Download this [version of SDL 2](https://github.com/Is-Daouda/SDL2) and extract it in **C:/ (C:/SDL2)**.
 3. Put the **.dll files** which is in the **bin** folder of SDL2 in the **[main](./app/src/main/)** folder.
 
+#### Linux
+1. Download Code::Blocks 20.03 and install it.
+2. Ensure the GCC Toolchain is installed (**sudo apt install build-essential**).
+3. Run **sudo apt install libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-net-2.0-0 libsdl2-ttf-2.0-0** to install all SDL 2 libraries.
+
 **2. Opening the project with the IDE:**
+#### Windows
 1. Run the file **open_codeblocks_sdl.bat** in the main directory *(Make sure you have included the path to the Code::Blocks executable in your PATH environment variable)*.
 2. Or open the file **is-Engine-windows-SDL2.cbp** in the location **[is-Engine/app/src/main](./app/src/main/)**
+
+#### Linux
+1. Execute this command in the main directory:
+```bash
+codeblocks "./app/src/main/is-Engine-linux-SDL2.cbp"
+```
+2. Or open the file **is-Engine-linux-SDL2.cbp** in the location **[is-Engine/app/src/main](./app/src/main/)**.
 
 **3. Executable location**
 - The compiler files can be found in **is-Engine/app/src/main/bin-codeblocks**.
