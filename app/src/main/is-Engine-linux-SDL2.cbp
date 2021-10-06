@@ -2,50 +2,45 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="is-Engine-linux" />
+		<Option title="is-Engine-linux-SDL2" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin-codeblocks/Debug/is-Engine-linux" prefix_auto="1" extension_auto="1" />
+				<Option output="bin-codeblocks/Debug/is-Engine-linux-SDL2" prefix_auto="1" extension_auto="1" />
 				<Option object_output="bin-codeblocks/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-std=c++17" />
 					<Add option="-g" />
 				</Compiler>
-				<Linker>
-					<Add library="sfml-audio" />
-					<Add library="sfml-network" />
-					<Add library="sfml-graphics" />
-					<Add library="sfml-window" />
-					<Add library="sfml-system" />
-				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="bin-codeblocks/Release/is-Engine-linux" prefix_auto="1" extension_auto="1" />
+				<Option output="bin-codeblocks/Release/is-Engine-linux-SDL2" prefix_auto="1" extension_auto="1" />
 				<Option object_output="bin-codeblocks/Release/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
-					<Add option="-std=c++17" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="sfml-audio" />
-					<Add library="sfml-network" />
-					<Add library="sfml-graphics" />
-					<Add library="sfml-window" />
-					<Add library="sfml-system" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-std=c++17" />
+			<Add option="`sdl2-config --cflags`" />
+			<Add option="-DIS_ENGINE_SDL_2" />
+			<Add option="-DIS_ENGINE_LINUX" />
 		</Compiler>
+		<Linker>
+			<Add option="`sdl2-config --libs`" />
+			<Add library="SDL2_image" />
+			<Add library="SDL2_mixer" />
+			<Add library="SDL2_ttf" />
+		</Linker>
 		<Unit filename="cpp/app_src/activity/GameActivity.h" />
 		<Unit filename="cpp/app_src/config/ExtraConfig.h" />
 		<Unit filename="cpp/app_src/config/GameConfig.h" />
@@ -154,36 +149,6 @@
 		<Unit filename="cpp/isEngine/ext_lib/Box2D/Dynamics/b2WorldCallbacks.h" />
 		<Unit filename="cpp/isEngine/ext_lib/Box2D/Rope/b2Rope.cpp" />
 		<Unit filename="cpp/isEngine/ext_lib/Box2D/Rope/b2Rope.h" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Config.hpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/FreeFuncs.cpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/FreeFuncs.hpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/ImageLayer.cpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/ImageLayer.hpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Layer.hpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/LayerGroup.cpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/LayerGroup.hpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Map.cpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Map.hpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Object.cpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Object.hpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/ObjectGroup.cpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/ObjectGroup.hpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Property.cpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Property.hpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/TileLayer.cpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/TileLayer.hpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Tileset.cpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Tileset.hpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/Types.hpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/detail/Android.hpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/detail/Log.hpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/detail/pugiconfig.hpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/detail/pugixml.cpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/detail/pugixml.hpp" />
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/miniz.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="cpp/isEngine/ext_lib/TMXLite/miniz.h" />
 		<Unit filename="cpp/isEngine/ext_lib/TinyFileDialogs/TinyDialogBox.h" />
 		<Unit filename="cpp/isEngine/ext_lib/TinyFileDialogs/tinyfiledialogs.cpp" />
 		<Unit filename="cpp/isEngine/ext_lib/TinyFileDialogs/tinyfiledialogs.h" />
@@ -191,6 +156,7 @@
 		<Unit filename="cpp/isEngine/system/display/GameDisplay.cpp" />
 		<Unit filename="cpp/isEngine/system/display/GameDisplay.h" />
 		<Unit filename="cpp/isEngine/system/display/SDM.h" />
+		<Unit filename="cpp/isEngine/system/display/SDMBlitSDLSprite.h" />
 		<Unit filename="cpp/isEngine/system/entity/Background.h" />
 		<Unit filename="cpp/isEngine/system/entity/Button.h" />
 		<Unit filename="cpp/isEngine/system/entity/Form.h" />

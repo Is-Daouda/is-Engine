@@ -65,7 +65,7 @@ void GameEngine::initEngine()
     {
 
         mkdir(is::GameConfig::DATA_PARENT_DIR.c_str()
-                #if defined(SFML_SYSTEM_LINUX)
+                #if defined(SFML_SYSTEM_LINUX) || defined(IS_ENGINE_LINUX)
                 , S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH
                 #endif
               );

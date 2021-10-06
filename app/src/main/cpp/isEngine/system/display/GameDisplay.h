@@ -318,14 +318,14 @@ public:
         while (m_window.pollEvent(event)) // even loop
         {
             controlEventFocusClosing(event);
-            if (event.type == sf::Event::KeyReleased)
-            {
+            //if (event.type == sf::Event::KeyReleased)
+            //{
                 if (m_gameSysExt.keyIsPressed(is::GameConfig::KEY_CANCEL))
                 {
                     if (!m_showMsg) showMessageBox(is::lang::msg_quit_game[m_gameSysExt.m_gameLanguage]);
                     else m_keyBackPressed = true;
                 }
-            }
+            //}
             SDMcallObjectsEvents(event);
         }
     }

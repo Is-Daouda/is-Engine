@@ -150,7 +150,12 @@ public:
         is::scaleAnimation(DELTA_TIME, m_imageScale, m_sprParent);
         #endif // defined
         updateSprite(m_x, m_y, m_imageAngle, m_imageAlpha, m_imageScale, m_imageScale, m_xOffset, m_yOffset);
-        is::setSFMLObjProperties(m_txtTitle, is::getSFMLObjX(m_sprParent), is::getSFMLObjY(m_sprParent) - is::getSFMLObjHeight(m_txtTitle) / 4.f,
+        is::setSFMLObjProperties(m_txtTitle, is::getSFMLObjX(m_sprParent),
+                                 is::getSFMLObjY(m_sprParent)
+#if defined(IS_ENGINE_SFML)
+                                 - is::getSFMLObjHeight(m_txtTitle) / 4.f
+#endif
+                                 ,
                                  m_imageAngle, m_imageAlpha, m_imageScale, m_imageScale);
     }
 

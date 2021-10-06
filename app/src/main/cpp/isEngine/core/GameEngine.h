@@ -28,7 +28,7 @@
 ////////////////////////////////////////////////////////////
 // PC version code
 #if !defined(__ANDROID__)
-    #if !defined(SFML_SYSTEM_LINUX) && !defined(IS_ENGINE_HTML_5)
+    #if !defined(SFML_SYSTEM_LINUX) && !defined(IS_ENGINE_HTML_5) && !defined(IS_ENGINE_LINUX)
 #include <direct.h>
     #else
 #include <sys/stat.h>

@@ -97,7 +97,6 @@ bool SDL2initLib()
     if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
     {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "init OpenAudio : %s\n", Mix_GetError());
-        return false;
     }
     Mix_AllocateChannels(IS_ENGINE_SDL_CHANNEL_MAX);
     return true;
