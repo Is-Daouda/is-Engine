@@ -61,7 +61,8 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
-- Run SFML Games / Applications with SDL 2 on Linux thanks to the Code::Blocks project **[is-Engine-linux-SDL2.cbp](#linux-6)**.
+- Run SFML Games / Applications with SDL 2 on Linux thanks to the Code::Blocks project **[is-Engine-linux-SDL2.cbp](#linux-6)**.<br>
+***Note that to use the project you do not need to configure anything. All you need to do is installed SDL 2 on your machine, for the rest the engine does it!***
 - Bugs fixed
 
 ## Previous version
