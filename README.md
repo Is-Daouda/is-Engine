@@ -61,7 +61,7 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
-- [Android] Support of the class sf::Music
+- [Android] Support for the sf::Music class
 - Bugs fixed
 
 ## Previous version
