@@ -1,11 +1,7 @@
 ![header](./images/is_Engine_logo.png)
 ----------------------------
 
-<<<<<<< HEAD
 # is::Engine (Infinity Solutions::Engine) 3.3.6
-=======
-# is::Engine (Infinity Solutions::Engine) 3.3.5
->>>>>>> 7c289ebaf1b18623350851eb86391ce5a121201c
 Open source C++ framework which uses the mechanisms of **SFML 2** and which also allows to develop with several libraries at the same time **(SDL 2, Emscripten)** in order to easily export your games / applications on the **Web (HTML 5), Android** and **PC (Windows, Linux)**.
 
 ## Contents
@@ -65,12 +61,7 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
-<<<<<<< HEAD
 - [Android] Support of the class sf::Music
-=======
-- Run SFML Games / Applications with SDL 2 on Linux thanks to the Code::Blocks project **[is-Engine-linux-SDL2.cbp](#linux-6)**.<br>
-***Note that to use the project you do not need to configure anything. All you need to do is installed SDL 2 on your machine, for the rest the engine does it!***
->>>>>>> 7c289ebaf1b18623350851eb86391ce5a121201c
 - Bugs fixed
 
 ## Previous version
