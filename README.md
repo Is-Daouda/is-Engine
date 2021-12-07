@@ -24,7 +24,7 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 [![SFML logo](https://www.sfml-dev.org/images/logo.png)](https://www.sfml-dev.org) [![SDL](https://i48.servimg.com/u/f48/20/16/75/27/sdl_li10.png)](https://www.libsdl.org/) ![Web](https://i48.servimg.com/u/f48/20/16/75/27/web_lo10.png) [![Box2D Logo](https://box2d.org/images/logo.svg)](https://github.com/erincatto/box2d) [![Tiled Logo](https://i.servimg.com/u/f48/20/16/75/27/tiled_10.png)](https://www.mapeditor.org) [![Admob Logo](https://i48.servimg.com/u/f48/20/16/75/27/admob_10.png)](https://admob.google.com/) [![Tiny File Dialog](https://a.fsdn.com/allura/p/tinyfiledialogs/icon?1582196333?&w=90)](https://github.com/native-toolkit/tinyfiledialogs)
 
 ## Features
-- Run SFML game / application with SDL 2
+- Run SFML game / application on SDL 2 (Like an Emulator)
 - Language manager (English and French language support by default)
 - Scene System
 - Automatic management of a window
