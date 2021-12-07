@@ -37,10 +37,10 @@ public:
     /// Game Sound container
     std::vector<std::shared_ptr<GameSound>> m_GSMsound;
 
-#if !defined(__ANDROID__)
+//#if !defined(__ANDROID__)
     /// Game Music container
     std::vector<std::shared_ptr<GameMusic>> m_GSMmusic;
-#endif
+//#endif
     //////////////////////////////////////////////////////
     /// \brief Allows to add SFML Sound in container
     ///
@@ -81,16 +81,16 @@ public:
     //////////////////////////////////////////////////////
     virtual void GSMaddMusic(const std::string& name, const std::string& filePath)
     {
-#if defined(__ANDROID__)
-        GSMaddSound(name, filePath);
-#else
+//#if defined(__ANDROID__)
+//        GSMaddSound(name, filePath);
+//#else
         if (!musicFileExists(filePath))
         {
             auto obj = std::make_shared<GameMusic>(name, filePath);
             m_GSMmusic.push_back(obj);
         }
         else is::showLog("WARNING: <" + name + "> music has already been added!");
-#endif
+//#endif
     }
 
     //////////////////////////////////////////////////////
@@ -99,22 +99,22 @@ public:
     /// \param music object
     //////////////////////////////////////////////////////
     void GSMaddMusicObject(std::shared_ptr<
-#if defined(__ANDROID__)
-                           GameSound
-#else
+//#if defined(__ANDROID__)
+//                           GameSound
+//#else
                            GameMusic
-#endif
+//#endif
                            >music, bool showError = true)
     {
-#if defined(__ANDROID__)
-        GSMaddSoundObject(music);
-#else
+//#if defined(__ANDROID__)
+//        GSMaddSoundObject(music);
+//#else
         if (!musicFileExists(music->getFilePath())) m_GSMmusic.push_back(music);
         else
         {
             if (showError) is::showLog("WARNING: <" + music->getName() + "> music has already been added!");
         }
-#endif
+//#endif
     }
 
     /// Allows to set sound loop
@@ -137,9 +137,9 @@ public:
     /// Allows to set music loop
     virtual void GSMsetMusicLoop(const std::string& name, bool loop)
     {
-#if defined(__ANDROID__)
-        GSMsetSoundLoop(name, loop);
-#else
+//#if defined(__ANDROID__)
+//        GSMsetSoundLoop(name, loop);
+//#else
         WITH(m_GSMmusic.size())
         {
             if (m_GSMmusic[_I].get() != nullptr)
@@ -152,7 +152,7 @@ public:
             }
         }
         is::showLog("ERROR: Can't loop <" + name + "> music because music does not exist!");
-#endif
+//#endif
     }
 
     /// Allows to get sound in container by his name
@@ -174,43 +174,43 @@ public:
 
     /// Allows to get music in container by his name
     virtual
-#if defined(__ANDROID__)
-    sf::Sound*
-#else
+//#if defined(__ANDROID__)
+//    sf::Sound*
+//#else
     sf::Music*
-#endif
+//#endif
     GSMgetMusic(const std::string& name, bool showError = true)
     {
         WITH(
-#if defined(__ANDROID__)
-                m_GSMsound.size()
-#else
+//#if defined(__ANDROID__)
+//                m_GSMsound.size()
+//#else
                 m_GSMmusic.size()
-#endif
+//#endif
                 )
         {
             if (
-#if defined(__ANDROID__)
-                m_GSMsound[_I].get() != nullptr
-#else
+//#if defined(__ANDROID__)
+//                m_GSMsound[_I].get() != nullptr
+//#else
                 m_GSMmusic[_I].get() != nullptr
-#endif
+//#endif
                 )
             {
                 if (
-#if defined(__ANDROID__)
-                    m_GSMsound[_I]->getName() == name && m_GSMsound[_I]->getFileIsLoaded()
-#else
+//#if defined(__ANDROID__)
+//                    m_GSMsound[_I]->getName() == name && m_GSMsound[_I]->getFileIsLoaded()
+//#else
                     m_GSMmusic[_I]->getName() == name && m_GSMmusic[_I]->getFileIsLoaded()
-#endif
+//#endif
                     )
                 {
                     return
-#if defined(__ANDROID__)
-                        &m_GSMsound[_I]->getSound();
-#else
+//#if defined(__ANDROID__)
+//                        &m_GSMsound[_I]->getSound();
+//#else
                         &m_GSMmusic[_I]->getMusic();
-#endif
+//#endif
                 }
             }
         }
@@ -267,9 +267,9 @@ public:
     /// Allows to pause music in container by his name
     virtual void GSMpauseMusic(const std::string& name)
     {
-    #if defined(__ANDROID__)
-        GSMpauseSound(name);
-    #else
+//    #if defined(__ANDROID__)
+//        GSMpauseSound(name);
+//    #else
         bool musicExist(false);
         WITH(m_GSMmusic.size())
         {
@@ -288,15 +288,15 @@ public:
             }
         }
         if (!musicExist) is::showLog("ERROR: Can't pause <" + name + "> music because music does not exist!");
-    #endif
+//    #endif
     }
 
     /// Allows to stop music in container by his name
     virtual void GSMstopMusic(const std::string& name)
     {
-    #if defined(__ANDROID__)
-        GSMstopSound(name);
-    #else
+//    #if defined(__ANDROID__)
+//        GSMstopSound(name);
+//    #else
         bool musicExist(false);
         WITH(m_GSMmusic.size())
         {
@@ -315,7 +315,7 @@ public:
             }
         }
         if (!musicExist) is::showLog("ERROR: Can't stop <" + name + "> music because music does not exist!");
-    #endif
+//    #endif
     }
 
     /// Allows to delete sound in container by his name
@@ -344,9 +344,9 @@ public:
     /// Allows to delete music in container by his name
     virtual void GSMdeleteMusic(const std::string& name)
     {
-    #if defined(__ANDROID__)
-        GSMdeleteSound(name);
-    #else
+//    #if defined(__ANDROID__)
+//        GSMdeleteSound(name);
+//    #else
         int musicId(-1);
         WITH(m_GSMmusic.size())
         {
@@ -365,7 +365,7 @@ public:
             m_GSMmusic[musicId].reset();
             m_GSMmusic[musicId] = nullptr;
         }
-    #endif
+//    #endif
     }
 
 ////////////////////////////////////////////////////////////
@@ -405,11 +405,11 @@ public:
     //////////////////////////////////////////////////////
     virtual void GRMaddMusic(const std::string& name, const std::string& filePath)
     {
-#if defined(__ANDROID__)
-        GSMaddSound(name, filePath);
-#else
+//#if defined(__ANDROID__)
+//        GSMaddSound(name, filePath);
+//#else
         GSMaddMusic(name, filePath);
-#endif
+//#endif
     }
 
     //////////////////////////////////////////////////////
@@ -418,18 +418,18 @@ public:
     /// \param music object
     //////////////////////////////////////////////////////
     void GRMaddMusicObject(std::shared_ptr<
-#if defined(__ANDROID__)
-                           GameSound
-#else
+//#if defined(__ANDROID__)
+//                           GameSound
+//#else
                            GameMusic
-#endif
+//#endif
                            >music, bool showError = true)
     {
-#if defined(__ANDROID__)
-        GSMaddSoundObject(music, showError);
-#else
+//#if defined(__ANDROID__)
+//        GSMaddSoundObject(music, showError);
+//#else
         GSMaddMusicObject(music, showError);
-#endif
+//#endif
     }
 
     /// Allows to set sound loop
@@ -441,11 +441,11 @@ public:
     /// Allows to set music loop
     virtual void GRMsetMusicLoop(const std::string& name, bool loop)
     {
-#if defined(__ANDROID__)
-        GSMsetSoundLoop(name, loop);
-#else
+//#if defined(__ANDROID__)
+//        GSMsetSoundLoop(name, loop);
+//#else
         GSMsetMusicLoop(name, loop);
-#endif
+//#endif
     }
 
     /// Allows to get sound in container by his name
@@ -456,19 +456,19 @@ public:
 
     /// Allows to get music in container by his name
     virtual
-#if defined(__ANDROID__)
-    sf::Sound*
-#else
+//#if defined(__ANDROID__)
+//    sf::Sound*
+//#else
     sf::Music*
-#endif
+//#endif
     GRMgetMusic(const std::string& name, bool showError = true)
     {
         return
-#if defined(__ANDROID__)
-            GSMgetSound(name, showError);
-#else
+//#if defined(__ANDROID__)
+//            GSMgetSound(name, showError);
+//#else
             GSMgetMusic(name, showError);
-#endif
+//#endif
     }
 
     /// Allows to pause sound in container by his name
@@ -486,21 +486,21 @@ public:
     /// Allows to pause music in container by his name
     virtual void GRMpauseMusic(const std::string& name)
     {
-    #if defined(__ANDROID__)
-        GSMpauseSound(name);
-    #else
+//    #if defined(__ANDROID__)
+//        GSMpauseSound(name);
+//    #else
         GSMpauseMusic(name);
-    #endif
+//    #endif
     }
 
     /// Allows to stop music in container by his name
     virtual void GRMstopMusic(const std::string& name)
     {
-    #if defined(__ANDROID__)
-        GSMstopSound(name);
-    #else
+//    #if defined(__ANDROID__)
+//        GSMstopSound(name);
+//    #else
         GSMstopMusic(name);
-    #endif
+//    #endif
     }
 
     /// Allows to delete sound in container by his name
@@ -512,11 +512,11 @@ public:
     /// Allows to delete music in container by his name
     virtual void GRMdeleteMusic(const std::string& name)
     {
-    #if defined(__ANDROID__)
-        GSMdeleteSound(name);
-    #else
+//    #if defined(__ANDROID__)
+//        GSMdeleteSound(name);
+//    #else
         GSMdeleteMusic(name);
-    #endif
+//    #endif
     }
 
 private:
@@ -532,7 +532,7 @@ private:
         return false;
     }
 
-#if !defined(__ANDROID__)
+//#if !defined(__ANDROID__)
     bool musicFileExists(const std::string& filePath) const
     {
         WITH(m_GSMmusic.size())
@@ -544,7 +544,7 @@ private:
         }
         return false;
     }
-#endif
+//#endif
 };
 }
 #endif // GSM_H_INCLUDED

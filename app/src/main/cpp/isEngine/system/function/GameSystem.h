@@ -36,7 +36,7 @@
 //////////////////////////////////////////////////////
 #define IS_ENGINE_VERSION_MAJOR 3
 #define IS_ENGINE_VERSION_MINOR 3
-#define IS_ENGINE_VERSION_PATCH 5
+#define IS_ENGINE_VERSION_PATCH 6
 
 namespace is
 {
@@ -47,11 +47,11 @@ void GSMplaySound(const std::string& name, std::vector<std::shared_ptr<GameSound
 
 /// Allows to play music in container by his name if the option is activated
 void GSMplayMusic(const std::string& name, std::vector<std::shared_ptr<
-#if !defined(__ANDROID__)
+//#if !defined(__ANDROID__)
                   GameMusic
-#else
-                  GameSound
-#endif
+//#else
+//                  GameSound
+//#endif
                   >> &GSMmusic, GameSystem &gameSystem);
 
 //////////////////////////////////////////////////////
@@ -154,11 +154,11 @@ public:
     virtual void GSMplayMusic(const std::string& name)
     {
         is::GSMplayMusic(name,
-#if !defined(__ANDROID__)
+//#if !defined(__ANDROID__)
                          m_GSMmusic
-#else
-                         m_GSMsound
-#endif
+//#else
+//                         m_GSMsound
+//#endif
                          , *this);
     }
 

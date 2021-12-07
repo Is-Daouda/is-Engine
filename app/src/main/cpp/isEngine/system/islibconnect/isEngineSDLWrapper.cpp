@@ -1276,26 +1276,45 @@ void Sound::setVolume(float volume)
     if (static_cast<int>(volume) >= 0 && static_cast<int>(volume) <= 100) Mix_VolumeChunk(m_SDLsoundBuffer->getSDLChunk(), volume * MIX_MAX_VOLUME / 100);
 }
 
-Music::Music() : SoundSource()
+Music::Music() :
+#if !defined(__ANDROID__)
+    SoundSource()
 {
     Mix_VolumeMusic(MIX_MAX_VOLUME);
+#else
+    Sound()
+{
+#endif
 }
 
 Music::~Music()
 {
+#if defined(__ANDROID__)
+    if (m_SDLsoundBuffer != nullptr)
+    {
+        delete m_SDLsoundBuffer;
+        m_SDLsoundBuffer = nullptr;
+    }
+#else
     Mix_FreeMusic(m_music);
     m_music = NULL;
+#endif
 }
 
 Music::Status Music::getStatus()
 {
     if (m_status != Status::Paused)
     {
+#if !defined(__ANDROID__)
         if (Mix_PlayingMusic() == 0) m_status = Stopped;
+#else
+        if (Mix_Playing(m_SDLsoundBuffer->getSDLChannel()) == 0) m_status = Stopped;
+#endif
     }
     return m_status;
 }
 
+#if !defined(__ANDROID__)
 void Music::play()
 {
     if (m_status != Status::Paused)
@@ -1318,9 +1337,18 @@ void Music::setVolume(float volume)
 {
     if (static_cast<int>(volume) >= 0 && static_cast<int>(volume) <= 100) Mix_VolumeMusic(volume * MIX_MAX_VOLUME / 100);
 }
-
+#endif
 bool Music::openFromFile(const std::string& filePath)
 {
+#if defined(__ANDROID__)
+    if (m_SDLsoundBuffer != nullptr)
+    {
+        delete m_SDLsoundBuffer;
+        m_SDLsoundBuffer = nullptr;
+    }
+    m_SDLsoundBuffer = new SoundBuffer();
+    return m_SDLsoundBuffer->loadFromFile(filePath.c_str());
+#else
     m_music = Mix_LoadMUS(filePath.c_str());
     if (m_music == NULL)
     {
@@ -1328,6 +1356,7 @@ bool Music::openFromFile(const std::string& filePath)
         return false;
     }
     return true;
+#endif
 }
 
 bool Mouse::isButtonPressed(Button button)

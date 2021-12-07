@@ -921,23 +921,32 @@ public:
         m_SDLsoundBuffer = &soundBuffer;
     }
 
+#if !defined(__ANDROID__)
 private:
+#else
+protected:
+#endif
     SoundBuffer *m_SDLsoundBuffer = nullptr;
     bool m_loop = false;
 };
 
-class Music : public SoundSource
+class Music : public
+#if !defined(__ANDROID__)
+        SoundSource
+#else
+        Sound
+#endif
 {
 public:
     Music();
 
     ~Music();
 
+    Status getStatus();
+#if !defined(__ANDROID__)
     void play();
 
     void setPitch(float speed);
-
-    Status getStatus();
 
     void pause()
     {
@@ -957,16 +966,17 @@ public:
     }
 
     void setVolume(float volume);
-
+#endif
     bool openFromFile(const std::string& filePath);
     /*
     bool openFromMemory() {functionNotSupported("Music", "openFromMemory", "loadSFMLMusic");}
     bool openFromStream() {functionNotSupported("Music", "openFromStream", "loadSFMLMusic");}
     */
-
+#if !defined(__ANDROID__)
 private:
     Mix_Music *m_music = NULL;
     bool m_loop = false;
+#endif
 };
 
 class Mouse

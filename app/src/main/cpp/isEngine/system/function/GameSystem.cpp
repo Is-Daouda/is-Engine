@@ -198,16 +198,16 @@ void GSMplaySound(const std::string& name, std::vector<std::shared_ptr<GameSound
 }
 
 void GSMplayMusic(const std::string& name, std::vector<std::shared_ptr<
-#if !defined(__ANDROID__)
+//#if !defined(__ANDROID__)
                   GameMusic
-#else
-                  GameSound
-#endif
+//#else
+//                  GameSound
+//#endif
                   >> &GSMmusic, GameSystem &gameSystem)
 {
-#if defined(__ANDROID__)
-    GSMplaySound(name, GSMmusic, gameSystem);
-#else
+//#if defined(__ANDROID__)
+//    GSMplaySound(name, GSMmusic, gameSystem);
+//#else
     bool musicExist(false);
     WITH(GSMmusic.size())
     {
@@ -223,6 +223,6 @@ void GSMplayMusic(const std::string& name, std::vector<std::shared_ptr<
         }
     }
     if (!musicExist) is::showLog("ERROR: Can't play <" + name + "> music because music does not exist!");
-#endif
+//#endif
 }
 }

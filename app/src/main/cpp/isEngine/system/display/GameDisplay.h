@@ -318,14 +318,11 @@ public:
         while (m_window.pollEvent(event)) // even loop
         {
             controlEventFocusClosing(event);
-            //if (event.type == sf::Event::KeyReleased)
-            //{
-                if (m_gameSysExt.keyIsPressed(is::GameConfig::KEY_CANCEL))
-                {
-                    if (!m_showMsg) showMessageBox(is::lang::msg_quit_game[m_gameSysExt.m_gameLanguage]);
-                    else m_keyBackPressed = true;
-                }
-            //}
+            if (m_gameSysExt.keyIsPressed(is::GameConfig::KEY_CANCEL))
+            {
+                if (!m_showMsg) showMessageBox(is::lang::msg_quit_game[m_gameSysExt.m_gameLanguage]);
+                else if (m_msgWaitTime == 255) /* Allows to close the message box with the Cancel key when it is visible*/ m_keyBackPressed = true;
+            }
             SDMcallObjectsEvents(event);
         }
     }
@@ -369,11 +366,11 @@ public:
     virtual void GSMplayMusic(const std::string& name)
     {
         is::GSMplayMusic(name,
-#if !defined(__ANDROID__)
+//#if !defined(__ANDROID__)
                          m_GSMmusic
-#else
-                      m_GSMsound
-#endif
+//#else
+//                      m_GSMsound
+//#endif
                          , m_gameSysExt);
     }
 
@@ -398,11 +395,11 @@ public:
     /// Allows to use Game System music in scene
     virtual void GSMuseGameSystemMusic()
     {
-#if !defined(__ANDROID__)
+//#if !defined(__ANDROID__)
         WITH(m_gameSysExt.m_GSMmusic.size()) GSMaddMusicObject(m_gameSysExt.m_GSMmusic[_I]);
-#else
-        GSMuseGameSystemSound();
-#endif
+//#else
+//        GSMuseGameSystemSound();
+//#endif
     }
 
 ////////////////////////////////////////////////////////////
@@ -476,9 +473,21 @@ public:
         m_txtMsgBox.setString(msgBody);
 
         // Adjust the text on button
-        setSFMLObjX_Y(m_txtMsgBoxYes, is::getSFMLObjX(m_sprMsgBoxButton1), is::getSFMLObjY(m_sprMsgBoxButton1));
-        setSFMLObjX_Y(m_txtMsgBoxNo, is::getSFMLObjX(m_sprMsgBoxButton2), is::getSFMLObjY(m_sprMsgBoxButton2));
-        setSFMLObjX_Y(m_txtMsgBoxOK, is::getSFMLObjX(m_sprMsgBoxButton3), is::getSFMLObjY(m_sprMsgBoxButton3));
+        setSFMLObjX_Y(m_txtMsgBoxYes, is::getSFMLObjX(m_sprMsgBoxButton1), is::getSFMLObjY(m_sprMsgBoxButton1)
+#if defined(IS_ENGINE_SFML)
+                      - is::getSFMLObjHeight(m_txtMsgBoxYes) / 4.f
+#endif
+                      );
+        setSFMLObjX_Y(m_txtMsgBoxNo, is::getSFMLObjX(m_sprMsgBoxButton2), is::getSFMLObjY(m_sprMsgBoxButton2)
+#if defined(IS_ENGINE_SFML)
+                      - is::getSFMLObjHeight(m_txtMsgBoxNo) / 4.f
+#endif
+                      );
+        setSFMLObjX_Y(m_txtMsgBoxOK, is::getSFMLObjX(m_sprMsgBoxButton3), is::getSFMLObjY(m_sprMsgBoxButton3)
+#if defined(IS_ENGINE_SFML)
+                      - is::getSFMLObjHeight(m_txtMsgBoxOK) / 4.f
+#endif
+                      );
 
         is::setSFMLObjAlpha(m_sprMsgBoxButton1, m_msgWaitTime);
         is::setSFMLObjAlpha(m_sprMsgBoxButton2, m_msgWaitTime);
