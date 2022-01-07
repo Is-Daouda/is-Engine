@@ -1,6 +1,6 @@
 /*
-  is::Engine (Infinity Solution Engine)
-  Copyright (C) 2018-2021 Is Daouda <isdaouda.n@gmail.com>
+  is::Engine (Infinity Solutions Engine)
+  Copyright (C) 2018-2022 Is Daouda <isdaouda.n@gmail.com>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -129,6 +129,12 @@ public:
 
     /// Set image frame
     virtual void setFrame(float val);
+
+    /// Set image frame start
+    virtual void setFrameStart(float val);
+
+    /// Set image frame end
+    virtual void setFrameEnd(float val);
 
     /// Set the x scale
     virtual void setImageXscale(float val);

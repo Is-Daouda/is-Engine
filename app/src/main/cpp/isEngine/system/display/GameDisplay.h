@@ -1,6 +1,6 @@
 /*
-  is::Engine (Infinity Solution Engine)
-  Copyright (C) 2018-2021 Is Daouda <isdaouda.n@gmail.com>
+  is::Engine (Infinity Solutions Engine)
+  Copyright (C) 2018-2022 Is Daouda <isdaouda.n@gmail.com>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -400,6 +400,15 @@ public:
 //#else
 //        GSMuseGameSystemSound();
 //#endif
+    }
+
+    /// Allows to use all Game System resources (Font, Texture, Sound, Music) in scene
+    virtual void GRMuseGameSystemResources()
+    {
+        GRMuseGameSystemFont();
+        GRMuseGameSystemTexture();
+        GSMuseGameSystemSound();
+        GSMuseGameSystemMusic();
     }
 
 ////////////////////////////////////////////////////////////

@@ -1,6 +1,6 @@
 /*
-  is::Engine (Infinity Solution Engine)
-  Copyright (C) 2018-2021 Is Daouda <isdaouda.n@gmail.com>
+  is::Engine (Infinity Solutions Engine)
+  Copyright (C) 2018-2022 Is Daouda <isdaouda.n@gmail.com>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -78,7 +78,9 @@ public:
     GameKeyData(is::GameDisplay *scene);
 
     /// Load the image that will serve as Virtual Game Pad (only for Android)
-    virtual void loadResources();
+    ///
+    /// \param usePadColorBlack change the Pad sprite color
+    virtual void loadResources(bool usePadColorBlack = false);
 
     /// Manages the positioning of the Virtual Game Pad relative to the screen (only for Android)
     virtual void step(float const &DELTA_TIME);

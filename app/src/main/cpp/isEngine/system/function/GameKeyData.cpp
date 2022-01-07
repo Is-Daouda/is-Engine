@@ -1,6 +1,6 @@
 /*
-  is::Engine (Infinity Solution Engine)
-  Copyright (C) 2018-2021 Is Daouda <isdaouda.n@gmail.com>
+  is::Engine (Infinity Solutions Engine)
+  Copyright (C) 2018-2022 Is Daouda <isdaouda.n@gmail.com>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -58,11 +58,11 @@ GameKeyData::GameKeyData(is::GameDisplay *scene) :
     loadResources();
 }
 
-void GameKeyData::loadResources()
+void GameKeyData::loadResources(bool usePadColorBlack)
 {
     auto &tex = m_scene->GRMaddTexture("game_pad", is::GameConfig::GUI_DIR + "game_pad.png");
-    is::createSprite(tex, m_sprJoystick[0], sf::IntRect(0, 0, 134, 134), sf::Vector2f(0.f, 0.f), sf::Vector2f(67.f, 67.f));
-    is::createSprite(tex, m_sprJoystick[1], sf::IntRect(134, ((!m_scene->getGameSystem().m_permutePadAB) ? 0 : 67), 144, 67),
+    is::createSprite(tex, m_sprJoystick[0], sf::IntRect(0, (!usePadColorBlack) ? 0 : 134, 134, 134), sf::Vector2f(0.f, 0.f), sf::Vector2f(67.f, 67.f));
+    is::createSprite(tex, m_sprJoystick[1], sf::IntRect(134, ((!m_scene->getGameSystem().m_permutePadAB) ? 0 : 67) + ((!usePadColorBlack) ? 0 : 134), 144, 67),
                      sf::Vector2f(0.f, 0.f), sf::Vector2f(72.f, 37.f));
     is::setSFMLObjSize(m_recJoystickMask[0], 134.f, 134.f);
     is::setSFMLObjSize(m_recJoystickMask[1], 144.f, 74.f);

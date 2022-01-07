@@ -1,6 +1,6 @@
 /*
-  is::Engine (Infinity Solution Engine)
-  Copyright (C) 2018-2021 Is Daouda <isdaouda.n@gmail.com>
+  is::Engine (Infinity Solutions Engine)
+  Copyright (C) 2018-2022 Is Daouda <isdaouda.n@gmail.com>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -290,6 +290,16 @@ void MainObject::setAngularMove(float const &DELTA_TIME, float speed, float angl
 void MainObject::setFrame(float val)
 {
     m_frame = val;
+}
+
+void MainObject::setFrameStart(float val)
+{
+    m_frameStart = val;
+}
+
+void MainObject::setFrameEnd(float val)
+{
+    m_frameEnd = val;
 }
 
 void MainObject::setImageXscale(float val)

@@ -1,5 +1,5 @@
 /*
-  is::Engine (Infinity Solution Engine)
+  is::Engine (Infinity Solutions Engine)
   Copyright (C) 2018-2021 Is Daouda <isdaouda.n@gmail.com>
 
   This software is provided 'as-is', without any express or implied

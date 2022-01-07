@@ -1,7 +1,7 @@
 ![header](./images/is_Engine_logo.png)
 ----------------------------
 
-# is::Engine (Infinity Solutions::Engine) 3.3.6
+# is::Engine (Infinity Solutions::Engine) 3.3.7
 Open source C++ framework which uses the mechanisms of **SFML 2** and which also allows to develop with several libraries at the same time **(SDL 2, Emscripten)** in order to easily export your games / applications on the **Web (HTML 5), Android** and **PC (Windows, Linux)**.
 
 ## Contents
@@ -61,10 +61,15 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
+- Adding **[GRMuseGameSystemResources()](./app/src/main/cpp/isEngine/system/display/GameDisplay.h#L406)** function.
+- [Android] Possibility to change the color of Virtual Game Pad thank to **[loadResources()](./app/src/main/cpp/isEngine/system/function/GameKeyData.h#L83)** function.
+- [Android] Finger motion bug fixed.
+
+## Previous version
+### 3.3.6
 - [Android] Support of the class sf::Music
 - Bugs fixed
 
-## Previous version
 ### 3.3.5
 - Run SFML Games / Applications with SDL 2 on Linux thanks to the Code::Blocks project **[is-Engine-linux-SDL2.cbp](./app/src/main/)**.
 - Bugs fixed

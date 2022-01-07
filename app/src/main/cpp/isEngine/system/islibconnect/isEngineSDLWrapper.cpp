@@ -1,6 +1,6 @@
 /*
-  is::Engine (Infinity Solution Engine)
-  Copyright (C) 2018-2021 Is Daouda <isdaouda.n@gmail.com>
+  is::Engine (Infinity Solutions Engine)
+  Copyright (C) 2018-2022 Is Daouda <isdaouda.n@gmail.com>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -157,7 +157,7 @@ bool Texture::loadSurface(const std::string& filePath)
     }
     else
     {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Texture : %s\n", SDL_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Texture : %s\n \"%s\"", SDL_GetError(), m_filename.c_str());
         return false;
     }
     return true;
@@ -178,7 +178,7 @@ bool Font::loadFont(const std::string& filename)
     m_SDLfont = TTF_OpenFont(m_filename.c_str(), m_size);
     if (m_SDLfont == NULL)
     {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Font : %s\n", TTF_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Font : %s \"%s\"\n", TTF_GetError(), filename.c_str());
         return false;
     }
     return true;
@@ -1121,6 +1121,22 @@ bool RenderWindow::pollEvent(Event &event)
                 }
             }
             break;
+
+            case SDL_FINGERMOTION:
+            {
+                if (is::IS_ENGINE_SDL_touchIdCount == 1)
+                {
+                    is::IS_ENGINE_SDL_touchData[0].m_SDLtouchX = (event.m_event.tfinger.x * is::IS_ENGINE_SDL_displayMode.w) / is::IS_ENGINE_SDL_screenXScale;
+                    is::IS_ENGINE_SDL_touchData[0].m_SDLtouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / is::IS_ENGINE_SDL_screenYScale;
+                }
+                if (is::IS_ENGINE_SDL_touchIdCount == 2)
+                {
+                    is::IS_ENGINE_SDL_touchData[1].m_SDLtouchX = (event.m_event.tfinger.x * is::IS_ENGINE_SDL_displayMode.w) / is::IS_ENGINE_SDL_screenXScale;
+                    is::IS_ENGINE_SDL_touchData[1].m_SDLtouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / is::IS_ENGINE_SDL_screenYScale;
+                }
+            }
+            break;
+
             case SDL_FINGERUP:
             {
                 if (is::IS_ENGINE_SDL_touchIdCount > 0)
@@ -1238,7 +1254,7 @@ bool SoundBuffer::loadSound(const std::string& filePath)
     m_SDLsound = Mix_LoadWAV(filePath.c_str());
     if (m_SDLsound == NULL)
     {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Can't load SoundBuffer : %s\n", Mix_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Can't load SoundBuffer : %s \"%s\"\n", Mix_GetError(), filePath.c_str());
         return false;
     }
     return true;
@@ -1352,7 +1368,7 @@ bool Music::openFromFile(const std::string& filePath)
     m_music = Mix_LoadMUS(filePath.c_str());
     if (m_music == NULL)
     {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Can't load Music : %s\n", Mix_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Can't load Music : %s \"%s\"\n", Mix_GetError(), filePath.c_str());
         return false;
     }
     return true;
