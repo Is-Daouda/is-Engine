@@ -61,17 +61,13 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
-<<<<<<< HEAD
 - Adding **[GRMuseGameSystemResources()](./app/src/main/cpp/isEngine/system/display/GameDisplay.h#L406)** function.
 - [Android] Possibility to change the color of Virtual Game Pad thank to **[loadResources()](./app/src/main/cpp/isEngine/system/function/GameKeyData.h#L83)** function.
 - [Android] Finger motion bug fixed.
 
 ## Previous version
 ### 3.3.6
-- [Android] Support of the class sf::Music
-=======
 - [Android] Support for the sf::Music class
->>>>>>> 03124947b87aa5945d36d3cbc96f4153e017959e
 - Bugs fixed
 
 ### 3.3.5
