@@ -80,6 +80,12 @@ static const short IS_ENGINE_SDL_TOUCH_ID_COUNT_MAX = 2;
 /// Stores the different fingers used on the screen
 extern TouchData IS_ENGINE_SDL_touchData[IS_ENGINE_SDL_TOUCH_ID_COUNT_MAX];
 
+/// Allows to enable SDL_FINGERMOTION event
+extern bool IS_ENGINE_SDL_enableFINGERMOTION;
+
+/// The last fingers id
+extern short IS_ENGINE_SDL_touchIdLast;
+
 /// Count the number of fingers on the screen
 extern short IS_ENGINE_SDL_touchIdCount;
 

@@ -23,7 +23,6 @@
 #define GAMEDISPLAY_H_INCLUDED
 
 #include "../../../app_src/gamesystem_ext/GameSystemExtended.h"
-#include "../../../app_src/language/GameLanguage.h"
 
 #if defined(IS_ENGINE_USE_SDM)
 #include "SDM.h"
@@ -312,35 +311,11 @@ public:
 
     /// Allows to define the way in which the SDM will manage the events
     /// To change the mechanism override this method
-    virtual void SDMmanageSceneEvents()
-    {
-        sf::Event event;
-        while (m_window.pollEvent(event)) // even loop
-        {
-            controlEventFocusClosing(event);
-            if (m_gameSysExt.keyIsPressed(is::GameConfig::KEY_CANCEL))
-            {
-                if (!m_showMsg) showMessageBox(is::lang::msg_quit_game[m_gameSysExt.m_gameLanguage]);
-                else if (m_msgWaitTime == 255) /* Allows to close the message box with the Cancel key when it is visible*/ m_keyBackPressed = true;
-            }
-            SDMcallObjectsEvents(event);
-        }
-    }
+    virtual void SDMmanageSceneEvents();
 
     /// Allows to define how the answers of the dialog box will be handled
     /// To change the mechanism override this method
-    virtual void SDMmanageSceneMsgAnswers()
-    {
-        if (m_msgAnswer == MsgAnswer::YES) // if answers is YES close application
-        {
-            m_window.close();
-            m_isRunning = false;
-        }
-        else // if answers is NO continue execution
-        {
-            m_waitTime = 20;
-        }
-    }
+    virtual void SDMmanageSceneMsgAnswers();
 
     /// Method to call objects events
     virtual void SDMcallObjectsEvents(sf::Event &event);
@@ -446,67 +421,10 @@ public:
 ////////////////////////////////////////////////////////////
 
     /// Show message box according to type
-    template<class T1>
-    void showMessageBox(T1 const &msgBody, bool mbYesNo = true)
-    {
-        m_showMsg = true;
-        m_mbYesNo = mbYesNo;
-        if (m_mbYesNo) m_msgAnswer = MsgAnswer::NO;
-        m_msgWaitTime = 0;
-        m_msgBoxMouseInCollison = false;
-        m_txtMsgBoxYes.setString(is::lang::pad_answer_yes[m_gameSysExt.m_gameLanguage]);
-        m_txtMsgBoxNo.setString(is::lang::pad_answer_no[m_gameSysExt.m_gameLanguage]);
-        m_txtMsgBoxOK.setString(is::lang::pad_answer_ok[m_gameSysExt.m_gameLanguage]);
+    void showMessageBox(std::string const &msgBody, bool mbYesNo = true);
 
-        centerSFMLObj(m_txtMsgBoxYes);
-        centerSFMLObj(m_txtMsgBoxNo);
-        centerSFMLObj(m_txtMsgBoxOK);
-        setView();
-        setSFMLObjX_Y(m_recMsgBox, sf::Vector2f(m_view.getCenter().x, m_view.getCenter().y));
-        setSFMLObjX_Y(m_sprMsgBox, sf::Vector2f(m_view.getCenter().x, m_view.getCenter().y));
-        const float dim(6.f),
-                    boxXOrigin(is::getSFMLObjOriginX(m_sprMsgBox)),
-                    boxYOrigin(is::getSFMLObjOriginY(m_sprMsgBox));
-        setSFMLObjX_Y(m_sprMsgBoxButton1,
-                          is::getSFMLObjX(m_sprMsgBox) - boxXOrigin + is::getSFMLObjOriginX(m_sprMsgBoxButton1) + dim,
-                          is::getSFMLObjY(m_sprMsgBox) + boxYOrigin - is::getSFMLObjHeight(m_sprMsgBoxButton1) + dim);
-        setSFMLObjX_Y(m_sprMsgBoxButton2,
-                          is::getSFMLObjX(m_sprMsgBox) + boxXOrigin - is::getSFMLObjOriginX(m_sprMsgBoxButton2) - dim,
-                          is::getSFMLObjY(m_sprMsgBox) + boxYOrigin - is::getSFMLObjHeight(m_sprMsgBoxButton2) + dim);
-        setSFMLObjX_Y(m_sprMsgBoxButton3,
-                          is::getSFMLObjX(m_sprMsgBox),
-                          is::getSFMLObjY(m_sprMsgBox) + boxYOrigin - is::getSFMLObjHeight(m_sprMsgBoxButton1) + dim);
-        setSFMLObjX_Y(m_txtMsgBox,
-                          is::getSFMLObjX(m_sprMsgBox)- boxXOrigin + 16.f,
-                          is::getSFMLObjY(m_sprMsgBox) - boxYOrigin + 8.f);
-        m_txtMsgBox.setString(msgBody);
-
-        // Adjust the text on button
-        setSFMLObjX_Y(m_txtMsgBoxYes, is::getSFMLObjX(m_sprMsgBoxButton1), is::getSFMLObjY(m_sprMsgBoxButton1)
-#if defined(IS_ENGINE_SFML)
-                      - is::getSFMLObjHeight(m_txtMsgBoxYes) / 4.f
-#endif
-                      );
-        setSFMLObjX_Y(m_txtMsgBoxNo, is::getSFMLObjX(m_sprMsgBoxButton2), is::getSFMLObjY(m_sprMsgBoxButton2)
-#if defined(IS_ENGINE_SFML)
-                      - is::getSFMLObjHeight(m_txtMsgBoxNo) / 4.f
-#endif
-                      );
-        setSFMLObjX_Y(m_txtMsgBoxOK, is::getSFMLObjX(m_sprMsgBoxButton3), is::getSFMLObjY(m_sprMsgBoxButton3)
-#if defined(IS_ENGINE_SFML)
-                      - is::getSFMLObjHeight(m_txtMsgBoxOK) / 4.f
-#endif
-                      );
-
-        is::setSFMLObjAlpha(m_sprMsgBoxButton1, m_msgWaitTime);
-        is::setSFMLObjAlpha(m_sprMsgBoxButton2, m_msgWaitTime);
-        is::setSFMLObjAlpha(m_sprMsgBoxButton3, m_msgWaitTime);
-        is::setSFMLObjAlpha(m_sprMsgBox, m_msgWaitTime);
-        is::setSFMLObjAlpha2(m_txtMsgBoxNo, m_msgWaitTime);
-        is::setSFMLObjAlpha2(m_txtMsgBoxYes, m_msgWaitTime);
-        is::setSFMLObjAlpha2(m_txtMsgBoxOK, m_msgWaitTime);
-        is::setSFMLObjAlpha2(m_txtMsgBox, m_msgWaitTime);
-    }
+    /// Show message box according to type
+    void showMessageBox(std::wstring const &msgBody, bool mbYesNo = true);
 
     /// Allows to manage focus and closing events
     virtual void controlEventFocusClosing(sf::Event &event);
@@ -519,6 +437,9 @@ protected:
         YES = 1,
         NO = 0
     };
+
+    /// Set message box data
+    void setMessageBoxData(bool mbYesNo);
 
     /// Update message box components
     void updateMsgBox(int sliderDirection = 0, bool rightSideValidation = false,

@@ -21,6 +21,19 @@
 
 #include "GameFunction.h"
 
+#if defined(IS_ENGINE_HTML_5)
+#include <emscripten.h>
+#include <emscripten/bind.h>
+
+// Allows to send C++ string vector in javascript code
+inline std::vector<std::string> *vectorFromIntPointer(uintptr_t vec) {
+  return reinterpret_cast<std::vector<std::string> *>(vec);
+}
+EMSCRIPTEN_BINDINGS(Wrappers) {
+  emscripten::register_vector<std::string>("VectorString").constructor(&vectorFromIntPointer, emscripten::allow_raw_pointers());
+};
+#endif
+
 namespace is
 {
 float const MAX_CLOCK_TIME = 0.018f;
@@ -108,13 +121,31 @@ float degToRad(float x)
     return static_cast<float>((x * 3.14159235f) / 180.f);
 }
 
-float lengthDirX(float dir, float angle)
+float lengthDirX(float dir, float angle, bool useScreenScale)
 {
+    if (useScreenScale)
+    {
+        if (static_cast<int>(is::IS_ENGINE_SDL_screenXScale) != 1)
+        {
+            float tempDir(dir);
+            dir += tempDir / is::IS_ENGINE_SDL_screenXScale;
+        }
+        return (dir * std::cos(degToRad(angle))) / is::IS_ENGINE_SDL_screenXScale;
+    }
     return dir * std::cos(degToRad(angle));
 }
 
-float lengthDirY(float dir, float angle)
+float lengthDirY(float dir, float angle, bool useScreenScale)
 {
+    if (useScreenScale)
+    {
+        if (static_cast<int>(is::IS_ENGINE_SDL_screenXScale) != 1)
+        {
+            float tempDir(dir);
+            dir += tempDir / is::IS_ENGINE_SDL_screenXScale;
+            return (dir * std::sin(degToRad(angle))) / is::IS_ENGINE_SDL_screenYScale;
+        }
+    }
     return dir * std::sin(degToRad(angle));
 }
 

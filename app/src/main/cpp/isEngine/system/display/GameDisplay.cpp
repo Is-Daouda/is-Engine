@@ -20,6 +20,7 @@
 */
 
 #include "GameDisplay.h"
+#include "../../../app_src/language/GameLanguage.h"
 
 namespace is
 {
@@ -28,33 +29,35 @@ sf::Vector2f getMapPixelToCoords(GameDisplay const *scene, sf::Vector2i pixelPos
     return scene->getRenderWindow().mapPixelToCoords(pixelPos, scene->getView());
 }
 
-GameDisplay::GameDisplay(GameSystemExtended &gameSysExt, sf::Color bgColor):
-    m_isClosed(false),
-    m_window(gameSysExt.m_window),
-    m_view(sf::Vector2f(is::GameConfig::VIEW_WIDTH / 2.f, is::GameConfig::VIEW_HEIGHT / 2.f), sf::Vector2f(is::GameConfig::VIEW_WIDTH, is::GameConfig::VIEW_HEIGHT)),
-    m_surface(gameSysExt.m_window),
-    m_gameSysExt(gameSysExt),
-    m_timeVibrateDuration(40),
-    m_optionIndex(0),
-    m_waitTime(0),
-    m_msgWaitTime(0),
-    m_sceneWidth(is::GameConfig::VIEW_WIDTH),
-    m_sceneHeight(is::GameConfig::VIEW_HEIGHT),
-    DELTA_TIME(0.f),
-    m_viewW(is::GameConfig::VIEW_WIDTH),
-    m_viewH(is::GameConfig::VIEW_HEIGHT),
-    m_viewX(m_viewW / 2.f),
-    m_viewY(m_viewH / 2.f),
-    m_sprButtonSelectScale(1.f),
-    m_isRunning(true),
-    m_windowIsActive(true),
-    m_isPlaying(true),
-    m_sceneStart(true),
-    m_sceneEnd(false),
-    m_keyBackPressed(false),
-    m_showMsg(false),
-    m_mbYesNo(false),
-    m_msgBoxMouseInCollison(false)
+GameDisplay::GameDisplay(GameSystemExtended &gameSysExt, sf::Color bgColor) :
+        m_isClosed(false),
+        m_window(gameSysExt.m_window),
+        m_view(sf::Vector2f(is::GameConfig::VIEW_WIDTH / 2.f,
+                            is::GameConfig::VIEW_HEIGHT / 2.f),
+               sf::Vector2f(is::GameConfig::VIEW_WIDTH, is::GameConfig::VIEW_HEIGHT)),
+        m_surface(gameSysExt.m_window),
+        m_gameSysExt(gameSysExt),
+        m_timeVibrateDuration(40),
+        m_optionIndex(0),
+        m_waitTime(0),
+        m_msgWaitTime(0),
+        m_sceneWidth(is::GameConfig::VIEW_WIDTH),
+        m_sceneHeight(is::GameConfig::VIEW_HEIGHT),
+        DELTA_TIME(0.f),
+        m_viewW(is::GameConfig::VIEW_WIDTH),
+        m_viewH(is::GameConfig::VIEW_HEIGHT),
+        m_viewX(m_viewW / 2.f),
+        m_viewY(m_viewH / 2.f),
+        m_sprButtonSelectScale(1.f),
+        m_isRunning(true),
+        m_windowIsActive(true),
+        m_isPlaying(true),
+        m_sceneStart(true),
+        m_sceneEnd(false),
+        m_keyBackPressed(false),
+        m_showMsg(false),
+        m_mbYesNo(false),
+        m_msgBoxMouseInCollison(false)
 {
     setViewSize(m_viewW, m_viewH);
     setView(m_viewX, m_viewY);
@@ -65,17 +68,14 @@ GameDisplay::~GameDisplay() {}
 
 void GameDisplay::setOptionIndex(int optionIndexValue, bool callWhenClick, float buttonScale)
 {
-    if (m_waitTime == 0)
-    {
+    if (m_waitTime == 0) {
         m_gameSysExt.useVibrate(m_timeVibrateDuration);
         GSMplaySound("change_option");
         m_sprButtonSelectScale = buttonScale;
-        if (!callWhenClick)
-        {
+        if (!callWhenClick) {
             m_optionIndex += optionIndexValue;
             m_gameSysExt.m_keyIsPressed = true;
-        }
-        else m_optionIndex = optionIndexValue;
+        } else m_optionIndex = optionIndexValue;
     }
 }
 
@@ -86,17 +86,16 @@ void GameDisplay::setOptionIndex(int optionIndexValue)
 
 void GameDisplay::setTextAnimation(sf::Text &txt, sf::Sprite &spr, int val)
 {
-    if (m_optionIndex == val)
-    {
+    if (m_optionIndex == val) {
         is::setSFMLObjX_Y(m_sprButtonSelect, is::getSFMLObjX(spr), is::getSFMLObjY(spr));
         is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_SELECTED_TEXT_COLOR);
-    }
-    else is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_TEXT_COLOR);
+    } else is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_TEXT_COLOR);
 }
 
 void GameDisplay::setTextAnimation(sf::Text &txt, int &var, int val)
 {
-    if (var == val) is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_SELECTED_TEXT_COLOR);
+    if (var == val)
+        is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_SELECTED_TEXT_COLOR);
     else is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_TEXT_COLOR);
 }
 
@@ -151,10 +150,9 @@ void GameDisplay::setViewSize(float x, float y)
 
 void GameDisplay::setWindowSize(sf::Vector2u v, bool updateViewSize)
 {
-    #if defined(__ANDROID__)
+#if defined(__ANDROID__)
     m_window.setSize(v);
-    if (updateViewSize)
-    {
+    if (updateViewSize) {
         m_viewW = v.x;
         m_viewH = v.y;
         m_viewX = m_viewW / 2.f;
@@ -164,7 +162,7 @@ void GameDisplay::setWindowSize(sf::Vector2u v, bool updateViewSize)
         m_window.setView(m_view);
         m_surface.setView(m_view);
     }
-    #endif // defined
+#endif // defined
 }
 
 void GameDisplay::setWindowTitle(const std::string &title)
@@ -181,14 +179,93 @@ void GameDisplay::controlEventFocusClosing(sf::Event &event)
 {
     // Manage the state of window
     if (event.type == sf::Event::GainedFocus) m_windowIsActive = true;
-    if (event.type == sf::Event::LostFocus)   m_windowIsActive = false;
+    if (event.type == sf::Event::LostFocus) m_windowIsActive = false;
 
     // Closing the application
-    if (event.type == sf::Event::Closed)
-    {
+    if (event.type == sf::Event::Closed) {
         m_isRunning = false;  // quit the main render loop
         m_window.close();
     }
+}
+
+void GameDisplay::showMessageBox(std::string const &msgBody, bool mbYesNo)
+{
+    setMessageBoxData(mbYesNo);
+    m_txtMsgBox.setString(msgBody);
+}
+
+void GameDisplay::showMessageBox(std::wstring const &msgBody, bool mbYesNo)
+{
+    setMessageBoxData(mbYesNo);
+    m_txtMsgBox.setString(msgBody);
+}
+
+void GameDisplay::setMessageBoxData(bool mbYesNo)
+{
+    m_showMsg = true;
+    m_mbYesNo = mbYesNo;
+    if (m_mbYesNo) m_msgAnswer = MsgAnswer::NO;
+    m_msgWaitTime = 0;
+    m_msgBoxMouseInCollison = false;
+    m_txtMsgBoxYes.setString(is::lang::pad_answer_yes[m_gameSysExt.m_gameLanguage]);
+    m_txtMsgBoxNo.setString(is::lang::pad_answer_no[m_gameSysExt.m_gameLanguage]);
+    m_txtMsgBoxOK.setString(is::lang::pad_answer_ok[m_gameSysExt.m_gameLanguage]);
+
+    centerSFMLObj(m_txtMsgBoxYes);
+    centerSFMLObj(m_txtMsgBoxNo);
+    centerSFMLObj(m_txtMsgBoxOK);
+    setView();
+    setSFMLObjX_Y(m_recMsgBox, sf::Vector2f(m_view.getCenter().x, m_view.getCenter().y));
+    setSFMLObjX_Y(m_sprMsgBox, sf::Vector2f(m_view.getCenter().x, m_view.getCenter().y));
+    const float dim(6.f),
+            boxXOrigin(is::getSFMLObjOriginX(m_sprMsgBox)),
+            boxYOrigin(is::getSFMLObjOriginY(m_sprMsgBox));
+    setSFMLObjX_Y(m_sprMsgBoxButton1,
+                  is::getSFMLObjX(m_sprMsgBox) - boxXOrigin +
+                  is::getSFMLObjOriginX(m_sprMsgBoxButton1) + dim,
+                  is::getSFMLObjY(m_sprMsgBox) + boxYOrigin -
+                  is::getSFMLObjHeight(m_sprMsgBoxButton1) + dim);
+    setSFMLObjX_Y(m_sprMsgBoxButton2,
+                  is::getSFMLObjX(m_sprMsgBox) + boxXOrigin -
+                  is::getSFMLObjOriginX(m_sprMsgBoxButton2) - dim,
+                  is::getSFMLObjY(m_sprMsgBox) + boxYOrigin -
+                  is::getSFMLObjHeight(m_sprMsgBoxButton2) + dim);
+    setSFMLObjX_Y(m_sprMsgBoxButton3,
+                  is::getSFMLObjX(m_sprMsgBox),
+                  is::getSFMLObjY(m_sprMsgBox) + boxYOrigin -
+                  is::getSFMLObjHeight(m_sprMsgBoxButton1) + dim);
+    setSFMLObjX_Y(m_txtMsgBox,
+                  is::getSFMLObjX(m_sprMsgBox) - boxXOrigin + 16.f,
+                  is::getSFMLObjY(m_sprMsgBox) - boxYOrigin + 8.f);
+
+    // Adjust the text on button
+    setSFMLObjX_Y(m_txtMsgBoxYes, is::getSFMLObjX(m_sprMsgBoxButton1),
+                  is::getSFMLObjY(m_sprMsgBoxButton1)
+#if defined(IS_ENGINE_SFML)
+            - is::getSFMLObjHeight(m_txtMsgBoxYes) / 4.f
+#endif
+    );
+    setSFMLObjX_Y(m_txtMsgBoxNo, is::getSFMLObjX(m_sprMsgBoxButton2),
+                  is::getSFMLObjY(m_sprMsgBoxButton2)
+#if defined(IS_ENGINE_SFML)
+            - is::getSFMLObjHeight(m_txtMsgBoxNo) / 4.f
+#endif
+    );
+    setSFMLObjX_Y(m_txtMsgBoxOK, is::getSFMLObjX(m_sprMsgBoxButton3),
+                  is::getSFMLObjY(m_sprMsgBoxButton3)
+#if defined(IS_ENGINE_SFML)
+            - is::getSFMLObjHeight(m_txtMsgBoxOK) / 4.f
+#endif
+    );
+
+    is::setSFMLObjAlpha(m_sprMsgBoxButton1, m_msgWaitTime);
+    is::setSFMLObjAlpha(m_sprMsgBoxButton2, m_msgWaitTime);
+    is::setSFMLObjAlpha(m_sprMsgBoxButton3, m_msgWaitTime);
+    is::setSFMLObjAlpha(m_sprMsgBox, m_msgWaitTime);
+    is::setSFMLObjAlpha2(m_txtMsgBoxNo, m_msgWaitTime);
+    is::setSFMLObjAlpha2(m_txtMsgBoxYes, m_msgWaitTime);
+    is::setSFMLObjAlpha2(m_txtMsgBoxOK, m_msgWaitTime);
+    is::setSFMLObjAlpha2(m_txtMsgBox, m_msgWaitTime);
 }
 
 void GameDisplay::updateMsgBox(int sliderDirection, bool rightSideValidation,
@@ -461,13 +538,16 @@ void GameDisplay::loadParentResources()
     // Load font
     auto &fontSystem = GRMgetFont("font_system");
 
-    is::createText(fontSystem, m_txtMsgBox, "", 0.f, 0.f, 20);
+    is::createText(fontSystem, m_txtMsgBox, "", 0.f, 0.f, is::GameConfig::DEFAULT_MSG_BOX_TEXT_SIZE);
+#if defined(IS_ENGINE_SDL_2)
+    m_txtMsgBox.m_SDLaddTextRecWSize += 32;
+#endif
     is::createText(fontSystem, m_txtMsgBoxYes, is::lang::pad_answer_yes[m_gameSysExt.m_gameLanguage],
-                   0.f, 0.f, true, 18);
+                   0.f, 0.f, true, is::GameConfig::DEFAULT_MSG_BOX_BUTTON_TEXT_SIZE);
     is::createText(fontSystem, m_txtMsgBoxNo, is::lang::pad_answer_no[m_gameSysExt.m_gameLanguage],
-                   0.f, 0.f, true, 18);
+                   0.f, 0.f, true, is::GameConfig::DEFAULT_MSG_BOX_BUTTON_TEXT_SIZE);
     is::createText(fontSystem, m_txtMsgBoxOK, is::lang::pad_answer_ok[m_gameSysExt.m_gameLanguage],
-                   0.f, 0.f, true, 18);
+                   0.f, 0.f, true, is::GameConfig::DEFAULT_MSG_BOX_BUTTON_TEXT_SIZE);
 
     is::createSprite(GRMgetTexture("temp_loading"), m_sprLoading, sf::Vector2f(m_viewX, m_viewY), sf::Vector2f(320.f, 240.f));
 }
@@ -599,6 +679,34 @@ void GameDisplay::SDMmanageScene()
                 if (!m_showMsg) SDMmanageSceneMsgAnswers();
             }
         }
+    }
+}
+
+void GameDisplay::SDMmanageSceneEvents()
+{
+    sf::Event event;
+    while (m_window.pollEvent(event)) // even loop
+    {
+        controlEventFocusClosing(event);
+        if (m_gameSysExt.keyIsPressed(is::GameConfig::KEY_CANCEL))
+        {
+            if (!m_showMsg) showMessageBox(is::lang::msg_quit_game[m_gameSysExt.m_gameLanguage]);
+            else if (m_msgWaitTime == 255) /* Allows to close the message box with the Cancel key when it is visible*/ m_keyBackPressed = true;
+        }
+        SDMcallObjectsEvents(event);
+    }
+}
+
+void GameDisplay::SDMmanageSceneMsgAnswers()
+{
+    if (m_msgAnswer == MsgAnswer::YES) // if answers is YES close application
+    {
+        m_window.close();
+        m_isRunning = false;
+    }
+    else // if answers is NO continue execution
+    {
+        m_waitTime = 20;
     }
 }
 

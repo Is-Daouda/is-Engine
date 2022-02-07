@@ -3,6 +3,7 @@
 
 #include <cstring>
 #include "../../../isEngine/system/display/GameDisplay.h"
+#include "../../language/GameLanguage.h"
 
 ////////////////////////////////////////////////////////////
 /// \brief Displays and manages game dialogs

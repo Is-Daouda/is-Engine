@@ -35,6 +35,8 @@ float IS_ENGINE_SDL_screenYScale(1.f);
 short IS_ENGINE_SDL_channel[IS_ENGINE_SDL_CHANNEL_MAX] = {-1};
 
 TouchData IS_ENGINE_SDL_touchData[IS_ENGINE_SDL_TOUCH_ID_COUNT_MAX];
+bool IS_ENGINE_SDL_enableFINGERMOTION = true;
+short IS_ENGINE_SDL_touchIdLast = 0;
 short IS_ENGINE_SDL_touchIdCount = 0;
 
 std::vector<sf::Font*> IS_ENGINE_SDL_AUTO_GENERATE_FONT;
@@ -1118,21 +1120,27 @@ bool RenderWindow::pollEvent(Event &event)
                     is::IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / is::IS_ENGINE_SDL_screenYScale;
                     is::IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchDown = true;
                     is::IS_ENGINE_SDL_touchIdCount++;
+                    if (is::IS_ENGINE_SDL_touchIdCount == 2) is::IS_ENGINE_SDL_touchIdLast = tempTouchId;
                 }
             }
             break;
 
             case SDL_FINGERMOTION:
             {
-                if (is::IS_ENGINE_SDL_touchIdCount == 1)
+                if (is::IS_ENGINE_SDL_enableFINGERMOTION)
                 {
-                    is::IS_ENGINE_SDL_touchData[0].m_SDLtouchX = (event.m_event.tfinger.x * is::IS_ENGINE_SDL_displayMode.w) / is::IS_ENGINE_SDL_screenXScale;
-                    is::IS_ENGINE_SDL_touchData[0].m_SDLtouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / is::IS_ENGINE_SDL_screenYScale;
-                }
-                if (is::IS_ENGINE_SDL_touchIdCount == 2)
-                {
-                    is::IS_ENGINE_SDL_touchData[1].m_SDLtouchX = (event.m_event.tfinger.x * is::IS_ENGINE_SDL_displayMode.w) / is::IS_ENGINE_SDL_screenXScale;
-                    is::IS_ENGINE_SDL_touchData[1].m_SDLtouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / is::IS_ENGINE_SDL_screenYScale;
+                    if (is::IS_ENGINE_SDL_touchIdCount == 1)
+                    {
+                        int tempTouchId = 0;
+                        if (is::IS_ENGINE_SDL_touchData[1].m_SDLtouchDown && !is::IS_ENGINE_SDL_touchData[0].m_SDLtouchDown) tempTouchId = 1;
+                        is::IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchX = (event.m_event.tfinger.x * is::IS_ENGINE_SDL_displayMode.w) / is::IS_ENGINE_SDL_screenXScale;
+                        is::IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / is::IS_ENGINE_SDL_screenYScale;
+                    }
+                    if (is::IS_ENGINE_SDL_touchIdCount == 2)
+                    {
+                        is::IS_ENGINE_SDL_touchData[is::IS_ENGINE_SDL_touchIdLast].m_SDLtouchX = (event.m_event.tfinger.x * is::IS_ENGINE_SDL_displayMode.w) / is::IS_ENGINE_SDL_screenXScale;
+                        is::IS_ENGINE_SDL_touchData[is::IS_ENGINE_SDL_touchIdLast].m_SDLtouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / is::IS_ENGINE_SDL_screenYScale;
+                    }
                 }
             }
             break;
@@ -1141,33 +1149,22 @@ bool RenderWindow::pollEvent(Event &event)
             {
                 if (is::IS_ENGINE_SDL_touchIdCount > 0)
                 {
-                    is::IS_ENGINE_SDL_touchIdCount--;
                     int releaseTouchX = (event.m_event.tfinger.x * is::IS_ENGINE_SDL_displayMode.w) / is::IS_ENGINE_SDL_screenXScale;
                     int releaseTouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / is::IS_ENGINE_SDL_screenYScale;
 
-                    int nearTouchId = -1;
-                    for (int i(0); i < is::IS_ENGINE_SDL_TOUCH_ID_COUNT_MAX; i++)
+                    int nearTouchId = 0;
+                    if (is::IS_ENGINE_SDL_touchIdCount == 2)
                     {
-                        if (is::IS_ENGINE_SDL_touchData[i].m_SDLtouchDown)
-                        {
-                            if (is::pointDistance(releaseTouchX, releaseTouchY,
-                                                  is::IS_ENGINE_SDL_touchData[i].m_SDLtouchX, is::IS_ENGINE_SDL_touchData[i].m_SDLtouchY) < 16) nearTouchId = i;
-                        }
+                        float disTouch0 = is::pointDistance(releaseTouchX, releaseTouchY, is::IS_ENGINE_SDL_touchData[0].m_SDLtouchX, is::IS_ENGINE_SDL_touchData[0].m_SDLtouchY);
+                        float disTouch1 = is::pointDistance(releaseTouchX, releaseTouchY, is::IS_ENGINE_SDL_touchData[1].m_SDLtouchX, is::IS_ENGINE_SDL_touchData[1].m_SDLtouchY);
+                        nearTouchId = ((disTouch0 > disTouch1) ? 1 : 0);
                     }
-                    if (nearTouchId == -1)
-                    {
-                        if (is::IS_ENGINE_SDL_touchData[0].m_SDLtouchDown && is::IS_ENGINE_SDL_touchData[1].m_SDLtouchDown)
-                        {
-                            float disTouch0 = is::pointDistance(releaseTouchX, releaseTouchY, is::IS_ENGINE_SDL_touchData[0].m_SDLtouchX, is::IS_ENGINE_SDL_touchData[0].m_SDLtouchY);
-                            float disTouch1 = is::pointDistance(releaseTouchX, releaseTouchY, is::IS_ENGINE_SDL_touchData[1].m_SDLtouchX, is::IS_ENGINE_SDL_touchData[1].m_SDLtouchY);
-                            nearTouchId = ((disTouch0 > disTouch1) ? 1 : 0);
-                        }
-                        else if (is::IS_ENGINE_SDL_touchData[0].m_SDLtouchDown && !is::IS_ENGINE_SDL_touchData[1].m_SDLtouchDown) nearTouchId = 0;
-                        else nearTouchId = 1;
-                    }
+                    else if (is::IS_ENGINE_SDL_touchData[1].m_SDLtouchDown) nearTouchId = 1;
+
                     is::IS_ENGINE_SDL_touchData[nearTouchId].m_SDLtouchX = 0;
                     is::IS_ENGINE_SDL_touchData[nearTouchId].m_SDLtouchY = 0;
                     is::IS_ENGINE_SDL_touchData[nearTouchId].m_SDLtouchDown = false;
+                    is::IS_ENGINE_SDL_touchIdCount--;
                 }
             }
             break;

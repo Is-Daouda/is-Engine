@@ -22,7 +22,7 @@
 #ifndef GAMETIME_H_INCLUDED
 #define GAMETIME_H_INCLUDED
 
-#include "GameFunction.h"
+#include <string>
 
 namespace is
 {

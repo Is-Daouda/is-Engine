@@ -36,7 +36,7 @@
 //////////////////////////////////////////////////////
 #define IS_ENGINE_VERSION_MAJOR 3
 #define IS_ENGINE_VERSION_MINOR 3
-#define IS_ENGINE_VERSION_PATCH 7
+#define IS_ENGINE_VERSION_PATCH 8
 
 namespace is
 {
@@ -121,16 +121,10 @@ public:
     static void removeFile(std::string const &fileName);
 
     /// Allows to play a sound if the option is activated
-    virtual void playSound(sf::Sound &obj)
-    {
-        if (m_enableSound) is::playSFMLSnd(obj);
-    }
+    virtual void playSound(sf::Sound &obj);
 
     /// Allows to play a sound if the option is activated
-    virtual void playSound(sf::Sound *obj)
-    {
-        if (m_enableSound) is::playSFMLSnd(obj);
-    }
+    virtual void playSound(sf::Sound *obj);
 
     /// Allows to play sound in container by his name if the option is activated
     virtual void GSMplaySound(const std::string& name)
@@ -139,16 +133,10 @@ public:
     }
 
     /// Allows to play a music if the option is activated
-    virtual void playMusic(sf::Music &obj)
-    {
-        if (m_enableMusic) is::playSFMLSnd(obj);
-    }
+    virtual void playMusic(sf::Music &obj);
 
     /// Allows to play a music if the option is activated
-    virtual void playMusic(sf::Music *obj)
-    {
-        if (m_enableMusic) is::playSFMLSnd(obj);
-    }
+    virtual void playMusic(sf::Music *obj);
 
     /// Allows to play music in container by his name if the option is activated
     virtual void GSMplayMusic(const std::string& name)
@@ -163,22 +151,10 @@ public:
     }
 
     /// Allows to stop a sound
-    virtual void stopSound(sf::Sound &obj)
-    {
-        if (m_enableSound)
-        {
-            if (is::checkSFMLSndState(obj, SFMLSndStatus::Playing)) is::stopSFMLSnd(obj);
-        }
-    }
+    virtual void stopSound(sf::Sound &obj);
 
     /// Allows to stop a music
-    virtual void stopMusic(sf::Music &obj)
-    {
-        if (m_enableMusic)
-        {
-            if (is::checkSFMLSndState(obj, SFMLSndStatus::Playing)) is::stopSFMLSnd(obj);
-        }
-    }
+    virtual void stopMusic(sf::Music &obj);
 
 ////////////////////////////////////////////////////////////
 /// These methods below have the same role as those above.

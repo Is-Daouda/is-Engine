@@ -205,10 +205,12 @@ float radToDeg(float x);
 float degToRad(float x);
 
 /// Return x component of the vector
-float lengthDirX(float dir, float angle);
+/// \param useScreenScale allows to take into account the scale of the screen during calculations
+float lengthDirX(float dir, float angle, bool useScreenScale = false);
 
 /// Return y component of the vector
-float lengthDirY(float dir, float angle);
+/// \param useScreenScale allows to take into account the scale of the screen during calculations
+float lengthDirY(float dir, float angle, bool useScreenScale = false);
 
 /// Allows to increment a variable while controlling the upper limit
 /// \param increaseValue Will be multiplied later by @a is::VALUE_CONVERSION

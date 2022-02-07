@@ -22,6 +22,8 @@
 #ifndef GAMEKEYNAME_H_INCLUDED
 #define GAMEKEYNAME_H_INCLUDED
 
+#include "../islibconnect/isLibConnect.h"
+
 namespace is
 {
 ////////////////////////////////////////////////////////////

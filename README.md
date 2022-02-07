@@ -1,7 +1,7 @@
 ![header](./images/is_Engine_logo.png)
 ----------------------------
 
-# is::Engine (Infinity Solutions::Engine) 3.3.7
+# is::Engine (Infinity Solutions::Engine) 3.3.8
 Open source C++ framework which uses the mechanisms of **SFML 2** and which also allows to develop with several libraries at the same time **(SDL 2, Emscripten)** in order to easily export your games / applications on the **Web (HTML 5), Android** and **PC (Windows, Linux)**.
 
 ## Contents
@@ -61,11 +61,17 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
+- [Android] Now you can enable / disable the FINGER MOTION event thanks to the **IS_ENGINE_SDL_enableFINGERMOTION** variable.
+- Possibility to define [the size of the texts of the Message Box, RPG Dialog Box and that of the buttons](./app/src/main/cpp/app_src/config/GameConfig.h#L89).
+- Compilation time has been optimized when you change the game engine language.
+- Now the [lengthDirX()](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L209) and [lengthDirY](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L212) functions take into account the screen scale during calculations.
+
+## Previous version
+### 3.3.7
 - Adding **[GRMuseGameSystemResources()](./app/src/main/cpp/isEngine/system/display/GameDisplay.h#L406)** function.
 - [Android] Possibility to change the color of Virtual Game Pad thank to **[loadResources()](./app/src/main/cpp/isEngine/system/function/GameKeyData.h#L83)** function.
 - [Android] Finger motion bug fixed.
 
-## Previous version
 ### 3.3.6
 - [Android] Support for the sf::Music class
 - Bugs fixed

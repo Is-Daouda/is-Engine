@@ -55,7 +55,7 @@ public:
     /// Return the instance number
     static int instanceNumber;
 
-    #if defined(IS_ENGINE_USE_SDM)
+#if defined(IS_ENGINE_USE_SDM)
     /// on SDL it allows to blit sprites.
     /// Also prevents the object's sprite from being drawn outside the view (works on SDL and SFML).
     std::string m_SDMblitSprTextureName = "";
@@ -80,7 +80,7 @@ public:
     {
         is::showLog("WARNING: MainObject event called in object <" + m_strName + ">! This method must be overloaded!");
     }
-    #endif
+#endif
 
     /// Set x initial position
     virtual void setXStart(float x);

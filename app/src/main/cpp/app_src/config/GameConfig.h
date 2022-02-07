@@ -79,8 +79,12 @@ namespace GameConfig
     static const int        DEFAULT_SFML_TEXT_SIZE                 = 20;
     static const sf::Color &DEFAULT_SFML_TEXT_COLOR                = sf::Color::Blue;
     static const sf::Color &DEFAULT_SFML_SELECTED_TEXT_COLOR       = sf::Color::White;
+    static const int        DEFAULT_MSG_BOX_TEXT_SIZE              = 20;
+    static const int        DEFAULT_MSG_BOX_BUTTON_TEXT_SIZE       = 18;
     static const sf::Color &DEFAULT_MSG_BOX_TEXT_COLOR             = sf::Color::White;
     static const sf::Color &DEFAULT_MSG_BOX_SELECTED_TEXT_COLOR    = sf::Color::Red;
+    static const int        DEFAULT_RPG_DIALOG_TEXT_SIZE           = 16;
+    static const int        DEFAULT_RPG_DIALOG_BUTTON_TEXT_SIZE    = 13;
     static const sf::Color &DEFAULT_RPG_DIALOG_TEXT_COLOR          = sf::Color::White;
     static const sf::Color &DEFAULT_RPG_DIALOG_SELECTED_TEXT_COLOR = sf::Color::Blue;
     static const sf::Color &DEFAULT_BUTTON_TEXT_COLOR              = sf::Color::White;

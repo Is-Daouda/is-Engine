@@ -101,6 +101,42 @@ void GameSystem::removeFile(std::string const &fileName)
 #endif
 }
 
+void GameSystem::playSound(sf::Sound &obj)
+{
+    if (m_enableSound) is::playSFMLSnd(obj);
+}
+
+void GameSystem::playSound(sf::Sound *obj)
+{
+    if (m_enableSound) is::playSFMLSnd(obj);
+}
+
+void GameSystem::playMusic(sf::Music &obj)
+{
+    if (m_enableMusic) is::playSFMLSnd(obj);
+}
+
+void GameSystem::playMusic(sf::Music *obj)
+{
+    if (m_enableMusic) is::playSFMLSnd(obj);
+}
+
+void GameSystem::stopSound(sf::Sound &obj)
+{
+    if (m_enableSound)
+    {
+        if (is::checkSFMLSndState(obj, SFMLSndStatus::Playing)) is::stopSFMLSnd(obj);
+    }
+}
+
+void GameSystem::stopMusic(sf::Music &obj)
+{
+    if (m_enableMusic)
+    {
+        if (is::checkSFMLSndState(obj, SFMLSndStatus::Playing)) is::stopSFMLSnd(obj);
+    }
+}
+
 void GameSystem::useVibrate(short ms)
 {
     if (m_enableVibrate) is::vibrate(ms);
