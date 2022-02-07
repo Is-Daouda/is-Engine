@@ -63,7 +63,7 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 ## What's new in this version
 - [Android] Now you can enable / disable the FINGER MOTION event thanks to the **IS_ENGINE_SDL_enableFINGERMOTION** variable.
 - Possibility to define [the size of the texts of the Message Box, RPG Dialog Box and that of the buttons](./app/src/main/cpp/app_src/config/GameConfig.h#L82).
-- Compilation time has been optimized when you change the game engine language.
+- Compilation time has been optimized when you change [the game engine language](./app/src/main/cpp/app_src/language/GameLanguage.h).
 - Now the [lengthDirX()](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L209) and [lengthDirY](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L213) functions take into account the screen scale during calculations.
 
 ## Previous version
