@@ -334,7 +334,7 @@ mkdir bin-web
 cd bin-web
 emsdk activate latest
 emcmake cmake ..
-make
+make -j3
 python -m http.server
 ```
 7. Visit this url **localhost:8000** in your **Web Browser**.

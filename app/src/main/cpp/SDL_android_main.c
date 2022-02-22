@@ -1,3 +1,4 @@
+#if !defined(IS_ENGINE_VS_CODE)
 /*
     SDL_android_main.c, placed in the public domain by Sam Lantinga  3/13/14
 */
@@ -81,3 +82,4 @@ JNIEXPORT int JNICALL Java_com_author_isengine_SDLActivity_nativeInit(JNIEnv* en
 #endif /* __ANDROID__ */
 
 /* vi: set ts=4 sw=4 expandtab: */
+#endif /* IS_ENGINE_VS_CODE */

@@ -123,6 +123,7 @@ float degToRad(float x)
 
 float lengthDirX(float dir, float angle, bool useScreenScale)
 {
+#if defined(IS_ENGINE_SDL_2)
     if (useScreenScale)
     {
         if (static_cast<int>(is::IS_ENGINE_SDL_screenXScale) != 1)
@@ -132,11 +133,13 @@ float lengthDirX(float dir, float angle, bool useScreenScale)
         }
         return (dir * std::cos(degToRad(angle))) / is::IS_ENGINE_SDL_screenXScale;
     }
+#endif
     return dir * std::cos(degToRad(angle));
 }
 
 float lengthDirY(float dir, float angle, bool useScreenScale)
 {
+#if defined(IS_ENGINE_SDL_2)
     if (useScreenScale)
     {
         if (static_cast<int>(is::IS_ENGINE_SDL_screenXScale) != 1)
@@ -146,6 +149,7 @@ float lengthDirY(float dir, float angle, bool useScreenScale)
             return (dir * std::sin(degToRad(angle))) / is::IS_ENGINE_SDL_screenYScale;
         }
     }
+#endif
     return dir * std::sin(degToRad(angle));
 }
 
