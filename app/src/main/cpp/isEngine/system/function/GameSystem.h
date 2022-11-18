@@ -29,14 +29,14 @@
 #if defined(IS_ENGINE_USE_ADMOB)
 #include "../android/AdmobManager.h"
 #endif
-#endif // defined
+#endif
 
 //////////////////////////////////////////////////////
 // is::Engine version
 //////////////////////////////////////////////////////
 #define IS_ENGINE_VERSION_MAJOR 3
 #define IS_ENGINE_VERSION_MINOR 3
-#define IS_ENGINE_VERSION_PATCH 8
+#define IS_ENGINE_VERSION_PATCH 9
 
 namespace is
 {
@@ -88,7 +88,7 @@ public:
                    int finger = 0
                    #else
                    ValidationButton validationButton = ALL_BUTTONS
-                   #endif // defined
+                   #endif
                    ) const;
 
     //////////////////////////////////////////////////////

@@ -33,7 +33,7 @@
 #include "parents/Destructible.h"
 #include "parents/DepthObject.h"
 #include "parents/Visibilty.h"
-#endif // defined
+#endif
 
 namespace is
 {
@@ -43,7 +43,7 @@ namespace is
 class MainObject : public Name
 #if defined(IS_ENGINE_USE_SDM)
                  , public Destructible, public DepthObject, public is::Visibility
-#endif // defined
+#endif
 {
 public:
     explicit MainObject();
@@ -478,7 +478,7 @@ void sortObjArrayByDepth(std::list<std::shared_ptr<T>> &v)
 {
     v.sort(is::CompareDepth());
 }
-#endif // defined
+#endif
 }
 
 #endif // MAINOBJECT_H_INCLUDED

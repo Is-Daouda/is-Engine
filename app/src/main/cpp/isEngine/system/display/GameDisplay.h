@@ -28,7 +28,7 @@
 #include "SDM.h"
 #else
 #include "../entity/MainObject.h"
-#endif // defined
+#endif
 
 #include "../sound/GSM.h"
 #include "../graphic/GRM.h"
@@ -47,7 +47,7 @@ class GameDisplay
     : public SDM, public GSM, public GRM
 #else
     : public GSM, public GRM
-#endif // defined
+#endif
 {
 public:
     bool m_isClosed;
@@ -75,7 +75,7 @@ public:
     {
         SDMmanageScene(); // Let SDM manage the scene
     }
-    #endif // defined
+    #endif
 
     ////////////////////////////////////////////////////////////
     /// \brief Method to implement drawing code
@@ -107,9 +107,6 @@ public:
 
     /// Allows to animate SFML text and sprite in relation to a option
     virtual void setTextAnimation(sf::Text &txt, sf::Sprite &spr, int val);
-
-    /// Allows to animate SFML text in relation to a option
-    virtual void setTextAnimation(sf::Text &txt, int &var, int val);
 
     /// Set sprButtonSelectScale
     virtual void setSprButtonSelectScale(float val);
@@ -162,6 +159,9 @@ public:
     /// Allows access to another scene. If no scene is entered the application stops.
     virtual void quitScene(int nextScene = -1);
 
+    /// Set wait time
+    virtual void setWaitTime(int val);
+
     /// Set scene start
     virtual void setSceneStart(bool val);
 
@@ -170,6 +170,9 @@ public:
 
     /// Set key back (CANCEL) state
     virtual void setKeyBackPressed(bool val);
+
+    /// Set mouse in collision
+    virtual void setMouseInCollision();
 
     /// Check if scene is running
     virtual bool getIsRunning() const;
@@ -191,6 +194,12 @@ public:
 
     /// Return scene view
     virtual const sf::View& getView() const noexcept {return m_view;}
+
+    /// Return current mouse position
+    virtual sf::Vector2f& getMousePosCurrent() {return m_mousePosCurrent;}
+
+    /// Return previous mouse position
+    virtual sf::Vector2f& getMousePosPrevious() {return m_mousePosPrevious;}
 
     /// Return render window
     virtual sf::RenderWindow& getRenderWindow() const {return m_window;}
@@ -250,8 +259,14 @@ public:
     virtual sf::Vector2f getCursor(
                                     #if defined(__ANDROID__)
                                     unsigned int finger = 0
-                                    #endif // defined
+                                    #endif
                                    ) const;
+
+    /// Get mouse in collision
+    bool getMouseInCollision() {return m_mouseInCollision;}
+
+    /// Check if mouse current position is equal to previous position
+    bool getMouseCurrentEqualToPrevious();
 
     /// Return the scene background color
     virtual sf::Color& getBgColor() {return m_windowBgColor;}
@@ -273,7 +288,7 @@ public:
     bool mouseCollision(T const &obj
                         #if defined(__ANDROID__)
                         , unsigned int finger = 0
-                        #endif // defined
+                        #endif
                         )
     {
         return is::mouseCollision(m_window, obj
@@ -295,7 +310,7 @@ public:
     bool mouseCollision(T const &obj, sf::Vector2f &position
                         #if defined(__ANDROID__)
                         , unsigned int finger = 0
-                        #endif // defined
+                        #endif
                         )
     {
         return is::mouseCollision(m_window, obj, position
@@ -329,7 +344,7 @@ public:
     /// Allows to create a sprite by associating a texture to it.
     /// It is also used to blit sprites but only works with SDL.
     virtual void createSprite(std::string const &spriteName, is::MainObject &obj, sf::IntRect rec, sf::Vector2f position, sf::Vector2f origin, sf::Vector2f scale = sf::Vector2f(1.f, 1.f), unsigned int alpha = 255);
-    #endif // defined
+    #endif
 
     /// Allows to play sound in container by his name if the option is activated
     virtual void GSMplaySound(const std::string& name)
@@ -438,6 +453,9 @@ protected:
         NO = 0
     };
 
+    /// Set Message box components position
+    void setWidgetsPosition();
+
     /// Set message box data
     void setMessageBoxData(bool mbYesNo);
 
@@ -454,6 +472,7 @@ protected:
 
     sf::RenderWindow &m_window;
     sf::View m_view;
+    sf::Vector2f m_mousePosPrevious, m_mousePosCurrent;
 
     is::Render &m_surface;
     GameSystemExtended &m_gameSysExt;
@@ -475,7 +494,7 @@ protected:
     bool m_windowIsActive;
     bool m_isPlaying, m_sceneStart, m_sceneEnd;
     bool m_keyBackPressed;
-    bool m_showMsg, m_mbYesNo, m_msgBoxMouseInCollison;
+    bool m_showMsg, m_mbYesNo, m_msgBoxMouseInCollison, m_mouseInCollision;
 
     sf::Sprite m_sprMsgBox, m_sprMsgBoxButton1, m_sprMsgBoxButton2, m_sprMsgBoxButton3;
     sf::Sprite m_sprLoading;

@@ -135,7 +135,7 @@ public:
                             1.1f;
                             #else
                             0.92f;
-                            #endif // defined
+                            #endif
             m_isInCollision = true;
         }
         is::setSFMLObjTexRec(m_sprParent, ((m_isInCollision) ? 1 : 0) * m_w, 0, m_w, m_h);
@@ -148,7 +148,7 @@ public:
         #else
         }
         is::scaleAnimation(DELTA_TIME, m_imageScale, m_sprParent);
-        #endif // defined
+        #endif
         updateSprite(m_x, m_y, m_imageAngle, m_imageAlpha, m_imageScale, m_imageScale, m_xOffset, m_yOffset);
         is::setSFMLObjProperties(m_txtTitle, is::getSFMLObjX(m_sprParent),
                                  is::getSFMLObjY(m_sprParent)

@@ -57,7 +57,8 @@ GameDisplay::GameDisplay(GameSystemExtended &gameSysExt, sf::Color bgColor) :
         m_keyBackPressed(false),
         m_showMsg(false),
         m_mbYesNo(false),
-        m_msgBoxMouseInCollison(false)
+        m_msgBoxMouseInCollison(false),
+        m_mouseInCollision(false)
 {
     setViewSize(m_viewW, m_viewH);
     setView(m_viewX, m_viewY);
@@ -86,16 +87,11 @@ void GameDisplay::setOptionIndex(int optionIndexValue)
 
 void GameDisplay::setTextAnimation(sf::Text &txt, sf::Sprite &spr, int val)
 {
-    if (m_optionIndex == val) {
+    if (m_optionIndex == val)
+    {
         is::setSFMLObjX_Y(m_sprButtonSelect, is::getSFMLObjX(spr), is::getSFMLObjY(spr));
         is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_SELECTED_TEXT_COLOR);
-    } else is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_TEXT_COLOR);
-}
-
-void GameDisplay::setTextAnimation(sf::Text &txt, int &var, int val)
-{
-    if (var == val)
-        is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_SELECTED_TEXT_COLOR);
+    }
     else is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_TEXT_COLOR);
 }
 
@@ -162,7 +158,7 @@ void GameDisplay::setWindowSize(sf::Vector2u v, bool updateViewSize)
         m_window.setView(m_view);
         m_surface.setView(m_view);
     }
-#endif // defined
+#endif
 }
 
 void GameDisplay::setWindowTitle(const std::string &title)
@@ -182,7 +178,8 @@ void GameDisplay::controlEventFocusClosing(sf::Event &event)
     if (event.type == sf::Event::LostFocus) m_windowIsActive = false;
 
     // Closing the application
-    if (event.type == sf::Event::Closed) {
+    if (event.type == sf::Event::Closed)
+    {
         m_isRunning = false;  // quit the main render loop
         m_window.close();
     }
@@ -200,21 +197,8 @@ void GameDisplay::showMessageBox(std::wstring const &msgBody, bool mbYesNo)
     m_txtMsgBox.setString(msgBody);
 }
 
-void GameDisplay::setMessageBoxData(bool mbYesNo)
+void GameDisplay::setWidgetsPosition()
 {
-    m_showMsg = true;
-    m_mbYesNo = mbYesNo;
-    if (m_mbYesNo) m_msgAnswer = MsgAnswer::NO;
-    m_msgWaitTime = 0;
-    m_msgBoxMouseInCollison = false;
-    m_txtMsgBoxYes.setString(is::lang::pad_answer_yes[m_gameSysExt.m_gameLanguage]);
-    m_txtMsgBoxNo.setString(is::lang::pad_answer_no[m_gameSysExt.m_gameLanguage]);
-    m_txtMsgBoxOK.setString(is::lang::pad_answer_ok[m_gameSysExt.m_gameLanguage]);
-
-    centerSFMLObj(m_txtMsgBoxYes);
-    centerSFMLObj(m_txtMsgBoxNo);
-    centerSFMLObj(m_txtMsgBoxOK);
-    setView();
     setSFMLObjX_Y(m_recMsgBox, sf::Vector2f(m_view.getCenter().x, m_view.getCenter().y));
     setSFMLObjX_Y(m_sprMsgBox, sf::Vector2f(m_view.getCenter().x, m_view.getCenter().y));
     const float dim(6.f),
@@ -257,6 +241,25 @@ void GameDisplay::setMessageBoxData(bool mbYesNo)
             - is::getSFMLObjHeight(m_txtMsgBoxOK) / 4.f
 #endif
     );
+}
+
+void GameDisplay::setMessageBoxData(bool mbYesNo)
+{
+    m_showMsg = true;
+    m_mbYesNo = mbYesNo;
+    if (m_mbYesNo) m_msgAnswer = MsgAnswer::NO;
+    m_msgWaitTime = 0;
+    m_msgBoxMouseInCollison = false;
+    m_txtMsgBoxYes.setString(is::lang::pad_answer_yes[m_gameSysExt.m_gameLanguage]);
+    m_txtMsgBoxNo.setString(is::lang::pad_answer_no[m_gameSysExt.m_gameLanguage]);
+    m_txtMsgBoxOK.setString(is::lang::pad_answer_ok[m_gameSysExt.m_gameLanguage]);
+
+    centerSFMLObj(m_txtMsgBoxYes);
+    centerSFMLObj(m_txtMsgBoxNo);
+    centerSFMLObj(m_txtMsgBoxOK);
+    setView();
+
+    setWidgetsPosition();
 
     is::setSFMLObjAlpha(m_sprMsgBoxButton1, m_msgWaitTime);
     is::setSFMLObjAlpha(m_sprMsgBoxButton2, m_msgWaitTime);
@@ -276,11 +279,11 @@ void GameDisplay::updateMsgBox(int sliderDirection, bool rightSideValidation,
     if (!m_gameSysExt.isPressed()) m_gameSysExt.m_keyIsPressed = false;
 
     // Check collision with all objects of message box
-    if (!mouseCollision(m_sprMsgBoxButton1) &&
-        !mouseCollision(m_sprMsgBoxButton2) &&
-        !mouseCollision(m_sprMsgBoxButton3))
-         m_msgBoxMouseInCollison = false;
-     else m_msgBoxMouseInCollison = true;
+    if (mouseCollision(m_sprMsgBoxButton1, m_mousePosCurrent) ||
+        mouseCollision(m_sprMsgBoxButton2, m_mousePosCurrent) ||
+        mouseCollision(m_sprMsgBoxButton3))
+        m_msgBoxMouseInCollison = true;
+    else m_msgBoxMouseInCollison = false;
 
     /*
      * sliderDirection is the enum variable found in is::GameSlider. It was not called from the instance
@@ -308,26 +311,27 @@ void GameDisplay::updateMsgBox(int sliderDirection, bool rightSideValidation,
         // If it's YES / NO message box
         if (m_mbYesNo)
         {
-            if (((m_gameSysExt.keyIsPressed(is::GameConfig::KEY_LEFT) &&
-                  !mouseCollision(m_sprMsgBoxButton2)) || (sliderDirection == 4) ||
-                  mouseCollision(m_sprMsgBoxButton1)) && m_msgAnswer == MsgAnswer::NO)
+            if ((m_gameSysExt.keyIsPressed(is::GameConfig::KEY_LEFT) || (sliderDirection == 4) ||
+                 (mouseCollision(m_sprMsgBoxButton1, m_mousePosCurrent) && m_mousePosPrevious != m_mousePosCurrent)) &&
+                m_msgAnswer != MsgAnswer::YES)
             {
+                if (m_msgBoxMouseInCollison) m_mousePosPrevious = m_mousePosCurrent;
                 m_gameSysExt.useVibrate(m_timeVibrateDuration);
                 GSMplaySound("change_option");
                 m_msgAnswer = MsgAnswer::YES; // answer = yes
             }
-            else if (((m_gameSysExt.keyIsPressed(is::GameConfig::KEY_RIGHT) &&
-                     !mouseCollision(m_sprMsgBoxButton1)) || (sliderDirection == 3) ||
-                      mouseCollision(m_sprMsgBoxButton2)) && m_msgAnswer == MsgAnswer::YES)
+            else if ((m_gameSysExt.keyIsPressed(is::GameConfig::KEY_RIGHT) || (sliderDirection == 3) ||
+                      (mouseCollision(m_sprMsgBoxButton2, m_mousePosCurrent) && m_mousePosPrevious != m_mousePosCurrent)) &&
+                      m_msgAnswer != MsgAnswer::NO)
             {
+                if (m_msgBoxMouseInCollison) m_mousePosPrevious = m_mousePosCurrent;
                 m_gameSysExt.useVibrate(m_timeVibrateDuration);
                 GSMplaySound("change_option");
                 m_msgAnswer = MsgAnswer::NO;  // answer = no
             }
-            else if (m_gameSysExt.keyIsPressed(is::GameConfig::KEY_VALIDATION_KEYBOARD) ||
-                     (rightSideValidation) ||
-                    ((mouseCollision(m_sprMsgBoxButton1) ||
-                      mouseCollision(m_sprMsgBoxButton2)) &&
+            else if (m_gameSysExt.isPressed(is::GameSystem::KEYBOARD) || (rightSideValidation) ||
+                    ((mouseCollision(m_sprMsgBoxButton1, m_mousePosCurrent) ||
+                      mouseCollision(m_sprMsgBoxButton2, m_mousePosCurrent)) &&
                       m_gameSysExt.isPressed(is::GameSystem::MOUSE) && !m_gameSysExt.m_keyIsPressed))
             {
                 m_showMsg = false;
@@ -361,10 +365,9 @@ void GameDisplay::updateMsgBox(int sliderDirection, bool rightSideValidation,
                 m_msgAnswer = MsgAnswer::YES; // answer = OK
                 is::setSFMLObjFillColor(m_txtMsgBoxOK, selectedTextColor);
             }
-            else if (((m_gameSysExt.keyIsPressed(is::GameConfig::KEY_VALIDATION_KEYBOARD) || m_keyBackPressed) &&
+            else if (((m_gameSysExt.isPressed(is::GameSystem::KEYBOARD) || m_keyBackPressed) &&
                      !mouseCollision(m_sprMsgBoxButton3)) || (rightSideValidation)|| (mouseCollision(m_sprMsgBoxButton3) &&
-                     m_gameSysExt.isPressed(is::GameSystem::MOUSE) && !m_gameSysExt.m_keyIsPressed)
-                     )
+                     m_gameSysExt.isPressed(is::GameSystem::MOUSE) && !m_gameSysExt.m_keyIsPressed))
             {
                 m_showMsg = false;
                 m_keyBackPressed = false;
@@ -458,11 +461,11 @@ void GameDisplay::drawScreen()
     // Its allows to optimize the application
     if (m_windowIsActive)
     {
-    #endif // defined
+    #endif
         draw();
     #if defined(__ANDROID__)
     }
-    #endif // defined
+    #endif
     is::display(m_window);
 }
 
@@ -572,6 +575,11 @@ void GameDisplay::quitScene(int nextScene)
     else is::closeApplication();
 }
 
+void GameDisplay::setWaitTime(int val)
+{
+    m_waitTime = val;
+}
+
 void GameDisplay::setSceneStart(bool val)
 {
     m_sceneStart = val;
@@ -587,6 +595,15 @@ void GameDisplay::setKeyBackPressed(bool val)
     m_keyBackPressed = val;
 }
 
+void GameDisplay::setMouseInCollision()
+{
+    if (m_mousePosCurrent != m_mousePosPrevious)
+    {
+        is::setVector2(m_mousePosPrevious, m_mousePosCurrent.x, m_mousePosCurrent.y);
+        m_mouseInCollision = true;
+    }
+}
+
 float GameDisplay::getDeltaTime()
 {
     float dt = m_clock.restart().asSeconds();
@@ -597,14 +614,19 @@ float GameDisplay::getDeltaTime()
 sf::Vector2f GameDisplay::getCursor(
                                     #if defined(__ANDROID__)
                                     unsigned int finger
-                                    #endif // defined
+                                    #endif
                                     ) const
 {
     return is::getCursor(m_window
                        #if defined(__ANDROID__)
                        , finger
-                       #endif // defined
+                       #endif
                        );
+}
+
+bool GameDisplay::getMouseCurrentEqualToPrevious()
+{
+    return (m_mousePosCurrent == m_mousePosPrevious);
 }
 
 bool GameDisplay::inViewRec(is::MainObject *obj, bool useTexRec)
@@ -860,5 +882,5 @@ void GameDisplay::createSprite(std::string const &spriteName, is::MainObject &ob
 #endif
 }
 
-#endif // defined
+#endif
 }

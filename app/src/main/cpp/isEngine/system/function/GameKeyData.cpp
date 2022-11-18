@@ -188,7 +188,7 @@ void GameKeyData::step(float const &DELTA_TIME)
     else if (m_keyBPressed) m_actionKeyPressed = V_KEY_B;
     else m_actionKeyPressed = V_KEY_NONE;
     if (!m_keyLeftPressed && !m_keyRightPressed && !m_keyUpPressed && !m_keyDownPressed) m_moveKeyPressed = V_KEY_NONE;
-#endif // defined
+#endif
 }
 
 void GameKeyData::draw(is::Render &surface)
@@ -212,7 +212,7 @@ void GameKeyData::draw(is::Render &surface)
             if (m_scene->getIsPlaying()) surface.draw(m_sprJoystick[i]);
         }
     }
-    #endif // defined
+    #endif
 }
 
 bool GameKeyData::keyLeftPressed()
@@ -225,7 +225,7 @@ bool GameKeyData::keyLeftPressed()
     if (virtualKeyPressed(V_KEY_LEFT)) return true;
     #else
     if (m_scene->getGameSystem().keyIsPressed(m_keyboardLeft)) return true;
-    #endif // defined
+    #endif
     //////////////////////////////////////////////////////////
     else return false;
 }
@@ -240,7 +240,7 @@ bool GameKeyData::keyRightPressed()
     if (virtualKeyPressed(V_KEY_RIGHT)) return true;
     #else
     if (m_scene->getGameSystem().keyIsPressed(m_keyboardRight)) return true;
-    #endif // defined
+    #endif
     //////////////////////////////////////////////////////////
     else return false;
 }
@@ -255,7 +255,7 @@ bool GameKeyData::keyUpPressed()
     if (virtualKeyPressed(V_KEY_UP)) return true;
     #else
     if (m_scene->getGameSystem().keyIsPressed(m_keyboardUp)) return true;
-    #endif // defined
+    #endif
     //////////////////////////////////////////////////////////
     else return false;
 }
@@ -270,7 +270,7 @@ bool GameKeyData::keyDownPressed()
     if (virtualKeyPressed(V_KEY_DOWN)) return true;
     #else
     if (m_scene->getGameSystem().keyIsPressed(m_keyboardDown)) return true;
-    #endif // defined
+    #endif
     //////////////////////////////////////////////////////////
     else return false;
 }
@@ -285,7 +285,7 @@ bool GameKeyData::keyAPressed()
     if (virtualKeyPressed(V_KEY_A)) return true;
     #else
     if (m_scene->getGameSystem().keyIsPressed(m_keyboardA)) return true;
-    #endif // defined
+    #endif
     //////////////////////////////////////////////////////////
     else return false;
 }
@@ -300,7 +300,7 @@ bool GameKeyData::keyBPressed()
     if (virtualKeyPressed(V_KEY_B)) return true;
     #else
     if (m_scene->getGameSystem().keyIsPressed(m_keyboardB)) return true;
-    #endif // defined
+    #endif
     //////////////////////////////////////////////////////////
     else return false;
 }
@@ -317,7 +317,7 @@ bool GameKeyData::virtualKeyPressed(VirtualKeyIndex virtualKeyIndex)
         if (m_scene->mouseCollision(m_recJoystickMask[0])
             #if defined(__ANDROID__)
             || m_scene->mouseCollision(m_recJoystickMask[0], 1)
-            #endif // defined
+            #endif
             ) mouseOnLJoystick = true;
 
         if (mouseOnLJoystick)
@@ -327,22 +327,22 @@ bool GameKeyData::virtualKeyPressed(VirtualKeyIndex virtualKeyIndex)
                 if (m_scene->mouseCollision(m_recKeyLeftMask)
                     #if defined(__ANDROID__)
                     || m_scene->mouseCollision(m_recKeyLeftMask, 1)
-                    #endif // defined
+                    #endif
                     ) m_moveKeyPressed = V_KEY_LEFT;
                 else if (m_scene->mouseCollision(m_recKeyRightMask)
                     #if defined(__ANDROID__)
                     || m_scene->mouseCollision(m_recKeyRightMask, 1)
-                    #endif // defined
+                    #endif
                          ) m_moveKeyPressed = V_KEY_RIGHT;
                 else if (m_scene->mouseCollision(m_recKeyUpMask)
                     #if defined(__ANDROID__)
                     || m_scene->mouseCollision(m_recKeyUpMask, 1)
-                    #endif // defined
+                    #endif
                          ) m_moveKeyPressed = V_KEY_UP;
                 else if (m_scene->mouseCollision(m_recKeyDownMask)
                     #if defined(__ANDROID__)
                     || m_scene->mouseCollision(m_recKeyDownMask, 1)
-                    #endif // defined
+                    #endif
                          ) m_moveKeyPressed = V_KEY_DOWN;
             }
 
@@ -369,7 +369,7 @@ bool GameKeyData::virtualKeyPressed(VirtualKeyIndex virtualKeyIndex)
         if ((m_scene->getGameSystem().isPressed()
             #if defined(__ANDROID__)
             || m_scene->getGameSystem().isPressed(1)
-            #endif // defined
+            #endif
              ) && mouseOnLJoystick)
         {
             switch (virtualKeyIndex)
@@ -378,7 +378,7 @@ bool GameKeyData::virtualKeyPressed(VirtualKeyIndex virtualKeyIndex)
                     if (m_scene->mouseCollision(m_recKeyLeftMask)
                         #if defined(__ANDROID__)
                         || m_scene->mouseCollision(m_recKeyLeftMask, 1)
-                        #endif // defined
+                        #endif
                         )
                     {
                         m_moveKeyPressed = V_KEY_LEFT;
@@ -390,7 +390,7 @@ bool GameKeyData::virtualKeyPressed(VirtualKeyIndex virtualKeyIndex)
                     if (m_scene->mouseCollision(m_recKeyRightMask)
                         #if defined(__ANDROID__)
                         || m_scene->mouseCollision(m_recKeyRightMask, 1)
-                        #endif // defined
+                        #endif
                         )
                     {
                         m_moveKeyPressed = V_KEY_RIGHT;
@@ -402,7 +402,7 @@ bool GameKeyData::virtualKeyPressed(VirtualKeyIndex virtualKeyIndex)
                     if (m_scene->mouseCollision(m_recKeyUpMask)
                         #if defined(__ANDROID__)
                         || m_scene->mouseCollision(m_recKeyUpMask, 1)
-                        #endif // defined
+                        #endif
                         )
                     {
                         m_moveKeyPressed = V_KEY_UP;
@@ -414,7 +414,7 @@ bool GameKeyData::virtualKeyPressed(VirtualKeyIndex virtualKeyIndex)
                     if (m_scene->mouseCollision(m_recKeyDownMask)
                         #if defined(__ANDROID__)
                         || m_scene->mouseCollision(m_recKeyDownMask, 1)
-                        #endif // defined
+                        #endif
                         )
                     {
                         m_moveKeyPressed = V_KEY_DOWN;
@@ -436,14 +436,14 @@ bool GameKeyData::virtualKeyPressed(VirtualKeyIndex virtualKeyIndex)
         if (m_scene->mouseCollision(m_recJoystickMask[1])
             #if defined(__ANDROID__)
             || m_scene->mouseCollision(m_recJoystickMask[1], 1)
-            #endif // defined
+            #endif
             ) mouseOnRJoystick = true;
 
         // if left joystick pressed
         if ((m_scene->getGameSystem().isPressed()
             #if defined(__ANDROID__)
             || m_scene->getGameSystem().isPressed(1)
-            #endif // defined
+            #endif
              ) && mouseOnRJoystick)
         {
             switch (virtualKeyIndex)
@@ -452,7 +452,7 @@ bool GameKeyData::virtualKeyPressed(VirtualKeyIndex virtualKeyIndex)
                     if (m_scene->mouseCollision(m_recKeyAMask)
                         #if defined(__ANDROID__)
                         || m_scene->mouseCollision(m_recKeyAMask, 1)
-                        #endif // defined
+                        #endif
                         )
                     {
                         m_actionKeyPressed = V_KEY_A;
@@ -465,7 +465,7 @@ bool GameKeyData::virtualKeyPressed(VirtualKeyIndex virtualKeyIndex)
                     if (m_scene->mouseCollision(m_recKeyBMask)
                         #if defined(__ANDROID__)
                         || m_scene->mouseCollision(m_recKeyBMask, 1)
-                        #endif // defined
+                        #endif
                         )
                     {
                         m_actionKeyPressed = V_KEY_B;

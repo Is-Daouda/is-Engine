@@ -32,7 +32,7 @@ GameSlider::GameSlider(is::GameDisplay *scene):
     m_strName = "GameSlider";
     #if defined(IS_ENGINE_USE_SDM)
     m_depth = 999999999; // will update this object before all others
-    #endif // defined
+    #endif
 }
 
 void GameSlider::step(float const &DELTA_TIME)

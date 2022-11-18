@@ -67,6 +67,15 @@ std::tm makeTime(int year, int month, int day)
     return tm;
 }
 
+bool checkDateLimit(int year, int mont, int day)
+{
+    time_t currentTime = time(0);
+    std::tm tm1 = makeTime(year, mont, day);
+    std::time_t expirationDate = std::mktime(&tm1);
+    const int seconds_per_day = 60 * 60 * 24;
+    return (std::difftime(expirationDate, currentTime) / seconds_per_day < 0.f);
+}
+
 void showLog(const std::string& str, bool stopApplication)
 {
     #if defined(IS_ENGINE_USE_SHOWLOG)
@@ -75,7 +84,7 @@ void showLog(const std::string& str, bool stopApplication)
     #else
     __android_log_print(ANDROID_LOG_DEBUG, "LOG_INFO", "%s\n", str.c_str());
     #endif
-    #endif // defined
+    #endif
     if (stopApplication) is::closeApplication();
 }
 
@@ -207,6 +216,22 @@ bool collisionTest(Rectangle const &rec, Circle const &circle)
     return collisionTest(circle, rec);
 }
 
+void setTextAnimation(sf::Text &txt, sf::Sprite &spr, sf::Sprite &sprSelected, int &var, int val)
+{
+    if (var == val)
+    {
+        is::setSFMLObjX_Y(sprSelected, is::getSFMLObjX(spr), is::getSFMLObjY(spr));
+        is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_SELECTED_TEXT_COLOR);
+    }
+    else is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_TEXT_COLOR);
+}
+
+void setTextAnimation(sf::Text &txt, int &var, int val)
+{
+    if (var == val) is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_SELECTED_TEXT_COLOR);
+    else is::setSFMLObjFillColor(txt, is::GameConfig::DEFAULT_SFML_TEXT_COLOR);
+}
+
 void setFrame(sf::Sprite &sprite, float frame, int subFrame, int frameWidth, int frameHeight, int recWidth, int recHeight)
 {
     /* Description of the image decoupage algorithm
@@ -288,7 +313,7 @@ void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::IntRect rec, sf::Vector
 sf::Vector2f getCursor(sf::RenderWindow &window
                         #if defined(__ANDROID__)
                         , unsigned int finger
-                        #endif // defined
+                        #endif
                         )
 {
     sf::Vector2i pixelPos =
@@ -296,7 +321,7 @@ sf::Vector2f getCursor(sf::RenderWindow &window
                             sf::Touch::getPosition(finger, window);
     #else
                             sf::Mouse::getPosition(window);
-    #endif // defined
+    #endif
 
     sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos, window.getView());
 
@@ -442,10 +467,10 @@ void openURL(const std::string& url, OpenURLAction action)
                      std::string("start ")
     #else
                      std::string("xdg-open ")
-    #endif // defined
+    #endif
         .append(urlStr);
     system(op.c_str());
-#endif // defined
+#endif
 }
 
 #if defined(__ANDROID__)

@@ -42,9 +42,9 @@ namespace is
 #if defined(IS_ENGINE_SDL_2)
 /// Draw on render
 inline void draw(sf::RenderWindow &render, sf::SDLTexture &obj) {render.draw(obj);}
-//inline void draw(sf::RenderWindow &render, sf::SDLTexture *obj) {render.draw(&(obj));}
+inline void draw(sf::RenderWindow &render, sf::SDLTexture *obj) {render.draw(*obj);}
 inline void draw(sf::RenderWindow &render, sf::Shape &obj) {render.draw(obj);}
-//inline void draw(sf::RenderWindow &render, sf::Shape *obj) {render.draw(&obj);}
+inline void draw(sf::RenderWindow &render, sf::Shape *obj) {render.draw(*obj);}
 #else
 template <class T1, class T2>
 void draw(T1 &render, T2 &obj) {render.draw(obj);}

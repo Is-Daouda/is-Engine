@@ -36,6 +36,7 @@
 #include <fstream>
 #include <cstdio>
 #include <iostream>
+#include "../../isEngine/system/islibconnect/isLibConnect.h"
 
 namespace is
 {

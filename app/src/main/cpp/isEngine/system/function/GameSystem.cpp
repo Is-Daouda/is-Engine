@@ -42,7 +42,7 @@ bool GameSystem::isPressed(
                            int finger
                            #else
                            ValidationButton validationButton
-                           #endif // defined
+                           #endif
                            ) const
 {
     if (m_disableKey) return false;

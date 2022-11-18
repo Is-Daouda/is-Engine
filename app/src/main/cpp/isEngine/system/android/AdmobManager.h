@@ -280,6 +280,6 @@ public:
         loadRewardVideo();
     }
 };
-#endif // defined
-#endif // defined
+#endif
+#endif
 #endif // ADMOBMANAGER_H_INCLUDED

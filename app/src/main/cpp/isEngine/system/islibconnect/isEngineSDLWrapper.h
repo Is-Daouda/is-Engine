@@ -560,6 +560,8 @@ class RectangleShape : public Shape
 public:
     RectangleShape() : Shape() {}
 
+    virtual ~RectangleShape() {}
+
     RectangleShape(float width, float height) : Shape() {setSize(width, height);}
 
     RectangleShape(const Vector2f &size) : Shape() {setSize(size.x, size.y);}
@@ -709,7 +711,9 @@ public:
         BackSpace = SDLK_BACKSPACE,    ///< \deprecated Use Backspace instead
         BackSlash = SDLK_BACKSLASH,    ///< \deprecated Use Backslash instead
         SemiColon = SDLK_SEMICOLON,    ///< \deprecated Use Semicolon instead
-        Return    = Enter              ///< \deprecated Use Enter instead
+        Return    = Enter,             ///< \deprecated Use Enter instead
+
+        Underscore = SDLK_UNDERSCORE   ///< \deprecated The Underscore (Only for SDL 2)
     };
 
     static bool isKeyPressed(Key key);

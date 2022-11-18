@@ -28,7 +28,6 @@
 #include <string>
 #include <iostream>
 
-#include "../islibconnect/isLibConnect.h"
 #include "../entity/Form.h"
 #include "../../../app_src/config/GameConfig.h"
 
@@ -47,7 +46,7 @@
 #include <SFML/System/NativeActivity.hpp>
 #endif
 
-#endif // defined
+#endif
 
 namespace is
 {
@@ -71,6 +70,13 @@ enum SFMLSndStatus
     Playing,
     Paused
 };
+
+/// Convert number to string
+template <typename T>
+int enumToNum(T val)
+{
+    return static_cast<int>(val);
+}
 
 /// Convert wchart_t to string
 std::string w_chart_tToStr(wchar_t const *str);
@@ -122,6 +128,9 @@ int getMSecond(float const &DELTA_TIME);
 
 /// Make a tm structure representing this date
 std::tm makeTime(int year, int month, int day);
+
+/// Check date limit according to system date
+bool checkDateLimit(int year, int mont, int day);
 
 /// Show log message
 void showLog(const std::string& str, bool stopApplication = false);
@@ -255,11 +264,25 @@ float getSFMLObjAngle(T &obj)
     return obj.getRotation();
 }
 
+/// Return the angle of SFML object
+template <class T>
+float getSFMLObjAngle(T *obj)
+{
+    return obj->getRotation();
+}
+
 /// Return the x scale size of SFML object
 template <class T>
 float getSFMLObjXScale(T &obj)
 {
     return obj.getScale().x;
+}
+
+/// Return the x scale size of SFML object
+template <class T>
+float getSFMLObjXScale(T *obj)
+{
+    return obj->getScale().x;
 }
 
 /// Return the scale size of SFML object
@@ -269,11 +292,25 @@ float getSFMLObjYScale(T &obj)
     return obj.getScale().y;
 }
 
+/// Return the scale size of SFML object
+template <class T>
+float getSFMLObjYScale(T *obj)
+{
+    return obj->getScale().y;
+}
+
 /// Return the width of SFML object
 template <class T>
 float getSFMLObjWidth(T &obj)
 {
     return obj.getGlobalBounds().width;
+}
+
+/// Return the width of SFML object
+template <class T>
+float getSFMLObjWidth(T *obj)
+{
+    return obj->getGlobalBounds().width;
 }
 
 /// Return the y height of SFML object
@@ -283,22 +320,29 @@ float getSFMLObjHeight(T &obj)
     return obj.getGlobalBounds().height;
 }
 
+/// Return the y height of SFML object
+template <class T>
+float getSFMLObjHeight(T *obj)
+{
+    return obj->getGlobalBounds().height;
+}
+
 /// Return the width of SFML texture
 inline int getSFMLTextureWidth(sf::Texture const &obj)
 {
     return obj.getSize().x;
 }
 
-/// Return the height of SFML texture
-inline int getSFMLTextureHeight(sf::Texture const &obj)
-{
-    return obj.getSize().y;
-}
-
 /// Return the width of SFML texture
 inline int getSFMLTextureWidth(sf::Texture const *obj)
 {
     return obj->getSize().x;
+}
+
+/// Return the height of SFML texture
+inline int getSFMLTextureHeight(sf::Texture const &obj)
+{
+    return obj.getSize().y;
 }
 
 /// Return the height of SFML texture
@@ -328,6 +372,13 @@ float getSFMLObjX(T &obj)
     return obj.getPosition().x;
 }
 
+/// Return the x position of SFML object
+template <class T>
+float getSFMLObjX(T *obj)
+{
+    return obj->getPosition().x;
+}
+
 /// Return the y position of SFML object
 template <class T>
 float getSFMLObjY(T &obj)
@@ -335,18 +386,25 @@ float getSFMLObjY(T &obj)
     return obj.getPosition().y;
 }
 
-/// Return the x position of SFML object (pointer object)
-template <class T>
-float getSFMLObjX(T *obj)
-{
-    return obj->getPosition().x;
-}
-
-/// Return the y position of SFML object (pointer object)
+/// Return the y position of SFML object
 template <class T>
 float getSFMLObjY(T *obj)
 {
     return obj->getPosition().y;
+}
+
+/// Return the alpha of SFML object
+template <class T>
+unsigned int getSFMLObjAlpha(T &obj)
+{
+    return obj.getColor().a;
+}
+
+/// Return the alpha of SFML object
+template <class T>
+unsigned int getSFMLObjAlpha(T *obj)
+{
+    return obj->getColor().a;
 }
 
 /// Set the angle of SFML object
@@ -356,11 +414,53 @@ void setSFMLObjAngle(T &obj, float angle)
     obj.setRotation(angle);
 }
 
+/// Set the angle of SFML object
+template <class T>
+void setSFMLObjAngle(T *obj, float angle)
+{
+    obj->setRotation(angle);
+}
+
 /// Set rotation of SFML object
 template <class T>
 void setSFMLObjRotate(T &obj, float rotationSpeed)
 {
     obj.rotate(rotationSpeed);
+}
+
+/// Set rotation of SFML object
+template <class T>
+void setSFMLObjRotate(T *obj, float rotationSpeed)
+{
+    obj->rotate(rotationSpeed);
+}
+
+/// Set the x scale of SFML object
+template <class T>
+void setSFMLObjXScale(T &obj, float x)
+{
+    obj.setScale(x, obj.getScale().y);
+}
+
+/// Set the x scale of SFML object
+template <class T>
+void setSFMLObjXScale(T *obj, float x)
+{
+    obj->setScale(x, obj->getScale().y);
+}
+
+/// Set the y scale of SFML object
+template <class T>
+void setSFMLObjYScale(T &obj, float y)
+{
+    obj.setScale(obj.getScale().x, y);
+}
+
+/// Set the y scale of SFML object
+template <class T>
+void setSFMLObjYScale(T *obj, float y)
+{
+    obj->setScale(obj->getScale().x, y);
 }
 
 /// Set the x, y scale of SFML object
@@ -370,11 +470,25 @@ void setSFMLObjScaleX_Y(T &obj, float x, float y)
     obj.setScale(x, y);
 }
 
+/// Set the x, y scale of SFML object
+template <class T>
+void setSFMLObjScaleX_Y(T *obj, float x, float y)
+{
+    obj->setScale(x, y);
+}
+
 /// Set the scale of SFML object
 template <class T>
 void setSFMLObjScale(T &obj, float scale)
 {
     obj.setScale(scale, scale);
+}
+
+/// Set the scale of SFML object
+template <class T>
+void setSFMLObjScale(T *obj, float scale)
+{
+    obj->setScale(scale, scale);
 }
 
 /// Set origin of SFML object
@@ -384,6 +498,13 @@ void setSFMLObjOrigin(T &obj, float x, float y)
     obj.setOrigin(x, y);
 }
 
+/// Set origin of SFML object
+template <class T>
+void setSFMLObjOrigin(T *obj, float x, float y)
+{
+    obj->setOrigin(x, y);
+}
+
 /// Set x position of SFML object
 template <class T>
 void setSFMLObjX(T &obj, float x)
@@ -391,11 +512,25 @@ void setSFMLObjX(T &obj, float x)
     obj.setPosition(x, obj.getPosition().y);
 }
 
+/// Set x position of SFML object
+template <class T>
+void setSFMLObjX(T *obj, float x)
+{
+    obj->setPosition(x, obj->getPosition().y);
+}
+
 /// Set y position of SFML object
 template <class T>
 void setSFMLObjY(T &obj, float y)
 {
     obj.setPosition(obj.getPosition().x, y);
+}
+
+/// Set y position of SFML object
+template <class T>
+void setSFMLObjY(T *obj, float y)
+{
+    obj->setPosition(obj->getPosition().x, y);
 }
 
 /// Set x, y position of SFML object
@@ -407,9 +542,23 @@ void setSFMLObjX_Y(T &obj, float x, float y)
 
 /// Set x, y position of SFML object
 template <class T>
+void setSFMLObjX_Y(T *obj, float x, float y)
+{
+    obj->setPosition(x, y);
+}
+
+/// Set x, y position of SFML object
+template <class T>
 void setSFMLObjX_Y(T &obj, sf::Vector2f position)
 {
     obj.setPosition(position.x, position.y);
+}
+
+/// Set x, y position of SFML object
+template <class T>
+void setSFMLObjX_Y(T *obj, sf::Vector2f position)
+{
+    obj->setPosition(position.x, position.y);
 }
 
 /// Move SFML object on x axis
@@ -419,11 +568,25 @@ void moveSFMLObjX(T &obj, float speed)
     obj.setPosition(obj.getPosition().x + speed, obj.getPosition().y);
 }
 
+/// Move SFML object on x axis
+template <class T>
+void moveSFMLObjX(T *obj, float speed)
+{
+    obj->setPosition(obj->getPosition().x + speed, obj->getPosition().y);
+}
+
 /// Move SFML object on y axis
 template <class T>
 void moveSFMLObjY(T &obj, float speed)
 {
     obj.setPosition(obj.getPosition().x, obj.getPosition().y + speed);
+}
+
+/// Move SFML object on y axis
+template <class T>
+void moveSFMLObjY(T *obj, float speed)
+{
+    obj->setPosition(obj->getPosition().x, obj->getPosition().y + speed);
 }
 
 /// Set SFML object size
@@ -435,7 +598,21 @@ void setSFMLObjSize(T &obj, float x, float y)
 
 /// Set SFML object size
 template <class T>
+void setSFMLObjSize(T *obj, float x, float y)
+{
+    obj->setSize(sf::Vector2f(x, y));
+}
+
+/// Set SFML object size
+template <class T>
 void setSFMLObjSize(T &obj, sf::Vector2f v)
+{
+    setSFMLObjSize(obj, v.x, v.y);
+}
+
+/// Set SFML object size
+template <class T>
+void setSFMLObjSize(T *obj, sf::Vector2f v)
 {
     setSFMLObjSize(obj, v.x, v.y);
 }
@@ -447,11 +624,25 @@ void setSFMLObjAlpha(T &obj, unsigned int alpha)
     obj.setColor(sf::Color(obj.getColor().r, obj.getColor().g, obj.getColor().b, alpha));
 }
 
+/// Set the alpha of SFML object
+template <class T>
+void setSFMLObjAlpha(T *obj, unsigned int alpha)
+{
+    obj->setColor(sf::Color(obj->getColor().r, obj->getColor().g, obj->getColor().b, alpha));
+}
+
 /// Set the alpha of SFML shape or text object
 template <class T>
 void setSFMLObjAlpha2(T &obj, unsigned int alpha)
 {
     obj.setFillColor(sf::Color(obj.getFillColor().r, obj.getFillColor().g, obj.getFillColor().b, alpha));
+}
+
+/// Set the alpha of SFML shape or text object
+template <class T>
+void setSFMLObjAlpha2(T *obj, unsigned int alpha)
+{
+    obj->setFillColor(sf::Color(obj->getFillColor().r, obj->getFillColor().g, obj->getFillColor().b, alpha));
 }
 
 /// Set the alpha and uniform RGB color of SFML object
@@ -461,11 +652,25 @@ void setSFMLObjAlpha(T &obj, unsigned int alpha, sf::Uint8 rgb)
     obj.setColor(sf::Color(rgb, rgb, rgb, alpha));
 }
 
+/// Set the alpha and uniform RGB color of SFML object
+template <class T>
+void setSFMLObjAlpha(T *obj, unsigned int alpha, sf::Uint8 rgb)
+{
+    obj->setColor(sf::Color(rgb, rgb, rgb, alpha));
+}
+
 /// Set the alpha and RGB distinct color of SFML object
 template <class T>
 void setSFMLObjAlpha(T &obj, unsigned int alpha, int r, int g, int b)
 {
     obj.setColor(sf::Color(r, g, b, alpha));
+}
+
+/// Set the alpha and RGB distinct color of SFML object
+template <class T>
+void setSFMLObjAlpha(T *obj, unsigned int alpha, int r, int g, int b)
+{
+    obj->setColor(sf::Color(r, g, b, alpha));
 }
 
 /// Set the color of SFML object
@@ -475,11 +680,25 @@ void setSFMLObjColor(T &obj, sf::Color color)
     obj.setColor(color);
 }
 
+/// Set the color of SFML object
+template <class T>
+void setSFMLObjColor(T *obj, sf::Color color)
+{
+    obj->setColor(color);
+}
+
 /// Set the color of SFML shape
 template <class T>
 void setSFMLObjFillColor(T &obj, sf::Color color)
 {
     obj.setFillColor(color);
+}
+
+/// Set the color of SFML shape
+template <class T>
+void setSFMLObjFillColor(T *obj, sf::Color color)
+{
+    obj->setFillColor(color);
 }
 
 /// Allows to make scale animation
@@ -491,11 +710,48 @@ void scaleAnimation(float const &DELTA_TIME, float &var, T &obj, short varSign =
     setSFMLObjScale(obj, varSign * var);
 }
 
+/// Allows to make scale animation
+template <class T>
+void scaleAnimation(float const &DELTA_TIME, float &var, T *obj, short varSign = 1, float scaleSize = 1.f)
+{
+    scaleAnimation(DELTA_TIME, var, *obj, varSign, scaleSize);
+}
+
+/// Allows to animate SFML text in relation to a option
+void setTextAnimation(sf::Text &txt, int &var, int val);
+
+/// Allows to animate SFML text in relation to a option
+inline void setTextAnimation(sf::Text *txt, int &var, int val)
+{
+    setTextAnimation(*txt, var, val);
+}
+
+/// Allows to animate SFML text and sprites in relation to a option
+void setTextAnimation(sf::Text &txt, sf::Sprite &spr, sf::Sprite &sprSelected, int &var, int val);
+
+/// Allows to animate SFML text and sprites in relation to a option
+inline void setTextAnimation(sf::Text *txt, sf::Sprite *spr, sf::Sprite *sprSelected, int &var, int val)
+{
+    setTextAnimation(*txt, *spr, *sprSelected, var, val);
+}
+
 /// Set the sprite frame with different size (e.g 64x32)
 void setFrame(sf::Sprite &sprite, float frame, int subFrame, int frameWidth, int frameHeight, int recWidth, int recHeight);
 
+/// Set the sprite frame with different size (e.g 64x32)
+inline void setFrame(sf::Sprite *sprite, float frame, int subFrame, int frameWidth, int frameHeight, int recWidth, int recHeight)
+{
+    setFrame(*sprite, frame, subFrame, frameWidth, frameHeight, recWidth, recHeight);
+}
+
 /// Set the sprite frame with the same size (e.g 64x64)
 void setFrame(sf::Sprite &sprite, float frame, int subFrame, int frameSize);
+
+/// Set the sprite frame with the same size (e.g 64x64)
+inline void setFrame(sf::Sprite *sprite, float frame, int subFrame, int frameSize)
+{
+    setFrame(*sprite, frame, subFrame, frameSize);
+}
 
 /// Set the outline thickness and color of SFML object
 template <class T>
@@ -505,11 +761,25 @@ void setSFMLObjOutlineColor(T &obj, sf::Color color, float thickness = 1.f)
     obj.setOutlineColor(color);
 }
 
+/// Set the outline thickness and color of SFML object
+template <class T>
+void setSFMLObjOutlineColor(T *obj, sf::Color color, float thickness = 1.f)
+{
+    setSFMLObjOutlineColor(*obj, color, thickness);
+}
+
 /// Set Texture Rec of SFML object
 template <class T>
 void setSFMLObjTexRec(T &obj, int x, int y, int w, int h)
 {
     obj.setTextureRect(sf::IntRect(x, y, w, h));
+}
+
+/// Set Texture Rec of SFML object
+template <class T>
+void setSFMLObjTexRec(T *obj, int x, int y, int w, int h)
+{
+    obj->setTextureRect(sf::IntRect(x, y, w, h));
 }
 
 /// Set the properties of SFML Sprite
@@ -521,6 +791,12 @@ inline void setSFMLObjProperties(sf::Sprite &obj, float x, float y, float angle 
     is::setSFMLObjX_Y(obj, x, y);
 }
 
+/// Set the properties of SFML Sprite
+inline void setSFMLObjProperties(sf::Sprite *obj, float x, float y, float angle = 0.f, int alpha = 255, float xScale = 1.f, float yScale = 1.f)
+{
+    setSFMLObjProperties(*obj, x, y, angle, alpha, xScale, yScale);
+}
+
 /// Set the properties of SFML Text
 inline void setSFMLObjProperties(sf::Text &obj, float x, float y, float angle = 0.f, int alpha = 255, float xScale = 1.f, float yScale = 1.f)
 {
@@ -528,6 +804,12 @@ inline void setSFMLObjProperties(sf::Text &obj, float x, float y, float angle = 
     is::setSFMLObjAngle(obj, angle);
     is::setSFMLObjScaleX_Y(obj, xScale, yScale);
     is::setSFMLObjX_Y(obj, x, y);
+}
+
+/// Set the properties of SFML Text
+inline void setSFMLObjProperties(sf::Text *obj, float x, float y, float angle = 0.f, int alpha = 255, float xScale = 1.f, float yScale = 1.f)
+{
+    setSFMLObjProperties(*obj, x, y, angle, alpha, xScale, yScale);
 }
 
 /// Set the properties of SFML Rectangle
@@ -539,6 +821,12 @@ inline void setSFMLObjProperties(sf::RectangleShape &obj, float x, float y, floa
     is::setSFMLObjX_Y(obj, x, y);
 }
 
+/// Set the properties of SFML Rectangle
+inline void setSFMLObjProperties(sf::RectangleShape *obj, float x, float y, float angle = 0.f, int alpha = 255, float xScale = 1.f, float yScale = 1.f)
+{
+    setSFMLObjProperties(*obj, x, y, angle, alpha, xScale, yScale);
+}
+
 /// Set the properties of SFML Circle
 inline void setSFMLObjProperties(sf::CircleShape &obj, float x, float y, float angle = 0.f, int alpha = 255, float xScale = 1.f, float yScale = 1.f)
 {
@@ -546,6 +834,12 @@ inline void setSFMLObjProperties(sf::CircleShape &obj, float x, float y, float a
     is::setSFMLObjAngle(obj, angle);
     is::setSFMLObjScaleX_Y(obj, xScale, yScale);
     is::setSFMLObjX_Y(obj, x, y);
+}
+
+/// Set the properties of SFML Circle
+inline void setSFMLObjProperties(sf::CircleShape *obj, float x, float y, float angle = 0.f, int alpha = 255, float xScale = 1.f, float yScale = 1.f)
+{
+    setSFMLObjProperties(*obj, x, y, angle, alpha, xScale, yScale);
 }
 
 /// Center SFML object
@@ -561,6 +855,13 @@ void centerSFMLObj(T &obj)
     );
 }
 
+/// Center SFML object
+template <class T>
+void centerSFMLObj(T *obj)
+{
+    centerSFMLObj(*obj);
+}
+
 /// Center SFML object X
 template <class T>
 void centerSFMLObjX(T &obj)
@@ -572,6 +873,13 @@ void centerSFMLObjX(T &obj)
                   obj.getGlobalBounds().width / 2
 #endif
                   , obj.getOrigin().y);
+}
+
+/// Center SFML object X
+template <class T>
+void centerSFMLObjX(T *obj)
+{
+    centerSFMLObjX(*obj);
 }
 
 /// Center SFML object Y
@@ -587,10 +895,23 @@ void centerSFMLObjY(T &obj)
                   );
 }
 
+/// Center SFML object Y
+template <class T>
+void centerSFMLObjY(T *obj)
+{
+    centerSFMLObjY(*obj);
+}
+
 /// Load SFML Texture Resource
 inline void loadSFMLTexture(sf::Texture &obj, const std::string& filePath)
 {
     obj.loadFromFile(filePath);
+}
+
+/// Load SFML Texture Resource
+inline void loadSFMLTexture(sf::Texture *obj, const std::string& filePath)
+{
+    obj->loadFromFile(filePath);
 }
 
 /// Load SFML Font Resource
@@ -602,10 +923,22 @@ inline void loadSFMLFont(sf::Font &obj, const std::string& filePath, int fontDef
     obj.loadFromFile(filePath);
 }
 
+/// Load SFML Font Resource
+inline void loadSFMLFont(sf::Font *obj, const std::string& filePath, int fontDefaultSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE)
+{
+    loadSFMLFont(*obj, filePath, fontDefaultSize);
+}
+
 /// Load SFML Sound Buffer Resource
 inline void loadSFMLSoundBuffer(sf::SoundBuffer &obj, const std::string& filePath)
 {
     obj.loadFromFile(filePath);
+}
+
+/// Load SFML Sound Buffer Resource
+inline void loadSFMLSoundBuffer(sf::SoundBuffer *obj, const std::string& filePath)
+{
+    obj->loadFromFile(filePath);
 }
 
 /// Load SFML Sound Buffer Resource and define it with the Sound
@@ -615,10 +948,22 @@ inline void loadSFMLSoundBufferWithSnd(sf::SoundBuffer &sb, sf::Sound &snd, cons
     else showLog("ERROR: Can't load Sound Buffer : " + filePath + " with sound");
 }
 
+/// Load SFML Sound Buffer Resource and define it with the Sound
+inline void loadSFMLSoundBufferWithSnd(sf::SoundBuffer *sb, sf::Sound *snd, const std::string& filePath)
+{
+    loadSFMLSoundBufferWithSnd(*sb, *snd, filePath);
+}
+
 /// Load SFML Music Resource
 inline void loadSFMLMusic(sf::Music &obj, const std::string& filePath)
 {
     obj.openFromFile(filePath);
+}
+
+/// Load SFML Music Resource
+inline void loadSFMLMusic(sf::Music *obj, const std::string& filePath)
+{
+    obj->openFromFile(filePath);
 }
 
 /// Check SFML Sound state
@@ -669,10 +1014,7 @@ void playSFMLSnd(T &obj)
 template <class T>
 void playSFMLSnd(T *obj)
 {
-    if (obj != nullptr)
-    {
-        obj->play();
-    }
+    if (obj != nullptr) obj->play();
 }
 
 /// Allows to stop SFML Sound or Music
@@ -686,10 +1028,7 @@ void stopSFMLSnd(T &obj)
 template <class T>
 void stopSFMLSnd(T *obj)
 {
-    if (obj != nullptr)
-    {
-        obj->stop();
-    }
+    if (obj != nullptr) obj->stop();
 }
 
 /// Allows to pause SFML Sound or Music
@@ -703,10 +1042,7 @@ void pauseSFMLSnd(T &obj)
 template <class T>
 void pauseSFMLSnd(T *obj)
 {
-    if (obj != nullptr)
-    {
-        obj->pause();
-    }
+    if (obj != nullptr) obj->pause();
 }
 
 /// Allows to set SFML Sound or Music loop
@@ -720,10 +1056,7 @@ void loopSFMLSnd(T &obj, bool val)
 template <class T>
 void loopSFMLSnd(T *obj, bool val)
 {
-    if (obj != nullptr)
-    {
-        obj->loop(val);
-    }
+    if (obj != nullptr) obj->loop(val);
 }
 
 /// Test collision between SFML object
@@ -733,17 +1066,42 @@ bool collisionTestSFML(A const &objA, B const &objB)
     return (objB.getGlobalBounds().intersects(objA.getGlobalBounds()));
 }
 
+/// Test collision between SFML object
+template <class A, class B>
+bool collisionTestSFML(A const *objA, B const *objB)
+{
+    return (objB->getGlobalBounds().intersects(objA->getGlobalBounds()));
+}
+
 /// Create SFML Render Texture
 //void createRenderTexture(sf::RenderTexture &renderTexture, unsigned int width, unsigned int height);
 
 /// Create SFML rectangle
 void createRectangle(sf::RectangleShape &rec, sf::Vector2f recSize, sf::Color color, float x = 0.f, float y = 0.f, bool center = true);
 
+/// Create SFML rectangle
+inline void createRectangle(sf::RectangleShape *rec, sf::Vector2f recSize, sf::Color color, float x = 0.f, float y = 0.f, bool center = true)
+{
+    createRectangle(*rec, recSize, color, x, y, center);
+}
+
 /// Set SFML Text style
 void textStyleConfig(sf::Text &txt, bool underLined, bool boldText, bool italicText);
 
+/// Set SFML Text style
+inline void textStyleConfig(sf::Text *txt, bool underLined, bool boldText, bool italicText)
+{
+    textStyleConfig(*txt, underLined, boldText, italicText);
+}
+
 /// Set SFML Text outline color
 void setSFMLTextOutlineColor(sf::Text &txt, float thickness, sf::Color color);
+
+/// Set SFML Text outline color
+inline void setSFMLTextOutlineColor(sf::Text *txt, float thickness, sf::Color color)
+{
+    setSFMLTextOutlineColor(*txt, thickness, color);
+}
 
 /// Create SFML text
 template<class T>
@@ -823,14 +1181,434 @@ void createText(sf::Font
     txt.setOutlineThickness(outlineThickness);
 }
 
+/// Create SFML text in Vector
+template<class T>
+void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, std::vector<sf::Text*> &txt, T const &text, float x, float y,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    txt.push_back(new sf::Text());
+    createText(fnt, *txt[txt.size() - 1], text, x, y, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with center parameter in Vector
+template<class T>
+void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, std::vector<sf::Text*> &txt, T const &text, float x, float y, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    txt.push_back(new sf::Text());
+    createText(fnt, *txt[txt.size() - 1], text, x, y, centerText, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with color and size in Vector
+template<class T>
+void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, std::vector<sf::Text*> &txt, T const &text, float x, float y, sf::Color color,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    txt.push_back(new sf::Text());
+    createText(fnt, *txt[txt.size() - 1], text, x, y, color, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with color, size and center in Vector
+template<class T>
+void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, std::vector<sf::Text*> &txt, T const &text, float x, float y, sf::Color color, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    txt.push_back(new sf::Text());
+    createText(fnt, *txt[txt.size() - 1], text, x, y, color, centerText, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text outline with color and size in Vector
+template<class T>
+void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, std::vector<sf::Text*> &txt, T const &text, float x, float y,
+                 sf::Color color, sf::Color outlineColor, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE, float outlineThickness = 1.f,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    txt.push_back(new sf::Text());
+    createText(fnt, *txt[txt.size() - 1], text, x, y, color, outlineColor, centerText, txtSize, outlineThickness, underLined, boldText, italicText);
+}
+
+/// Create SFML text
+template<class T>
+void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text *txt, T const &text, float x, float y,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, *txt, text, x, y, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with center parameter
+template<class T>
+void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text *txt, T const &text, float x, float y, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, *txt, text, x, y, centerText, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with color and size
+template<class T>
+void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text *txt, T const &text, float x, float y, sf::Color color,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, *txt, text, x, y, color, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with color, size and center
+template<class T>
+void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text *txt, T const &text, float x, float y, sf::Color color, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, *txt, text, x, y, color, centerText, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text outline with color and size
+template<class T>
+void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text *txt, T const &text, float x, float y,
+                 sf::Color color, sf::Color outlineColor, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE, float outlineThickness = 1.f,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, *txt, text, x, y, color, outlineColor, centerText, txtSize, outlineThickness, underLined, boldText, italicText);
+}
+
+/// Create SFML text
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, const int value, float x, float y,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, txt, numToStr(value), x, y, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with center parameter
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, const int value, float x, float y, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, txt, numToStr(value), x, y, centerText, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with color and size
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, const int value, float x, float y, sf::Color color,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, txt, numToStr(value), x, y, color, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with color, size and center
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, const int value, float x, float y, sf::Color color, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, txt, numToStr(value), x, y, color, centerText, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text outline with color and size
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, const int value, float x, float y,
+                 sf::Color color, sf::Color outlineColor, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE, float outlineThickness = 1.f,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, txt, numToStr(value), x, y, color, outlineColor, centerText, txtSize, outlineThickness, underLined, boldText, italicText);
+}
+
+/// Create SFML text
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text *txt, const int value, float x, float y,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, *txt, numToStr(value), x, y, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with center parameter
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text *txt, const int value, float x, float y, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, *txt, numToStr(value), x, y, centerText, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with color and size
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text *txt, const int value, float x, float y, sf::Color color,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, *txt, numToStr(value), x, y, color, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with color, size and center
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text *txt, const int value, float x, float y, sf::Color color, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, *txt, numToStr(value), x, y, color, centerText, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text outline with color and size
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text *txt, const int value, float x, float y,
+                 sf::Color color, sf::Color outlineColor, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE, float outlineThickness = 1.f,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, *txt, numToStr(value), x, y, color, outlineColor, centerText, txtSize, outlineThickness, underLined, boldText, italicText);
+}
+
+/// Create SFML text
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, const float value, float x, float y,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, txt, numToStr(value), x, y, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with center parameter
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, const float value, float x, float y, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, txt, numToStr(value), x, y, centerText, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with color and size
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, const float value, float x, float y, sf::Color color,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, txt, numToStr(value), x, y, color, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with color, size and center
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, const float value, float x, float y, sf::Color color, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, txt, numToStr(value), x, y, color, centerText, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text outline with color and size
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text &txt, const float value, float x, float y,
+                 sf::Color color, sf::Color outlineColor, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE, float outlineThickness = 1.f,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, txt, numToStr(value), x, y, color, outlineColor, centerText, txtSize, outlineThickness, underLined, boldText, italicText);
+}
+
+/// Create SFML text
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text *txt, const float value, float x, float y,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, *txt, numToStr(value), x, y, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with center parameter
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text *txt, const float value, float x, float y, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, *txt, numToStr(value), x, y, centerText, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with color and size
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text *txt, const float value, float x, float y, sf::Color color,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, *txt, numToStr(value), x, y, color, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text with color, size and center
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text *txt, const float value, float x, float y, sf::Color color, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, *txt, numToStr(value), x, y, color, centerText, txtSize, underLined, boldText, italicText);
+}
+
+/// Create SFML text outline with color and size
+inline void createText(sf::Font
+                 #if defined(IS_ENGINE_SFML)
+                 const
+                 #endif
+                 &fnt, sf::Text *txt, const float value, float x, float y,
+                 sf::Color color, sf::Color outlineColor, bool centerText,
+                 int txtSize = is::GameConfig::DEFAULT_SFML_TEXT_SIZE, float outlineThickness = 1.f,
+                 bool underLined = false, bool boldText = false, bool italicText = false)
+{
+    createText(fnt, *txt, numToStr(value), x, y, color, outlineColor, centerText, txtSize, outlineThickness, underLined, boldText, italicText);
+}
+
 /// Create SFML sprites without IntRec
 void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::Vector2f position, sf::Vector2f origin, bool smooth = true);
+
+/// Create SFML sprites without IntRec
+inline void createSprite(sf::Texture &tex, sf::Sprite *spr, sf::Vector2f position, sf::Vector2f origin, bool smooth = true)
+{
+    createSprite(tex, *spr, position, origin, smooth);
+}
 
 /// Create SFML sprites with IntRec
 void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::IntRect rec, sf::Vector2f position, sf::Vector2f origin, bool repeatTexture = false, bool smooth = true);
 
+/// Create SFML sprites with IntRec
+inline void createSprite(sf::Texture &tex, sf::Sprite *spr, sf::IntRect rec, sf::Vector2f position, sf::Vector2f origin, bool repeatTexture = false, bool smooth = true)
+{
+    createSprite(tex, *spr, rec, position, origin, repeatTexture, smooth);
+}
+
 /// Create SFML sprites advanced
 void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::IntRect rec, sf::Vector2f position, sf::Vector2f origin, sf::Vector2f scale, unsigned int alpha = 255, bool repeatTexture = false, bool smooth = true);
+
+/// Create SFML sprites advanced
+inline void createSprite(sf::Texture &tex, sf::Sprite *spr, sf::IntRect rec, sf::Vector2f position, sf::Vector2f origin, sf::Vector2f scale, unsigned int alpha = 255, bool repeatTexture = false, bool smooth = true)
+{
+    createSprite(tex, *spr, rec, position, origin, scale, alpha, repeatTexture, smooth);
+}
+
+/// Create SFML sprites without IntRec in Vector
+inline void createSprite(sf::Texture &tex, std::vector<sf::Sprite*> &spr, sf::Vector2f position, sf::Vector2f origin, bool smooth = true)
+{
+    spr.push_back(new sf::Sprite());
+    createSprite(tex, spr[spr.size() - 1], position, origin, smooth);
+}
+
+/// Create SFML sprites with IntRec in Vector
+inline void createSprite(sf::Texture &tex, std::vector<sf::Sprite*> &spr, sf::IntRect rec, sf::Vector2f position, sf::Vector2f origin, bool repeatTexture = false, bool smooth = true)
+{
+    spr.push_back(new sf::Sprite());
+    createSprite(tex, spr[spr.size() - 1], rec, position, origin, repeatTexture, smooth);
+}
+
+/// Create SFML sprites advanced in Vector
+inline void createSprite(sf::Texture &tex, std::vector<sf::Sprite*> &spr, sf::IntRect rec, sf::Vector2f position, sf::Vector2f origin, sf::Vector2f scale, unsigned int alpha = 255, bool repeatTexture = false, bool smooth = true)
+{
+    spr.push_back(new sf::Sprite());
+    createSprite(tex, spr[spr.size() - 1], rec, position, origin, scale, alpha, repeatTexture, smooth);
+}
 
 //////////////////////////////////////////////////////
 /// \brief Return Cursor Position
@@ -841,8 +1619,27 @@ void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::IntRect rec, sf::Vector
 sf::Vector2f getCursor(sf::RenderWindow &window
                         #if defined(__ANDROID__)
                         , unsigned int finger = 0
-                        #endif // defined
+                        #endif
                         );
+
+//////////////////////////////////////////////////////
+/// \brief Return Cursor Position
+/// the mouse on PC platform / touch on mobile
+///
+/// \param finger Finger index (on Android)
+//////////////////////////////////////////////////////
+inline sf::Vector2f getCursor(sf::RenderWindow *window
+                        #if defined(__ANDROID__)
+                        , unsigned int finger = 0
+                        #endif
+                        )
+{
+    return getCursor(*window
+#if defined(__ANDROID__)
+                , finger
+#endif
+        );
+}
 
 //////////////////////////////////////////////////////
 /// \brief Test the collision of the SFML objects
@@ -855,13 +1652,13 @@ template <class T>
 bool mouseCollision(sf::RenderWindow &window, T const &obj
                     #if defined(__ANDROID__)
                     , unsigned int finger = 0
-                    #endif // defined
+                    #endif
                     )
 {
     sf::Vector2f cursorPos = is::getCursor(window
                                        #if defined(__ANDROID__)
                                        , finger
-                                       #endif // defined
+                                       #endif
                                        );
 
     // A rectangle that will allow to test with the SFML object
@@ -876,6 +1673,27 @@ bool mouseCollision(sf::RenderWindow &window, T const &obj
 /// with the mouse cursor on PC platform / touch on mobile
 ///
 /// \param obj SFML object with which we want to test
+/// \param finger Finger index (on Android)
+//////////////////////////////////////////////////////
+template <class T>
+bool mouseCollision(sf::RenderWindow *window, T const *obj
+                    #if defined(__ANDROID__)
+                    , unsigned int finger = 0
+                    #endif
+                    )
+{
+    return mouseCollision(*window, *obj
+#if defined(__ANDROID__)
+        , finger
+#endif
+        );
+}
+
+//////////////////////////////////////////////////////
+/// \brief Test the collision of the SFML objects
+/// with the mouse cursor on PC platform / touch on mobile
+///
+/// \param obj SFML object with which we want to test
 /// \param position Allows to get the position of the collision point
 /// \param finger Finger index (on Android)
 //////////////////////////////////////////////////////
@@ -883,13 +1701,13 @@ template <class T>
 bool mouseCollision(sf::RenderWindow &window, T const &obj, sf::Vector2f &position
                     #if defined(__ANDROID__)
                     , unsigned int finger = 0
-                    #endif // defined
+                    #endif
                     )
 {
     sf::Vector2f cursorPos = is::getCursor(window
                                        #if defined(__ANDROID__)
                                        , finger
-                                       #endif // defined
+                                       #endif
                                        );
     setVector2(position, cursorPos.x, cursorPos.y);
 
@@ -898,6 +1716,28 @@ bool mouseCollision(sf::RenderWindow &window, T const &obj, sf::Vector2f &positi
     is::setSFMLObjX_Y(recCursor, position.x - 3.f, position.y - 3.f);
     if (obj.getGlobalBounds().intersects(recCursor.getGlobalBounds())) return true;
     return false;
+}
+
+//////////////////////////////////////////////////////
+/// \brief Test the collision of the SFML objects
+/// with the mouse cursor on PC platform / touch on mobile
+///
+/// \param obj SFML object with which we want to test
+/// \param position Allows to get the position of the collision point
+/// \param finger Finger index (on Android)
+//////////////////////////////////////////////////////
+template <class T>
+bool mouseCollision(sf::RenderWindow *window, T const *obj, sf::Vector2f &position
+                    #if defined(__ANDROID__)
+                    , unsigned int finger = 0
+                    #endif
+                    )
+{
+    return mouseCollision(*window, *obj, position
+#if defined(__ANDROID__)
+        , finger
+#endif
+        );
 }
 
 /// Do not touch this function it allows to manage the style of the window
@@ -919,6 +1759,13 @@ template <class T>
 void setFPS(T &render, float fps)
 {
     render.setFramerateLimit(fps);
+}
+
+/// Allows to set frame per second
+template <class T>
+void setFPS(T *render, float fps)
+{
+    render->setFramerateLimit(fps);
 }
 
 /// Allows to use Android vibrate
@@ -945,7 +1792,7 @@ static std::string jstring2string(JNIEnv *env, jstring jStr);
 
 /// Return Android terminal device
 static std::string getDeviceId(JNIEnv *env, ANativeActivity *activity);
-#endif // defined
+#endif
 }
 
 #endif // GAME_FONCTION_H_INCLUDED

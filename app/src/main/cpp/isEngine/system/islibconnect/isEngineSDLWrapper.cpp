@@ -859,6 +859,12 @@ void RenderWindow::create(VideoMode videoMode, const std::string& title, int sty
     SDL_GetWindowSize(is::IS_ENGINE_SDL_window, &w, &h);
 #endif
 
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "init SDL Video : %s\n", SDL_GetError());
+        is::closeApplication();
+    }
+
     // Allows to calculate the scale of the screen
     is::IS_ENGINE_SDL_screenXScale = w / m_view.getSize().x;
     is::IS_ENGINE_SDL_screenYScale = h / m_view.getSize().y;
@@ -870,13 +876,7 @@ void RenderWindow::create(VideoMode videoMode, const std::string& title, int sty
              SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_size.x, m_size.y, SDL_WINDOW_OPENGL
 #endif
             );
-    is::IS_ENGINE_SDL_renderer = SDL_CreateRenderer(is::IS_ENGINE_SDL_window, -1,
-#if !defined(__ANDROID__)
-            SDL_RENDERER_ACCELERATED //SDL_RENDERER_PRESENTVSYNC
-#else
-      SDL_RENDERER_ACCELERATED
-#endif
-            );
+    is::IS_ENGINE_SDL_renderer = SDL_CreateRenderer(is::IS_ENGINE_SDL_window, -1, SDL_RENDERER_ACCELERATED);
 
     if (!is::SDL2initLib()) is::closeApplication();
 }
