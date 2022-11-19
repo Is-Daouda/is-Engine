@@ -33,9 +33,7 @@ namespace is
 {
 GameEngine::GameEngine():
     m_gameSysExt(m_window)
-{
-    srand((unsigned int)time(0));
-}
+{}
 
 GameEngine::~GameEngine()
 {

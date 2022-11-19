@@ -26,6 +26,7 @@ namespace is
 GameSystem::GameSystem(sf::RenderWindow &window):
     m_window(window)
 {
+    srand((unsigned int)time(0));
     m_gameLanguage = 0; // 0 = default language
     m_validationMouseKey    = GameConfig::KEY_VALIDATION_MOUSE;
     m_validationKeyboardKey = GameConfig::KEY_VALIDATION_KEYBOARD;
