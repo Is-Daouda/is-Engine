@@ -61,6 +61,11 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
+- Addition of : [checkDateLimit()](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L133) function which makes it possible to check the validity of a date, [makeTime()](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L130) function which makes it possible to create dates with std::tm, [enumToNum()](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L75) function to convert an Enum into a number and many other new functions used in the [Demo (Super Mario Bros NES)](https://github.com/Is-Daouda/is-Engine-Demo).
+- Support for pointer type variables in functions found in [GameFonction.h](./app/src/main/cpp/isEngine/system/function/GameFunction.h).
+- Fixed several bugs that were well hidden!
+
+### 3.3.8
 - [Android] Now you can enable / disable the FINGER MOTION event thanks to the **IS_ENGINE_SDL_enableFINGERMOTION** variable.
 - Possibility to define [the size of the texts of the Message Box, RPG Dialog Box and that of the buttons](./app/src/main/cpp/app_src/config/GameConfig.h#L82).
 - Compilation time has been optimized when you change [the game engine language](./app/src/main/cpp/app_src/language/GameLanguage.h).
