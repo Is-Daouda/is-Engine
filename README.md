@@ -61,7 +61,7 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
-- Addition of : [checkDateLimit()](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L133) function which makes it possible to check the validity of a date, [makeTime()](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L130) function which makes it possible to create dates with **std::tm**, [enumToNum()](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L75) function to convert an Enum into a number and many other new features, some of which were used in the [Engine Demo (Super Mario Bros NES)](https://github.com/Is-Daouda/is-Engine-Demo).
+- Addition of : [checkDateLimit()](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L133) function which makes it possible to check the validity of a date, [enumToNum()](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L75) function to convert an Enum into a number and many other new features, some of which were used in the [Engine Demo (Super Mario Bros NES)](https://github.com/Is-Daouda/is-Engine-Demo).
 - Support for pointer type variables in functions found in [GameFonction.h](./app/src/main/cpp/isEngine/system/function/GameFunction.h).
 - Fixed several bugs that were well hidden!
 
@@ -160,7 +160,7 @@ is::openURL("+2280011223344", is::OpenURLAction::Tel); // Make a call
 Which means that you can now publish your C++ games on Google Play! (Yeaaah !!!)
 - [You must read this very important](#-very-important)
 4. **[The OpenURL function](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L982) now allows you to open web links on many system**: PC (Windows / Linux), Web (HTML 5), Android.
-5. **[A new function to manipulate dates](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L111)**
+5. **[A new function to manipulate dates](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L130)**
 - Very practical data sending system for sending C++ data to Javascript.
 
 *Example code to display C++ data in Javascript:*
