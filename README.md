@@ -203,8 +203,7 @@ I'm sure you'll love it!
 - [Youtube tutorial : How to create a game (Arkanoid) with the game engine](https://youtu.be/wo2-ofNB7Hw)
 
 ## Example of a project created with the engine
-- [I Can Transform Web](https://is-daouda.github.io/)
-- [I Can Transform Android](https://play.google.com/store/apps/details?id=com.isdaouda.icantransform&hl=En)
+- [I Can Transform](https://linktr.ee/is_daouda)
 - [Pac-Pac Prandial War](https://www.youtube.com/watch?v=7CXkiD_jTRg&t=25s&authuser=0)
 - [Soldier VS Zombies](https://www.youtube.com/watch?v=qK-Aj-7-czM&authuser=0)
 
