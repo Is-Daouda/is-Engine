@@ -185,7 +185,7 @@ With this tool everything is possible!
 I'm sure you'll love it!
 ```
 ## Extras
-- Here is a **[Web Game : Arkanoid](https://is-daouda.github.io/)** created with the game engine.
+- Here is a **Web Game : Arkanoid** created with the game engine.
 **It's a Web Game so it's playable on PC and mobile.**
 
 [![Image](https://i48.servimg.com/u/f48/20/16/75/27/arkano11.png)](https://is-daouda.github.io/)
