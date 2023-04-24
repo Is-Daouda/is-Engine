@@ -52,6 +52,9 @@ extern SDL_Window *IS_ENGINE_SDL_window;
 extern SDL_Renderer *IS_ENGINE_SDL_renderer;
 extern SDL_DisplayMode IS_ENGINE_SDL_displayMode; // Used to determine the size of a window
 
+/// Allows to use touch functions
+extern bool IS_ENGINE_MOBILE_OS;
+
 /// Allow to avoid bug
 static bool IS_ENGINE_SDL_closeWindow = false;
 
@@ -851,6 +854,7 @@ private:
     unsigned int m_windowFrameLimit;
     int m_style;
     bool m_isOpen = true;
+    float m_tempScreenXScale, m_tempScreenYScale;
     std::chrono::steady_clock::time_point m_timeSinceLastDisplay; ///< The timepoint at which Display() was last called
 };
 

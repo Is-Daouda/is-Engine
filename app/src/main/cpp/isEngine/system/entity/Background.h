@@ -59,7 +59,7 @@ public:
         }
     }
 
-    void step(float const &DELTA_TIME)
+    void step(const float &DELTA_TIME)
     {
         m_x += m_hsp;
         m_y += m_vsp;

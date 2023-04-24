@@ -36,10 +36,10 @@ EMSCRIPTEN_BINDINGS(Wrappers) {
 
 namespace is
 {
-float const MAX_CLOCK_TIME = 0.018f;
-float const VALUE_CONVERSION = 65.f;
-float const SECOND = 59.f;
-float const VALUE_TIME = 1.538f;
+const float MAX_CLOCK_TIME = 0.018f;
+const float VALUE_CONVERSION = 65.f;
+const float SECOND = 59.f;
+const float VALUE_TIME = 1.538f;
 
 std::string w_chart_tToStr(wchar_t const *val)
 {
@@ -53,7 +53,7 @@ std::wstring strToWStr(const std::string &str)
     return wsTemp;
 }
 
-int getMSecond(float const &DELTA_TIME)
+int getMSecond(const float &DELTA_TIME)
 {
     return static_cast<int>(DELTA_TIME * (VALUE_TIME * VALUE_CONVERSION));
 }
@@ -88,7 +88,7 @@ void showLog(const std::string& str, bool stopApplication)
     if (stopApplication) is::closeApplication();
 }
 
-bool isIn(unsigned short valNumber, int const var, int x1, int x2, int x3, int x4, int x5, int x6, int x7, int x8, int x9)
+bool isIn(unsigned short valNumber, const int var, int x1, int x2, int x3, int x4, int x5, int x6, int x7, int x8, int x9)
 {
     if (var == x1) return true;
     else if (var == x2) return true;
@@ -310,18 +310,14 @@ void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::IntRect rec, sf::Vector
     is::setSFMLObjAlpha(spr, alpha);
 }
 
-sf::Vector2f getCursor(sf::RenderWindow &window
-                        #if defined(__ANDROID__)
-                        , unsigned int finger
-                        #endif
-                        )
+sf::Vector2f getCursor(sf::RenderWindow &window, unsigned int finger)
 {
     sf::Vector2i pixelPos =
-    #if defined(__ANDROID__)
-                            sf::Touch::getPosition(finger, window);
-    #else
-                            sf::Mouse::getPosition(window);
-    #endif
+    ((IS_ENGINE_MOBILE_OS) ?
+                            sf::Touch::getPosition(finger, window)
+    :
+                            sf::Mouse::getPosition(window)
+    );
 
     sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos, window.getView());
 

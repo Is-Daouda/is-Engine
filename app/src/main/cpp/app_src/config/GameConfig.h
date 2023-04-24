@@ -47,31 +47,31 @@ namespace GameConfig
 	static const DisplayOption LAUNCH_OPTION = DisplayOption::HELLO_SCENE; ///< Represents the first scene to be launched
 
 	/// Represent the key which validates the options with the Mouse
-    static const sf::Mouse::Button KEY_VALIDATION_MOUSE    = sf::Mouse::Left;
+    static sf::Mouse::Button KEY_VALIDATION_MOUSE    = sf::Mouse::Left;
 
     /// Represent the key which validates the options with the Keyboard
-    static const sf::Keyboard::Key KEY_VALIDATION_KEYBOARD = sf::Keyboard::Return;
+    static sf::Keyboard::Key KEY_VALIDATION_KEYBOARD = sf::Keyboard::Return;
 
     /// Represent the key which cancel the options with the Keyboard
-    static const sf::Keyboard::Key KEY_CANCEL = sf::Keyboard::Escape;;
+    static sf::Keyboard::Key KEY_CANCEL = sf::Keyboard::Escape;;
 
     /// Represents the button A key
-    static const sf::Keyboard::Key KEY_A      = sf::Keyboard::W;
+    static sf::Keyboard::Key KEY_A      = sf::Keyboard::W;
 
     /// Represents the button B key
-    static const sf::Keyboard::Key KEY_B      = sf::Keyboard::X;
+    static sf::Keyboard::Key KEY_B      = sf::Keyboard::X;
 
     /// Represents the Left directional key
-    static const sf::Keyboard::Key KEY_LEFT   = sf::Keyboard::Left;
+    static sf::Keyboard::Key KEY_LEFT   = sf::Keyboard::Left;
 
     /// Represents the Right directional key
-    static const sf::Keyboard::Key KEY_RIGHT  = sf::Keyboard::Right;
+    static sf::Keyboard::Key KEY_RIGHT  = sf::Keyboard::Right;
 
     /// Represents the Up directional key
-    static const sf::Keyboard::Key KEY_UP     = sf::Keyboard::Up;
+    static sf::Keyboard::Key KEY_UP     = sf::Keyboard::Up;
 
     /// Represents the Down directional key
-    static const sf::Keyboard::Key KEY_DOWN   = sf::Keyboard::Down;
+    static sf::Keyboard::Key KEY_DOWN   = sf::Keyboard::Down;
 
     ////////////////////////////////////////////////////////////
     /// Default values that SFML texts will take when they are created

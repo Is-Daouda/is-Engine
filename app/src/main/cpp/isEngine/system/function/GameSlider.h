@@ -40,7 +40,7 @@ public:
     };
     GameSlider(is::GameDisplay *scene);
 
-    void step(float const &DELTA_TIME);
+    void step(const float &DELTA_TIME);
     SlideDirection getSlideDirection() const;
 
 private:

@@ -36,7 +36,7 @@ public:
         FADE_OUT
     };
     TransitionEffect(is::GameDisplay *scene);
-    void step(float const &DELTA_TIME);
+    void step(const float &DELTA_TIME);
     void draw(is::Render &render);
     void setType(int type)
     {

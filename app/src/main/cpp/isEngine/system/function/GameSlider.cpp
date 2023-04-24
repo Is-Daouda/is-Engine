@@ -35,7 +35,7 @@ GameSlider::GameSlider(is::GameDisplay *scene):
     #endif
 }
 
-void GameSlider::step(float const &DELTA_TIME)
+void GameSlider::step(const float &DELTA_TIME)
 {
     if (m_scene->getGameSystem().isPressed(is::GameSystem::MOUSE))
     {

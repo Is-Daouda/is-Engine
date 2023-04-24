@@ -54,7 +54,7 @@ public:
     ~GameTime();
 
     /// Start the countdown of time so that it stops at zero (0)
-    void step(float const &DELTA_TIME);
+    void step(const float &DELTA_TIME);
 
     /// Add the minute, second and millisecond to the current time
     void addTimeValue(int m, int s, int ms);

@@ -52,13 +52,13 @@ namespace is
 {
 ////////////////////////////////////////////////////////////
 // Do not touch these variables unless you know what you are doing
-extern float const MAX_CLOCK_TIME; ///< game execution timing variables
-extern float const VALUE_CONVERSION; ///< game execution timing variables
-extern float const SECOND;           ///< represent third value in second
-extern float const VALUE_TIME;     ///< game execution timing variables
+extern const float MAX_CLOCK_TIME; ///< game execution timing variables
+extern const float VALUE_CONVERSION; ///< game execution timing variables
+extern const float SECOND;           ///< represent third value in second
+extern const float VALUE_TIME;     ///< game execution timing variables
 ////////////////////////////////////////////////////////////
 
-static float const PI(3.14159f);
+static const float PI(3.14159f);
 
 ////////////////////////////////////////////////////////////
 /// \brief SFML Sound or Music state
@@ -124,7 +124,7 @@ std::string writeZero(T val, int zeroNumber = 1)
 }
 
 /// Return game execution time in millisecond
-int getMSecond(float const &DELTA_TIME);
+int getMSecond(const float &DELTA_TIME);
 
 /// Make a tm structure representing this date
 std::tm makeTime(int year, int month, int day);
@@ -180,7 +180,7 @@ void setVarLimit(T &var, T valMin, T valMax)
 
 /// Test many values in comparison with a variable
 /// \param valNumber number of values to test
-bool isIn(unsigned short valNumber, int const var, int x1, int x2, int x3 = 0, int x4 = 0, int x5 = 0, int x6 = 0, int x7 = 0, int x8 = 0, int x9 = 0);
+bool isIn(unsigned short valNumber, const int var, int x1, int x2, int x3 = 0, int x4 = 0, int x5 = 0, int x6 = 0, int x7 = 0, int x8 = 0, int x9 = 0);
 
 /// Return if a is in [b,c]
 bool isBetween(float a, float b, float c);
@@ -703,7 +703,7 @@ void setSFMLObjFillColor(T *obj, sf::Color color)
 
 /// Allows to make scale animation
 template <class T>
-void scaleAnimation(float const &DELTA_TIME, float &var, T &obj, short varSign = 1, float scaleSize = 1.f)
+void scaleAnimation(const float &DELTA_TIME, float &var, T &obj, short varSign = 1, float scaleSize = 1.f)
 {
     if (var > scaleSize) var -= ((0.05f * is::VALUE_CONVERSION) * DELTA_TIME);
     else var = scaleSize;
@@ -712,7 +712,7 @@ void scaleAnimation(float const &DELTA_TIME, float &var, T &obj, short varSign =
 
 /// Allows to make scale animation
 template <class T>
-void scaleAnimation(float const &DELTA_TIME, float &var, T *obj, short varSign = 1, float scaleSize = 1.f)
+void scaleAnimation(const float &DELTA_TIME, float &var, T *obj, short varSign = 1, float scaleSize = 1.f)
 {
     scaleAnimation(DELTA_TIME, var, *obj, varSign, scaleSize);
 }
@@ -1571,6 +1571,18 @@ inline void createSprite(sf::Texture &tex, sf::Sprite *spr, sf::Vector2f positio
     createSprite(tex, *spr, position, origin, smooth);
 }
 
+/// Create SFML sprites center without IntRec
+inline void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::Vector2f position, bool center, bool smooth = true)
+{
+    createSprite(tex, spr, position, sf::Vector2f(tex.getSize().x / 2.f, tex.getSize().y / 2.f), smooth);
+}
+
+/// Create SFML sprites center without IntRec
+inline void createSprite(sf::Texture &tex, sf::Sprite *spr, sf::Vector2f position, bool center, bool smooth = true)
+{
+    createSprite(tex, *spr, position, center, smooth);
+}
+
 /// Create SFML sprites with IntRec
 void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::IntRect rec, sf::Vector2f position, sf::Vector2f origin, bool repeatTexture = false, bool smooth = true);
 
@@ -1578,6 +1590,18 @@ void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::IntRect rec, sf::Vector
 inline void createSprite(sf::Texture &tex, sf::Sprite *spr, sf::IntRect rec, sf::Vector2f position, sf::Vector2f origin, bool repeatTexture = false, bool smooth = true)
 {
     createSprite(tex, *spr, rec, position, origin, repeatTexture, smooth);
+}
+
+/// Create SFML sprites center with IntRec
+inline void createSprite(sf::Texture &tex, sf::Sprite &spr, sf::IntRect rec, sf::Vector2f position, bool center, bool repeatTexture = false, bool smooth = true)
+{
+    createSprite(tex, spr, rec, position, sf::Vector2f(rec.width / 2.f, rec.height / 2.f), repeatTexture, smooth);
+}
+
+/// Create SFML sprites center with IntRec
+inline void createSprite(sf::Texture &tex, sf::Sprite *spr, sf::IntRect rec, sf::Vector2f position, bool center, bool repeatTexture = false, bool smooth = true)
+{
+    createSprite(tex, *spr, rec, position, center, repeatTexture, smooth);
 }
 
 /// Create SFML sprites advanced
@@ -1616,11 +1640,7 @@ inline void createSprite(sf::Texture &tex, std::vector<sf::Sprite*> &spr, sf::In
 ///
 /// \param finger Finger index (on Android)
 //////////////////////////////////////////////////////
-sf::Vector2f getCursor(sf::RenderWindow &window
-                        #if defined(__ANDROID__)
-                        , unsigned int finger = 0
-                        #endif
-                        );
+sf::Vector2f getCursor(sf::RenderWindow &window , unsigned int finger = 0);
 
 //////////////////////////////////////////////////////
 /// \brief Return Cursor Position
@@ -1628,17 +1648,9 @@ sf::Vector2f getCursor(sf::RenderWindow &window
 ///
 /// \param finger Finger index (on Android)
 //////////////////////////////////////////////////////
-inline sf::Vector2f getCursor(sf::RenderWindow *window
-                        #if defined(__ANDROID__)
-                        , unsigned int finger = 0
-                        #endif
-                        )
+inline sf::Vector2f getCursor(sf::RenderWindow *window , unsigned int finger = 0)
 {
-    return getCursor(*window
-#if defined(__ANDROID__)
-                , finger
-#endif
-        );
+    return getCursor(*window, finger);
 }
 
 //////////////////////////////////////////////////////
@@ -1649,17 +1661,9 @@ inline sf::Vector2f getCursor(sf::RenderWindow *window
 /// \param finger Finger index (on Android)
 //////////////////////////////////////////////////////
 template <class T>
-bool mouseCollision(sf::RenderWindow &window, T const &obj
-                    #if defined(__ANDROID__)
-                    , unsigned int finger = 0
-                    #endif
-                    )
+bool mouseCollision(sf::RenderWindow &window, T const &obj, unsigned int finger = 0)
 {
-    sf::Vector2f cursorPos = is::getCursor(window
-                                       #if defined(__ANDROID__)
-                                       , finger
-                                       #endif
-                                       );
+    sf::Vector2f cursorPos = is::getCursor(window, finger);
 
     // A rectangle that will allow to test with the SFML object
     sf::RectangleShape recCursor(sf::Vector2f(6.f, 6.f));
@@ -1676,17 +1680,9 @@ bool mouseCollision(sf::RenderWindow &window, T const &obj
 /// \param finger Finger index (on Android)
 //////////////////////////////////////////////////////
 template <class T>
-bool mouseCollision(sf::RenderWindow *window, T const *obj
-                    #if defined(__ANDROID__)
-                    , unsigned int finger = 0
-                    #endif
-                    )
+bool mouseCollision(sf::RenderWindow *window, T const *obj, unsigned int finger = 0)
 {
-    return mouseCollision(*window, *obj
-#if defined(__ANDROID__)
-        , finger
-#endif
-        );
+    return mouseCollision(*window, *obj, finger);
 }
 
 //////////////////////////////////////////////////////
@@ -1698,17 +1694,9 @@ bool mouseCollision(sf::RenderWindow *window, T const *obj
 /// \param finger Finger index (on Android)
 //////////////////////////////////////////////////////
 template <class T>
-bool mouseCollision(sf::RenderWindow &window, T const &obj, sf::Vector2f &position
-                    #if defined(__ANDROID__)
-                    , unsigned int finger = 0
-                    #endif
-                    )
+bool mouseCollision(sf::RenderWindow &window, T const &obj, sf::Vector2f &position, unsigned int finger = 0)
 {
-    sf::Vector2f cursorPos = is::getCursor(window
-                                       #if defined(__ANDROID__)
-                                       , finger
-                                       #endif
-                                       );
+    sf::Vector2f cursorPos = is::getCursor(window, finger);
     setVector2(position, cursorPos.x, cursorPos.y);
 
     // A rectangle that will allow to test with the SFML object
@@ -1727,17 +1715,9 @@ bool mouseCollision(sf::RenderWindow &window, T const &obj, sf::Vector2f &positi
 /// \param finger Finger index (on Android)
 //////////////////////////////////////////////////////
 template <class T>
-bool mouseCollision(sf::RenderWindow *window, T const *obj, sf::Vector2f &position
-                    #if defined(__ANDROID__)
-                    , unsigned int finger = 0
-                    #endif
-                    )
+bool mouseCollision(sf::RenderWindow *window, T const *obj, sf::Vector2f &position, unsigned int finger = 0)
 {
-    return mouseCollision(*window, *obj, position
-#if defined(__ANDROID__)
-        , finger
-#endif
-        );
+    return mouseCollision(*window, *obj, position, finger);
 }
 
 /// Do not touch this function it allows to manage the style of the window

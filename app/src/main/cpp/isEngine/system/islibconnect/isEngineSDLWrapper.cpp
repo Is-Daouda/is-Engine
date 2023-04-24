@@ -29,6 +29,8 @@ SDL_Window *IS_ENGINE_SDL_window = NULL;
 SDL_Renderer *IS_ENGINE_SDL_renderer = NULL;
 SDL_DisplayMode IS_ENGINE_SDL_displayMode;
 
+bool IS_ENGINE_MOBILE_OS(false);
+
 float IS_ENGINE_SDL_screenXScale(1.f);
 float IS_ENGINE_SDL_screenYScale(1.f);
 
@@ -79,7 +81,7 @@ bool SDL2initLib()
     }
 #endif
 
-    int const frequency =
+    const int frequency =
 #if defined(IS_ENGINE_HTML_5)
     EM_ASM_INT_V({
         var context;
@@ -93,6 +95,20 @@ bool SDL2initLib()
         }
         return context.sampleRate;
     });
+
+    // Check if it is mobile platform
+    int tempBoolToInt = EM_ASM_INT
+    (
+        let ua = navigator.userAgent ;
+        if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+            return 1;
+        }
+        else if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+            return 1;
+        }
+        return 0;
+    );
+    IS_ENGINE_MOBILE_OS = (tempBoolToInt == 1) ? true : false;
 #else
         22050; //44100;
 #endif
@@ -106,11 +122,6 @@ bool SDL2initLib()
 
 void SDL2freeLib()
 {
-    for (unsigned int _I(0); _I < IS_ENGINE_SDL_AUTO_GENERATE_FONT.size(); _I++)
-    {
-        delete IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I];
-        IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I] = 0;
-    }
     Mix_CloseAudio();
     Mix_Quit();
 
@@ -119,8 +130,14 @@ void SDL2freeLib()
     SDL_DestroyRenderer(IS_ENGINE_SDL_renderer);
     is::IS_ENGINE_SDL_renderer = NULL;
 
-    TTF_Quit();
     IMG_Quit();
+
+    for (unsigned int _I(0); _I < IS_ENGINE_SDL_AUTO_GENERATE_FONT.size(); _I++)
+    {
+        delete IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I];
+        IS_ENGINE_SDL_AUTO_GENERATE_FONT[_I] = 0;
+    }
+    TTF_Quit();
 }
 }
 
@@ -876,7 +893,7 @@ void RenderWindow::create(VideoMode videoMode, const std::string& title, int sty
              SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_size.x, m_size.y, SDL_WINDOW_OPENGL
 #endif
             );
-    is::IS_ENGINE_SDL_renderer = SDL_CreateRenderer(is::IS_ENGINE_SDL_window, -1, SDL_RENDERER_ACCELERATED);
+    is::IS_ENGINE_SDL_renderer = SDL_CreateRenderer(is::IS_ENGINE_SDL_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     if (!is::SDL2initLib()) is::closeApplication();
 }
@@ -1019,7 +1036,7 @@ void RenderWindow::draw(SDLTexture &obj)
         std::abs(obj.getScale().x) == std::abs(obj.getScale().y))
     {
         auto redimImg = [this](int &destSize, int &destPos, int &destOrigin, float &origin,
-                               int const &srcSize, int const &size, float const &objOrigin)
+                               const int &srcSize, const int &size, const float &objOrigin)
         {
             destPos += (destSize - srcSize) / 2;
             destSize = srcSize;
@@ -1065,6 +1082,7 @@ void RenderWindow::draw(SDLTexture &obj)
 void RenderWindow::display()
 {
     SDL_RenderPresent(is::IS_ENGINE_SDL_renderer);
+    SDL_UpdateWindowSurface(is::IS_ENGINE_SDL_window);
     if (m_windowFrameLimit != 0)
     {
         Uint64 diff = std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -1105,9 +1123,19 @@ bool RenderWindow::pollEvent(Event &event)
              event.mouseWheel.delta--;
         }
     }
-#if defined(__ANDROID__)
+if (is::IS_ENGINE_MOBILE_OS)
+{
     if (pollEvenValue == 1)
     {
+        m_tempScreenXScale = is::IS_ENGINE_SDL_screenXScale;
+        m_tempScreenYScale = is::IS_ENGINE_SDL_screenYScale;
+#if defined(IS_ENGINE_HTML_5)
+        if (is::IS_ENGINE_MOBILE_OS)
+        {
+            m_tempScreenXScale = is::IS_ENGINE_SDL_displayMode.w / m_view.getSize().x;
+            m_tempScreenYScale = is::IS_ENGINE_SDL_displayMode.h / m_view.getSize().y;
+        }
+#endif
         switch (event.m_event.type)
         {
             case SDL_FINGERDOWN:
@@ -1116,8 +1144,8 @@ bool RenderWindow::pollEvent(Event &event)
                 {
                     int tempTouchId = is::IS_ENGINE_SDL_touchIdCount;
                     if (is::IS_ENGINE_SDL_touchData[1].m_SDLtouchDown && !is::IS_ENGINE_SDL_touchData[0].m_SDLtouchDown) tempTouchId = 0;
-                    is::IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchX = (event.m_event.tfinger.x * is::IS_ENGINE_SDL_displayMode.w) / is::IS_ENGINE_SDL_screenXScale;
-                    is::IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / is::IS_ENGINE_SDL_screenYScale;
+                    is::IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchX = (event.m_event.tfinger.x * is::IS_ENGINE_SDL_displayMode.w) / m_tempScreenXScale;
+                    is::IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / m_tempScreenYScale;
                     is::IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchDown = true;
                     is::IS_ENGINE_SDL_touchIdCount++;
                     if (is::IS_ENGINE_SDL_touchIdCount == 2) is::IS_ENGINE_SDL_touchIdLast = tempTouchId;
@@ -1133,13 +1161,13 @@ bool RenderWindow::pollEvent(Event &event)
                     {
                         int tempTouchId = 0;
                         if (is::IS_ENGINE_SDL_touchData[1].m_SDLtouchDown && !is::IS_ENGINE_SDL_touchData[0].m_SDLtouchDown) tempTouchId = 1;
-                        is::IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchX = (event.m_event.tfinger.x * is::IS_ENGINE_SDL_displayMode.w) / is::IS_ENGINE_SDL_screenXScale;
-                        is::IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / is::IS_ENGINE_SDL_screenYScale;
+                        is::IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchX = (event.m_event.tfinger.x * is::IS_ENGINE_SDL_displayMode.w) / m_tempScreenXScale;
+                        is::IS_ENGINE_SDL_touchData[tempTouchId].m_SDLtouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / m_tempScreenYScale;
                     }
                     if (is::IS_ENGINE_SDL_touchIdCount == 2)
                     {
-                        is::IS_ENGINE_SDL_touchData[is::IS_ENGINE_SDL_touchIdLast].m_SDLtouchX = (event.m_event.tfinger.x * is::IS_ENGINE_SDL_displayMode.w) / is::IS_ENGINE_SDL_screenXScale;
-                        is::IS_ENGINE_SDL_touchData[is::IS_ENGINE_SDL_touchIdLast].m_SDLtouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / is::IS_ENGINE_SDL_screenYScale;
+                        is::IS_ENGINE_SDL_touchData[is::IS_ENGINE_SDL_touchIdLast].m_SDLtouchX = (event.m_event.tfinger.x * is::IS_ENGINE_SDL_displayMode.w) / m_tempScreenXScale;
+                        is::IS_ENGINE_SDL_touchData[is::IS_ENGINE_SDL_touchIdLast].m_SDLtouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / m_tempScreenYScale;
                     }
                 }
             }
@@ -1149,8 +1177,8 @@ bool RenderWindow::pollEvent(Event &event)
             {
                 if (is::IS_ENGINE_SDL_touchIdCount > 0)
                 {
-                    int releaseTouchX = (event.m_event.tfinger.x * is::IS_ENGINE_SDL_displayMode.w) / is::IS_ENGINE_SDL_screenXScale;
-                    int releaseTouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / is::IS_ENGINE_SDL_screenYScale;
+                    int releaseTouchX = (event.m_event.tfinger.x * is::IS_ENGINE_SDL_displayMode.w) / m_tempScreenXScale;
+                    int releaseTouchY = (event.m_event.tfinger.y * is::IS_ENGINE_SDL_displayMode.h) / m_tempScreenYScale;
 
                     int nearTouchId = 0;
                     if (is::IS_ENGINE_SDL_touchIdCount == 2)
@@ -1174,7 +1202,7 @@ bool RenderWindow::pollEvent(Event &event)
             break;
         }
     }
-#endif
+}
     if (event.type == 0 || event.type == 512 || event.type == 1024)
         event.type = ((SDL_GetWindowFlags(is::IS_ENGINE_SDL_window) & SDL_WINDOW_INPUT_FOCUS) ? -1 : -2);
     return ((pollEvenValue == 1) ? true : false);

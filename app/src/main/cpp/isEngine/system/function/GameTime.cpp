@@ -55,7 +55,7 @@ GameTime::~GameTime()
 {
 }
 
-void GameTime::step(float const &DELTA_TIME)
+void GameTime::step(const float &DELTA_TIME)
 {
     if (m_mSecond > 0) m_mSecond -= static_cast<int>((is::VALUE_CONVERSION * is::VALUE_TIME) * DELTA_TIME);
     else

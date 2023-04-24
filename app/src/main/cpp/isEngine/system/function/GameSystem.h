@@ -36,7 +36,7 @@
 //////////////////////////////////////////////////////
 #define IS_ENGINE_VERSION_MAJOR 3
 #define IS_ENGINE_VERSION_MINOR 3
-#define IS_ENGINE_VERSION_PATCH 9
+#define IS_ENGINE_VERSION_PATCH 10
 
 namespace is
 {
@@ -69,9 +69,9 @@ public:
     //////////////////////////////////////////////////////
     enum ValidationButton
     {
-        MOUSE = 0,        ///< Represent Mouse validation button (If it is used then it becomes touch action on android)
-        KEYBOARD = -1,    ///< Represent Keyboard validation button
-        ALL_BUTTONS = -2, ///< Represent Mouse and Keyboard validation button (If it is used then it becomes touch action on android)
+        ALL_BUTTONS = 0, ///< Represent Mouse and Keyboard validation button (If it is used then it becomes touch action on android)
+        KEYBOARD = -1,   ///< Represent Keyboard validation button
+        MOUSE = -2       ///< Represent Mouse validation button (If it is used then it becomes touch action on android)
     };
     GameSystem(sf::RenderWindow &window);
 
@@ -83,13 +83,8 @@ public:
     /// \param finger Finger index (on Android)
     /// \param validationButton Represents the validation button to use to take the test
     //////////////////////////////////////////////////////
-    virtual bool isPressed(
-                   #if defined(__ANDROID__)
-                   int finger = 0
-                   #else
-                   ValidationButton validationButton = ALL_BUTTONS
-                   #endif
-                   ) const;
+    virtual bool isPressed(int finger = 0) const;
+    virtual bool isPressed(ValidationButton validationButton) const;
 
     //////////////////////////////////////////////////////
     /// \brief Check if key is pressed
@@ -115,10 +110,10 @@ public:
     ///
     /// \return true is file is found false if not
     //////////////////////////////////////////////////////
-    static bool fileExist(std::string const &fileName);
+    static bool fileExist(const std::string &fileName);
 
     /// Allows to remove file
-    static void removeFile(std::string const &fileName);
+    static void removeFile(const std::string &fileName);
 
     /// Allows to play a sound if the option is activated
     virtual void playSound(sf::Sound &obj);
@@ -183,16 +178,16 @@ public:
     virtual void useVibrate(short ms);
 
     /// Save game configuration data
-    virtual void saveConfig(std::string const &fileName);
+    virtual void saveConfig(const std::string &fileName);
 
     /// Load game configuration data
-    virtual void loadConfig(std::string const &fileName);
+    virtual void loadConfig(const std::string &fileName);
 
     /// Save virtual game pad configuration data
-    virtual void savePadConfig(std::string const &fileName);
+    virtual void savePadConfig(const std::string &fileName);
 
     /// Load virtual game pad configuration data
-    virtual void loadPadConfig(std::string const &fileName);
+    virtual void loadPadConfig(const std::string &fileName);
 
     ////////////////////////////////////////////////////////////
     // Do not touch these variables unless you know what you are doing
@@ -205,10 +200,10 @@ public:
     bool  m_loadParentResources; ///< Allows to load parents resources once
 
     /// Represent the variable that stores the option validation key with the Mouse
-    sf::Mouse::Button m_validationMouseKey;
+    sf::Mouse::Button *m_validationMouseKey = nullptr;
 
     /// Represent the variable that stores the option validation key with the Keyboard
-    sf::Keyboard::Key m_validationKeyboardKey;
+    sf::Keyboard::Key *m_validationKeyboardKey = nullptr;
 
     int m_gameLanguage; ///< Represents the index of the chosen language
     int m_padAlpha;     ///< Use to change the transparency of the Virtual Game Pad

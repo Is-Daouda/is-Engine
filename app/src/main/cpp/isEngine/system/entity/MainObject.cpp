@@ -280,7 +280,7 @@ void MainObject::setVsp(float val)
     m_vsp = val;
 }
 
-void MainObject::setAngularMove(float const &DELTA_TIME, float speed, float angle)
+void MainObject::setAngularMove(const float &DELTA_TIME, float speed, float angle)
 {
     m_x += (is::lengthDirX(speed, angle) * is::VALUE_CONVERSION) * DELTA_TIME;
     m_y -= (is::lengthDirY(speed, angle) * is::VALUE_CONVERSION) * DELTA_TIME;
@@ -312,10 +312,10 @@ void MainObject::setImageYscale(float val)
     setImageScaleX_Y(m_imageXscale, val);
 }
 
-void MainObject::setImageScale(float val)
+void MainObject::setImageScale(float val, bool updateXYscale)
 {
     m_imageScale = val;
-    setImageScaleX_Y(m_imageScale, m_imageScale);
+    if (updateXYscale) setImageScaleX_Y(m_imageScale, m_imageScale);
 }
 
 void MainObject::setImageAngle(float val)
@@ -788,27 +788,29 @@ sf::Sprite& MainObject::getSprite()
     return m_sprParent;
 }
 
+float COMPARE_DISTANCE(460.f);
+
 bool operator<(const MainObject *a, const MainObject &b)
 {
-    if (is::instanceExist(a)) return a->getX()  < (b.getX() - 460.f);
+    if (is::instanceExist(a)) return a->getX()  < (b.getX() - COMPARE_DISTANCE);
     else return false;
 }
 
 bool operator<(const MainObject &b, const MainObject *a)
 {
-    if (is::instanceExist(a)) return (b.getX() + 460.f) < a->getX();
+    if (is::instanceExist(a)) return (b.getX() + COMPARE_DISTANCE) < a->getX();
     else return false;
 }
 
 bool operator<(std::shared_ptr<MainObject> const &a, const MainObject &b)
 {
-    if (is::instanceExist(a)) return a->getX() < (b.getX() - 460.f);
+    if (is::instanceExist(a)) return a->getX() < (b.getX() - COMPARE_DISTANCE);
     else return false;
 }
 
 bool operator<(const MainObject &b, std::shared_ptr<MainObject> const &a)
 {
-    if (is::instanceExist(a)) return (b.getX() + 460.f) < a->getX();
+    if (is::instanceExist(a)) return (b.getX() + COMPARE_DISTANCE) < a->getX();
     else return false;
 }
 }

@@ -40,7 +40,7 @@ TransitionEffect::TransitionEffect(is::GameDisplay *scene):
                         sf::Color(0, 0, 0, m_imageAlpha), scene->getViewW() / 2.f, scene->getViewH() / 2.f);
 }
 
-void TransitionEffect::step(float const &DELTA_TIME)
+void TransitionEffect::step(const float &DELTA_TIME)
 {
     m_x = m_scene->getViewX();
     m_y = m_scene->getViewY();

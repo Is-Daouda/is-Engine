@@ -256,11 +256,7 @@ public:
     virtual float getViewH() const {return m_viewH;}
 
     /// Return Cursor Position
-    virtual sf::Vector2f getCursor(
-                                    #if defined(__ANDROID__)
-                                    unsigned int finger = 0
-                                    #endif
-                                   ) const;
+    virtual sf::Vector2f getCursor(unsigned int finger = 0) const;
 
     /// Get mouse in collision
     bool getMouseInCollision() {return m_mouseInCollision;}
@@ -285,17 +281,9 @@ public:
     /// \param finger Finger index (on Android)
     //////////////////////////////////////////////////////
     template <class T>
-    bool mouseCollision(T const &obj
-                        #if defined(__ANDROID__)
-                        , unsigned int finger = 0
-                        #endif
-                        )
+    bool mouseCollision(T const &obj, unsigned int finger = 0)
     {
-        return is::mouseCollision(m_window, obj
-#if defined(__ANDROID__)
-                                  , finger
-#endif
-                                  );
+        return is::mouseCollision(m_window, obj, finger);
     }
 
     //////////////////////////////////////////////////////
@@ -307,17 +295,9 @@ public:
     /// \param finger Finger index (on Android)
     //////////////////////////////////////////////////////
     template <class T>
-    bool mouseCollision(T const &obj, sf::Vector2f &position
-                        #if defined(__ANDROID__)
-                        , unsigned int finger = 0
-                        #endif
-                        )
+    bool mouseCollision(T const &obj, sf::Vector2f &position, unsigned int finger = 0)
     {
-        return is::mouseCollision(m_window, obj, position
-#if defined(__ANDROID__)
-                                 , finger
-#endif
-                                 );
+        return is::mouseCollision(m_window, obj, position, finger);
     }
 
     #if defined(IS_ENGINE_USE_SDM)
@@ -343,7 +323,7 @@ public:
 
     /// Allows to create a sprite by associating a texture to it.
     /// It is also used to blit sprites but only works with SDL.
-    virtual void createSprite(std::string const &spriteName, is::MainObject &obj, sf::IntRect rec, sf::Vector2f position, sf::Vector2f origin, sf::Vector2f scale = sf::Vector2f(1.f, 1.f), unsigned int alpha = 255);
+    virtual void createSprite(const std::string &spriteName, is::MainObject &obj, sf::IntRect rec, sf::Vector2f position, sf::Vector2f origin, sf::Vector2f scale = sf::Vector2f(1.f, 1.f), unsigned int alpha = 255);
     #endif
 
     /// Allows to play sound in container by his name if the option is activated
@@ -436,7 +416,7 @@ public:
 ////////////////////////////////////////////////////////////
 
     /// Show message box according to type
-    void showMessageBox(std::string const &msgBody, bool mbYesNo = true);
+    void showMessageBox(const std::string &msgBody, bool mbYesNo = true);
 
     /// Show message box according to type
     void showMessageBox(std::wstring const &msgBody, bool mbYesNo = true);
@@ -494,7 +474,7 @@ protected:
     bool m_windowIsActive;
     bool m_isPlaying, m_sceneStart, m_sceneEnd;
     bool m_keyBackPressed;
-    bool m_showMsg, m_mbYesNo, m_msgBoxMouseInCollison, m_mouseInCollision;
+    bool m_showMsg, m_mbYesNo, m_msgBoxMouseInCollision, m_mouseInCollision;
 
     sf::Sprite m_sprMsgBox, m_sprMsgBoxButton1, m_sprMsgBoxButton2, m_sprMsgBoxButton3;
     sf::Sprite m_sprLoading;

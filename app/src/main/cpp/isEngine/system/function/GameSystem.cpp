@@ -19,17 +19,21 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "../function/GameSystem.h"
+#include "GameSystem.h"
 
 namespace is
 {
+const short MOUSE = 0;
+const short KEYBOARD = -1;
+const short ALL_BUTTONS = -2;
+
 GameSystem::GameSystem(sf::RenderWindow &window):
     m_window(window)
 {
     srand((unsigned int)time(0));
     m_gameLanguage = 0; // 0 = default language
-    m_validationMouseKey    = GameConfig::KEY_VALIDATION_MOUSE;
-    m_validationKeyboardKey = GameConfig::KEY_VALIDATION_KEYBOARD;
+    m_validationMouseKey    = &GameConfig::KEY_VALIDATION_MOUSE;
+    m_validationKeyboardKey = &GameConfig::KEY_VALIDATION_KEYBOARD;
     m_disableKey = false;
     m_enableSound = true;
     m_enableMusic = true;
@@ -38,41 +42,44 @@ GameSystem::GameSystem(sf::RenderWindow &window):
     m_keyIsPressed = false;
 }
 
-bool GameSystem::isPressed(
-                           #if defined(__ANDROID__)
-                           int finger
-                           #else
-                           ValidationButton validationButton
-                           #endif
-                           ) const
+bool GameSystem::isPressed(int finger) const
 {
     if (m_disableKey) return false;
     //////////////////////////////////////////////////////////
     // Android version code
-    #if defined(__ANDROID__)
+if (is::IS_ENGINE_MOBILE_OS)
+{
     // Exclude the keyboard test when we are on Android
     if (finger == -1) return false;
 
-    // When testing the two validation buttons on PC then consider it as a touch
+    // When testing the mouse validation buttons on PC then consider it as a touch
     if (finger == -2) finger = 0;
     if (sf::Touch::isDown(finger)) return true;
-    #else
+}
+else
+{
     //////////////////////////////////////////////////////////
-    switch (validationButton)
+    switch (finger)
     {
-        case ValidationButton::MOUSE :
-            if (sf::Mouse::isButtonPressed(m_validationMouseKey)) return true;
+        case MOUSE:
+            if (sf::Mouse::isButtonPressed(*m_validationMouseKey)) return true;
         break;
-        case ValidationButton::KEYBOARD :
-            if (sf::Keyboard::isKeyPressed(m_validationKeyboardKey)) return true;
+        case KEYBOARD:
+            if (sf::Keyboard::isKeyPressed(*m_validationKeyboardKey)) return true;
         break;
-        case ValidationButton::ALL_BUTTONS :
-            if (sf::Mouse::isButtonPressed(m_validationMouseKey)) return true;
-            else if (sf::Keyboard::isKeyPressed(m_validationKeyboardKey)) return true;
+        case ALL_BUTTONS:
+            if (sf::Mouse::isButtonPressed(*m_validationMouseKey)) return true;
+            else if (sf::Keyboard::isKeyPressed(*m_validationKeyboardKey)) return true;
         break;
     }
-    #endif
+}
     return false;
+}
+
+bool GameSystem::isPressed(ValidationButton validationButton) const
+{
+    int value = validationButton;
+    return isPressed(value);
 }
 
 bool GameSystem::keyIsPressed(sf::Keyboard::Key key) const
@@ -89,12 +96,12 @@ bool GameSystem::keyIsPressed(sf::Mouse::Button button) const
     return false;
 }
 
-bool GameSystem::fileExist(std::string const &fileName)
+bool GameSystem::fileExist(const std::string &fileName)
 {
     return is::fileExist(fileName);
 }
 
-void GameSystem::removeFile(std::string const &fileName)
+void GameSystem::removeFile(const std::string &fileName)
 {
     remove(fileName.c_str());
 #if defined(IS_ENGINE_HTML_5)
@@ -143,7 +150,7 @@ void GameSystem::useVibrate(short ms)
     if (m_enableVibrate) is::vibrate(ms);
 }
 
-void GameSystem::saveConfig(std::string const &fileName)
+void GameSystem::saveConfig(const std::string &fileName)
 {
     FILE *file = NULL;
     file = fopen(fileName.c_str(), "wb");
@@ -162,7 +169,7 @@ void GameSystem::saveConfig(std::string const &fileName)
     }
 }
 
-void GameSystem::loadConfig(std::string const &fileName)
+void GameSystem::loadConfig(const std::string &fileName)
 {
     FILE *file = NULL;
     file = fopen(fileName.c_str(), "rb");
@@ -178,7 +185,7 @@ void GameSystem::loadConfig(std::string const &fileName)
     }
 }
 
-void GameSystem::savePadConfig(std::string const &fileName)
+void GameSystem::savePadConfig(const std::string &fileName)
 {
     FILE *file = NULL;
     file = fopen(fileName.c_str(), "wb");
@@ -198,7 +205,7 @@ void GameSystem::savePadConfig(std::string const &fileName)
     }
 }
 
-void GameSystem::loadPadConfig(std::string const &fileName)
+void GameSystem::loadPadConfig(const std::string &fileName)
 {
     FILE *file = NULL;
     file = fopen(fileName.c_str(), "rb");

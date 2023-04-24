@@ -70,7 +70,7 @@ public:
     bool m_SDMcallEvent = false;
 
     /// Allows to update object, to overload if necessary
-    virtual void step(float const &DELTA_TIME)
+    virtual void step(const float &DELTA_TIME)
     {
         updateCollisionMask();
     }
@@ -125,7 +125,7 @@ public:
     virtual void setVsp(float val);
 
     /// Set angular move
-    virtual void setAngularMove(float const &DELTA_TIME, float speed, float angle);
+    virtual void setAngularMove(const float &DELTA_TIME, float speed, float angle);
 
     /// Set image frame
     virtual void setFrame(float val);
@@ -143,7 +143,7 @@ public:
     virtual void setImageYscale(float val);
 
     /// Set the scale
-    virtual void setImageScale(float val);
+    virtual void setImageScale(float val, bool updateXYscale = false);
 
     /// Set the angle
     virtual void setImageAngle(float val);
@@ -410,6 +410,8 @@ void instanceDestroy(T *obj)
 }
 
 /// Functor for compare the x position of objects
+extern float COMPARE_DISTANCE;
+
 class CompareX
 {
 public:

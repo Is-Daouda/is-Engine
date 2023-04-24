@@ -33,7 +33,7 @@ namespace is
 class Button : public MainObject
 {
 public:
-    Button(sf::Texture &tex, float x, float y, std::string const &title, std::string const &name, bool center, GameDisplay *scene):
+    Button(sf::Texture &tex, float x, float y, const std::string &title, const std::string &name, bool center, GameDisplay *scene):
         MainObject(x ,y),
         m_scene(scene),
         m_isInCollision(false)
@@ -52,7 +52,7 @@ public:
         m_SDMcallEvent = true;
     }
 
-    Button(sf::Texture &tex, sf::Font &font, float x, float y, std::string const &title, std::string const &name, bool center, int textSize, GameDisplay *scene):
+    Button(sf::Texture &tex, sf::Font &font, float x, float y, const std::string &title, const std::string &name, bool center, int textSize, GameDisplay *scene):
         MainObject(x ,y),
         m_scene(scene),
         m_isInCollision(false)
@@ -72,7 +72,7 @@ public:
     }
 
     /// Set the button text title
-    virtual void setTitle(std::string const &title)
+    virtual void setTitle(const std::string &title)
     {
         m_txtTitle.setString(title);
         is::centerSFMLObj(m_txtTitle);
@@ -124,7 +124,7 @@ public:
         mouseAction(event);
     }
 
-    virtual void step(float const &DELTA_TIME)
+    virtual void step(const float &DELTA_TIME)
     {
         bool tempCollision(m_scene->mouseCollision(m_sprParent));
         if (tempCollision && !m_isInCollision)

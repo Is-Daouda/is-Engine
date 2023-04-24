@@ -37,7 +37,7 @@ public:
         m_isHurtTime(0.f)
     {}
 
-    virtual void hurtStep(float const &DELTA_TIME)
+    virtual void hurtStep(const float &DELTA_TIME)
     {
         if (m_isHurtTime > 0.f)
         {

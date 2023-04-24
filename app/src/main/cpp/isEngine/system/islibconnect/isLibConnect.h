@@ -31,6 +31,16 @@
     #include <SFML/Window.hpp>
     #include <SFML/System.hpp>
     #include "isEngineWrapper.h"
+namespace is
+{
+static bool IS_ENGINE_MOBILE_OS(
+                         #if defined(__ANDROID__)
+                         true
+                         #else
+                         false
+                         #endif
+                         );
+}
 #endif
 
 #if !defined(IS_ENGINE_SDL_2)

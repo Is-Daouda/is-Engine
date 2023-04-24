@@ -65,12 +65,12 @@ public:
          m_disableAllKey,
          m_hideGamePad;
 
-    sf::Keyboard::Key m_keyboardA,
-        m_keyboardB,
-        m_keyboardLeft,
-        m_keyboardRight,
-        m_keyboardUp,
-        m_keyboardDown;
+    sf::Keyboard::Key *m_keyboardA = nullptr,
+        *m_keyboardB = nullptr,
+        *m_keyboardLeft = nullptr,
+        *m_keyboardRight = nullptr,
+        *m_keyboardUp = nullptr,
+        *m_keyboardDown = nullptr;
 
     VirtualKeyIndex m_moveKeyPressed,   ///< Used to find out whether a directional key is pressed
                     m_actionKeyPressed; ///< Used to find out whether a action key (A or B) is pressed
@@ -83,7 +83,7 @@ public:
     virtual void loadResources(bool usePadColorBlack = false);
 
     /// Manages the positioning of the Virtual Game Pad relative to the screen (only for Android)
-    virtual void step(float const &DELTA_TIME);
+    virtual void step(const float &DELTA_TIME);
 
     /// Draw the Virtual Game Pad on the screen (only for Android)
     virtual void draw(is::Render &surface);
@@ -108,9 +108,8 @@ public:
 
 private:
     bool virtualKeyPressed(VirtualKeyIndex virtualKeyIndex);
-    #if defined(__ANDROID__)
+    bool checkKeyPressed(VirtualKeyIndex virtualKeyIndex, sf::Keyboard::Key *keyboardIndex);
     float m_moveObj;
-    #endif
     is::GameDisplay *m_scene;
 
     sf::Sprite m_sprJoystick[2];
