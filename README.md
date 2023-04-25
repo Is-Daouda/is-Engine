@@ -62,7 +62,7 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 
 ## What's new in this version
 - The [Virtual Gamepad](./app/src/main/cpp/isEngine/system/function/GameKeyData.h#L34) is now usable on the Web (HTML 5).
-- You can center sprites with the **createSprite** [(1)](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L1575) & [(2)](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L1596) function.
+- You can center sprites with the **createSprite** [(1)](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L1574) & [(2)](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L1595) function.
 - Vertical synchronization is now enabled by default when using [SDL 2](./app/src/main/cpp/isEngine/system/islibconnect/isEngineSDLWrapper.cpp#L896).
 
 ### 3.3.9
