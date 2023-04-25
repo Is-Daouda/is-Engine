@@ -1,6 +1,6 @@
 /*
   is::Engine (Infinity Solutions Engine)
-  Copyright (C) 2018-2022 Is Daouda <isdaouda.n@gmail.com>
+  Copyright (C) 2018-2023 Is Daouda <isdaouda.n@gmail.com>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages

@@ -1,6 +1,6 @@
 /*
   is::Engine (Infinity Solution Engine)
-  Copyright (C) 2018-2021 Is Daouda <isdaouda.n@gmail.com>
+  Copyright (C) 2018-2023 Is Daouda <isdaouda.n@gmail.com>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -48,7 +48,11 @@ int main(int argc, char * argv[])
       , &vectorArray);
 #endif
 
+#if !defined(IS_ENGINE_HTML_5)
     is::GameEngine game;
+#else
+    is::GameEngine *game = new is::GameEngine();
+#endif
 #if defined(IS_ENGINE_VS_CODE)
 #if defined(_DEBUG)
 	// Display a text in the console to inform that we are in Debug mode on Visual Studio Code
@@ -59,16 +63,27 @@ int main(int argc, char * argv[])
 	windowsHelper.setIcon(game.getRenderWindow().getSystemHandle());
 #endif
 #endif
+#if !defined(IS_ENGINE_HTML_5)
     game.
+#else
+    game->
+#endif
 #if defined(IS_ENGINE_USE_MAIN_LOOP)
         play
 #else
         basicSFMLmain
 #endif
         ();
+#if defined(IS_ENGINE_HTML_5)
+    delete game;
+    game = nullptr;
+#endif
+#if defined(IS_ENGINE_SDL_2)
+    is::SDL2freeLib();
+#endif
 #if defined (__ANDROID__)
     std::terminate(); // close application
 #else
     return 0;
-#endif // defined
+#endif
 }
