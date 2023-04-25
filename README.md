@@ -61,6 +61,11 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
+- The [Virtual Gamepad](./app/src/main/cpp/isEngine/system/function/GameKeyData.h#L34) is now usable on the Web (HTML 5).
+- You can center sprites with the **createSprite** [(1)](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L1575) & [(2)](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L1596) function.
+- Vertical synchronization is now enabled by default when using [SDL 2](./app/src/main/cpp/isEngine/system/islibconnect/isEngineSDLWrapper.cpp#L896).
+
+### 3.3.9
 - Addition of : [checkDateLimit()](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L133) function which makes it possible to check the validity of a date, [enumToNum()](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L75) function to convert an Enum into a number and many other new features, some of which were used in the [Engine Demo (Super Mario Bros NES)](https://github.com/Is-Daouda/is-Engine-Demo).
 - Support for pointer type variables in functions found in [GameFonction.h](./app/src/main/cpp/isEngine/system/function/GameFunction.h).
 - Fixed several bugs that were well hidden!
