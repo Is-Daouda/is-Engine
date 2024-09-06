@@ -33,7 +33,8 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 [CMake](#-cmake), 
 [Emscripten](#-web-html-5---css-3), 
 [Visual Studio Code](#-visual-studio-code), 
-[Code::Block](#-codeblocks))
+[Code::Block](#-codeblocks), 
+[Visual Studio](#-visual-studio)
 - [is::LibConnect](#islibconnect)
 - [Web Push Notification](#-web-push-notification)
 - SDM (Step and Draw Manager)
