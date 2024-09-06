@@ -431,7 +431,7 @@ sudo make
 
 ---
 
-## ![vs](https://i48.servimg.com/u/f48/20/16/75/27/vs_ima10.png) Visual Studio
+## ![vs](https://i48.servimg.com/u/f48/20/16/75/27/vs_ima11.png) Visual Studio
 
 **1. Installation**
 #### Windows
