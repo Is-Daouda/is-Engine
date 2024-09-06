@@ -435,15 +435,11 @@ sudo make
 
 **1. Installation**
 #### Windows
-1. Download Visual Studio Community 2022 [here](https://visualstudio.microsoft.com/fr/vs/community/) and install it.
+Download Visual Studio Community 2022 [here](https://visualstudio.microsoft.com/fr/vs/community/) and install it.
 
 **2. Opening the project with the IDE:**
-
 #### Windows
 Open the file **vs-sfml.sln** in the location **[is-Engine/app/src/main/](./app/src/main/)**
-
-**3. Executable location**
-- The compiler files can be found in **is-Engine/app/src/main/bin-Qt**.
 
 ---
 
