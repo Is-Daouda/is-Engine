@@ -56,7 +56,7 @@ void GameSystemExtended::initData(bool clearCurrentLevel)
 void GameSystemExtended::saveData(std::string const &fileName)
 {
     FILE *file = NULL;
-    file = fopen(fileName.c_str(), "wb");
+    //file = fopen(fileName.c_str(), "wb");
 
     if (file != NULL)
     {
@@ -74,7 +74,7 @@ void GameSystemExtended::saveData(std::string const &fileName)
 void GameSystemExtended::loadData(std::string const &fileName)
 {
     FILE *file = NULL;
-    file = fopen(fileName.c_str(), "rb");
+    //file = fopen(fileName.c_str(), "rb");
 
     if (file != NULL)
     {

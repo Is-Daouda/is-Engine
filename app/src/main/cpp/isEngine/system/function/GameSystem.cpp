@@ -1,6 +1,6 @@
 /*
   is::Engine (Infinity Solutions Engine)
-  Copyright (C) 2018-2023 Is Daouda <isdaouda.n@gmail.com>
+  Copyright (C) 2018-2024 Is Daouda <isdaouda.n@gmail.com>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -153,7 +153,7 @@ void GameSystem::useVibrate(short ms)
 void GameSystem::saveConfig(const std::string &fileName)
 {
     FILE *file = NULL;
-    file = fopen(fileName.c_str(), "wb");
+    //file = fopen(fileName.c_str(), "wb");
 
     if (file != NULL)
     {
@@ -172,7 +172,7 @@ void GameSystem::saveConfig(const std::string &fileName)
 void GameSystem::loadConfig(const std::string &fileName)
 {
     FILE *file = NULL;
-    file = fopen(fileName.c_str(), "rb");
+    //file = fopen(fileName.c_str(), "rb");
 
     if (file != NULL)
     {
@@ -188,7 +188,7 @@ void GameSystem::loadConfig(const std::string &fileName)
 void GameSystem::savePadConfig(const std::string &fileName)
 {
     FILE *file = NULL;
-    file = fopen(fileName.c_str(), "wb");
+    //file = fopen(fileName.c_str(), "wb");
 
     if (file != NULL)
     {
@@ -208,7 +208,7 @@ void GameSystem::savePadConfig(const std::string &fileName)
 void GameSystem::loadPadConfig(const std::string &fileName)
 {
     FILE *file = NULL;
-    file = fopen(fileName.c_str(), "rb");
+    //file = fopen(fileName.c_str(), "rb");
 
     if (file != NULL)
     {

@@ -1,6 +1,6 @@
 /*
   is::Engine (Infinity Solutions Engine)
-  Copyright (C) 2018-2023 Is Daouda <isdaouda.n@gmail.com>
+  Copyright (C) 2018-2024 Is Daouda <isdaouda.n@gmail.com>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -61,12 +61,12 @@ void GameEngine::initEngine()
 #if !defined(IS_ENGINE_HTML_5)
     if (!m_gameSysExt.fileExist(is::GameConfig::CONFIG_FILE))
     {
-
+        /*
         mkdir(is::GameConfig::DATA_PARENT_DIR.c_str()
                 #if defined(SFML_SYSTEM_LINUX) || defined(IS_ENGINE_LINUX)
                 , S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH
                 #endif
-              );
+              );*/
         m_gameSysExt.saveConfig(is::GameConfig::CONFIG_FILE);
     }
 #endif

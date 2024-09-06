@@ -1,7 +1,7 @@
 ![header](./images/is_Engine_logo.png)
 ----------------------------
 
-# is::Engine (Infinity Solutions::Engine) 3.3.10
+# is::Engine (Infinity Solutions::Engine) 3.4.0
 Open source C++ framework which uses the mechanisms of **SFML 2** and which also allows to develop with several libraries at the same time **(SDL 2, Emscripten)** in order to easily export your games / applications on the **Web (HTML 5), Mobile** and **PC (Windows, Linux, macOS)**.
 
 ## Contents
@@ -61,6 +61,10 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
+- Visual Studio 2022 Support
+- Bug Fixes
+
+### 3.3.10
 - The [Virtual Gamepad](./app/src/main/cpp/isEngine/system/function/GameKeyData.h#L34) is now usable on the Web (HTML 5).
 - You can center sprites with the **createSprite** [(1)](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L1574) & [(2)](./app/src/main/cpp/isEngine/system/function/GameFunction.h#L1595) function.
 - Vertical synchronization is now enabled by default when using [SDL 2](./app/src/main/cpp/isEngine/system/islibconnect/isEngineSDLWrapper.cpp#L896).
@@ -427,6 +431,22 @@ sudo make
 
 ---
 
+## ![vs](https://i48.servimg.com/u/f48/20/16/75/27/vs_ima10.png) Visual Studio
+
+**1. Installation**
+#### Windows
+1. Download Visual Studio Community 2022 [here](https://visualstudio.microsoft.com/fr/vs/community/) and install it.
+
+**2. Opening the project with the IDE:**
+
+#### Windows
+Open the file **vs-sfml.sln** in the location **[is-Engine/app/src/main/](./app/src/main/)**
+
+**3. Executable location**
+- The compiler files can be found in **is-Engine/app/src/main/bin-Qt**.
+
+---
+
 ## ![qt](https://i48.servimg.com/u/f48/20/16/75/27/qt_ico10.png) Qt
 
 **1. Installation**
@@ -445,7 +465,7 @@ sudo make
 
 ---
 
-## ![vs](https://i48.servimg.com/u/f48/20/16/75/27/icon_v10.png) Visual Studio Code
+## ![vsc](https://i48.servimg.com/u/f48/20/16/75/27/icon_v10.png) Visual Studio Code
 This project uses the template of **andrew-r-king**. For more information on this template [click here](https://github.com/andrew-r-king/sfml-vscode-boilerplate).
 
 **1. Prerequisites**
