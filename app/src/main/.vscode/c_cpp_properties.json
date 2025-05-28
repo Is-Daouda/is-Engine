@@ -1,0 +1,68 @@
+{
+	"configurations": [
+		{
+			"name": "Linux",
+			"intelliSenseMode": "gcc-x64",
+			"includePath": [
+				"${workspaceFolder}/cpp",
+				"${workspaceFolder}/lib",
+				"${workspaceFolder}/test",
+				"~/SFML/include",
+				"/usr/local/include/**",
+				"/usr/include/**"
+			],
+			"defines": [
+				"_DEBUG"
+			],
+			"cStandard": "c11",
+			"cppStandard": "c++17",
+			"forcedInclude": [
+				"${workspaceFolder}/cpp/PCH.hpp"
+			]
+		},
+		{
+			"name": "Mac",
+			"intelliSenseMode": "clang-x64",
+			"compilerPath": "/usr/bin/clang",
+			"macFrameworkPath": [
+				"/Library/Frameworks",
+				"/System/Library/Frameworks"
+			],
+			"includePath": [
+				"${workspaceFolder}/cpp",
+				"${workspaceFolder}/lib",
+				"${workspaceFolder}/test",
+				"/usr/local/include/**"
+			],
+			"defines": [
+				"_DEBUG"
+			],
+			"cStandard": "c11",
+			"cppStandard": "c++17",
+			"forcedInclude": [
+				"${workspaceFolder}/cpp/PCH.hpp"
+			]
+		},
+		{
+			"name": "Win32",
+			"intelliSenseMode": "gcc-x64",
+			"compilerPath": "C:/mingw32/bin/gcc.exe",
+			"includePath": [
+				"${workspaceFolder}/cpp",
+				"${workspaceFolder}/lib",
+				"C:/SFML/include"
+			],
+			"defines": [
+				"_DEBUG",
+				"UNICODE",
+				"_UNICODE"
+			],
+			"cStandard": "c11",
+			"cppStandard": "c++17",
+			"forcedInclude": [
+				"${workspaceFolder}/cpp/PCH.hpp"
+			]
+		}
+	],
+	"version": 4
+}

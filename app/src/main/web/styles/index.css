@@ -1,0 +1,98 @@
+.center-justified {
+  text-align: justify;
+  margin: 0 auto;
+  width: 50em;
+}
+
+canvas {
+	padding-left: 0;
+	padding-right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	width: 800px;
+	background:black;
+}
+
+.image {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	-webkit-animation:spin 4s linear infinite;
+	-moz-animation:spin 4s linear infinite;
+	animation:spin 4s linear infinite;
+}
+
+@-moz-keyframes spin {
+	100% {-moz-transform: rotate(360deg);}
+}
+
+@-webkit-keyframes spin {
+	100% {-webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+	100% {-webkit-transform: rotate(360deg); transform:rotate(360deg);}
+}
+
+body
+{
+	background-image: url("../images/background.png");
+}
+
+html {
+  height: 100%;
+}
+
+html, body {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  min-height: auto;
+  box-sizing: border-box;
+}
+
+header {
+  padding: 115px 0 32px 0;
+  background-color: #00bcd4;
+  color: white;
+}
+
+main, header > h1 {
+  padding: 0 16px;
+  max-width: 760px;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+main {
+  margin: 24px auto;
+  box-sizing: border-box;
+}
+
+pre {
+  white-space: pre-wrap;
+  background-color: #EEEEEE;
+  padding: 16px;
+}
+
+pre code {
+  word-break: break-word;
+}
+
+.is-invisible {
+  opacity: 0;
+}
+
+.subscription-details {
+  transition: opacity 1s;
+}
+
+@media (max-width: 600px) {
+  header > h1 {
+    font-size: 36px;
+  }
+}

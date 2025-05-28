@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>is::Engine</title>
+	<link rel="icon" href="/images/favicon.png">
+<!-- Uncomment to use web push notification
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
+	<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+-->
+	<link rel="stylesheet" href="styles/index.css">
+</head>
+<body>
+	<div id="div_header" style="text-align:center">
+		<img class="image" id="img_loading" src="images/loading.png" alt="Loading..." width="32" height="32">
+		<b>Please wait a few moments, it will start...</b>
+	</div>
+	
+    <canvas id="canvas" oncontextmenu="event.preventDefault()">
+      Loading... 
+    </canvas>
+<!-- Uncomment to use web push notification
+	<hr>
+	<main>
+		<p>The push messaging. The button below allows you to activate / deactivate the push subscription.</p>
+		<p>
+			<button disabled class="js-push-btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+				Enable Push Messaging
+			</button>
+		</p>
+		<section class="subscription-details js-subscription-details is-invisible">
+			<p>Once you've subscribed your user, you'd send their subscription to your
+			server to store in a database so that when you want to send a message
+			you can lookup the subscription and send a message to it.</p>
+			<p>Copy the following details
+			into the <a href="https://web-push-codelab.glitch.me//">Push Companion
+			Site</a> and it'll send a push message for you, using the application
+			server keys on the site - so make sure they match.</p>
+			<pre><code class="js-subscription-json"></code></pre>
+		</section>
+	</main>
+	<hr>
+-->
+    <script type="text/javascript">		
+		window.Module = {
+			canvas: document.getElementById('canvas'),
+			print: console.log,
+			printErr: console.error,
+		};
+		
+		// Full screen
+		var useFullcreen = false;
+		var gameStarted = false;
+		function fullscreen() {		 
+			if (!useFullcreen)
+			{
+				document.getElementById("img_fullscreen").src = "images/ico_fullscreen_w.png";
+				document.body.style.backgroundImage = "url('images/empty.png')";
+				useFullcreen = true;
+			}
+			else
+			{
+				document.getElementById("img_fullscreen").src = "images/ico_fullscreen_b.png";
+				document.body.style.backgroundImage = "url('images/background.png')";
+				useFullcreen = false;
+			}
+		}
+				
+		var logBackup = console.log;
+		var logMessages = [];
+		console.log = function() {
+			logMessages.push.apply(logMessages, arguments);
+			logBackup.apply(console, arguments);
+		};
+		
+		var showError = false;		
+		var second = 0;
+		function chrono() {
+			second++;
+			if (!logMessages.includes("Start successfully!"))
+			{
+				if (second > 90)
+				{
+					if (!showError)
+					{
+						document.getElementById('div_header').innerHTML = 'Um... The game is taking too long to load.<br>' +
+																		'Please try to restart (<a href="">Click here</a onclick="location.reload(true);">) the page.';
+						document.getElementById('div_header').style.color = 'red';
+						showError = true;
+					}
+				}
+			}
+			else
+			{
+				if (!gameStarted)
+				{
+					document.getElementById('img_loading').style.visibility = 'hidden';
+					document.getElementById('div_header').innerHTML = "<img id='img_fullscreen' src='images/ico_fullscreen_b.png' alt='Full Screen' onclick='fullscreen()'>";				
+					fullscreen();
+					gameStarted = true;
+				}
+			}
+		}
+		setInterval("chrono()", 1000);
+    </script>
+    <script async src="isengine.js"></script>
+<!-- Uncomment to use web push notification
+	<script src="scripts/main.js"></script>
+	<script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+-->
+</body>
+</html>
