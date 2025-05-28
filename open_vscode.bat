@@ -1,1 +1,0 @@
-code -n ./app/src/main

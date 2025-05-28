@@ -1,2 +1,0 @@
-BUILD_FLAGS := \
-	-mwindows

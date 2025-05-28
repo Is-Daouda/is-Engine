@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="VcsDirectoryMappings">
-    <mapping directory="$PROJECT_DIR$/app/src/main/bin-web/_deps/freetype2-src" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/app/src/main/bin-web/_deps/glm-src" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/app/src/main/bin-web/_deps/libnyquist-src" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/app/src/main/bin-web/_deps/smk-src" vcs="Git" />
-  </component>
-</project>
