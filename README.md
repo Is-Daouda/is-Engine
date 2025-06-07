@@ -63,7 +63,9 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
-- Nintendo Switch Port
+- Nintendo Switch Support
+- The **[Demo](https://github.com/Is-Daouda/is-Engine-Demo)** and **[tutorials](https://github.com/Is-Daouda/is-Engine-Tutorial)** are compatible with the Nintendo Switch.
+- Visual Studio 2022 can be used with all projects.
 - Bug Fixes
 
 ## Extras
