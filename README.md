@@ -154,6 +154,7 @@ This project uses the template of **[carstene1ns](https://github.com/carstene1ns
 - DevkitPro with MSYS2
 
 ## ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) Very important
+- Not affiliated with Nintendo.
 - All your source files (only .cpp or .c) must be located in the root of the **[cpp](./app/src/main/cpp/)** folder otherwise the compiler will not find them!
 - The Switch uses the same touch functions as Android.
 - The engine has been configured so that you can use the PC functions **keyIsPressed(is::GameConfig::KEY_UP)** or **keyIsPressed(is::GameConfig::KEY_A), etc.** on the Switch.
