@@ -101,18 +101,6 @@ void updateButtonState();
 /// Function simulating SDL_GetKeyboardState but for gamepad buttons
 const Uint8* getControllerButtonState(int *numButtons);
 
-/// Allows to know Switch Buttons state
-/*
-extern bool IS_ENGINE_SWITCH_JOY_A_pressed;
-extern bool IS_ENGINE_SWITCH_JOY_B_pressed;
-extern bool IS_ENGINE_SWITCH_JOY_X_pressed;
-extern bool IS_ENGINE_SWITCH_JOY_Y_pressed;
-extern bool IS_ENGINE_SWITCH_JOY_PLUS_pressed;
-extern bool IS_ENGINE_SWITCH_JOY_LEFT_pressed;
-extern bool IS_ENGINE_SWITCH_JOY_UP_pressed;
-extern bool IS_ENGINE_SWITCH_JOY_RIGHT_pressed;
-extern bool IS_ENGINE_SWITCH_JOY_DOWN_pressed;
-*/
 /// Allows to initialize the resources of the SDL library
 bool SDL2initLib();
 
@@ -156,7 +144,13 @@ class Texture
 public:
     Texture() {}
 
-    Texture(const std::string& filename) {loadSurface(filename);}
+    Texture(const std::string& filename, bool useWithVertices = false) {loadSurface(filename, useWithVertices);}
+
+    Texture(SDL_Texture* tex, int w, int h) : m_texture(tex)
+    {
+        m_size.x = w;
+        m_size.y = h;
+    }
 
     ~Texture();
 
@@ -165,9 +159,9 @@ public:
         return m_size;
     }
 
-    bool loadFromFile(const std::string& filename)
+    bool loadFromFile(const std::string& filename, bool useWithVertices = false)
     {
-        return loadSurface(filename);
+        return loadSurface(filename, useWithVertices);
     }
 
     SDL_Surface* getSDLSurface() const {return m_SDLsurface;}
@@ -176,16 +170,20 @@ public:
     {
         return m_filename;
     }
+
+    SDL_Texture* getSDLTexture() const {return m_texture;}
 /*
     void loadFromImage()  {functionNotSupported("Texture", "loadFromImage", "loadSFMLTexture");}
     void loadFromMemory() {functionNotSupported("Texture", "loadFromMemory", "loadSFMLTexture");}
     void loadFromStream() {functionNotSupported("Texture", "loadFromStream", "loadSFMLTexture");}
 */
+    SDL_Texture* m_texture;
+
 private:
     SDL_Surface *m_SDLsurface = NULL;
     Vector2u m_size;
     std::string m_filename = "";
-    bool loadSurface(const std::string& filePath);
+    bool loadSurface(const std::string& filePath, bool useWithVertices = false);
 };
 
 class Font
@@ -607,6 +605,487 @@ public:
     void draw(View const &view);
 };
 
+//--- New SFML Classes Simulation
+// sf::PrimitiveType
+enum class PrimitiveType {
+    Points,
+    Lines,
+    LineStrip,
+    Triangles,
+    TriangleStrip,
+    TriangleFan,
+    Quads
+};
+
+// sf::Vertex
+struct Vertex {
+    Vector2f position;
+    Color color;
+    Vector2f texCoords;
+    Vertex(const Vector2f& pos = Vector2f(), const Color& col = Color(), const Vector2f& tex = Vector2f())
+        : position(pos), color(col), texCoords(tex) {}
+};
+
+// sf::Transform
+class Transform {
+public:
+    Transform() {
+        matrix[0] = 1.0f; matrix[1] = 0.0f; matrix[2] = 0.0f;
+        matrix[3] = 0.0f; matrix[4] = 1.0f; matrix[5] = 0.0f;
+        matrix[6] = 0.0f; matrix[7] = 0.0f; matrix[8] = 1.0f;
+    }
+
+    Transform translate(float x, float y) const {
+        Transform t;
+        t.matrix[2] = x;
+        t.matrix[5] = y;
+        return combine(t);
+    }
+
+    Transform rotate(float angle, float centerX = 0.0f, float centerY = 0.0f) const {
+        float rad = angle * 3.1415926535f / 180.0f;
+        float cosA = std::cos(rad);
+        float sinA = std::sin(rad);
+        Transform t;
+        t.matrix[0] = cosA;
+        t.matrix[1] = sinA;
+        t.matrix[3] = -sinA;
+        t.matrix[4] = cosA;
+        t.matrix[2] = centerX * (1 - cosA) + centerY * sinA;
+        t.matrix[5] = centerY * (1 - cosA) - centerX * sinA;
+        return combine(t);
+    }
+
+    Transform scale(float scaleX, float scaleY, float centerX = 0.0f, float centerY = 0.0f) const {
+        Transform t;
+        t.matrix[0] = scaleX;
+        t.matrix[4] = scaleY;
+        t.matrix[2] = centerX * (1 - scaleX);
+        t.matrix[5] = centerY * (1 - scaleY);
+        return combine(t);
+    }
+
+    Vector2f transformPoint(const Vector2f& point) const {
+        return Vector2f(
+            point.x * matrix[0] + point.y * matrix[3] + matrix[2],
+            point.x * matrix[1] + point.y * matrix[4] + matrix[5]
+        );
+    }
+
+    Transform combine(const Transform& other) const {
+        Transform result;
+        result.matrix[0] = matrix[0] * other.matrix[0] + matrix[3] * other.matrix[1];
+        result.matrix[1] = matrix[1] * other.matrix[0] + matrix[4] * other.matrix[1];
+        result.matrix[2] = matrix[2] * other.matrix[0] + matrix[5] * other.matrix[1] + other.matrix[2];
+        result.matrix[3] = matrix[0] * other.matrix[3] + matrix[3] * other.matrix[4];
+        result.matrix[4] = matrix[1] * other.matrix[3] + matrix[4] * other.matrix[4];
+        result.matrix[5] = matrix[2] * other.matrix[3] + matrix[5] * other.matrix[4] + other.matrix[5];
+        result.matrix[6] = matrix[0] * other.matrix[6] + matrix[3] * other.matrix[7] + matrix[6];
+        result.matrix[7] = matrix[1] * other.matrix[6] + matrix[4] * other.matrix[7] + matrix[7];
+        result.matrix[8] = matrix[2] * other.matrix[6] + matrix[5] * other.matrix[7] + matrix[8];
+        return result;
+    }
+
+private:
+    float matrix[9]; // 3x3 matrix: [a b tx; c d ty; 0 0 1]
+};
+
+// sf::RenderStates
+struct RenderStates {
+    const Texture* texture;
+    Transform transform;
+
+    RenderStates(const Texture* tex = nullptr) : texture(tex) {}
+    RenderStates(const Transform& t) : texture(nullptr), transform(t) {}
+    RenderStates(const Texture* tex, const Transform& t) : texture(tex), transform(t) {}
+};
+
+// sf::VertexArray
+class VertexArray {
+public:
+    VertexArray(PrimitiveType type = PrimitiveType::Points, size_t vertexCount = 0)
+        : primitiveType(type), vertices(vertexCount) {}
+
+    void append(const Vertex& vertex) {
+        vertices.push_back(vertex);
+    }
+
+    void insert(size_t index, const Vertex& vertex) {
+        if (index > vertices.size()) {
+            throw std::out_of_range("Vertex index out of range");
+        }
+        vertices.insert(vertices.begin() + index, vertex);
+    }
+
+    void remove(size_t index) {
+        if (index >= vertices.size()) {
+            throw std::out_of_range("Vertex index out of range");
+        }
+        vertices.erase(vertices.begin() + index);
+    }
+
+    void clear() {
+        vertices.clear();
+    }
+
+    size_t getVertexCount() const {
+        return vertices.size();
+    }
+
+    void reserve(size_t count) {
+        vertices.reserve(count);
+    }
+
+    Vertex& operator[](size_t index) {
+        if (index >= vertices.size()) {
+            throw std::out_of_range("Vertex index out of range");
+        }
+        return vertices[index];
+    }
+
+    const Vertex& operator[](size_t index) const {
+        if (index >= vertices.size()) {
+            throw std::out_of_range("Vertex index out of range");
+        }
+        return vertices[index];
+    }
+
+    void resize(size_t vertexCount) {
+        vertices.resize(vertexCount);
+    }
+
+    PrimitiveType getPrimitiveType() const {
+        return primitiveType;
+    }
+
+    void setPrimitiveType(PrimitiveType type) {
+        primitiveType = type;
+    }
+
+    FloatRect getBounds() const {
+        if (vertices.empty()) {
+            return FloatRect();
+        }
+
+        float left = vertices[0].position.x;
+        float top = vertices[0].position.y;
+        float right = left;
+        float bottom = top;
+
+        for (const auto& vertex : vertices) {
+            left = std::min(left, vertex.position.x);
+            right = std::max(right, vertex.position.x);
+            top = std::min(top, vertex.position.y);
+            bottom = std::max(bottom, vertex.position.y);
+        }
+
+        return FloatRect(left, top, right - left, bottom - top);
+    }
+
+    FloatRect getTransformedBounds() const {
+        if (vertices.empty()) {
+            return FloatRect();
+        }
+
+        Vector2f transformed[4];
+        for (size_t i = 0; i < vertices.size(); ++i) {
+            transformed[i] = transform.transformPoint(vertices[i].position);
+        }
+
+        float left = transformed[0].x;
+        float top = transformed[0].y;
+        float right = left;
+        float bottom = top;
+
+        for (const auto& pos : transformed) {
+            left = std::min(left, pos.x);
+            right = std::max(right, pos.x);
+            top = std::min(top, pos.y);
+            bottom = std::max(bottom, pos.y);
+        }
+
+        return FloatRect(left, top, right - left, bottom - top);
+    }
+
+    void setTransform(const Transform& t) {
+        transform = t;
+    }
+
+    const Transform& getTransform() const {
+        return transform;
+    }
+
+    void draw(SDL_Renderer* renderer, const RenderStates& states = RenderStates()) const {
+        Transform combinedTransform = states.transform.combine(transform);
+
+        switch (primitiveType) {
+            case PrimitiveType::Points:
+                for (const auto& vertex : vertices) {
+                    Vector2f pos = combinedTransform.transformPoint(vertex.position);
+                    SDL_SetRenderDrawColor(renderer, vertex.color.r, vertex.color.g, vertex.color.b, vertex.color.a);
+                    SDL_RenderDrawPoint(renderer, static_cast<int>(pos.x), static_cast<int>(pos.y));
+                }
+                break;
+
+            case PrimitiveType::Lines:
+                for (size_t i = 0; i + 1 < vertices.size(); i += 2) {
+                    Vector2f pos1 = combinedTransform.transformPoint(vertices[i].position);
+                    Vector2f pos2 = combinedTransform.transformPoint(vertices[i + 1].position);
+                    SDL_SetRenderDrawColor(renderer, vertices[i].color.r, vertices[i].color.g, vertices[i].color.b, vertices[i].color.a);
+                    SDL_RenderDrawLine(renderer,
+                                       static_cast<int>(pos1.x), static_cast<int>(pos1.y),
+                                       static_cast<int>(pos2.x), static_cast<int>(pos2.y));
+                }
+                break;
+
+            case PrimitiveType::LineStrip:
+                for (size_t i = 0; i + 1 < vertices.size(); ++i) {
+                    Vector2f pos1 = combinedTransform.transformPoint(vertices[i].position);
+                    Vector2f pos2 = combinedTransform.transformPoint(vertices[i + 1].position);
+                    SDL_SetRenderDrawColor(renderer, vertices[i].color.r, vertices[i].color.g, vertices[i].color.b, vertices[i].color.a);
+                    SDL_RenderDrawLine(renderer,
+                                       static_cast<int>(pos1.x), static_cast<int>(pos1.y),
+                                       static_cast<int>(pos2.x), static_cast<int>(pos2.y));
+                }
+                break;
+
+            case PrimitiveType::Triangles:
+                if (states.texture) {
+                    for (size_t i = 0; i + 2 < vertices.size(); i += 3) {
+                        Vector2f pos[3];
+                        for (int j = 0; j < 3; ++j) {
+                            pos[j] = combinedTransform.transformPoint(vertices[i + j].position);
+                        }
+                        float minX = std::min(std::min(pos[0].x, pos[1].x), pos[2].x);
+                        float minY = std::min(std::min(pos[0].y, pos[1].y), pos[2].y);
+                        float maxX = std::max(std::max(pos[0].x, pos[1].x), pos[2].x);
+                        float maxY = std::max(std::max(pos[0].y, pos[1].y), pos[2].y);
+                        SDL_Rect dest = { static_cast<int>(minX), static_cast<int>(minY),
+                                          static_cast<int>(maxX - minX), static_cast<int>(maxY - minY) };
+                        SDL_Rect src = { static_cast<int>(vertices[i].texCoords.x), static_cast<int>(vertices[i].texCoords.y),
+                                         static_cast<int>(states.texture->getSize().x), static_cast<int>(states.texture->getSize().y) };
+                        SDL_SetTextureColorMod(states.texture->getSDLTexture(), vertices[i].color.r, vertices[i].color.g, vertices[i].color.b);
+                        SDL_SetTextureAlphaMod(states.texture->getSDLTexture(), vertices[i].color.a);
+                        SDL_RenderCopy(renderer, states.texture->getSDLTexture(), &src, &dest);
+                    }
+                } else {
+                    for (size_t i = 0; i + 2 < vertices.size(); i += 3) {
+                        Vector2f pos[3];
+                        for (int j = 0; j < 3; ++j) {
+                            pos[j] = combinedTransform.transformPoint(vertices[i + j].position);
+                        }
+                        SDL_SetRenderDrawColor(renderer, vertices[i].color.r, vertices[i].color.g, vertices[i].color.b, vertices[i].color.a);
+                        SDL_RenderDrawLine(renderer,
+                                           static_cast<int>(pos[0].x), static_cast<int>(pos[0].y),
+                                           static_cast<int>(pos[1].x), static_cast<int>(pos[1].y));
+                        SDL_RenderDrawLine(renderer,
+                                           static_cast<int>(pos[1].x), static_cast<int>(pos[1].y),
+                                           static_cast<int>(pos[2].x), static_cast<int>(pos[2].y));
+                        SDL_RenderDrawLine(renderer,
+                                           static_cast<int>(pos[2].x), static_cast<int>(pos[2].y),
+                                           static_cast<int>(pos[0].x), static_cast<int>(pos[0].y));
+                    }
+                }
+                break;
+
+            case PrimitiveType::TriangleStrip:
+                if (states.texture) {
+                    for (size_t i = 0; i + 2 < vertices.size(); ++i) {
+                        Vector2f pos[3];
+                        for (int j = 0; j < 3; ++j) {
+                            pos[j] = combinedTransform.transformPoint(vertices[i + j].position);
+                        }
+                        float minX = std::min(std::min(pos[0].x, pos[1].x), pos[2].x);
+                        float minY = std::min(std::min(pos[0].y, pos[1].y), pos[2].y);
+                        float maxX = std::max(std::max(pos[0].x, pos[1].x), pos[2].x);
+                        float maxY = std::max(std::max(pos[0].y, pos[1].y), pos[2].y);
+                        SDL_Rect dest = { static_cast<int>(minX), static_cast<int>(minY),
+                                          static_cast<int>(maxX - minX), static_cast<int>(maxY - minY) };
+                        SDL_Rect src = { static_cast<int>(vertices[i].texCoords.x), static_cast<int>(vertices[i].texCoords.y),
+                                         static_cast<int>(states.texture->getSize().x), static_cast<int>(states.texture->getSize().y) };
+                        SDL_SetTextureColorMod(states.texture->getSDLTexture(), vertices[i].color.r, vertices[i].color.g, vertices[i].color.b);
+                        SDL_SetTextureAlphaMod(states.texture->getSDLTexture(), vertices[i].color.a);
+                        SDL_RenderCopy(renderer, states.texture->getSDLTexture(), &src, &dest);
+                    }
+                } else {
+                    for (size_t i = 0; i + 2 < vertices.size(); ++i) {
+                        Vector2f pos[3];
+                        for (int j = 0; j < 3; ++j) {
+                            pos[j] = combinedTransform.transformPoint(vertices[i + j].position);
+                        }
+                        SDL_SetRenderDrawColor(renderer, vertices[i].color.r, vertices[i].color.g, vertices[i].color.b, vertices[i].color.a);
+                        SDL_RenderDrawLine(renderer,
+                                           static_cast<int>(pos[0].x), static_cast<int>(pos[0].y),
+                                           static_cast<int>(pos[1].x), static_cast<int>(pos[1].y));
+                        SDL_RenderDrawLine(renderer,
+                                           static_cast<int>(pos[1].x), static_cast<int>(pos[1].y),
+                                           static_cast<int>(pos[2].x), static_cast<int>(pos[2].y));
+                        SDL_RenderDrawLine(renderer,
+                                           static_cast<int>(pos[2].x), static_cast<int>(pos[2].y),
+                                           static_cast<int>(pos[0].x), static_cast<int>(pos[0].y));
+                    }
+                }
+                break;
+
+            case PrimitiveType::TriangleFan:
+                if (states.texture) {
+                    for (size_t i = 1; i + 1 < vertices.size(); ++i) {
+                        Vector2f pos[3];
+                        pos[0] = combinedTransform.transformPoint(vertices[0].position);
+                        pos[1] = combinedTransform.transformPoint(vertices[i].position);
+                        pos[2] = combinedTransform.transformPoint(vertices[i + 1].position);
+                        float minX = std::min(std::min(pos[0].x, pos[1].x), pos[2].x);
+                        float minY = std::min(std::min(pos[0].y, pos[1].y), pos[2].y);
+                        float maxX = std::max(std::max(pos[0].x, pos[1].x), pos[2].x);
+                        float maxY = std::max(std::max(pos[0].y, pos[1].y), pos[2].y);
+                        SDL_Rect dest = { static_cast<int>(minX), static_cast<int>(minY),
+                                          static_cast<int>(maxX - minX), static_cast<int>(maxY - minY) };
+                        SDL_Rect src = { static_cast<int>(vertices[0].texCoords.x), static_cast<int>(vertices[0].texCoords.y),
+                                         static_cast<int>(states.texture->getSize().x), static_cast<int>(states.texture->getSize().y) };
+                        SDL_SetTextureColorMod(states.texture->getSDLTexture(), vertices[0].color.r, vertices[0].color.g, vertices[0].color.b);
+                        SDL_SetTextureAlphaMod(states.texture->getSDLTexture(), vertices[0].color.a);
+                        SDL_RenderCopy(renderer, states.texture->getSDLTexture(), &src, &dest);
+                    }
+                } else {
+                    for (size_t i = 1; i + 1 < vertices.size(); ++i) {
+                        Vector2f pos[3];
+                        pos[0] = combinedTransform.transformPoint(vertices[0].position);
+                        pos[1] = combinedTransform.transformPoint(vertices[i].position);
+                        pos[2] = combinedTransform.transformPoint(vertices[i + 1].position);
+                        SDL_SetRenderDrawColor(renderer, vertices[0].color.r, vertices[0].color.g, vertices[0].color.b, vertices[0].color.a);
+                        SDL_RenderDrawLine(renderer,
+                                           static_cast<int>(pos[0].x), static_cast<int>(pos[0].y),
+                                           static_cast<int>(pos[1].x), static_cast<int>(pos[1].y));
+                        SDL_RenderDrawLine(renderer,
+                                           static_cast<int>(pos[1].x), static_cast<int>(pos[1].y),
+                                           static_cast<int>(pos[2].x), static_cast<int>(pos[2].y));
+                        SDL_RenderDrawLine(renderer,
+                                           static_cast<int>(pos[2].x), static_cast<int>(pos[2].y),
+                                           static_cast<int>(pos[0].x), static_cast<int>(pos[0].y));
+                    }
+                }
+                break;
+
+            case PrimitiveType::Quads:
+                if (states.texture) {
+                    for (size_t i = 0; i + 3 < vertices.size(); i += 4) {
+                        Vector2f pos[4];
+                        for (int j = 0; j < 4; ++j) {
+                            pos[j] = combinedTransform.transformPoint(vertices[i + j].position);
+                        }
+                        float minX = std::min(std::min(std::min(pos[0].x, pos[1].x), pos[2].x), pos[3].x);
+                        float minY = std::min(std::min(std::min(pos[0].y, pos[1].y), pos[2].y), pos[3].y);
+                        float maxX = std::max(std::max(std::max(pos[0].x, pos[1].x), pos[2].x), pos[3].x);
+                        float maxY = std::max(std::max(std::max(pos[0].y, pos[1].y), pos[2].y), pos[3].y);
+                        SDL_Rect dest = { static_cast<int>(minX), static_cast<int>(minY),
+                                          static_cast<int>(maxX - minX), static_cast<int>(maxY - minY) };
+                        SDL_Rect src = { static_cast<int>(vertices[i].texCoords.x), static_cast<int>(vertices[i].texCoords.y),
+                                         static_cast<int>(states.texture->getSize().x), static_cast<int>(states.texture->getSize().y) };
+                        SDL_SetTextureColorMod(states.texture->getSDLTexture(), vertices[i].color.r, vertices[i].color.g, vertices[i].color.b);
+                        SDL_SetTextureAlphaMod(states.texture->getSDLTexture(), vertices[i].color.a);
+                        SDL_RenderCopy(renderer, states.texture->getSDLTexture(), &src, &dest);
+                    }
+                } else {
+                    for (size_t i = 0; i + 3 < vertices.size(); i += 4) {
+                        Vector2f pos[4];
+                        for (int j = 0; j < 4; ++j) {
+                            pos[j] = combinedTransform.transformPoint(vertices[i + j].position);
+                        }
+                        SDL_SetRenderDrawColor(renderer, vertices[i].color.r, vertices[i].color.g, vertices[i].color.b, vertices[i].color.a);
+                        SDL_RenderDrawLine(renderer,
+                                           static_cast<int>(pos[0].x), static_cast<int>(pos[0].y),
+                                           static_cast<int>(pos[1].x), static_cast<int>(pos[1].y));
+                        SDL_RenderDrawLine(renderer,
+                                           static_cast<int>(pos[1].x), static_cast<int>(pos[1].y),
+                                           static_cast<int>(pos[2].x), static_cast<int>(pos[2].y));
+                        SDL_RenderDrawLine(renderer,
+                                           static_cast<int>(pos[2].x), static_cast<int>(pos[2].y),
+                                           static_cast<int>(pos[3].x), static_cast<int>(pos[3].y));
+                        SDL_RenderDrawLine(renderer,
+                                           static_cast<int>(pos[3].x), static_cast<int>(pos[3].y),
+                                           static_cast<int>(pos[0].x), static_cast<int>(pos[0].y));
+                    }
+                }
+                break;
+        }
+    }
+
+private:
+    PrimitiveType primitiveType;
+    std::vector<Vertex> vertices;
+    Transform transform;
+};
+
+// sf::RenderTexture
+class RenderTexture {
+public:
+    RenderTexture() : texture(nullptr), renderer(nullptr), ownsRenderer(false) {}
+    ~RenderTexture() {
+        if (texture) SDL_DestroyTexture(texture);
+        if (ownsRenderer && renderer) SDL_DestroyRenderer(renderer);
+    }
+
+    bool create(unsigned int width, unsigned int height) {
+        if (!renderer) {
+            renderer = SDL_CreateRenderer(nullptr, -1, SDL_RENDERER_ACCELERATED);
+            if (!renderer) {
+                throw std::runtime_error("Failed to create renderer: " + std::string(SDL_GetError()));
+            }
+            ownsRenderer = true;
+        }
+        texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
+        if (!texture) {
+            if (ownsRenderer) SDL_DestroyRenderer(renderer);
+            throw std::runtime_error("Failed to create render texture: " + std::string(SDL_GetError()));
+        }
+        textureWidth = width;
+        textureHeight = height;
+        internalTexture = Texture(texture, width, height);
+        return true;
+    }
+
+    void clear(const Color& color = Color(0, 0, 0, 255)) {
+        if (!texture) return;
+        SDL_SetRenderTarget(renderer, texture);
+        SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+        SDL_RenderClear(renderer);
+        SDL_SetRenderTarget(renderer, nullptr);
+    }
+
+    void draw(const VertexArray& vertexArray, const RenderStates& states = RenderStates()) {
+        if (!this->texture) return;
+        SDL_SetRenderTarget(renderer, this->texture);
+        vertexArray.draw(renderer, states);
+        SDL_SetRenderTarget(renderer, nullptr);
+    }
+
+    void display() {}
+
+    const Texture& getTexture() const {
+        if (!texture) {
+            throw std::runtime_error("No texture available");
+        }
+        return internalTexture;
+    }
+
+    void setRenderer(SDL_Renderer* rend) {
+        if (ownsRenderer && renderer) {
+            SDL_DestroyRenderer(renderer);
+        }
+        renderer = rend;
+        ownsRenderer = false;
+        internalTexture = Texture(texture, textureWidth, textureHeight);
+    }
+
+private:
+    SDL_Texture* texture;
+    SDL_Renderer* renderer;
+    bool ownsRenderer;
+    Texture internalTexture;
+    int textureWidth = 0, textureHeight = 0;
+};
+//---
+
 class ViewManager
 {
 public:
@@ -851,6 +1330,10 @@ public:
 
     void draw(Shape &obj) {obj.draw(m_view);}
 
+    void draw(const VertexArray& vertexArray, const RenderStates& states = RenderStates()) {
+        vertexArray.draw(is::IS_ENGINE_SDL_renderer, states);
+    }
+
     void display();
 
     void close()
@@ -880,26 +1363,6 @@ private:
 };
 
 typedef sf::RenderWindow Render;
-
-class Vertex
-{
-public:
-    Vector2f position;
-    Color color;
-
-    Vertex(Vector2f pos = {0, 0}, Color col = Color::White)
-        : position(pos), color(col) {}
-};
-
-class VertexArray
-{
-public:
-    void append(const Vertex& vertex);
-    void draw(RenderWindow& window);
-
-private:
-    std::vector<Vertex> vertices;
-};
 
 class SoundBuffer
 {

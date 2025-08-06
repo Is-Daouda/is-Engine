@@ -195,9 +195,10 @@ Texture::~Texture()
         SDL_FreeSurface(m_SDLsurface);
         m_SDLsurface = NULL;
     }
+    if (m_texture) SDL_DestroyTexture(m_texture);
 }
 
-bool Texture::loadSurface(const std::string& filePath)
+bool Texture::loadSurface(const std::string& filePath, bool useWithVertices)
 {
     m_filename = filePath;
     m_SDLsurface = IMG_Load(m_filename.c_str());
@@ -205,6 +206,14 @@ bool Texture::loadSurface(const std::string& filePath)
     {
         m_size.x = m_SDLsurface->w;
         m_size.y = m_SDLsurface->h;
+
+        if (useWithVertices)
+        {
+            m_texture = SDL_CreateTextureFromSurface(is::IS_ENGINE_SDL_renderer, m_SDLsurface);
+            if (!m_texture) {
+                throw std::runtime_error("Failed to create texture: " + std::string(SDL_GetError()));
+            }
+        }
     }
     else
     {
@@ -1279,29 +1288,6 @@ Vector2f RenderWindow::mapPixelToCoords(const Vector2i& point, const View& view)
 #endif
             ) + (view.getCenter().y - (view.getSize().y / 2.f)))};
     return pos;
-}
-
-void VertexArray::append(const Vertex& vertex)
-{
-    vertices.push_back(vertex);
-}
-
-void VertexArray::draw(RenderWindow& window)
-{
-    SDL_Renderer* renderer = is::IS_ENGINE_SDL_renderer;
-    for (size_t i = 1; i < vertices.size(); ++i)
-    {
-        SDL_SetRenderDrawColor(renderer,
-                               vertices[i - 1].color.r,
-                               vertices[i - 1].color.g,
-                               vertices[i - 1].color.b,
-                               vertices[i - 1].color.a);
-        SDL_RenderDrawLine(renderer,
-                           static_cast<int>(vertices[i - 1].position.x),
-                           static_cast<int>(vertices[i - 1].position.y),
-                           static_cast<int>(vertices[i].position.x),
-                           static_cast<int>(vertices[i].position.y));
-    }
 }
 
 void SoundBuffer::setChannelId()
