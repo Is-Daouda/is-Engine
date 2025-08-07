@@ -66,7 +66,7 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - Nintendo Switch Support
 - The **[Demo](https://github.com/Is-Daouda/is-Engine-Demo)** and **[tutorials](https://github.com/Is-Daouda/is-Engine-Tutorial)** are compatible with the Nintendo Switch.
 - Visual Studio 2022 can be used with all projects.
-- Vertex Arrays support (Simulation with SDL 2)
+- Vertex Arrays support (Simulation with SDL 2).<br>
 When you want to use a texture with vertices, you must provide the **useWithVertices** parameter in the **loadFromFile()** function, which is necessary when using SFML with SDL2.
 ```cpp
     sf::Texture texture;
