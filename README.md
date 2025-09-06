@@ -63,6 +63,10 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
+- [Using Visual Studio and SDL 2 to develop with SFML.](#-visual-studio-sdl-2)
+- Bug Fixes
+
+### 4.0.1
 - Nintendo Switch Support
 - The **[Demo](https://github.com/Is-Daouda/is-Engine-Demo)** and **[tutorials](https://github.com/Is-Daouda/is-Engine-Tutorial)** are compatible with the Nintendo Switch.
 - Visual Studio 2022 can be used with all projects.
@@ -72,7 +76,6 @@ When you want to use a texture with vertices, you must set the optional paramete
     sf::Texture texture;
     texture.loadFromFile("image.png", true);
 ```
-- Bug Fixes
 
 ## Extras
 - Here is a **Web Game : Arkanoid** created thanks to the **[game engine tutorial](https://youtu.be/wo2-ofNB7Hw)**.<br>
@@ -360,6 +363,19 @@ Download Visual Studio Community 2022 [here](https://visualstudio.microsoft.com/
 **2. Opening the project with the IDE:**
 #### Windows
 Open the file **vs-sfml.sln** in the location **[is-Engine/app/src/main/](./app/src/main/)**
+
+---
+
+## ![vssdl](https://i48.servimg.com/u/f48/20/16/75/27/vs_ima11.png) Visual Studio SDL 2
+
+**1. Installation**
+#### Windows
+1. Download Visual Studio Community 2022 [here](https://visualstudio.microsoft.com/fr/vs/community/) and install it.
+2. Download this [file](https://github.com/GlowCheese/SDL2-Setup/releases/download/v1.1.0/SDL2.Compiler.zip) and extract it to C:\ (**the location of the folder must be C:\SDL2-2.26.3. Otherwise it will not work.**).
+
+**2. Opening the project with the IDE:**
+#### Windows
+Open the file **SDL-SFML.sln** in the location **[is-Engine/app/src/main/](./app/src/main/)**
 
 ---
 
