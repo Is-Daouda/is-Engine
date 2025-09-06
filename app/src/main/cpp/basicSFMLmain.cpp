@@ -18,7 +18,9 @@ bool GameEngine::basicSFMLmain()
     // load application icon
     sf::Image iconTex;
     if (!iconTex.loadFromFile(is::GameConfig::GUI_DIR + "icon.png")) return false;
+#if !defined (IS_ENGINE_SDL_2) && !defined(IS_ENGINE_VS)
     m_window.setIcon(32, 32, iconTex.getPixelsPtr());
+#endif
 #endif // defined
     setFPS(m_window, is::GameConfig::FPS); // set frames per second (FPS)
     sf::View m_view(sf::Vector2f(is::GameConfig::VIEW_WIDTH / 2.f, is::GameConfig::VIEW_HEIGHT / 2.f), sf::Vector2f(is::GameConfig::VIEW_WIDTH, is::GameConfig::VIEW_HEIGHT));

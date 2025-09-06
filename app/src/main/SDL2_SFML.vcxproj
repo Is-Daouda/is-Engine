@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{5f4aa128-1c3b-458f-9b6d-7e140cbe20a5}</ProjectGuid>
+    <RootNamespace>SDL2_SFML</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>IS_ENGINE_SDL_2;IS_ENGINE_VS;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>IS_ENGINE_SDL_2;IS_ENGINE_VS;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\SDL2-2.26.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\SDL2-2.26.3\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="cpp\b2BlockAllocator.cpp" />
+    <ClCompile Include="cpp\b2Body.cpp" />
+    <ClCompile Include="cpp\b2BroadPhase.cpp" />
+    <ClCompile Include="cpp\b2ChainAndCircleContact.cpp" />
+    <ClCompile Include="cpp\b2ChainAndPolygonContact.cpp" />
+    <ClCompile Include="cpp\b2ChainShape.cpp" />
+    <ClCompile Include="cpp\b2CircleContact.cpp" />
+    <ClCompile Include="cpp\b2CircleShape.cpp" />
+    <ClCompile Include="cpp\b2CollideCircle.cpp" />
+    <ClCompile Include="cpp\b2CollideEdge.cpp" />
+    <ClCompile Include="cpp\b2CollidePolygon.cpp" />
+    <ClCompile Include="cpp\b2Collision.cpp" />
+    <ClCompile Include="cpp\b2Contact.cpp" />
+    <ClCompile Include="cpp\b2ContactManager.cpp" />
+    <ClCompile Include="cpp\b2ContactSolver.cpp" />
+    <ClCompile Include="cpp\b2Distance.cpp" />
+    <ClCompile Include="cpp\b2DistanceJoint.cpp" />
+    <ClCompile Include="cpp\b2Draw.cpp" />
+    <ClCompile Include="cpp\b2DynamicTree.cpp" />
+    <ClCompile Include="cpp\b2EdgeAndCircleContact.cpp" />
+    <ClCompile Include="cpp\b2EdgeAndPolygonContact.cpp" />
+    <ClCompile Include="cpp\b2EdgeShape.cpp" />
+    <ClCompile Include="cpp\b2Fixture.cpp" />
+    <ClCompile Include="cpp\b2FrictionJoint.cpp" />
+    <ClCompile Include="cpp\b2GearJoint.cpp" />
+    <ClCompile Include="cpp\b2Island.cpp" />
+    <ClCompile Include="cpp\b2Joint.cpp" />
+    <ClCompile Include="cpp\b2Math.cpp" />
+    <ClCompile Include="cpp\b2MotorJoint.cpp" />
+    <ClCompile Include="cpp\b2MouseJoint.cpp" />
+    <ClCompile Include="cpp\b2PolygonAndCircleContact.cpp" />
+    <ClCompile Include="cpp\b2PolygonContact.cpp" />
+    <ClCompile Include="cpp\b2PolygonShape.cpp" />
+    <ClCompile Include="cpp\b2PrismaticJoint.cpp" />
+    <ClCompile Include="cpp\b2PulleyJoint.cpp" />
+    <ClCompile Include="cpp\b2RevoluteJoint.cpp" />
+    <ClCompile Include="cpp\b2Rope.cpp" />
+    <ClCompile Include="cpp\b2RopeJoint.cpp" />
+    <ClCompile Include="cpp\b2Settings.cpp" />
+    <ClCompile Include="cpp\b2StackAllocator.cpp" />
+    <ClCompile Include="cpp\b2TimeOfImpact.cpp" />
+    <ClCompile Include="cpp\b2Timer.cpp" />
+    <ClCompile Include="cpp\b2WeldJoint.cpp" />
+    <ClCompile Include="cpp\b2WheelJoint.cpp" />
+    <ClCompile Include="cpp\b2World.cpp" />
+    <ClCompile Include="cpp\b2WorldCallbacks.cpp" />
+    <ClCompile Include="cpp\basicSFMLmain.cpp" />
+    <ClCompile Include="cpp\GameDialog.cpp" />
+    <ClCompile Include="cpp\GameDisplay.cpp" />
+    <ClCompile Include="cpp\GameEngine.cpp" />
+    <ClCompile Include="cpp\GameFunction.cpp" />
+    <ClCompile Include="cpp\GameKeyData.cpp" />
+    <ClCompile Include="cpp\GameSlider.cpp" />
+    <ClCompile Include="cpp\GameSystem.cpp" />
+    <ClCompile Include="cpp\GameSystemExtended.cpp" />
+    <ClCompile Include="cpp\GameTime.cpp" />
+    <ClCompile Include="cpp\isEngineSDLWrapper.cpp" />
+    <ClCompile Include="cpp\isEngineWrapper.cpp" />
+    <ClCompile Include="cpp\main.cpp" />
+    <ClCompile Include="cpp\MainObject.cpp" />
+    <ClCompile Include="cpp\TransitionEffect.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SDL2 Template.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SDL2 Template.aps" />
+    <None Include="SDL2.dll" />
+    <None Include="SDL2_image.dll" />
+    <None Include="SDL2_mixer.dll" />
+    <None Include="SDL2_ttf.dll" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -31,7 +31,7 @@
 //////////////////////////////////////////////////////
 #define IS_ENGINE_VERSION_MAJOR 4
 #define IS_ENGINE_VERSION_MINOR 0
-#define IS_ENGINE_VERSION_PATCH 1
+#define IS_ENGINE_VERSION_PATCH 2
 
 namespace is
 {
