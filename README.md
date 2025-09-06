@@ -375,7 +375,7 @@ Open the file **vs-sfml.sln** in the location **[is-Engine/app/src/main/](./app/
 
 **2. Opening the project with the IDE:**
 #### Windows
-Open the file **SDL-SFML.sln** in the location **[is-Engine/app/src/main/](./app/src/main/)**
+Open the file **SDL2_SFML.sln** in the location **[is-Engine/app/src/main/](./app/src/main/)**
 
 ---
 
