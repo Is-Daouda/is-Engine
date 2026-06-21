@@ -601,6 +601,7 @@ Coming soon!
 ## Contribute
 - If you want to participate in the development of the project to help me improve the engine, please note that you are welcome! Together we go further!
 - One of the objectives of this project is to create a large community that can work on the engine to allow many people around the world to easily realize their dream games / applications!
+- You can donate to me via this [link](https://paypal.me/isdaouda) (GitHub Sponsors is not supported in my country).
 
 ## Contacts
   * For any help please contact me on my [email address](mailto:isdaouda.n@gmail.com)
