@@ -1,7 +1,7 @@
 ![header](./images/is_Engine_logo.png)
 ----------------------------
 
-# is::Engine (Infinity Solutions::Engine) 4.0.1
+# is::Engine (Infinity Solutions::Engine) 4.0.2
 Open source C++ framework which uses the mechanisms of **SFML 2** and which also allows to develop with several libraries at the same time **(SDL 2, Emscripten)** in order to easily export your games / applications on the **Nintendo Switch, Web (HTML 5), Mobile** and **PC (Windows, Linux, macOS)**.
 
 ## Contents
