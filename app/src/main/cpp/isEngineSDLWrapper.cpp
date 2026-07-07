@@ -195,7 +195,10 @@ Texture::~Texture()
         SDL_FreeSurface(m_SDLsurface);
         m_SDLsurface = NULL;
     }
-    if (m_texture) SDL_DestroyTexture(m_texture);
+    if (!m_isInRenderTexture)
+    {
+        if (m_texture) SDL_DestroyTexture(m_texture);
+    }
 }
 
 bool Texture::loadSurface(const std::string& filePath, bool useWithVertices)
@@ -259,6 +262,14 @@ Transformable::Transformable(Texture &texture) :
     is::setVector2(m_origin, 0.f, 0.f);
 }
 
+Transformable::Transformable(Texture const &texture) :
+    m_texture(const_cast<sf::Texture*>(&(texture)))
+{
+    is::setVector2(m_size, m_texture->getSize().x, m_texture->getSize().y);
+    is::setVector2(m_scale, 1.f, 1.f);
+    is::setVector2(m_origin, 0.f, 0.f);
+}
+
 void Transformable::setRotation(float angle)
 {
     m_rotation = static_cast<float>(fmod(angle, 360));
@@ -288,8 +299,11 @@ SDLTexture::~SDLTexture()
 {
     if (m_SDLtexture != NULL)
     {
-        SDL_DestroyTexture(m_SDLtexture);
-        m_SDLtexture = NULL;
+        if (m_SDLTextureType != IS_ENGINE_SDL_SPRITE)
+        {
+            SDL_DestroyTexture(m_SDLtexture);
+            m_SDLtexture = NULL;
+        }
     }
     if (m_SDLoutlineTexture != NULL)
     {
@@ -323,6 +337,11 @@ void Sprite::setSDLTexture()
             m_SDLtexture = NULL;
         }
         m_SDLtexture = SDL_CreateTextureFromSurface(is::IS_ENGINE_SDL_renderer, m_texture->getSDLSurface());
+        setTextureRect({0, 0, (int)m_texture->getSize().x, (int)m_texture->getSize().y});
+    }
+    else if (m_texture->getSDLTexture() != NULL)
+    {
+        m_SDLtexture = m_texture->getSDLTexture();
         setTextureRect({0, 0, (int)m_texture->getSize().x, (int)m_texture->getSize().y});
     }
 }

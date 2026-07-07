@@ -1,7 +1,7 @@
 ![header](./images/is_Engine_logo.png)
 ----------------------------
 
-# is::Engine (Infinity Solutions::Engine) 4.0.2
+# is::Engine (Infinity Solutions::Engine) 4.0.3
 Open source C++ framework which uses the mechanisms of **SFML 2** and which also allows to develop with several libraries at the same time **(SDL 2, Emscripten)** in order to easily export your games / applications on the **Nintendo Switch, Web (HTML 5), Mobile** and **PC (Windows, Linux, macOS)**.
 
 ## Contents
@@ -63,6 +63,11 @@ Open source C++ framework which uses the mechanisms of **SFML 2** and which also
 - [[Android] Show Reward Video](https://github.com/Is-Daouda/is-Engine-Example-Pack/tree/main/is-Engine-Admob)
 
 ## What's new in this version
+- Support for sf::RenderTexture in SDL 2
+- Improved SFML simulator system with SDL 2
+- Bug fixes
+
+### 4.0.2
 - [Using Visual Studio and SDL 2 to develop with SFML.](#-visual-studio-sdl-2)
 - Bug Fixes
 
@@ -167,7 +172,6 @@ This project uses the template of **[carstene1ns](https://github.com/carstene1ns
 - All your source files (only .cpp or .c) must be located in the root of the **[cpp](./app/src/main/cpp/)** folder otherwise the compiler will not find them!
 - The Switch uses the same touch functions as Android.
 - The engine has been configured so that you can use the PC functions **keyIsPressed(is::GameConfig::KEY_UP)** or **keyIsPressed(is::GameConfig::KEY_A), etc.** on the Switch.
-- Some SFML functions like: **Render Texture** are not yet supported. These additions will be made soon!
 
 **2. Installation**
 ##### Windows
@@ -208,7 +212,6 @@ This project uses the template of **[Georgik](https://github.com/georgik/sdl2-an
 ## ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) Very important
 - On Android SFML games run with SDL library. If you want to use SDL functions in your source code, use the **IS_ENGINE_SDL_2 macro**.
 - The audio format supported at the moment is **.WAV**
-- Some SFML functions like: **Render Texture** are not yet supported. These additions will be made soon!
 - **Your help to improve the engine will be welcome!**
 - [Please read this](#Contribute).
 
@@ -290,7 +293,6 @@ If all goes well you will have a **Hello World Screen** on your **Web Browser**.
 - **is::Engine** works on the Web thanks to **SDL 2**.
 - These libraries: **TMXLite, TMXLoader, TinyFileDialog** are not supported in the web version of is::Engine.
 - If you want to use SDL functions in your source code, use the **IS_ENGINE_SDL_2 macro**.
-- Note that some SFML functions like: **Render Texture** are not yet supported. These additions will be made soon!
 
 ---
 
@@ -496,7 +498,6 @@ codeblocks "./app/src/main/is-Engine-linux-SDL2.cbp"
 
 ## ![danger](https://i48.servimg.com/u/f48/20/16/75/27/icon_d10.png) Very important
 - If you want to use SDL functions in your source code, use the **IS_ENGINE_SDL_2 macro**.
-- Note that some SFML functions like: **Render Texture** are not yet supported. These additions will be made soon!
 
 ---
 

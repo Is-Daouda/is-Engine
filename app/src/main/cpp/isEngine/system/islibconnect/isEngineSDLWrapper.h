@@ -146,10 +146,12 @@ public:
 
     Texture(const std::string& filename, bool useWithVertices = false) {loadSurface(filename, useWithVertices);}
 
-    Texture(SDL_Texture* tex, int w, int h) : m_texture(tex)
+    Texture(SDL_Texture* tex) : m_texture(tex)
     {
-        m_size.x = w;
-        m_size.y = h;
+        SDL_Point size;
+        SDL_QueryTexture(m_texture, NULL, NULL, &size.x, &size.y);
+        m_size.x = size.x;
+        m_size.y = size.y;
     }
 
     ~Texture();
@@ -178,10 +180,11 @@ public:
     void loadFromStream() {functionNotSupported("Texture", "loadFromStream", "loadSFMLTexture");}
 */
     SDL_Texture* m_texture;
+    Vector2u m_size;
+    bool m_isInRenderTexture = false;
 
 private:
     SDL_Surface *m_SDLsurface = NULL;
-    Vector2u m_size;
     std::string m_filename = "";
     bool loadSurface(const std::string& filePath, bool useWithVertices = false);
 };
@@ -236,6 +239,7 @@ public:
     Transformable();
 
     Transformable(Texture &texture);
+    Transformable(Texture const &texture);
 
     void setPosition(float x, float y)
     {
@@ -374,6 +378,7 @@ public:
     SDLTexture() : Transformable() {}
 
     SDLTexture(Texture &texture) : Transformable(texture) {}
+    SDLTexture(Texture const &texture) : Transformable(texture) {}
 
     ~SDLTexture();
 
@@ -394,6 +399,7 @@ public:
     Sprite() : SDLTexture() {}
     virtual ~Sprite() {}
     Sprite(Texture &texture) : SDLTexture(texture) {setSDLTexture();}
+    Sprite(Texture const &texture) : SDLTexture(texture) {setSDLTexture();}
 
     //-->Sprite(RenderTexture &renderTexture) : Transformable(renderTexture) {setSDLTexture();}
 
@@ -1016,73 +1022,226 @@ private:
     Transform transform;
 };
 
-// sf::RenderTexture
-class RenderTexture {
+class RenderTexture
+{
 public:
-    RenderTexture() : texture(nullptr), renderer(nullptr), ownsRenderer(false) {}
-    ~RenderTexture() {
-        if (texture) SDL_DestroyTexture(texture);
-        if (ownsRenderer && renderer) SDL_DestroyRenderer(renderer);
+    RenderTexture()
+        : m_SDLtarget(nullptr)
+        , m_smoothEnabled(false)
+    {
+        m_size.x = 0;
+        m_size.y = 0;
     }
 
-    bool create(unsigned int width, unsigned int height) {
-        if (!renderer) {
-            renderer = SDL_CreateRenderer(nullptr, -1, SDL_RENDERER_ACCELERATED);
-            if (!renderer) {
-                throw std::runtime_error("Failed to create renderer: " + std::string(SDL_GetError()));
-            }
-            ownsRenderer = true;
+    ~RenderTexture()
+    {
+        destroy();
+    }
+
+    RenderTexture(const RenderTexture&)            = delete;
+    RenderTexture& operator=(const RenderTexture&) = delete;
+
+    bool create(unsigned int width, unsigned int height)
+    {
+        destroy();
+
+        if (!is::IS_ENGINE_SDL_renderer)
+        {
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+                "RenderTexture::create() : is::IS_ENGINE_SDL_renderer est NULL. "
+                "Appelez create() apr�s l'initialisation SDL.");
+            return false;
         }
-        texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
-        if (!texture) {
-            if (ownsRenderer) SDL_DestroyRenderer(renderer);
-            throw std::runtime_error("Failed to create render texture: " + std::string(SDL_GetError()));
+
+        m_SDLtarget = SDL_CreateTexture(
+            is::IS_ENGINE_SDL_renderer,
+            SDL_PIXELFORMAT_RGBA8888,
+            SDL_TEXTUREACCESS_TARGET,
+            static_cast<int>(width),
+            static_cast<int>(height)
+        );
+
+        if (!m_SDLtarget)
+        {
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "RenderTexture::create() : %s", SDL_GetError());
+            return false;
         }
-        textureWidth = width;
-        textureHeight = height;
-        internalTexture = Texture(texture, width, height);
+
+        SDL_SetTextureBlendMode(m_SDLtarget, SDL_BLENDMODE_BLEND);
+
+        m_size.x = width;
+        m_size.y = height;
+
+        m_texture.m_size.x = width;
+        m_texture.m_size.y = height;
+        m_texture.m_isInRenderTexture = true;
+
+        applySmooth();
+
         return true;
     }
 
-    void clear(const Color& color = Color(0, 0, 0, 255)) {
-        if (!texture) return;
-        SDL_SetRenderTarget(renderer, texture);
-        SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-        SDL_RenderClear(renderer);
-        SDL_SetRenderTarget(renderer, nullptr);
+    void clear(const Color& color = Color(0, 0, 0, 0))
+    {
+        if (!m_SDLtarget) return;
+
+        SDL_SetRenderTarget(is::IS_ENGINE_SDL_renderer, m_SDLtarget);
+        SDL_SetRenderDrawBlendMode(is::IS_ENGINE_SDL_renderer, SDL_BLENDMODE_NONE);
+        SDL_SetRenderDrawColor(is::IS_ENGINE_SDL_renderer,
+            color.r, color.g, color.b, color.a);
+        SDL_RenderClear(is::IS_ENGINE_SDL_renderer);
     }
 
-    void draw(const VertexArray& vertexArray, const RenderStates& states = RenderStates()) {
-        if (!this->texture) return;
-        SDL_SetRenderTarget(renderer, this->texture);
-        vertexArray.draw(renderer, states);
-        SDL_SetRenderTarget(renderer, nullptr);
+    void draw(SDLTexture& obj)
+    {
+        if (!m_SDLtarget) return;
+        drawSDLTexture(obj);
     }
 
-    void display() {}
-
-    const Texture& getTexture() const {
-        if (!texture) {
-            throw std::runtime_error("No texture available");
-        }
-        return internalTexture;
+    void draw(Shape& obj)
+    {
+        if (!m_SDLtarget) return;
+        obj.draw(m_view);
     }
 
-    void setRenderer(SDL_Renderer* rend) {
-        if (ownsRenderer && renderer) {
-            SDL_DestroyRenderer(renderer);
-        }
-        renderer = rend;
-        ownsRenderer = false;
-        internalTexture = Texture(texture, textureWidth, textureHeight);
+    void draw(const VertexArray& vertexArray,
+              const RenderStates& states = RenderStates())
+    {
+        if (!m_SDLtarget) return;
+        vertexArray.draw(is::IS_ENGINE_SDL_renderer, states);
     }
+
+    void display()
+    {
+        //SDL_SetRenderDrawBlendMode(is::IS_ENGINE_SDL_renderer, SDL_BLENDMODE_BLEND);
+        SDL_SetRenderTarget(is::IS_ENGINE_SDL_renderer, nullptr);
+        m_texture.m_texture = m_SDLtarget;
+    }
+
+    const Texture& getTexture() const
+    {
+        return m_texture;
+    }
+
+    const Vector2u& getSize() const noexcept
+    {
+        return m_size;
+    }
+
+    void setSmooth(bool smooth)
+    {
+        m_smoothEnabled = smooth;
+        applySmooth();
+    }
+
+    bool isSmooth() const noexcept
+    {
+        return m_smoothEnabled;
+    }
+
+    const View& getView() const noexcept { return m_view; }
+
+    void setView(const View& view) { m_view = view; }
+
+    const View& getDefaultView() const noexcept { return m_view; }
+
+    bool isAvailable() const noexcept { return m_SDLtarget != nullptr; }
+
+    SDL_Texture* getSDLTexture() const noexcept { return m_SDLtarget; }
 
 private:
-    SDL_Texture* texture;
-    SDL_Renderer* renderer;
-    bool ownsRenderer;
-    Texture internalTexture;
-    int textureWidth = 0, textureHeight = 0;
+    SDL_Texture* m_SDLtarget;
+    Texture      m_texture;
+    Vector2u     m_size;
+    View         m_view;
+    bool         m_smoothEnabled;
+
+    void destroy()
+    {
+        if (m_SDLtarget)
+        {
+            m_texture.m_texture = nullptr;
+            SDL_DestroyTexture(m_SDLtarget);
+            m_SDLtarget = nullptr;
+        }
+        m_size.x = 0;
+        m_size.y = 0;
+    }
+
+    void applySmooth()
+    {
+        if (!m_SDLtarget) return;
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+        SDL_SetTextureScaleMode(m_SDLtarget,
+            m_smoothEnabled ? SDL_ScaleModeLinear : SDL_ScaleModeNearest);
+#endif
+    }
+
+    void drawSDLTexture(SDLTexture& obj)
+    {
+        SDL_Texture* sdlTex = obj.getSDLTexture();
+        if (!sdlTex) return;
+
+        const Rect&    rec    = obj.getTextureRect();
+        const Vector2f& pos   = obj.getPosition();
+        const Vector2f& orig  = obj.getOrigin();
+        const Vector2f& sc    = obj.getScale();
+        const Color&    col   = obj.getColor();
+
+        SDL_Rect src;
+        src.x = rec.left;
+        src.y = rec.top;
+        src.w = rec.width;
+        src.h = rec.height;
+
+        SDL_Rect dst;
+        dst.x = static_cast<int>(pos.x - orig.x * sc.x);
+        dst.y = static_cast<int>(pos.y - orig.y * sc.y);
+        dst.w = static_cast<int>(rec.width  * sc.x);
+        dst.h = static_cast<int>(rec.height * sc.y);
+
+        SDL_Point center;
+        center.x = static_cast<int>(orig.x * sc.x);
+        center.y = static_cast<int>(orig.y * sc.y);
+
+        SDL_SetTextureColorMod(sdlTex, col.r, col.g, col.b);
+        SDL_SetTextureAlphaMod(sdlTex, col.a);
+        SDL_SetTextureBlendMode(sdlTex, SDL_BLENDMODE_BLEND);
+
+        SDL_RenderCopyEx(
+            is::IS_ENGINE_SDL_renderer,
+            sdlTex,
+            &src,
+            &dst,
+            static_cast<double>(obj.getRotation()),
+            &center,
+            obj.m_SDLFlip
+        );
+
+        if (obj.m_SDLTextureType == SDLTexture::IS_ENGINE_SDL_TEXT)
+        {
+            SDL_Texture* outlineTex = obj.getSDLOutlineTexture();
+            if (outlineTex)
+            {
+                const Rect& orec = obj.m_SDLoutlineTextureRec;
+                SDL_Rect osrc = { orec.left, orec.top, orec.width, orec.height };
+                SDL_Rect odst = dst;
+                odst.w = static_cast<int>(orec.width  * sc.x);
+                odst.h = static_cast<int>(orec.height * sc.y);
+
+                SDL_SetTextureAlphaMod(outlineTex, col.a);
+                SDL_SetTextureBlendMode(outlineTex, SDL_BLENDMODE_BLEND);
+                SDL_RenderCopyEx(
+                    is::IS_ENGINE_SDL_renderer,
+                    outlineTex,
+                    &osrc, &odst,
+                    static_cast<double>(obj.getRotation()),
+                    &center,
+                    obj.m_SDLFlip
+                );
+            }
+        }
+    }
 };
 //---
 
