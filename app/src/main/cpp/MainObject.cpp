@@ -326,7 +326,7 @@ void MainObject::setImageAngle(float val)
 
 void MainObject::setXOffset(float val)
 {
-    setXYOffset(val, m_xOffset);
+    setXYOffset(val, m_yOffset);
 }
 
 void MainObject::setYOffset(float val)
