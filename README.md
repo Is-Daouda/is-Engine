@@ -304,14 +304,14 @@ By default the web push notification has been disabled. Because to make it work 
 To enable it, please modify these lines in **[index.html](./app/src/main/web/index.html)** : **[7](./app/src/main/web/index.html#L7), [23](./app/src/main/web/index.html#L23), [108](./app/src/main/web/index.html#L108)**
 
 #### Installation
-- This shows how to test the push notification. Note that normally to use it, you have to associate it with a database (backend). But here we will use it with the **Push Companion** site **(It will serve as a backend for us!)**.
+- This shows how to test the push notification. Note that normally to use it, you have to associate it with a database (backend). But here we will use it with a **web push tester** site **(It will serve as a backend for us!)**.
 - For more information on Push Notification please see this [page](https://developers.google.com/web/fundamentals/codelabs/push-notifications).
 1. Web browser ([preferably Google Chrome](https://www.google.fr/chrome/?brand=CHBD&brand=XXVF&gclid=EAIaIQobChMI7a315b6c7gIVEKSyCh0O8QJjEAAYASABEgJfd_D_BwE&gclsrc=aw.ds))
 2. [Web server for Chrome](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb) or your own web server.
-3. Define the **Application Server Keys** in the [main.js](./app/src/main/web/scripts/main.js#L25) file. You can get this keys (We will use the public key) [here](https://web-push-codelab.glitch.me/).
+3. Define the **Application Server Keys** in the [main.js](./app/src/main/web/scripts/main.js#L25) file. You can get this keys (We will use the public key) [here](https://pwastack.com/tools/push-tester) by clicking **"New test keys"**. Keep that page open: step 6 needs the same keys.
 4. Launch the **[web](./app/src/main/web)** or **bin-web folder (generate using emscripten)** via the web server.
 5. Click on the **"Enable Push Messaging" button** to activate the sending of Push Notifications. Once done you will have a code (which can be used to send you push notifications).
-6. Go to this [site](https://web-push-codelab.glitch.me/) and enter the code in the **"Subscription to Send To" text field** followed by your message in **"Text to Send" text field**. Click on the **"Send Push Message" button**.
+6. Go to this [site](https://pwastack.com/tools/push-tester) and enter the code in the **"Subscription JSON" text field** followed by your message in **"Payload" text field**. Click on the **"Send test push" button**.
 7. If all goes well you will have a push notification followed by the message you sent in the console (development tool) of your browser.
 
 ![image](https://i.servimg.com/u/f48/20/16/75/27/image10.jpg)
